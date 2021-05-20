@@ -3,11 +3,10 @@ server:
 spring:
   redis:
     port: 6379
-    username: root
     password:
-    database: 0
-    timeout: 50000
-    connect-timeout: 50000
+    host: localhost
+  #    timeout: 50000
+#    connect-timeout: 50000
   thymeleaf:
     cache: false
   datasource:

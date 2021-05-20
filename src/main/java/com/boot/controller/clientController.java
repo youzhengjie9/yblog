@@ -12,6 +12,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class clientController {
@@ -35,6 +37,9 @@ public class clientController {
 
     @Autowired
     private SpringSecurityUtil securityUtil;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     //前10排行
@@ -51,17 +56,22 @@ public class clientController {
         PageHelper.startPage(1,5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
-
-        List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-
-
+        ModelAndView modelAndView = new ModelAndView();
+        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders");
+        if(as==null){
+            List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
+            redisTemplate.opsForValue().set("articleOrders",articleOrders,60*2, TimeUnit.SECONDS);
+            modelAndView.addObject("articleOrders",articleOrders);
+        }else {
+            modelAndView.addObject("articleOrders",as);
+        }
 //        System.out.println(pageInfo);
         //PageInfo{pageNum=1, pageSize=5, size=5, startRow=1, endRow=5, total=12, pages=3, list=Page{count=true, pageNum=1, pageSize=5, startRow=0, endRow=5, total=12, pages=3, reasonable=false, pageSizeZero=false}[Article{id=1, title='2018新版Java学习路线图', content='&ensp;&ensp;&ensp;&ensp;播妞深知广大爱好Java的人学习是多么困难，没视频没资源，上网花钱还老担心被骗。因此专门整理了新版的学习路线图，不管你是不懂电脑的小白，还是已经步入开发的大牛，这套路线路绝对不容错过！12年传智播客黑马程序员分享免费视频教程长达10余万小时，累计下载量3000余万次，受益人数达千万。2018年我们不忘初心，继续前行。 路线图的宗旨就是分享，专业，便利，让喜爱Java的人，都能平等的学习。从今天起不要再找借口，不要再说想学Java却没有资源，赶快行动起来，Java等你来探索，高薪距你只差一步！
-        ModelAndView modelAndView = new ModelAndView();
+
         modelAndView.addObject("articles",list);
         modelAndView.addObject("commons",new Commons());
         modelAndView.addObject("pageInfo",pageInfo);
-        modelAndView.addObject("articleOrders",articleOrders);
+
         modelAndView.setViewName("client/index");
         return modelAndView;
     }
@@ -92,11 +102,15 @@ public class clientController {
         PageHelper.startPage(pageNum,5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
-
-//        System.out.println(pageInfo);
-
-
         ModelAndView modelAndView = new ModelAndView();
+        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders");
+        if(as==null){
+            List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
+            redisTemplate.opsForValue().set("articleOrders",articleOrders,60*2, TimeUnit.SECONDS);
+            modelAndView.addObject("articleOrders",articleOrders);
+        }else {
+            modelAndView.addObject("articleOrders",as);
+        }
         modelAndView.addObject("articles",list);
         modelAndView.addObject("commons",new Commons());
         modelAndView.addObject("pageInfo",pageInfo);
