@@ -1,11 +1,13 @@
 package com.boot.controller;
 
 import com.boot.dao.articleMapper;
+import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.Article;
 import com.boot.pojo.Comment;
 import com.boot.service.CommentService;
 import com.boot.service.articleService;
 import com.boot.utils.Commons;
+import com.boot.utils.SpringSecurityUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class clientController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private SpringSecurityUtil securityUtil;
 
 
     //前10排行
@@ -154,8 +159,32 @@ public class clientController {
             return modelAndView;
 
         }
+    }
+
+    @ResponseBody
+    @PostMapping(path = "/publishComment")
+    public ArticleResponseData publishComment(Integer aid,String text,HttpSession session){
+        try{
+            //发布评论
+            Comment comment = new Comment();
+            comment.setArticleId(aid);
+            comment.setC_content(text);
+            comment.setStatus("approved");
+            comment.setIp("0:0:0:0:0:0:0:1"); //获取ip的功能未完善，之后可能会进行完善，暂且给一个默认值
+            Date date = new Date(new java.util.Date().getTime());
+            comment.setCreated(date);
+            String username = securityUtil.currentUser(session);
+            comment.setAuthor(username); //这里的用户名最好加唯一索引
+            commentService.publishComment(comment);
+            return ArticleResponseData.ok();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ArticleResponseData.fail();
+        }
 
     }
+
+
 
 
 

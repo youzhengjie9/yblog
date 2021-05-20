@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 public class adminController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class adminController {
     private statisticService statisticService;
 
 
-    @GetMapping(path = "/admin")
+    @GetMapping(path = "/")
     public String toAdmin(Model model){
 
 

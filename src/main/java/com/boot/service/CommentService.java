@@ -17,4 +17,6 @@ public interface CommentService {
 
     public int deleteCommentByArticleId(Integer id);
 
+    public int publishComment(Comment comment);
+
 }

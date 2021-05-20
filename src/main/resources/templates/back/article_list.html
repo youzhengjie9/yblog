@@ -31,13 +31,13 @@
                             <th:block th:each="article : ${articles}">
                                 <tr th:id="${article.id}">
                                     <td>
-                                        <a th:href="@{'/article/'+${article.id}}" th:text="${article.title}" target="_blank"></a>
+                                        <a th:href="@{'/admin/article/'+${article.id}}" th:text="${article.title}" target="_blank"></a>
                                     </td>
                                     <td><th:block th:text="${commons.dateFormat(article.created)}"/></td>
                                     <td><th:block th:text="${article.getStatistic().getHits()}"/></td>
                                     <td><th:block th:text="${article.categories}"/></td>
                                     <td>
-                                        <a th:href="@{'/toEditArticle/'+${article.id}}"
+                                        <a th:href="@{'/admin/toEditArticle/'+${article.id}}"
                                            class="btn btn-primary btn-sm waves-effect waves-light m-b-5">
                                            <i class="fa fa-edit"></i> <span>编辑</span></a>
                                         <a href="javascript:void(0)" th:onclick="'delArticle('+${article.id}+');'"
@@ -68,7 +68,7 @@
         if(confirm('确定删除该文章吗?')){
             $.ajax({
                 type:'post',
-                url : '/deleteArticle',
+                url : '/admin/deleteArticle',
                 data: {id:id},
                 dataType: 'json',
                 beforeSend : function(xhr) {

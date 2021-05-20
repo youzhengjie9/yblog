@@ -8,7 +8,7 @@
             subComment: function () {
                     $.ajax({
                     type: 'post',
-                    url: '/comments/publish',
+                    url: '/publishComment',
                     data: $('#comment-form').serialize(),
                     async: false,
                     dataType: 'json',

@@ -37,4 +37,9 @@ public class CommentServiceImpl implements CommentService {
     public int deleteCommentByArticleId(Integer id) {
         return commentMapper.deleteCommentByArticleId(id);
     }
+
+    @Override
+    public int publishComment(Comment comment) {
+        return commentMapper.publishComment(comment);
+    }
 }

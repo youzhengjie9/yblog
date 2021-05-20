@@ -86,7 +86,7 @@ function subArticle(status) {
     $("#articleForm #status").val(status);
     $("#articleForm #categories").val($('#multiple-sel').val());
     var params = $("#articleForm").serialize();
-    var url = $('#articleForm #id').val() != '' ? '/modify' : '/publish';
+    var url = $('#articleForm #id').val() != '' ? '/admin/modify' : '/admin/publish';
     tale.post({
         url:url,
         data:params,
@@ -96,7 +96,7 @@ function subArticle(status) {
                     text:'文章保存成功',
                     then: function () {
                         setTimeout(function () {
-                            window.location.href = '/toArticleList';
+                            window.location.href = '/admin/toArticleList';
                         }, 500);
                     }
                 });

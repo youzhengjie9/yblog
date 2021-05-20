@@ -37,7 +37,7 @@
             <a class="header-info" sec:authorize="isAnonymous()" th:href="@{/loginPage}" >登录</a>
             <a class="header-info" sec:authorize="isAuthenticated()" href="javascript:document.logoutform.submit();" >退出</a>
             <!--<a style="color: #fff" >订阅</a>-->
-            <a  class="header-info" href="/admin">后台管理</a>
+            <a  class="header-info" th:href="@{/admin/}">后台管理</a>
         </div>
         <div class="navbar-search" onclick="">
             <span class="icon-search"></span>

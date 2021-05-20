@@ -17,5 +17,11 @@
     <delete id="deleteCommentByArticleId">
         delete from t_comment where article_id=#{id}
     </delete>
+
+    <insert id="publishComment" parameterType="com.boot.pojo.Comment" keyProperty="id" useGeneratedKeys="true">
+        insert into t_comment (article_id,created,ip,c_content,status,author) values (#{articleId},#{created},#{ip},#{c_content},#{status},#{author});
+    </insert>
+
+
 </mapper>
 

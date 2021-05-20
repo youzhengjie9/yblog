@@ -31,8 +31,10 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 
-        String sql="select username,authority_id from t_user,t_user_authority where username = ? and t_user.id=t_user_authority.id";
-
+//        String sql="select username,authority_id from t_user,t_user_authority where username = ? and t_user.id=t_user_authority.id";
+        String sql="select u.username,a.authority from t_user u,t_authority a," +
+                "t_user_authority ua where ua.user_id=u.id " +
+                "and ua.authority_id=a.id and u.username =?";
         auth.jdbcAuthentication().dataSource(dataSource)
                 .passwordEncoder(encoder)
                 .usersByUsernameQuery("select username,password,valid from t_user where username = ?")
@@ -59,6 +61,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/article_img/**","/assets/**","/back/**","/user/**")
                 .permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/admin/**").hasRole("admin")
+                .anyRequest().permitAll();
     }
 }
