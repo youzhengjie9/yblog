@@ -6,7 +6,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -49,6 +51,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .loginPage("/login")
                 .and()
+                //关闭csrf
+                .csrf().disable()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/page/1")
@@ -59,6 +63,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loginPage").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/article/**").permitAll()
+                .antMatchers("/druid/*").permitAll()
                 .antMatchers("/article_img/**","/assets/**","/back/**","/user/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("admin")
