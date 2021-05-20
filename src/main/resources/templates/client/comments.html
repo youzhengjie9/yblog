@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="comments"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<body>
+<div th:if="${article}!=null">
+    <div th:id="${article.id ?: 0}" class="comment-container">
+        <div id="comments" class="clearfix">
+            <div th:if="${article.allowComment}">
+                <span class="response">
+                    <form name="logoutform" th:action="@{/logout}" method="post"></form>
+                    <th:block sec:authorize="isAuthenticated()">
+                        Hello，<a data-no-instant="" sec:authentication="name"></a>
+                        如果你想 <a href="javascript:document.logoutform.submit();">注销</a> ?
+                    </th:block>
+                    <th:block sec:authorize="isAnonymous()">
+                        用户想要评论，请先<a th:href="@{/loginPage}" title="登录" data-no-instant="">登录</a>!
+                    </th:block>
+                </span>
+                <div sec:authorize="isAuthenticated()">
+                    <form id="comment-form" class="comment-form" role="form" onsubmit="return TaleComment.subComment();">
+                        <input type="hidden" name="aid" id="aid" th:value="${article.id}"/>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <textarea name="text" id="textarea" class="form-control" placeholder="以上信息可以为空,评论不能为空哦!"
+                                  required="required" minlength="5" maxlength="2000"></textarea>
+                        <button type="submit" class="submit" id="misubmit">提交</button>
+                    </form>
+                </div>
+            </div>
+            <!-- 分页显示其他评论内容 -->
+            <div th:if="${comments}">
+                <ol class="comment-list">
+                    <th:block th:each="comment :${comments}">
+                        <li th:id="'li-comment-'+${comment.id}" class="comment-body comment-parent comment-odd">
+                            <div th:id="'comment-'+${comment.id}">
+                                <div class="comment-view" onclick="">
+                                    <div class="comment-header">
+                                        <!--设置人物头像和名称-->
+                                        <img class="avatar" th:src="@{/assets/img/avatars.jpg}" height="50"/>
+                                        <a class="comment-author" rel="external nofollow" th:text="${comment.author}" />
+                                    </div>
+                                    <!-- 评论内容 -->
+                                    <div class="comment-content">
+                                        <span class="comment-author-at"></span>
+<!--                                        <p th:utext="${commons.article(comment.content)}"></p>-->
+                                        <p th:utext="${comment.c_content}"></p>
+                                    </div>
+                                    <!-- 评论日期 -->
+                                    <div class="comment-meta">
+                                        <time class="comment-time" th:text="${commons.dateFormat(comment.created)}"></time>
+                                        <a sec:authorize="isAuthenticated()" th:if="${comment.author}!= ${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}" href="javascript:void(0)" style="color: #1b961b">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回复
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </th:block>
+                </ol>
+                <!-- 进行评论分页 -->
+<!--                <div class="lists-navigator clearfix">-->
+<!--                    <ol class="page-navigator">-->
+<!--                        &lt;!&ndash; 判断并展示上一页 &ndash;&gt;-->
+<!--                        <th:block th:if="${comments.hasPreviousPage}">-->
+<!--                            <li class="prev"><a th:href="'?cp='+${comments.prePage}+'#comments'">上一页</a></li>-->
+<!--                        </th:block>-->
+<!--                        &lt;!&ndash; 判断并展示中间页 &ndash;&gt;-->
+<!--                        <th:block th:each="navIndex : ${comments.navigatepageNums}">-->
+<!--                            <th:block th:if="${comments.pages} <= 5">-->
+<!--                                <li th:class="${comments.pageNum}==${navIndex}?'current':''">-->
+<!--                                    <a th:href="'?cp='+${navIndex}+'#comments'" th:text="${navIndex}"></a>-->
+<!--                                </li>-->
+<!--                            </th:block>-->
+<!--                            <th:block th:if="${comments.pages} > 5">-->
+<!--                                <li th:if="${comments.pageNum <=3 &&  navIndex <= 5}" th:class="${comments.pageNum}==${navIndex}?'current':''">-->
+<!--                                    <a th:href="'?cp='+${navIndex}+'#comments'" th:text="${navIndex}"></a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${comments.pageNum >= comments.pages-2 &&  navIndex > comments.pages-5}" th:class="${comments.pageNum}==${navIndex}?'current':''">-->
+<!--                                    <a th:href="'?cp='+${navIndex}+'#comments'" th:text="${navIndex}"></a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${comments.pageNum >=4 && comments.pageNum <= comments.pages-3 &&  navIndex >= comments.pageNum-2 && navIndex <= comments.pageNum+2}"  th:class="${comments.pageNum}==${navIndex}?'current':''">-->
+<!--                                    <a th:href="'?cp='+${navIndex}+'#comments'" th:text="${navIndex}"></a>-->
+<!--                                </li>-->
+<!--                            </th:block>-->
+<!--                        </th:block>-->
+<!--                        &lt;!&ndash; 判断并展示下一页 &ndash;&gt;-->
+<!--                        <th:block th:if="${comments.hasNextPage}">-->
+<!--                            <li class="next"><a th:href="'?cp='+${comments.nextPage}+'#comments'">下一页</a></li>-->
+<!--                        </th:block>-->
+<!--                    </ol>-->
+<!--                </div>-->
+
+                <div class="am-pagination">
+                    <nav aria-label="Page navigation">
+
+                        <!--                分成三个ul class="pagination" ，一个是上一页 ，一个是th：each遍历 ，一个是下一页-->
+                        <ul class="pagination">
+
+                            <li th:if="${pageInfo.pageNum!=1}">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${pageInfo.pageNum==1}" class="disabled">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="pagination" th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+                            <li th:if="${pageInfo.pageNum==index}" class="active"><a th:href="@{'/article/'+${articleId}+'?c='+${index}}" th:text="${index}"></a></li>
+                            <li th:if="${pageInfo.pageNum!=index}"><a th:href="@{'/article/'+${articleId}+'?c='+${index}}" th:text="${index}"></a></li>
+
+                        </ul>
+
+                        <ul class="pagination">
+                            <li th:if="${pageInfo.pageNum!=pageInfo.pages}">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${pageInfo.pageNum==pageInfo.pages}" class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<div th:replace="comm/tale_comment::tale_comment"></div>
+</html>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.dao.articleMapper">
+
+
+    <resultMap id="articleRes1" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+
+        <association property="statistic" javaType="com.boot.pojo.Statistic">
+            <result property="articleId" column="article_id"/>
+            <result property="hits" column="hits"/>
+            <result property="commentsNum" column="comments_num"/>
+        </association>
+
+
+
+    </resultMap>
+
+    <select id="selectAllArticle" resultMap="articleRes1">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail,
+	t_statistic.hits,
+	t_statistic.comments_num
+    FROM
+    t_article,
+	t_statistic
+    WHERE
+	t_article.id = t_statistic.article_id
+    </select>
+
+
+    <resultMap id="articleRes2" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+        <collection property="comments" ofType="com.boot.pojo.Comment">
+            <result column="article_id" property="articleId"/>
+            <result column="c_content" property="c_content"/>
+            <result column="created" property="created"/>
+            <result column="author" property="author"/>
+            <result column="ip" property="ip"/>
+            <result column="status" property="status"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectArticleAndComment" resultMap="articleRes2">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail,
+	t_comment.article_id,
+	t_comment.c_content,
+	t_comment.created,
+	t_comment.author,
+	t_comment.ip,
+	t_comment.status
+    FROM
+    t_article,
+	t_comment
+    WHERE
+	t_article.id = t_comment.article_id
+    </select>
+
+
+
+
+
+    <resultMap id="articleRes3" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+    </resultMap>
+
+    <select id="selectArticleByArticleIdNoComment" resultMap="articleRes3">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail
+    FROM
+    t_article
+    WHERE
+	t_article.id = #{id}
+    </select>
+
+
+
+
+
+
+    <resultMap id="articleRes4" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+
+        <association property="statistic" javaType="com.boot.pojo.Statistic">
+            <result property="articleId" column="article_id"/>
+            <result property="hits" column="hits"/>
+            <result property="commentsNum" column="comments_num"/>
+        </association>
+
+
+
+    </resultMap>
+
+    <select id="selectAllArticleOrderByDesc" resultMap="articleRes4">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail,
+	t_statistic.hits,
+	t_statistic.comments_num
+    FROM
+	t_article,
+	t_statistic
+    WHERE
+	t_article.id = t_statistic.article_id
+    ORDER BY
+	t_statistic.hits DESC
+    </select>
+
+
+    <resultMap id="articleRes5" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+        <collection property="comments" ofType="com.boot.pojo.Comment">
+            <result column="article_id" property="articleId"/>
+            <result column="c_content" property="c_content"/>
+            <result column="created" property="created"/>
+            <result column="author" property="author"/>
+            <result column="ip" property="ip"/>
+            <result column="status" property="status"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectArticleOrderCreateDate" resultMap="articleRes5">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail,
+	t_comment.article_id,
+	t_comment.c_content,
+	t_comment.created,
+	t_comment.author,
+	t_comment.ip,
+	t_comment.status
+    FROM
+    t_article,
+	t_comment
+    WHERE
+	t_article.id = t_comment.article_id
+	order by t_article.created desc
+    </select>
+
+
+
+    <select id="selectArticleCount" resultType="int">
+        select count('article_id') from t_article;
+    </select>
+
+
+
+
+
+
+    <resultMap id="articleRes6" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="thumbnail" property="thumbnail"/>
+
+        <association property="statistic" javaType="com.boot.pojo.Statistic">
+            <result property="articleId" column="article_id"/>
+            <result property="hits" column="hits"/>
+            <result property="commentsNum" column="comments_num"/>
+        </association>
+
+
+
+    </resultMap>
+
+    <select id="selectAllArticleByCreated" resultMap="articleRes6">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.content,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.thumbnail,
+	t_statistic.hits,
+	t_statistic.comments_num
+    FROM
+    t_article,
+	t_statistic
+    WHERE
+	t_article.id = t_statistic.article_id
+	order by created desc
+    </select>
+
+
+    <update id="changeArticle" parameterType="com.boot.pojo.Article">
+        update t_article
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="tags != null">
+                tags = #{tags},
+            </if>
+            <if test="categories != null">
+                categories = #{categories},
+            </if>
+            <if test="allowComment != null">
+                allow_comment = #{allowComment},
+            </if>
+            <if test="thumbnail != null">
+                thumbnail = #{thumbnail},
+            </if>
+            <if test="content != null">
+                content = #{content}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <insert id="addArticle" parameterType="com.boot.pojo.Article" keyProperty="id" useGeneratedKeys="true">
+        insert into t_article (title,content,created,categories,tags,allow_comment) values (#{title},#{content},#{created},#{categories},#{tags},#{allowComment})
+    </insert>
+
+    <delete id="deleteArticleByArticleId">
+     delete from t_article where id=#{id}
+    </delete>
+
+
+
+</mapper>

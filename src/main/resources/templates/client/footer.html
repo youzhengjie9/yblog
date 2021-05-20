@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="footer">
+<body>
+<footer class="footer bg-white">
+    <div class="footer-social">
+        <div class="footer-container clearfix">
+            <div class="social-list">
+            </div>
+        </div>
+    </div>
+    <div class="footer-meta">
+        <div class="footer-container">
+            <div class="meta-item meta-copyright">
+                <div class="meta-copyright-info">
+                    <div class="info-text">
+                        <a style="display: block;margin: 0 auto;" class="info-logo">
+                            <img style="display: block;margin: 0 auto;" th:src="@{/user/img/bloglogo.jpg}"/>
+                        </a>
+                        <p style="margin: 30px"><time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy; Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script th:src="@{/user/js/headroom.min.js}"></script>
+<script th:src="@{/user/js/highlight.min.js}"></script>
+<script th:src="@{/user/js/instantclick.min.js}"></script>
+</body>
+</html>

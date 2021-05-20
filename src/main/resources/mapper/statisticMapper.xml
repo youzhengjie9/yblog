@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.statisticMapper">
+
+
+   <insert id="addStatistic" parameterType="com.boot.pojo.Statistic">
+       insert into t_statistic (article_id,hits,comments_num) values (#{articleId},#{hits},#{commentsNum})
+   </insert>
+
+
+    <delete id="deleteStatisticByArticleId">
+        delete from t_statistic where article_id=#{id}
+    </delete>
+</mapper>
+
+
+
+

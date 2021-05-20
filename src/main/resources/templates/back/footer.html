@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="footer-content">
+    <footer class="footer text-right">
+        <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> © <a target="_blank">CrazyStone</a><div class=""></div>
+    </footer>
+</div>
+<body th:fragment="footer">
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/back/js/bootstrap.js}"></script>
+<script th:src="@{/back/js/sweetalert2.min.js}"></script>
+<script th:src="@{/back/js/jquery.app.js}"></script>
+<script th:src="@{/back/js/base.js}"></script>
+</body>
+</html>

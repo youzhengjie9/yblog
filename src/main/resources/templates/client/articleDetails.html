@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/layer.js}"></script>
+</head>
+<div th:replace="client/header::header(${article.title},null)"></div>
+<body>
+<article class="main-content post-page">
+    <div class="post-header">
+        <h1 class="post-title" itemprop="name headline" th:text="${article.title}"></h1>
+        <div class="post-data">
+            <time th:datetime="${commons.dateFormat(article.created)}" itemprop="datePublished" th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></time>
+        </div>
+    </div>
+    <br />
+    <div id="post-content" class="post-content content" th:utext="${commons.article(article.content)}"></div>
+</article>
+<div th:replace="client/comments::comments"></div>
+<div th:replace="client/footer::footer"></div>
+<!-- 使用layer.js实现图片缩放功能 -->
+<script type="text/JavaScript">
+    $('.post-content img').on('click', function(){
+        var imgurl=$(this).attr('src');
+        var w=this.width*2;
+        var h=this.height*2+50;
+        layer.open({
+            type: 1,
+            title: false, //不显示标题栏
+            area: [w+"px", h+"px"],
+            shadeClose: true, //点击遮罩关闭
+            content: '\<\div style="padding:20px;">' +
+                    '\<\img style="width:'+(w-50)+'px;" src='+imgurl+'\>\<\/div>'
+        });
+    });
+</script>
+</body>
+</html>

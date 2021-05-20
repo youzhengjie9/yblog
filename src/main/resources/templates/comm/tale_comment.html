@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="tale_comment" >
+<body>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    (function () {
+        window.TaleComment = {
+            subComment: function () {
+                    $.ajax({
+                    type: 'post',
+                    url: '/comments/publish',
+                    data: $('#comment-form').serialize(),
+                    async: false,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result && result.success) {
+                            window.alert("评论提交成功!");
+                            window.location.reload();
+                        } else {
+                            window.alert("发送失败")
+                            if (result.msg) {
+                                alert(result.msg);
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        };
+    })();
+</script>
+</body>
+</html>

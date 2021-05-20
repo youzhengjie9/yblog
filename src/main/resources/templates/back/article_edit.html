@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='发布文章',active='publish'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<link th:href="@{/back/plugins/tagsinput/jquery.tagsinput.css}" rel="stylesheet"/>
+<link th:href="@{/back/plugins/select2.dist.css/select2-bootstrap.css}" rel="stylesheet"/>
+<link th:href="@{/back/plugins/toggles/toggles.css}" rel="stylesheet"/>
+
+<link th:href="@{/back/plugins/mditor/css/mditor.min.css}" rel="stylesheet"/>
+<link th:href="@{/back/plugins/dropzone/4.3.0/min/dropzone.min.css}" rel="stylesheet">
+<style>
+    #tags_tagsinput {
+        background-color: #fafafa;
+        border: 1px solid #eeeeee;
+    }
+
+    #tags_addTag input {
+        width: 100%;
+    }
+
+    #tags_addTag {
+        margin-top: -5px;
+    }
+
+    .mditor .editor{
+        font-size: 14px;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    .mditor .backdrop, .mditor .textarea, .mditor .viewer{
+        font-size: 14px;
+    }
+    .markdown-body{
+        font-size: 14px;
+    }
+    .note-toolbar {
+        text-align: center;
+    }
+
+    .note-editor.note-frame {
+        border: none;
+    }
+
+    .note-editor .note-toolbar {
+        background-color: #f5f5f5;
+        padding-bottom: 10px;
+    }
+
+    .note-toolbar .note-btn-group {
+        margin: 0;
+    }
+
+    .note-toolbar .note-btn {
+        border: none;
+    }
+
+    #articleForm #dropzone {
+        min-height: 200px;
+        background-color: #dbdde0;
+        line-height:200px;
+        margin-bottom: 10px;
+    }
+    #articleForm .dropzone {
+        border: 1px dashed #8662c6;
+        border-radius: 5px;
+        background: white;
+    }
+    #articleForm .dropzone .dz-message {
+        font-weight: 400;
+    }
+    #articleForm .dropzone .dz-message .note {
+        font-size: 0.8em;
+        font-weight: 200;
+        display: block;
+        margin-top: 1.4rem;
+    }
+</style>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">
+                            <th:block th:if="${null != contents}">
+                                编辑文章
+                            </th:block>
+                            <th:block th:unless="${null != contents}">
+                                发布文章
+                            </th:block>
+                        </h4>
+                    </div>
+                    <div class="col-md-12">
+                        <form id="articleForm">
+                            <input type="hidden" name="id"
+                                   th:value="${contents!=null and contents.id!=null}?${contents.id}: ''" id="id"/>
+                            <input type="hidden" name="allowComment"
+                                   th:value="${contents!=null and contents.allowComment !=null}
+                                   ?${contents.allowComment}: true" id="allow_comment"/>
+                            <input type="hidden" name="content" id="content-editor"/>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
+                                <th:block th:if="${null != contents}">
+                                    <input type="text" class="form-control" name="title"
+                                           required="required" aria-required="true" th:value="${contents.title}"/>
+                                </th:block>
+                                <th:block th:unless="${null != contents}">
+                                    <input type="text" class="form-control" placeholder="请输入文章标题（必须）" name="title"
+                                           required="required" aria-required="true"/>
+                                </th:block>
+                            </div>
+                            <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
+                                <th:block th:if="${null != contents}">
+                                    <input name="tags" id="tags" type="text" class="form-control" th:value="${contents.tags}" />
+                                </th:block>
+                                <th:block th:unless="${null != contents}">
+                                    <input name="tags" id="tags" type="text" class="form-control" placeholder="请输入文章标签" />
+                                </th:block>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div id="md-container" class="form-group">
+                                <textarea id="md-editor" th:utext="${contents!=null and contents.content !=null}?${contents.content}: ''"></textarea>
+                            </div>
+
+                 <!--           <div class="form-group col-md-3 col-sm-4">
+                                <label class="col-sm-4">开启评论</label>
+                                <div class="col-sm-8">
+                                    <div th:class="${contents!=null and contents.allowComment!=null }?'toggle toggle-success allow-'+${contents.allowComment}:'toggle toggle-success allow-true'"></div>
+                                </div>
+                            </div>-->
+
+                            <div class="clearfix"></div>
+
+                            <div class="text-right">
+                                <a class="btn btn-default waves-effect waves-light" th:href="@{/toArticleList}">返回列表</a>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="subArticle('publish');">
+                                    保存文章
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="back/footer :: footer"></div>
+
+<script th:src="@{/back/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
+<script th:src="@{/back/plugins/jquery-multi-select/jquery.quicksearch.js}"></script>
+
+<script th:src="@{/back/plugins/mditor/js/mditor.min.js}"></script>
+<script th:src="@{/back/plugins/multi-select/0.9.12/js/jquery.multi-select.min.js}"></script>
+<script th:src="@{/back/plugins/select2/3.4.8/select2.min.js}"></script>
+<script th:src="@{//cdn.bootcss.com/jquery-toggles/2.0.4/toggles.min.js}"></script>
+<script th:src="@{/back/plugins/dropzone/4.3.0/min/dropzone.min.js}"></script>
+<script th:src="@{/back/plugins/to-markdown/3.1.0/to-markdown.min.js}"></script>
+
+<script th:src="@{/back/js/article.js}"></script>
+</body>
+</html>

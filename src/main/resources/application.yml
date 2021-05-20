@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  redis:
+    port: 6379
+    username: root
+    password:
+    database: 0
+    timeout: 50000
+    connect-timeout: 50000
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_system?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 18420163207
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  messages:
+    basename: i18n.logo
+mybatis:
+  mapper-locations: classpath:/mapper/*
