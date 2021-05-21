@@ -15,6 +15,20 @@ import java.util.Date;
  @Component
 public class Commons {
 
+     //单例模式
+    private Commons(){
+
+    }
+
+    private static class CommonsInstance{
+        private static Commons Instance =new Commons();
+    }
+
+    public static Commons getInstance(){
+        return CommonsInstance.Instance;
+    }
+
+
 
     /**
      * 网站链接

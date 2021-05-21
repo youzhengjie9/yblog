@@ -39,9 +39,9 @@
             <!--<a style="color: #fff" >订阅</a>-->
             <a  class="header-info" th:href="@{/admin/}">后台管理</a>
         </div>
-        <div class="navbar-search" onclick="">
-            <span class="icon-search"></span>
-            <form role="search" onsubmit="return false;">
+        <div id="searchbox" class="navbar-search">
+            <span class="icon-search" onclick="submitData()"></span>
+            <form id="form" role="search" th:action="@{/search}">
                 <span class="search-box">
                     <input type="text" id="search-inp" class="input" placeholder="搜索..." maxlength="30"
                            autocomplete="off"/>
@@ -49,6 +49,17 @@
             </form>
         </div>
     </div>
+
+    <script>
+        //js提交表单
+        function submitData() {
+            document.getElementById("form").submit();
+        }
+
+
+    </script>
+
+
 </header>
 </body>
 </html>

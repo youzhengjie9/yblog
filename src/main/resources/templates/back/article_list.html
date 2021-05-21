@@ -51,7 +51,47 @@
 
                             </tbody>
                         </table>
-<!--                        <div th:replace="comm/paging :: pageAdminNav(${articles})"></div>-->
+
+<!--                        分页-->
+                        <div class="am-pagination">
+                            <nav aria-label="Page navigation">
+
+                                <!--                分成三个ul class="pagination" ，一个是上一页 ，一个是th：each遍历 ，一个是下一页-->
+                                <ul class="pagination">
+
+                                    <li th:if="${pageInfo.pageNum!=1}">
+                                        <a th:href="@{'/admin/toArticleList/'+${pageInfo.pageNum-1}}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:if="${pageInfo.pageNum==1}" class="disabled">
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="pagination" th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+                                    <li th:if="${pageInfo.pageNum==index}" class="active"><a th:href="@{'/toArticleList/'+${index}}" th:text="${index}"></a></li>
+                                    <li th:if="${pageInfo.pageNum!=index}"><a th:href="@{'/admin/toArticleList/'+${index}}" th:text="${index}"></a></li>
+
+                                </ul>
+
+                                <ul class="pagination">
+                                    <li th:if="${pageInfo.pageNum!=pageInfo.pages}">
+                                        <a th:href="@{'/admin/toArticleList/'+${pageInfo.pageNum+1}}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:if="${pageInfo.pageNum==pageInfo.pages}" class="disabled">
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
                 </div>
                 <div th:replace="back/footer :: footer-content"></div>

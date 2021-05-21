@@ -72,7 +72,7 @@ public class clientController {
         //PageInfo{pageNum=1, pageSize=5, size=5, startRow=1, endRow=5, total=12, pages=3, list=Page{count=true, pageNum=1, pageSize=5, startRow=0, endRow=5, total=12, pages=3, reasonable=false, pageSizeZero=false}[Article{id=1, title='2018新版Java学习路线图', content='&ensp;&ensp;&ensp;&ensp;播妞深知广大爱好Java的人学习是多么困难，没视频没资源，上网花钱还老担心被骗。因此专门整理了新版的学习路线图，不管你是不懂电脑的小白，还是已经步入开发的大牛，这套路线路绝对不容错过！12年传智播客黑马程序员分享免费视频教程长达10余万小时，累计下载量3000余万次，受益人数达千万。2018年我们不忘初心，继续前行。 路线图的宗旨就是分享，专业，便利，让喜爱Java的人，都能平等的学习。从今天起不要再找借口，不要再说想学Java却没有资源，赶快行动起来，Java等你来探索，高薪距你只差一步！
 
         modelAndView.addObject("articles",list);
-        modelAndView.addObject("commons",new Commons());
+        modelAndView.addObject("commons",Commons.getInstance());
         modelAndView.addObject("pageInfo",pageInfo);
 
         modelAndView.setViewName("client/index");
@@ -115,7 +115,7 @@ public class clientController {
             modelAndView.addObject("articleOrders",as);
         }
         modelAndView.addObject("articles",list);
-        modelAndView.addObject("commons",new Commons());
+        modelAndView.addObject("commons",Commons.getInstance());
         modelAndView.addObject("pageInfo",pageInfo);
 
         modelAndView.setViewName("client/index");
@@ -135,6 +135,7 @@ public class clientController {
         Boolean hasComment = commentService.hasComment(articleId);
         Article article=null;
 
+        //从Redis数据库中获取指定文章id的数据，如果没有就从数据库查询，然后在放入redis中
          article = (Article) redisTemplate.opsForValue().get("articleId_" + articleId);
          if(article==null){
               article=articleService.selectArticleByArticleIdNoComment(articleId);//查文章内容（没有评论）
@@ -162,7 +163,7 @@ public class clientController {
                 modelAndView.addObject("comments",comments);
             }
             modelAndView.addObject("article",article);
-            modelAndView.addObject("commons",new Commons());
+            modelAndView.addObject("commons",Commons.getInstance());
             modelAndView.addObject("articleId",articleId);
             modelAndView.setViewName("client/articleDetails");
             return modelAndView;
@@ -183,7 +184,7 @@ public class clientController {
                 modelAndView.addObject("comments",comments);
             }
             modelAndView.addObject("article",article);
-            modelAndView.addObject("commons",new Commons());
+            modelAndView.addObject("commons",Commons.getInstance());
             modelAndView.addObject("articleId",articleId);
             modelAndView.setViewName("client/articleDetails");
             return modelAndView;
@@ -214,6 +215,20 @@ public class clientController {
         }
 
     }
+
+    //搜索，到时要使用es进行搜索功能增强
+    @RequestMapping(path = "/search")
+    public String search_article(String searchText){
+
+
+
+
+
+
+        return "client/index";
+    }
+
+    //例如:秒杀功能 、用户信息功能
 
 
 

@@ -39,7 +39,7 @@
                 <ul class="pagination">
 
                     <li th:if="${pageInfo.pageNum!=1}">
-                        <a href="#" aria-label="Previous">
+                        <a th:href="@{'/page/'+${pageInfo.pageNum-1}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -58,7 +58,7 @@
 
                 <ul class="pagination">
                     <li th:if="${pageInfo.pageNum!=pageInfo.pages}">
-                        <a href="#" aria-label="Next">
+                        <a th:href="@{'/page/'+${pageInfo.pageNum+1}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
