@@ -31,7 +31,7 @@
                             <th:block th:each="article : ${articles}">
                                 <tr th:id="${article.id}">
                                     <td>
-                                        <a th:href="@{'/admin/article/'+${article.id}}" th:text="${article.title}" target="_blank"></a>
+                                        <a th:href="@{'/article/'+${article.id}}" th:text="${article.title}" target="_blank"></a>
                                     </td>
                                     <td><th:block th:text="${commons.dateFormat(article.created)}"/></td>
                                     <td><th:block th:text="${article.getStatistic().getHits()}"/></td>
