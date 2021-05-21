@@ -126,6 +126,10 @@ public class clientController {
 
     @GetMapping(path = "/article/{articleId}")
     public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request){
+
+        //文章点击数+1
+        articleService.updateHits(articleId);
+
         ModelAndView modelAndView = new ModelAndView();
         boolean res=false; //判断是否传入参数“c”
         Boolean hasComment = commentService.hasComment(articleId);
@@ -151,12 +155,6 @@ public class clientController {
         }
         if(res){
             if(hasComment){
-//                List<Comment> comments = (List<Comment>) redisTemplate.opsForValue().get("cm_aid_" + articleId + "_n_" + pageNum + "_s_" + COMMENT_PAGESIZE);
-//                if(comments==null){
-//                    PageHelper.startPage(pageNum,COMMENT_PAGESIZE);
-//                    comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
-//                    redisTemplate.opsForValue().set("cm_aid_" + articleId + "_n_" + pageNum + "_s_" + COMMENT_PAGESIZE,comments);
-//                }
                 PageHelper.startPage(pageNum,COMMENT_PAGESIZE);
                 List<Comment> comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
                 PageInfo pageInfo=new PageInfo(comments);

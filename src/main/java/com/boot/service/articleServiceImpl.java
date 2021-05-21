@@ -64,5 +64,9 @@ public class articleServiceImpl implements articleService {
         return articleMapper.deleteArticleByArticleId(id);
     }
 
+    @Override
+    public void updateHits(Integer article_id) {
+        articleMapper.updateHits(article_id);
+    }
 
 }

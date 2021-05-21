@@ -313,5 +313,10 @@
     </delete>
 
 
+    <update id="updateHits">
+        update t_statistic set hits = hits+1 where article_id=#{article_id};
+    </update>
+
+
 
 </mapper>
