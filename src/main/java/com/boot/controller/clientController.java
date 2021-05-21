@@ -41,6 +41,9 @@ public class clientController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    private final int DEFAULT_PAGENUM=1;
+
+    private final int COMMENT_PAGESIZE=3;
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList){
@@ -57,10 +60,10 @@ public class clientController {
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
         ModelAndView modelAndView = new ModelAndView();
-        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders");
+        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
         if(as==null){
             List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-            redisTemplate.opsForValue().set("articleOrders",articleOrders,60*2, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set("articleOrders10",articleOrders,60*1, TimeUnit.SECONDS);
             modelAndView.addObject("articleOrders",articleOrders);
         }else {
             modelAndView.addObject("articleOrders",as);
@@ -103,10 +106,10 @@ public class clientController {
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
         ModelAndView modelAndView = new ModelAndView();
-        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders");
+        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
         if(as==null){
             List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-            redisTemplate.opsForValue().set("articleOrders",articleOrders,60*2, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set("articleOrders10",articleOrders,60*1, TimeUnit.SECONDS);
             modelAndView.addObject("articleOrders",articleOrders);
         }else {
             modelAndView.addObject("articleOrders",as);
@@ -124,11 +127,16 @@ public class clientController {
     @GetMapping(path = "/article/{articleId}")
     public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request){
         ModelAndView modelAndView = new ModelAndView();
-        boolean res=false;
+        boolean res=false; //判断是否传入参数“c”
         Boolean hasComment = commentService.hasComment(articleId);
-//        System.out.println(hasComment);
-        Article article=articleService.selectArticleByArticleIdNoComment(articleId);;
-        String c = request.getParameter("c");
+        Article article=null;
+
+         article = (Article) redisTemplate.opsForValue().get("articleId_" + articleId);
+         if(article==null){
+              article=articleService.selectArticleByArticleIdNoComment(articleId);//查文章内容（没有评论）
+             redisTemplate.opsForValue().set("articleId_" + articleId,article);
+         }
+         String c = request.getParameter("c");
         int pageNum=0;
         if(c==null||c.equals("")){
             res=false;
@@ -143,8 +151,13 @@ public class clientController {
         }
         if(res){
             if(hasComment){
-//            article = articleService.selectArticleByArticleId(articleId);
-                PageHelper.startPage(pageNum,3);
+//                List<Comment> comments = (List<Comment>) redisTemplate.opsForValue().get("cm_aid_" + articleId + "_n_" + pageNum + "_s_" + COMMENT_PAGESIZE);
+//                if(comments==null){
+//                    PageHelper.startPage(pageNum,COMMENT_PAGESIZE);
+//                    comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
+//                    redisTemplate.opsForValue().set("cm_aid_" + articleId + "_n_" + pageNum + "_s_" + COMMENT_PAGESIZE,comments);
+//                }
+                PageHelper.startPage(pageNum,COMMENT_PAGESIZE);
                 List<Comment> comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
                 PageInfo pageInfo=new PageInfo(comments);
                 modelAndView.addObject("pageInfo",pageInfo);
@@ -159,8 +172,13 @@ public class clientController {
 
         }else{
             if(hasComment){
-//            article = articleService.selectArticleByArticleId(articleId);
-                PageHelper.startPage(1,3);
+//                List<Comment> comments = (List<Comment>) redisTemplate.opsForValue().get("cm_aid_" + articleId + "_n_" + pageNum + "_s_" + COMMENT_PAGESIZE);
+//                if(comments==null){
+//                    PageHelper.startPage(DEFAULT_PAGENUM,COMMENT_PAGESIZE);
+//                     comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
+//                    redisTemplate.opsForValue().set("cm_aid_" + articleId + "_n_" + DEFAULT_PAGENUM + "_s_" + COMMENT_PAGESIZE,comments);
+//                }
+                PageHelper.startPage(DEFAULT_PAGENUM,COMMENT_PAGESIZE);
                 List<Comment> comments = commentService.CommentByArticleId(articleId); //一定是要mybatis查询才行，get方法获取不行
                 PageInfo pageInfo=new PageInfo(comments);
                 modelAndView.addObject("pageInfo",pageInfo);
@@ -190,6 +208,7 @@ public class clientController {
             String username = securityUtil.currentUser(session);
             comment.setAuthor(username); //这里的用户名最好加唯一索引
             commentService.publishComment(comment);
+
             return ArticleResponseData.ok();
         }catch (Exception e){
             e.printStackTrace();

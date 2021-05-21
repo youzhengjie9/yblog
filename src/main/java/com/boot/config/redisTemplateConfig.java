@@ -30,7 +30,7 @@ public class redisTemplateConfig {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         // 指定序列化输入的类型，类必须是非final修饰的，final修饰的类，比如String,Integer等会跑出异常
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jsonRedisSerializer.setObjectMapper(om);
+        jsonRedisSerializer.setObjectMapper(om); //如果不设置，存储到redis的对象取出来将无法进行转换
         redisTemplate.setDefaultSerializer(jsonRedisSerializer);
         return redisTemplate;
     }
