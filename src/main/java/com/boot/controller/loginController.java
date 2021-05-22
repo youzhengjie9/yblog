@@ -21,19 +21,17 @@ public class loginController {
     private articleMapper articleMapper;
 
     @RequestMapping(path = "/loginPage")
-    public String toLoginPage(){
+    public String toLoginPage() {
 
         return "comm/login";
     }
 
     @RequestMapping(path = "/login")
-    public void login(String username, String password,HttpServletResponse response) throws IOException {
+    public void login(String username, String password, HttpServletResponse response) throws IOException {
+
 
         response.sendRedirect("/");
     }
-
-
-
 
 
 }

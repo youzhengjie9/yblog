@@ -36,8 +36,8 @@ public class searchController {
 
 
     //前10排行
-    private static final List<Article> ArticleOrder_10(List<Article> articleList){
-        List<Article> list=new ArrayList<>(10);
+    private static final List<Article> ArticleOrder_10(List<Article> articleList) {
+        List<Article> list = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
             list.add(articleList.get(i));
         }
@@ -51,14 +51,14 @@ public class searchController {
         ModelAndView modelAndView = new ModelAndView();
 
         //搜索内容为空代表搜素全部
-        if(searchText==null||searchText.equals("")){
-            PageHelper.startPage(1,5);
+        if (searchText == null || searchText.equals("")) {
+            PageHelper.startPage(1, 5);
             List<Article> list = articleService.selectAllArticle();
             PageInfo pageInfo = new PageInfo(list);
 
-            modelAndView.addObject("articles",list);
-            modelAndView.addObject("pageInfo",pageInfo);
-        }else {
+            modelAndView.addObject("articles", list);
+            modelAndView.addObject("pageInfo", pageInfo);
+        } else {
             //es搜索
             SearchHit[] searchHits = elasticSearchService.searchArticleGetHits(searchText);
             List<Article> articles = elasticSearchService.getArticleListByHits(searchHits);
@@ -66,17 +66,17 @@ public class searchController {
 
             PageInfo pageInfo = new PageInfo(articles);
 
-            modelAndView.addObject("articles",articles);
-            modelAndView.addObject("pageInfo",pageInfo);
+            modelAndView.addObject("articles", articles);
+            modelAndView.addObject("pageInfo", pageInfo);
         }
 
         List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
-        if(as==null){
+        if (as == null) {
             List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-            redisTemplate.opsForValue().set("articleOrders10",articleOrders,60*1, TimeUnit.SECONDS);
-            modelAndView.addObject("articleOrders",articleOrders);
-        }else {
-            modelAndView.addObject("articleOrders",as);
+            redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
+            modelAndView.addObject("articleOrders", articleOrders);
+        } else {
+            modelAndView.addObject("articleOrders", as);
         }
         modelAndView.addObject("commons", Commons.getInstance());
 

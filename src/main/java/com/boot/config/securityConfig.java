@@ -19,22 +19,23 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
-     *  private String usersByUsernameQuery = "select username,password,enabled from users where username = ?";
-     *  private String authoritiesByUsernameQuery = "select username,authority from authorities where username = ?";
-     *
+     * private String usersByUsernameQuery = "select username,password,enabled from users where username = ?";
+     * private String authoritiesByUsernameQuery = "select username,authority from authorities where username = ?";
+     * <p>
      * public JdbcUserDetailsManagerConfigurer<B> usersByUsernameQuery(String query) {
-     * 		getUserDetailsService().setUsersByUsernameQuery(query);
-     * 		return this;
-     *        }
+     * getUserDetailsService().setUsersByUsernameQuery(query);
+     * return this;
+     * }
+     *
      * @param auth
      * @throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 //        String sql="select username,authority_id from t_user,t_user_authority where username = ? and t_user.id=t_user_authority.id";
-        String sql="select u.username,a.authority from t_user u,t_authority a," +
+        String sql = "select u.username,a.authority from t_user u,t_authority a," +
                 "t_user_authority ua where ua.user_id=u.id " +
                 "and ua.authority_id=a.id and u.username =?";
         auth.jdbcAuthentication().dataSource(dataSource)
@@ -64,7 +65,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/druid/*").permitAll()
-                .antMatchers("/article_img/**","/assets/**","/back/**","/user/**")
+                .antMatchers("/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("admin")
                 .anyRequest().permitAll();

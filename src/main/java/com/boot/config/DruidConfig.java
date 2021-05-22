@@ -19,28 +19,29 @@ public class DruidConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource druidDataSource(){
+    public DataSource druidDataSource() {
 
         return new DruidDataSource();
     }
 
 
     /**
-     *  public ServletRegistrationBean(T servlet, String... urlMappings)
+     * public ServletRegistrationBean(T servlet, String... urlMappings)
+     * <p>
+     * <p>
+     * public abstract class ResourceServlet extends HttpServlet {
+     * private static final Log LOG = LogFactory.getLog(ResourceServlet.class);
+     * public static final String SESSION_USER_KEY = "druid-user";
+     * public static final String PARAM_NAME_USERNAME = "loginUsername";
+     * public static final String PARAM_NAME_PASSWORD = "loginPassword";
+     * public static final String PARAM_NAME_ALLOW = "allow";
+     * public static final String PARAM_NAME_DENY = "deny";
+     * public static final String PARAM_REMOTE_ADDR = "remoteAddress";
      *
-     *  
-     *  public abstract class ResourceServlet extends HttpServlet {
-     *     private static final Log LOG = LogFactory.getLog(ResourceServlet.class);
-     *     public static final String SESSION_USER_KEY = "druid-user";
-     *     public static final String PARAM_NAME_USERNAME = "loginUsername";
-     *     public static final String PARAM_NAME_PASSWORD = "loginPassword";
-     *     public static final String PARAM_NAME_ALLOW = "allow";
-     *     public static final String PARAM_NAME_DENY = "deny";
-     *     public static final String PARAM_REMOTE_ADDR = "remoteAddress";
-     *  @return Bean
+     * @return Bean
      */
     @Bean
-    public ServletRegistrationBean druidStatBean(){
+    public ServletRegistrationBean druidStatBean() {
         ServletRegistrationBean servletServletRegistrationBean = new ServletRegistrationBean(new StatViewServlet());
         servletServletRegistrationBean.addUrlMappings("/druid/*");
 //        servletServletRegistrationBean.addInitParameter("loginUsername","admin");
@@ -50,14 +51,12 @@ public class DruidConfig {
 
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean() ;
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*"); // 所有请求进行监控处理
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.css,/druid/*");
-        return filterRegistrationBean ;
+        return filterRegistrationBean;
     }
-
-
 
 
 }

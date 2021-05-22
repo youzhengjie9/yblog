@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>注册账号</title>
+
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/assets/js/amazeui.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
+</head>
+
+<body>
+
+<div class="log">
+    <div class="am-g">
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
+            <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h1>
+            <br>
+            <div th:if="${param.error}" style="color: red" th:text="#{register.error}">注册失败,请检查验证码或者账号(邮箱)是否正确</div>
+
+            <form class="am-form" id="loginForm" th:action="@{/register}" method="post">
+                <div>
+                    <input type="hidden" name="url" th:value="${url}">
+                </div>
+                <div class="am-input-group am-radius am-animation-slide-left">
+                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username" />
+                    <span class="am-input-group-label log-icon am-radius">
+                        <i class="am-icon-user am-icon-sm am-icon-fw"></i>
+                    </span>
+                </div>
+                <br>
+                <div class="am-input-group am-animation-slide-left log-animation-delay">
+                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{register.password}" name="password" />
+                    <span class="am-input-group-label log-icon am-radius">
+                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
+                    </span>
+                </div>
+                <br/>
+                    <!--                qq邮箱-->
+                    <div class="am-input-group am-animation-slide-left log-animation-delay">
+                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}" name="email" />
+                        <span class="am-input-group-label log-icon am-radius">
+                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
+                    </span>
+                    </div>
+                    <br/>
+                    <!--                验证码-->
+                    <div class="am-input-group am-animation-slide-left log-animation-delay">
+                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}" name="code" />
+                        <span class="am-input-group-label log-icon am-radius">
+<!--                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>-->
+                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>
+                    </span>
+                    </div>
+                    <br/>
+
+                <div style="padding-top: 10px;">
+                    <input type="submit" th:value="#{register.sub}"
+                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay" />
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    <footer class="log-footer">
+        <p style="margin: 30px; color: #2E2D3C"><time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy; Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
+    </footer>
+</div>
+
+
+<script src="/assets/js/jquery.min.js"></script>
+<script>
+
+    //获取手机验证码
+    var countdown=60;
+    var flag = true;
+
+    function setTime(obj) {
+
+        var data = {
+
+        };
+        if(flag){
+            $.ajax({
+                url:"/sendCode",
+                type:'POST',
+                success:function(data){
+                    console.log(data)
+                }
+            })
+            flag = false;
+        }
+
+        if (countdown == 0) {
+            obj.removeAttribute("disabled");
+            obj.value="免费获取验证码";
+            countdown = 60;
+            return;
+        } else {
+            obj.setAttribute("disabled", true);
+            obj.value="重新发送(" + countdown + ")";
+            countdown--;
+        }
+        setTimeout(function() {
+                setTime(obj) }
+            ,1000)
+    }
+
+
+</script>
+
+
+
+
+</body>
+</html>

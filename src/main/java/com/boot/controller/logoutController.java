@@ -8,12 +8,9 @@ public class logoutController {
 
 
     @RequestMapping(path = "/logout")
-    public void logout(){
+    public void logout() {
 
     }
-
-
-
 
 
 }
