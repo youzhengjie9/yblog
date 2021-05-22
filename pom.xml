@@ -115,6 +115,12 @@
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>7.6.1</version>
         </dependency>
+<!--        alibaba fastjson-->
+          <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.73</version>
+        </dependency>
 
 
 

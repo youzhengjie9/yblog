@@ -216,17 +216,7 @@ public class clientController {
 
     }
 
-    //搜索，到时要使用es进行搜索功能增强
-    @RequestMapping(path = "/search")
-    public String search_article(String searchText){
 
-
-
-
-
-
-        return "client/index";
-    }
 
     //例如:秒杀功能 、用户信息功能
 
