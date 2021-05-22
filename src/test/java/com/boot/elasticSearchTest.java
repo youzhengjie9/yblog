@@ -11,6 +11,8 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,9 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @SpringBootTest
 public class elasticSearchTest {
@@ -115,8 +117,55 @@ public class elasticSearchTest {
 
     }
 
+    /**
+     * [statistic, created, allowComment, categories, id, title, content, tags]
+     * [statistic, created, modified, allowComment, categories, id, title, content, tags]
+     * [statistic, created, allowComment, categories, id, title, content, tags]
+     * [statistic, created, allowComment, categories, id, title, content, tags]
+     * [statistic, created, allowComment, categories, id, title, content, tags]
+     * @throws IOException
+     */
 
 
+    @Test
+    void test() throws IOException {
+        List<Article> articles=new CopyOnWriteArrayList<>(); //线程安全的集合
+        SearchHit[] javas = elasticSearchService.searchArticleGetHits("java");
+//        for (SearchHit java : javas) {
+//            Map<String, Object> map = java.getSourceAsMap();
+//            Integer id = (Integer) map.get("id");
+//            String title = (java.lang.String) map.get("title");
+//            String content = (java.lang.String) map.get("content");
+//            Long created = (Long) map.get("created");
+//            String categories = (java.lang.String) map.get("categories");
+//            String tags = (java.lang.String) map.get("tags");
+//            Boolean allowComment = (Boolean) map.get("allowComment");
+//            String thumbnail = (java.lang.String) map.get("thumbnail");
+//            Article article=new Article();
+//            article.setId(id);
+//            article.setTitle(title);
+//            article.setContent(content);
+//            article.setCreated(new Date(created));
+//            article.setCategories(categories);
+//            article.setTags(tags);
+//            article.setAllowComment(allowComment);
+//            article.setThumbnail(thumbnail);
+//            articles.add(article);
+//
+//        }
+
+
+        for (SearchHit java : javas) {
+            Map<String, HighlightField> highlightFields = java.getHighlightFields();
+            HighlightField title = highlightFields.get("title");
+
+            String s = Arrays.toString(title.getFragments());
+            String substring = s.substring(1, s.length()-1);
+            System.out.println(substring);
+        }
+
+
+    }
 
 
 
