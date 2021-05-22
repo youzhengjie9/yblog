@@ -3,6 +3,7 @@ package com.boot.service.impl;
 import com.boot.service.emailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -14,6 +15,11 @@ public class emailServiceImpl implements emailService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+
 
 
     //生成验证码算法
