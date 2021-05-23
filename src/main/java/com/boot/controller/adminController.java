@@ -232,7 +232,40 @@ public class adminController {
     }
 
 
+    @RequestMapping(path = "/toCommentList")
+    public String toCommentList(Model model) {
+
+        model.addAttribute("commons",Commons.getInstance());
+
+
+        return "back/comment_list";
+    }
+
+    @RequestMapping(path = "/toTagList")
+    public String toTagList(Model model) {
+
+        model.addAttribute("commons",Commons.getInstance());
+
+
+        return "back/tag_list";
+    }
+
+    @RequestMapping(path = "/toSetting")
+    public String toSetting(Model model) {
+
+        model.addAttribute("commons",Commons.getInstance());
+
+
+        return "back/setting";
+    }
+
+
     //权限功能、秒杀产品服务
+
+
+
+
+
 
 
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='评论管理',active='article'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">评论管理</h4>
+                    </div>
+                    <div class="col-md-12">
+                        程序猿正熬夜实现以下功能···
+                    </div>
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+</html>
