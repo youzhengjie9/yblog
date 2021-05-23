@@ -30,14 +30,14 @@
                     <input type="hidden" name="url" th:value="${url}">
                 </div>
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username" />
+                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username" required />
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-user am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{register.password}" name="password" />
+                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{register.password}" name="password" required />
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>
@@ -45,7 +45,7 @@
                 <br/>
                     <!--                qq邮箱-->
                     <div class="am-input-group am-animation-slide-left log-animation-delay">
-                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}" name="email" />
+                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}" name="email" required/>
                         <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>
@@ -53,10 +53,10 @@
                     <br/>
                     <!--                验证码-->
                     <div class="am-input-group am-animation-slide-left log-animation-delay">
-                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}" name="code" />
+                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}" name="code" required />
                         <span class="am-input-group-label log-icon am-radius">
-<!--                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>-->
-                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>
+                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
+<!--                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>-->
                     </span>
                     </div>
                     <br/>

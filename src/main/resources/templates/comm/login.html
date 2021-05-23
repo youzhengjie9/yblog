@@ -30,14 +30,14 @@
                     <input type="hidden" name="url" th:value="${url}">
                 </div>
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{login.username}" name="username" />
+                    <input type="text" class="am-radius" th:placeholder="#{login.username}" name="username" required />
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-user am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{login.password}" name="password" />
+                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{login.password}" name="password" required />
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>

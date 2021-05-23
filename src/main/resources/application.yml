@@ -38,7 +38,14 @@ spring:
     username: 1550324080@qq.com
     host: smtp.qq.com
     default-encoding: UTF-8
-    password: tcrpqzrhsjtsjceg
+    password: utrsjhumdhspieah
+#  rabbitmq
+  rabbitmq:
+    username: guest
+    virtual-host: /ems
+    password: guest
+    host: localhost
+
 
   messages:
     basename: i18n.logo

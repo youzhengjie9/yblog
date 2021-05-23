@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户验证码</title>
+</head>
+<body>
+<!--    <div><span th:text="${username}">XXX</span>&nbsp;先生/女士,您好：</div>-->
+    <P style="text-indent: 2em">您的验证码为：<span th:text="${code}" style="color: cornflowerblue">123456</span>，验证码将在5分钟后失效，请尽快完成注册。</P>
+</body>
+</html>

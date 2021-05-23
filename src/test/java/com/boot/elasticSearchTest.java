@@ -126,46 +126,13 @@ public class elasticSearchTest {
      * @throws IOException
      */
 
-
-    @Test
-    void test() throws IOException {
-        List<Article> articles=new CopyOnWriteArrayList<>(); //线程安全的集合
-        SearchHit[] javas = elasticSearchService.searchArticleGetHits("java");
-//        for (SearchHit java : javas) {
-//            Map<String, Object> map = java.getSourceAsMap();
-//            Integer id = (Integer) map.get("id");
-//            String title = (java.lang.String) map.get("title");
-//            String content = (java.lang.String) map.get("content");
-//            Long created = (Long) map.get("created");
-//            String categories = (java.lang.String) map.get("categories");
-//            String tags = (java.lang.String) map.get("tags");
-//            Boolean allowComment = (Boolean) map.get("allowComment");
-//            String thumbnail = (java.lang.String) map.get("thumbnail");
-//            Article article=new Article();
-//            article.setId(id);
-//            article.setTitle(title);
-//            article.setContent(content);
-//            article.setCreated(new Date(created));
-//            article.setCategories(categories);
-//            article.setTags(tags);
-//            article.setAllowComment(allowComment);
-//            article.setThumbnail(thumbnail);
-//            articles.add(article);
+//    @Test
+//    void test(){
+//        String regex6 ="[1-9]\\d{7,10}@qq\\.com";
+//        String s7 = "122333556@163.com";
+//        System.out.println(s7.matches(regex6));
 //
-//        }
-
-
-        for (SearchHit java : javas) {
-            Map<String, HighlightField> highlightFields = java.getHighlightFields();
-            HighlightField title = highlightFields.get("title");
-
-            String s = Arrays.toString(title.getFragments());
-            String substring = s.substring(1, s.length()-1);
-            System.out.println(substring);
-        }
-
-
-    }
+//    }
 
 
 
