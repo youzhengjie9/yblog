@@ -51,6 +51,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .loginPage("/login")
+                .failureForwardUrl("/LoginfailPage")
                 .and()
                 //关闭csrf
 //                .csrf().disable()

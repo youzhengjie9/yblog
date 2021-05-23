@@ -26,6 +26,13 @@ public class loginController {
         return "comm/login";
     }
 
+    @RequestMapping(path = "/LoginfailPage")
+    public String failPage(Model model) {
+        model.addAttribute("error",1);
+        return "comm/login";
+    }
+
+
     @RequestMapping(path = "/login")
     public void login(String username, String password, HttpServletResponse response) throws IOException {
 

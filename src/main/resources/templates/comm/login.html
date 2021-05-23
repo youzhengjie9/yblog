@@ -23,8 +23,9 @@
         <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
             <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">~欢迎登录博客~</h1>
             <br>
-            <div th:if="${param.error}" style="color: red" th:text="#{login.error}">用户名或密码错误!</div>
-
+            <div th:if="${error==1}" class="am-input-group am-animation-slide-left log-animation-delay">
+                <i style="color: red">登录失败，请检查帐号或者密码是否正确！</i>
+            </div>
             <form class="am-form" id="loginForm" th:action="@{/login}" method="post">
                 <div>
                     <input type="hidden" name="url" th:value="${url}">
