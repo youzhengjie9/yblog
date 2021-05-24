@@ -21,10 +21,8 @@
 <div class="log">
     <div class="am-g">
         <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
-            <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h1>
-            <br>
-            <div th:if="${param.error}" style="color: red" th:text="#{register.error}">注册失败,请检查验证码或者账号(邮箱)是否正确</div>
-
+            <h2  style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h2>
+            <h5 th:if="${register_error==1}" style="color: red" th:text="#{register.error}">注册失败,请检查输入的信息</h5>
             <form class="am-form" id="loginForm" th:action="@{/register}" method="post">
                 <div>
                     <input type="hidden" name="url" th:value="${url}">

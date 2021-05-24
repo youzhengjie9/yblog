@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -126,11 +127,16 @@ public class elasticSearchTest {
      * @throws IOException
      */
 
+    //BCryptPasswordEncoder随机盐值加密
+//    $2a$10$ODZmd9S1sL9OcnUcufDpv.TwXbZyWr2V6EDOQ6vrz/ycD.mecwoMC
+    //$2a$10$3KqGzxIzoCVzg2/YLlTUyOXO7z9.AKO3dx3rHfGWEQPScRA3Pbkl6
 //    @Test
 //    void test(){
-//        String regex6 ="[1-9]\\d{7,10}@qq\\.com";
-//        String s7 = "122333556@163.com";
-//        System.out.println(s7.matches(regex6));
+//        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+//        String password="123456";
+//        String encode = bCryptPasswordEncoder.encode(password);
+//        System.out.println(encode);
+//        System.out.println(bCryptPasswordEncoder.matches(password, encode));
 //
 //    }
 

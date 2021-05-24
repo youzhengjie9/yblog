@@ -7,7 +7,7 @@
 
 
     <select id="SelectCommentsByArticleId" resultType="com.boot.pojo.Comment">
-        select * from t_comment where article_id=#{id}
+        select * from t_comment where article_id=#{id} order by created desc
     </select>
 
     <select id="selectCommentsOrderCreateDate" resultType="com.boot.pojo.Comment">

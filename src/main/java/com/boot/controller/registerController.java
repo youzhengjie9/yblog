@@ -2,13 +2,17 @@ package com.boot.controller;
 
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.user;
+import com.boot.pojo.user_authority;
 import com.boot.service.emailService;
+import com.boot.service.userService;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
+import java.sql.Date;
 
 @Controller
 public class registerController {
@@ -27,6 +32,11 @@ public class registerController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private userService userService;
     @RequestMapping(path = "/toregister")
     public String toRegister() {
 
@@ -35,9 +45,44 @@ public class registerController {
 
 
     @RequestMapping(path = "/register")
-    public String register() {
+    public String register(user user,String code,Model model) {
+        String email = user.getEmail();
 
-        return "comm/login";
+        String redis_code = (String) redisTemplate.opsForValue().get("code_" + email); //从redis中获取验证码，然后和前端的比对
+
+
+        if(code.equals(redis_code)){
+            //可以注册,但是用户名相同会注册失败
+            try {
+                //注册代码
+                Date date = new Date(new java.util.Date().getTime());
+                BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+                //进行BCryptPasswordEncoder加密
+                String encode_password = bCryptPasswordEncoder.encode(user.getPassword());
+                user.setPassword(encode_password);
+                user.setDate(date);
+                user.setValid(1);
+                userService.addUser(user);
+                System.out.println("主键user："+user.getId());
+                user_authority user_authority = new user_authority();
+                user_authority.setUser_id(user.getId());
+                user_authority.setAuthority_id(2);
+                userService.addUserAuthority(user_authority);
+                model.addAttribute("registerSuccess",1);
+                return "comm/login";
+            }catch (Exception e){
+                e.printStackTrace();
+                model.addAttribute("register_error",1);
+                return "comm/register";
+            }
+
+
+        }else {
+            model.addAttribute("register_error",1);
+            return "comm/register";
+        }
+
+
     }
 
     //跳转到发送验证码界面

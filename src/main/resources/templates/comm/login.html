@@ -26,6 +26,9 @@
             <div th:if="${error==1}" class="am-input-group am-animation-slide-left log-animation-delay">
                 <i style="color: red">登录失败，请检查帐号或者密码是否正确！</i>
             </div>
+            <div th:if="${registerSuccess==1}" class="am-input-group am-animation-slide-left log-animation-delay">
+                <i style="color: red">注册成功,请登录</i>
+            </div>
             <form class="am-form" id="loginForm" th:action="@{/login}" method="post">
                 <div>
                     <input type="hidden" name="url" th:value="${url}">

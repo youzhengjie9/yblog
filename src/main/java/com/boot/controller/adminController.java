@@ -237,7 +237,6 @@ public class adminController {
 
         model.addAttribute("commons",Commons.getInstance());
 
-
         return "back/comment_list";
     }
 
@@ -246,7 +245,6 @@ public class adminController {
 
         model.addAttribute("commons",Commons.getInstance());
 
-
         return "back/tag_list";
     }
 
@@ -254,8 +252,6 @@ public class adminController {
     public String toSetting(Model model) {
 
         model.addAttribute("commons",Commons.getInstance());
-
-
         return "back/setting";
     }
 

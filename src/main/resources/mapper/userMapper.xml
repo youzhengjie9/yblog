@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.userMapper">
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.boot.pojo.user">
+        insert into t_user(username,password,email,created,valid)
+        values(#{username},#{password},#{email},#{date},#{valid})
+    </insert>
+
+    <insert id="addUserAuthority" parameterType="com.boot.pojo.user_authority">
+        insert into t_user_authority (user_id,authority_id) values (#{user_id},#{authority_id});
+    </insert>
+
+</mapper>
+
+
+
