@@ -317,6 +317,8 @@
         update t_statistic set hits = hits+1 where article_id=#{article_id};
     </update>
 
-
+    <select id="selectCategoriesAndTags" resultType="com.boot.pojo.Article">
+        select categories,tags from t_article
+    </select>
 
 </mapper>

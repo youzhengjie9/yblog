@@ -31,4 +31,6 @@ public interface articleService {
     //当用户点击文章时，文章点击数加1
     public void updateHits(Integer article_id);
 
+    public List<Article> selectCategoriesAndTags();
+
 }

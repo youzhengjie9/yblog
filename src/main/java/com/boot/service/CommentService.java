@@ -19,4 +19,8 @@ public interface CommentService {
 
     public int publishComment(Comment comment);
 
+    public void checkSuccess(Integer id);
+
+    public void deleteComment(Integer id);
+
 }

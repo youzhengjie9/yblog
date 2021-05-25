@@ -43,4 +43,14 @@ public class CommentServiceImpl implements CommentService {
     public int publishComment(Comment comment) {
         return commentMapper.publishComment(comment);
     }
+
+    @Override
+    public void checkSuccess(Integer id) {
+        commentMapper.checkSuccess(id);
+    }
+
+    @Override
+    public void deleteComment(Integer id) {
+        commentMapper.deleteComment(id);
+    }
 }

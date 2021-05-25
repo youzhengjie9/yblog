@@ -70,4 +70,9 @@ public class articleServiceImpl implements articleService {
         articleMapper.updateHits(article_id);
     }
 
+    @Override
+    public List<Article> selectCategoriesAndTags() {
+        return articleMapper.selectCategoriesAndTags();
+    }
+
 }

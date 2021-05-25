@@ -22,6 +22,12 @@
         insert into t_comment (article_id,created,ip,c_content,status,author) values (#{articleId},#{created},#{ip},#{c_content},#{status},#{author});
     </insert>
 
+    <update id="checkSuccess">
+        update t_comment set status = 'approved' where id=#{id}
+    </update>
 
+    <delete id="deleteComment">
+        delete from t_comment where id=#{id}
+    </delete>
 </mapper>
 

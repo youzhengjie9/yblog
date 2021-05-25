@@ -200,7 +200,7 @@ public class clientController {
             Comment comment = new Comment();
             comment.setArticleId(aid);
             comment.setC_content(text);
-            comment.setStatus("approved");
+            comment.setStatus("no_audit"); //默认未审核
             comment.setIp("0:0:0:0:0:0:0:1"); //获取ip的功能未完善，之后可能会进行完善，暂且给一个默认值
             Date date = new Date(new java.util.Date().getTime());
             comment.setCreated(date);

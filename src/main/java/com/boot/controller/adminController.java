@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
@@ -231,21 +228,76 @@ public class adminController {
         }
     }
 
-
+//    评论管理
+    //跳转评论列表兼处理审核通过请求、删除请求
     @RequestMapping(path = "/toCommentList")
-    public String toCommentList(Model model) {
+    public String toCommentList(@RequestParam(value = "delId",defaultValue = "-1") int delId,
+                                @RequestParam(value = "id",defaultValue = "-1") int id,
+                                @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                Model model) {
+        //处理审核
+        if(id!=-1){
+            try {
+                commentService.checkSuccess(id);
+            } catch (Exception e) {
+                logger.error("修改评论失败。。id="+id);
+                e.printStackTrace();
+            }
+        }
+
+        //处理删除请求
+        if(delId!=-1){
+             //可以删除
+            try {
+                commentService.deleteComment(delId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
         model.addAttribute("commons",Commons.getInstance());
+        PageHelper.startPage(pageNum,5);
+        List<Comment> comments = commentService.selectCommentsOrderCreateDate();
+        PageInfo pageInfo = new PageInfo(comments);
+        model.addAttribute("comments",comments);
+        model.addAttribute("pageInfo",pageInfo);
 
         return "back/comment_list";
     }
 
+
+//    //审核通过
+//    @RequestMapping(path = "/checkSuccess")
+//    public String checkSuccess(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, Model model){
+//
+//
+//
+//
+//        model.addAttribute("commons",Commons.getInstance());
+//        PageHelper.startPage(pageNum,5);
+//        List<Comment> comments = commentService.selectCommentsOrderCreateDate();
+//        model.addAttribute("comments",comments);
+//
+//        return "back/comment_list";
+//    }
+
+
+
     @RequestMapping(path = "/toTagList")
     public String toTagList(Model model) {
 
+
+
+
+
+
+
+
+
         model.addAttribute("commons",Commons.getInstance());
 
-        return "back/tag_list";
+        return "back/categories";
     }
 
     @RequestMapping(path = "/toSetting")
@@ -254,6 +306,13 @@ public class adminController {
         model.addAttribute("commons",Commons.getInstance());
         return "back/setting";
     }
+
+
+
+
+
+
+
 
 
     //权限功能、秒杀产品服务

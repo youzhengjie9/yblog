@@ -19,8 +19,12 @@ public interface CommentMapper {
 
     public int deleteCommentByArticleId(@Param("id") Integer id);
 
-
     public int publishComment(Comment comment);
+
+    public void checkSuccess(@Param("id") Integer id);
+
+    public void deleteComment(@Param("id") Integer id);
+
 
 
 }
