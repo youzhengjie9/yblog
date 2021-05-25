@@ -40,4 +40,8 @@ public interface articleMapper {
 
     public List<Article> selectTagsByArticle();
 
+    public String selectTagsByArticleId(@Param("id") int id);
+
+    public void updateTagsByArticleId(@Param("tags") String tags,@Param("id") int id);
+
 }

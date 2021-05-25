@@ -24493,3 +24493,51 @@ $ docker rm -f $(docker ps -aq)
 [DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120011} closed
 [DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-recycle
 [DEBUG][21-05-25][com.boot.controller.adminController]2021-05-25 18:51:07   用户名：admin进入后台发布页面
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-connect
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120012} created. select * from t_categories
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120012} Parameters : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120012} Types : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120012} executed. 1.3323 millis. select * from t_categories
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120012, rs-150012} open
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120012, rs-150012} Header: [id, categoryName, categoryCount]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120012, rs-150012} Result: [1, 默认分类, 11]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120012, rs-150012} Result: [2, springBoot, 1]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120012, rs-150012} closed
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120012} closed
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-recycle
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-connect
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120013} created. SELECT count(0) FROM t_comment
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120013} Parameters : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120013} Types : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120013} executed. 0.3845 millis. SELECT count(0) FROM t_comment
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120013, rs-150013} open
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120013, rs-150013} Header: [count(0)]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120013, rs-150013} Result: [11]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120013, rs-150013} closed
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120013} closed
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120014} created. select * from t_comment order by created desc LIMIT ? 
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120014} Parameters : [5]
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120014} Types : [INTEGER]
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120014} executed. 0.3633 millis. select * from t_comment order by created desc LIMIT ? 
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} open
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Header: [id, article_id, created, ip, c_content, status, author]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Result: [17, 2, 2021-05-20, 0:0:0:0:0:0:0:1, 111222, no_audit, tom]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Result: [15, 9, 2019-03-30, 0:0:0:0:0:0:0:1, asdaa阿斯顿, no_audit, tom]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Result: [1, 12, 2018-12-13, 0:0:0:0:0:0:0:1, 很不错，不过这文章排版不太好看啊, approved, 李四]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Result: [2, 11, 2018-12-13, 0:0:0:0:0:0:0:1, 很不错的原理分析，受用了！, approved, 李四]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} Result: [3, 10, 2018-12-13, 0:0:0:0:0:0:0:1, 关于Docker虚拟容器的讲解挺好的额，学习中, approved, 李四]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120014, rs-150014} closed
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120014} closed
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-recycle
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-connect
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120015} created. select * from t_categories
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120015} Parameters : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120015} Types : []
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120015} executed. 0.4393 millis. select * from t_categories
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120015, rs-150015} open
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120015, rs-150015} Header: [id, categoryName, categoryCount]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120015, rs-150015} Result: [1, 默认分类, 11]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120015, rs-150015} Result: [2, springBoot, 1]
+[DEBUG][21-05-25][druid.sql.ResultSet]{conn-110001, pstmt-120015, rs-150015} closed
+[DEBUG][21-05-25][druid.sql.Statement]{conn-110001, pstmt-120015} closed
+[DEBUG][21-05-25][druid.sql.Connection]{conn-110001} pool-recycle

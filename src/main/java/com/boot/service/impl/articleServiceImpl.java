@@ -80,4 +80,14 @@ public class articleServiceImpl implements articleService {
         return articleMapper.selectTagsByArticle();
     }
 
+    @Override
+    public String selectTagsByArticleId(int id) {
+        return articleMapper.selectTagsByArticleId(id);
+    }
+
+    @Override
+    public void updateTagsByArticleId(String tags, int id) {
+        articleMapper.updateTagsByArticleId(tags, id);
+    }
+
 }

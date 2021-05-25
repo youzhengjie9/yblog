@@ -16,4 +16,14 @@ public class tagServiceImpl implements tagService {
     public void addTag(tag tag) {
         tagMapper.addTag(tag);
     }
+
+    @Override
+    public void changeTagByTagNameDecr(String tagName) {
+        tagMapper.changeTagByTagNameDecr(tagName);
+    }
+
+    @Override
+    public void changeTagByTagNameIncr(String tagName) {
+        tagMapper.changeTagByTagNameIncr(tagName);
+    }
 }

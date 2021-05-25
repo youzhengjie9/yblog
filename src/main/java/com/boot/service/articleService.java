@@ -35,4 +35,7 @@ public interface articleService {
 
     public List<Article> selectTagsByArticle();
 
+    public String selectTagsByArticleId(int id);
+
+    public void updateTagsByArticleId(String tags,int id);
 }

@@ -5,10 +5,7 @@ import com.boot.pojo.Article;
 import com.boot.pojo.Comment;
 import com.boot.pojo.Statistic;
 import com.boot.pojo.category;
-import com.boot.service.CommentService;
-import com.boot.service.articleService;
-import com.boot.service.categoryService;
-import com.boot.service.statisticService;
+import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.bootstrap;
@@ -24,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -51,6 +50,9 @@ public class adminController {
 
     @Autowired
     private categoryService categoryService;
+
+    @Autowired
+    private tagService tagService;
 
 
 
@@ -170,6 +172,38 @@ public class adminController {
 //          simpleDateFormat.format(date);
             article.setModified(date);
             articleService.changeArticle(article);
+
+            //修改标签
+            String pre_tags = articleService.selectTagsByArticleId(article.getId());
+            String post_tags = article.getTags(); //修改之后的tags
+            //1.先获取该文章的tags，对tag进行-1
+            //2.再获取修改后的tags，对tag进行+1
+            //3.再把post_tags覆盖到数据库的tags上
+            String[] pre_split = pre_tags.split(",");
+            String[] post_split = post_tags.split(",");
+            Map<String, Integer> map1 = new LinkedHashMap<>();
+            Map<String, Integer> map2 = new LinkedHashMap<>();
+
+//            for (String s : split) {
+//
+//                if (map.containsKey(s)) {
+//                    int i = map.get(s);
+//                    i++;
+//                    map.put(s,i);
+//
+//                }else {
+//                    map.put(s,1);
+//                }
+//            }
+            for (String s : pre_split) {
+                tagService.changeTagByTagNameDecr(s);
+            }
+            //如果没有这个某个标签，我们就把这个标签添加进去
+            for (String s : post_split) {
+                tagService.changeTagByTagNameIncr(s);
+            }
+            articleService.updateTagsByArticleId(post_tags,article.getId());
+
             //打印修改成功日志
             String username = springSecurityUtil.currentUser(session);
             java.util.Date date2 = new java.util.Date();
@@ -202,6 +236,17 @@ public class adminController {
             article.setCreated(date);
             articleService.addArticle(article); //开启了 keyProperty="id" useGeneratedKeys="true"，自动生成的主键id会保存在article.getId()里。
             statisticService.addStatistic(new Statistic(article.getId(), 0, 0));
+
+            String tags = article.getTags();
+            String[] split = tags.split(",");
+            for (String s : split) {
+
+
+            }
+
+
+
+
             String username = springSecurityUtil.currentUser(session);
             java.util.Date date2 = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
