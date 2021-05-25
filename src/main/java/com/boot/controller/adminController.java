@@ -6,6 +6,7 @@ import com.boot.pojo.Comment;
 import com.boot.pojo.Statistic;
 import com.boot.service.CommentService;
 import com.boot.service.articleService;
+import com.boot.service.categoryService;
 import com.boot.service.statisticService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
@@ -45,6 +46,9 @@ public class adminController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private categoryService categoryService;
 
 
     @GetMapping(path = "/")
@@ -155,6 +159,7 @@ public class adminController {
         try {
             //修改操作代码
             article.setCategories("默认分类");
+            categoryService.updateCategoryCount(article.getCategories());
             java.util.Date date1 = new java.util.Date();
             long time = date1.getTime();
             Date date = new Date(time);
@@ -187,6 +192,7 @@ public class adminController {
         try {
             //发布操作代码
             article.setCategories("默认分类");
+            categoryService.updateCategoryCount(article.getCategories());
             article.setAllowComment(true);
             java.util.Date date1 = new java.util.Date();
             Date date = new Date(date1.getTime());
@@ -212,9 +218,11 @@ public class adminController {
     public ArticleResponseData deleteArticle(Integer id, HttpSession session) {
 
         try {
+            Article article = articleService.selectArticleByArticleIdNoComment(id);
             articleService.deleteArticleByArticleId(id);
             commentService.deleteCommentByArticleId(id);
             statisticService.deleteStatisticByArticleId(id);
+            categoryService.updateCategoryCount(article.getCategories());
             String username = springSecurityUtil.currentUser(session);
             java.util.Date date = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
