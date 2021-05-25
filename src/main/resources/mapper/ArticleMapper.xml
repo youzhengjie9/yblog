@@ -326,7 +326,7 @@
         select tags from t_article
     </select>
 
-    <select id="selectTagsByArticleId" parameterType="java.lang.String">
+    <select id="selectTagsByArticleId" resultType="java.lang.String">
         select tags from t_article where id=#{id}
     </select>
     

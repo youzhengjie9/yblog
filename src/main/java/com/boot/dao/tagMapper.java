@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface tagMapper {
@@ -19,5 +21,7 @@ public interface tagMapper {
     public void changeTagByTagNameIncr(@Param("tagName") String tagName);
 
     public void insertTag(@Param("tagName") String tagName);
+
+    public List<tag> selectAllTag();
 
 }

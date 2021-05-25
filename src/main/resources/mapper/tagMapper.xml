@@ -21,4 +21,8 @@
         insert into t_tag (tagName,tagCount) values (#{tagName},1)
     </insert>
 
+    <select id="selectAllTag" resultType="com.boot.pojo.tag">
+        select tagName,tagCount from t_tag
+    </select>
+
 </mapper>

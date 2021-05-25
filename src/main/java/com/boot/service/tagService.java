@@ -3,6 +3,8 @@ package com.boot.service;
 import com.boot.pojo.tag;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface tagService {
 
     public void addTag(tag tag);
@@ -12,4 +14,8 @@ public interface tagService {
 
     //把指定标签的数量+1
     public void changeTagByTagNameIncr(String tagName);
+
+    public List<tag> selectAllTag();
+
+    public void insertTag(String tagName);
 }

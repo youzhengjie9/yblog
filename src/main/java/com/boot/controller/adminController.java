@@ -1,10 +1,7 @@
 package com.boot.controller;
 
 import com.boot.data.ResponseData.ArticleResponseData;
-import com.boot.pojo.Article;
-import com.boot.pojo.Comment;
-import com.boot.pojo.Statistic;
-import com.boot.pojo.category;
+import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -53,6 +51,19 @@ public class adminController {
 
     @Autowired
     private tagService tagService;
+
+
+    //初始化redis有关t_tag表的数据
+    @PostConstruct
+    public void initTags(){
+        List<tag> tags = tagService.selectAllTag();
+
+        for (tag tag : tags) {
+            redisTemplate.opsForValue().set("tag_"+tag.getTagName(),tag.getTagCount());
+        }
+
+    }
+
 
 
 
@@ -164,14 +175,13 @@ public class adminController {
         try {
             //修改操作代码
             article.setCategories("默认分类");
-            categoryService.updateCategoryCount(article.getCategories());
+//            categoryService.updateCategoryCount(article.getCategories());
             java.util.Date date1 = new java.util.Date();
             long time = date1.getTime();
             Date date = new Date(time);
 //          SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //          simpleDateFormat.format(date);
             article.setModified(date);
-            articleService.changeArticle(article);
 
             //修改标签
             String pre_tags = articleService.selectTagsByArticleId(article.getId());
@@ -184,25 +194,35 @@ public class adminController {
             Map<String, Integer> map1 = new LinkedHashMap<>();
             Map<String, Integer> map2 = new LinkedHashMap<>();
 
-//            for (String s : split) {
-//
-//                if (map.containsKey(s)) {
-//                    int i = map.get(s);
-//                    i++;
-//                    map.put(s,i);
-//
-//                }else {
-//                    map.put(s,1);
-//                }
-//            }
             for (String s : pre_split) {
                 tagService.changeTagByTagNameDecr(s);
+                redisTemplate.opsForValue().decrement("tag_"+s);
             }
             //如果没有这个某个标签，我们就把这个标签添加进去
             for (String s : post_split) {
-                tagService.changeTagByTagNameIncr(s);
+                //通过redis判断有没有这个标签
+                Integer o = (Integer) redisTemplate.opsForValue().get("tag_" + s);
+                System.out.println("o====>"+o);
+                if(o==null){
+                    //如果缓存中没有这个标签就添加
+                    tagService.insertTag(s);
+                    //添加完数据库之后，我们还要把数据添加到redis缓存中
+                    redisTemplate.opsForValue().set("tag_"+s,1);
+                }else {
+                    //如果缓存中有这个标签就+1
+                    tagService.changeTagByTagNameIncr(s);
+                    o++;
+                    System.out.println("o++ ===>"+o);
+                    redisTemplate.opsForValue().set("tag_"+s,o);
+                }
+
             }
-            articleService.updateTagsByArticleId(post_tags,article.getId());
+
+
+
+            articleService.changeArticle(article);
+
+
 
             //打印修改成功日志
             String username = springSecurityUtil.currentUser(session);
@@ -238,14 +258,26 @@ public class adminController {
             statisticService.addStatistic(new Statistic(article.getId(), 0, 0));
 
             String tags = article.getTags();
-            String[] split = tags.split(",");
-            for (String s : split) {
-
+            String[] post_split = tags.split(",");
+            //如果没有这个某个标签，我们就把这个标签添加进去
+            for (String s : post_split) {
+                //通过redis判断有没有这个标签
+                Integer o = (Integer) redisTemplate.opsForValue().get("tag_" + s);
+                if(o==null){
+                    //如果缓存中没有这个标签就添加
+                    tag tag = new tag();
+                    tag.setTagName(s);
+                    tagService.addTag(tag);
+                    //添加完数据库之后，我们还要把数据添加到redis缓存中
+                    redisTemplate.opsForValue().set("tag_"+s,1);
+                }else {
+                    //如果缓存中有这个标签就+1
+                    tagService.changeTagByTagNameIncr(s);
+                    o++;
+                    redisTemplate.opsForValue().set("tag_"+s,o);
+                }
 
             }
-
-
-
 
             String username = springSecurityUtil.currentUser(session);
             java.util.Date date2 = new java.util.Date();

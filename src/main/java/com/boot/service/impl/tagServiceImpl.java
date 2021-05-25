@@ -6,6 +6,8 @@ import com.boot.service.tagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class tagServiceImpl implements tagService {
 
@@ -25,5 +27,15 @@ public class tagServiceImpl implements tagService {
     @Override
     public void changeTagByTagNameIncr(String tagName) {
         tagMapper.changeTagByTagNameIncr(tagName);
+    }
+
+    @Override
+    public List<tag> selectAllTag() {
+        return tagMapper.selectAllTag();
+    }
+
+    @Override
+    public void insertTag(String tagName) {
+        tagMapper.insertTag(tagName);
     }
 }

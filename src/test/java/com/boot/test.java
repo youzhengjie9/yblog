@@ -7,6 +7,7 @@ import com.boot.service.tagService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
 
@@ -16,6 +17,9 @@ public class test {
 
     @Autowired
     private articleService articleService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 //    @Test
 //    public void test(){
@@ -27,6 +31,16 @@ public class test {
 //        }
 //
 //    }
+
+    //删除缓存数据，初始化
+    @Test
+    public void deleteRedis(){
+        Set keys = redisTemplate.keys("*");
+        for (Object key : keys) {
+            redisTemplate.delete(key);
+        }
+    }
+
 
 
     /**
@@ -62,6 +76,7 @@ public class test {
             tag.setTagName(string);
             tag.setTagCount(map.get(string));
             tagService.addTag(tag);
+
         }
 
     }
