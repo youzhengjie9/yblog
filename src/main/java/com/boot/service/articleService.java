@@ -33,4 +33,6 @@ public interface articleService {
 
     public List<Article> selectCategoriesAndTags();
 
+    public List<Article> selectTagsByArticle();
+
 }

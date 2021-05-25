@@ -38,4 +38,6 @@ public interface articleMapper {
 
     public List<Article> selectCategoriesAndTags();
 
+    public List<Article> selectTagsByArticle();
+
 }

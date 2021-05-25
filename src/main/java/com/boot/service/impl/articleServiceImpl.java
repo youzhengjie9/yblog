@@ -75,4 +75,9 @@ public class articleServiceImpl implements articleService {
         return articleMapper.selectCategoriesAndTags();
     }
 
+    @Override
+    public List<Article> selectTagsByArticle() {
+        return articleMapper.selectTagsByArticle();
+    }
+
 }

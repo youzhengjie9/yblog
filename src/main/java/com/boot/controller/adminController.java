@@ -4,12 +4,14 @@ import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.Article;
 import com.boot.pojo.Comment;
 import com.boot.pojo.Statistic;
+import com.boot.pojo.category;
 import com.boot.service.CommentService;
 import com.boot.service.articleService;
 import com.boot.service.categoryService;
 import com.boot.service.statisticService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.bootstrap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -49,6 +51,7 @@ public class adminController {
 
     @Autowired
     private categoryService categoryService;
+
 
 
     @GetMapping(path = "/")
@@ -295,14 +298,10 @@ public class adminController {
     @RequestMapping(path = "/toTagList")
     public String toTagList(Model model) {
 
+        List<category> categories = categoryService.selectCategories();
 
-
-
-
-
-
-
-
+        model.addAttribute("categories",categories);
+        model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
         return "back/categories";

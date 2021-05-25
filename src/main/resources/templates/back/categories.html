@@ -29,14 +29,15 @@
                                         <h1 class="panel-title" style="line-height:20px;">分类列表</h1>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="btn-group m-b-10" th:each="(item, index) in categories">
-                                            <button th:if="item.name == '默认分类'" type="button" :class="'btn btn-'+ randomColor() +' waves-effect waves-light'">
-                                                {{item.name}} ({{item.count}})
+                                        <div class="btn-group m-b-10" th:each="category:${categories}">
+                                            <button th:text="${category.getCategoryName()}+'('+${category.getCategoryCount()}+')'" th:if="${category.getCategoryName()} eq '默认分类'" type="button" th:class="'btn btn-'+ ${bootstrap.randomColor()} +' waves-effect waves-light'">
                                             </button>
                                             &nbsp;
-                                            <button v-if="item.name != '默认分类'" type="button"
-                                                    :class="'btn btn-'+ randomColor() +' waves-effect waves-light'"
-                                                    data-toggle="dropdown" aria-expanded="false">{{item.name}} ({{item.count}}) <span
+                                            <button th:if="${category.getCategoryName()} ne '默认分类'" type="button"
+                                                    th:class="'btn btn-'+ ${bootstrap.randomColor()} +' waves-effect waves-light'"
+                                                    data-toggle="dropdown"
+                                                    th:text="${category.getCategoryName()}+'('+${category.getCategoryCount()}+')'"
+                                                    aria-expanded="false"><span
                                                     class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">

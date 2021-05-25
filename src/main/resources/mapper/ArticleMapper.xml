@@ -321,4 +321,9 @@
         select categories,tags from t_article
     </select>
 
+
+    <select id="selectTagsByArticle" resultType="com.boot.pojo.Article">
+        select tags from t_article
+    </select>
+
 </mapper>

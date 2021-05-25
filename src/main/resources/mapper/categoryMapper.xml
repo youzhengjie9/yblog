@@ -10,6 +10,9 @@
     </update>
 
 
+    <select id="selectCategories" resultType="com.boot.pojo.category">
+        select * from t_categories
+    </select>
 
 
 
