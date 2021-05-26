@@ -14,4 +14,10 @@ public interface categoryService {
 
     public void updateCategoryCountDecr(String categoryName);
 
+    public void updateCategory(String oldName,String newName);
+
+    public void deleteCategoryByName(String categoryName);
+
+    public int selectCategoryCountByName(String categoryName);
+
 }

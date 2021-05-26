@@ -16,10 +16,8 @@
                     <div class="col-sm-12">
                         <h4 class="page-title">标签/分类管理</h4>
                     </div>
-<!--                    <div class="col-md-12">-->
-<!--                        程序猿正熬夜实现以下功能···-->
-<!--                    </div>-->
-<!--                    内容-->
+<!--                                        内容-->
+
                     <div class="panel-body">
 
                         <div class="row">
@@ -42,10 +40,12 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li>
-                                                    <a class="edit-category" @click="edit(index)">修改</a>
+
+<!--                                                    th:onclick传字符串要用：th:onclick="changeCategory([[${category.getCategoryName()}]]); 这种方式-->
+                                                    <a th:onclick="changeCategory([[${category.getCategoryName()}]]);" class="edit-category" data-toggle="modal" data-target="#myModal1">修改</a>
                                                 </li>
                                                 <li>
-                                                    <a class="del-category" @click="deleteCategory(item.mid)">删除</a>
+                                                    <a href="#" id="delcategory" class="del-category" th:onclick="deleteCategory(this,[[${category.getCategoryName()}]]);">删除</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -59,13 +59,13 @@
                                         <h1 class="panel-title" style="line-height:20px;">标签列表</h1>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="btn-group m-b-10" v-for="item in tags">
-                                            <button type="button" :class="'btn btn-'+ randomColor() +' waves-effect waves-light'" data-toggle="dropdown" aria-expanded="false">
-                                                {{item.name}} ({{item.count}}) <span class="caret"></span>
+                                        <div class="btn-group m-b-10" th:each="tag:${tags}">
+                                            <button th:text="${tag.getTagName()}+'('+${tag.getTagCount()}+')'" type="button" th:class="'btn btn-'+ ${bootstrap.randomColor()} +' waves-effect waves-light'" data-toggle="dropdown" aria-expanded="false">
+                                                 <span class="caret"></span>
                                             </button>
                                             &nbsp;
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a class="del-category" @click="deleteCategory(item.mid)">删除</a></li>
+                                                <li><a class="del-category">删除</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -101,105 +101,53 @@
         </div>
     </div>
 </div>
+
+<!--model-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel1">修改分类</h4>
+            </div>
+            <form method="post" th:action="@{/admin/updateCategory}">
+                <div class="modal-body">
+                    <input id="oldCategory" type="hidden" name="oldName">
+                    <br/>
+                   新分类名： <input type="text" name="newName" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">修改</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
 <div th:replace="back/footer :: footer"></div>
 
 </body>
 
+    <script>
 
-<script >
+        function changeCategory(oldName) {
+            document.getElementById('oldCategory').value=oldName;
+        }
 
-    var tale = new $.tale();
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            mid: '',
-            cname:'',
-            categories: [],
-            tags: [],
-            isLoading: true
-        },
-        beforeCreate: function(){
-            vueLoding = this.$loading.show();
-        },
-        mounted: function () {
-            this.load();
-        },
-        methods: {
-            load: function () {
-                var $vm = this;
-                tale.get({
-                    url: '/admin/api/categories',
-                    success: function (data) {
-                        $vm.categories = data.payload
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert(error || '数据加载失败');
-                    }
-                });
-                tale.get({
-                    url: '/admin/api/tags',
-                    success: function (data) {
-                        $vm.tags = data.payload
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert(error || '数据加载失败');
-                    }
-                });
-            },
-            save: function () {
-                var $vm = this;
-                if($vm.cname === ''){
-                    tale.alertError('请输入分类名');
-                    return;
-                }
-                tale.post({
-                    url: '/admin/api/category/save',
-                    data: {mid: $vm.mid, cname: $vm.cname},
-                    success: function (result) {
-                        if (result && result.success) {
-                            tale.alertOk('保存成功');
-                            $vm.mid = '';
-                            $vm.cname = '';
-                            $vm.load();
-                        } else {
-                            tale.alertError(result.msg || '保存失败');
-                        }
-                    }
-                });
-            },
-            edit: function(index){
-                var item = this.categories[index];
-                this.mid = item.mid;
-                this.cname = item.name;
-            },
-            deleteCategory: function (mid) {
-                var $vm = this;
-                tale.alertConfirm({
-                    title: '确定删除该项吗?',
-                    then: function () {
-                        tale.post({
-                            url: '/admin/api/category/delete/' + mid,
-                            success: function (result) {
-                                if (result && result.success) {
-                                    tale.alertOk('删除成功');
-                                    $vm.load();
-                                } else {
-                                    tale.alertError(result.msg || '删除失败');
-                                }
-                            }
-                        });
-                    }
-                });
+        function deleteCategory(category,name) {
+            var b=confirm("是否要删除分类："+name);
+            if(b==true){
+                category.href='/admin/deleteCategory?n='+name;
             }
         }
-    });
 
-    $(document).ready(function () {
-        vm.isLoading = false;
-        vueLoding.hide();
-    });
 
-</script>
+    </script>
+
+
+
 </html>

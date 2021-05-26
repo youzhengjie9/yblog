@@ -334,5 +334,9 @@
         update t_article set tags = #{tags} where id=#{id}
     </update>
 
+    <update id="updateCategory">
+        update t_article set categories = #{newName} where categories=#{oldName}
+    </update>
+
 
 </mapper>

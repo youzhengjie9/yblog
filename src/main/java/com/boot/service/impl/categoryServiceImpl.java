@@ -29,4 +29,19 @@ public class categoryServiceImpl implements categoryService {
     public void updateCategoryCountDecr(String categoryName) {
         categoryMapper.updateCategoryCountDecr(categoryName);
     }
+
+    @Override
+    public void updateCategory(String oldName, String newName) {
+        categoryMapper.updateCategory(oldName, newName);
+    }
+
+    @Override
+    public void deleteCategoryByName(String categoryName) {
+        categoryMapper.deleteCategoryByName(categoryName);
+    }
+
+    @Override
+    public int selectCategoryCountByName(String categoryName) {
+        return categoryMapper.selectCategoryCountByName(categoryName);
+    }
 }

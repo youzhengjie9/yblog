@@ -90,4 +90,9 @@ public class articleServiceImpl implements articleService {
         articleMapper.updateTagsByArticleId(tags, id);
     }
 
+    @Override
+    public void updateCategory(String oldName, String newName) {
+        articleMapper.updateCategory(oldName, newName);
+    }
+
 }

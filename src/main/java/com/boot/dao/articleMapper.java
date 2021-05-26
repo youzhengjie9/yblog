@@ -44,4 +44,6 @@ public interface articleMapper {
 
     public void updateTagsByArticleId(@Param("tags") String tags,@Param("id") int id);
 
+    public void updateCategory(@Param("oldName") String oldName,@Param("newName") String newName);
+
 }

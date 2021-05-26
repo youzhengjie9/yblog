@@ -382,14 +382,65 @@ public class adminController {
     @RequestMapping(path = "/toTagList")
     public String toTagList(Model model) {
 
-        List<category> categories = categoryService.selectCategories();
 
+        List<category> categories = categoryService.selectCategories();
+        List<tag> tags = tagService.selectAllTag();
+
+        model.addAttribute("tags",tags);
         model.addAttribute("categories",categories);
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
         return "back/categories";
     }
+
+
+    //修改分类
+    @PostMapping(path = "/updateCategory")
+    public String updateCategory(String oldName,String newName,Model model){
+       //修改分类表的分类名
+        categoryService.updateCategory(oldName,newName);
+        //修改article表中有关oldName的分类，修改成newName
+        articleService.updateCategory(oldName, newName);
+
+        List<category> categories = categoryService.selectCategories();
+        List<tag> tags = tagService.selectAllTag();
+
+        model.addAttribute("tags",tags);
+        model.addAttribute("categories",categories);
+        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("commons",Commons.getInstance());
+
+        return "back/categories";
+
+    }
+
+    @RequestMapping(path = "/deleteCategory")
+    public String deleteCategory(@RequestParam(value = "n",defaultValue = "") String n,Model model){
+        if(n!=null&&!n.equals(""))
+        {
+            //把article的分类n改成默认分类
+            articleService.updateCategory(n,"默认分类");
+            //删除category表的分类n
+            int count = categoryService.selectCategoryCountByName(n); //先查再删
+            categoryService.deleteCategoryByName(n);
+            //并且把删除的数量加到默认分类的数量上
+
+
+        }
+
+        List<category> categories = categoryService.selectCategories();
+        List<tag> tags = tagService.selectAllTag();
+
+        model.addAttribute("tags",tags);
+        model.addAttribute("categories",categories);
+        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("commons",Commons.getInstance());
+
+        return "back/categories";
+    }
+
+
 
     @RequestMapping(path = "/toSetting")
     public String toSetting(Model model) {

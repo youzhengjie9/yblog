@@ -3,6 +3,7 @@ package com.boot;
 import com.boot.pojo.Article;
 import com.boot.pojo.tag;
 import com.boot.service.articleService;
+import com.boot.service.categoryService;
 import com.boot.service.tagService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,15 @@ public class test {
 
     }
 
+    @Autowired
+    private categoryService categoryService;
 
+    @Test
+    public void test2(){
+
+        int count = categoryService.selectCategoryCountByName("Spring");
+        System.out.println(count);
+    }
 
 
 
