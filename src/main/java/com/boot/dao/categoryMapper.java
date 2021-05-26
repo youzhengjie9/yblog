@@ -23,4 +23,9 @@ public interface categoryMapper {
     public void deleteCategoryByName(@Param("categoryName") String categoryName);
 
     public int selectCategoryCountByName(@Param("categoryName") String categoryName);
+
+    public void updateCategoryCountByName(@Param("categoryName") String categoryName,
+                                          @Param("count") int count);
+
+    public void addCategory(category category);
 }

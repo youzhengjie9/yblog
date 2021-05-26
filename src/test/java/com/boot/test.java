@@ -88,8 +88,10 @@ public class test {
     @Test
     public void test2(){
 
-        int count = categoryService.selectCategoryCountByName("Spring");
-        System.out.println(count);
+//        int count = categoryService.selectCategoryCountByName("Spring");
+//        System.out.println(count);
+//        categoryService.updateCategoryCountByName("Spring",2);
+
     }
 
 

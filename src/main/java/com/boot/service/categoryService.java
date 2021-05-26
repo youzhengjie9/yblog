@@ -20,4 +20,10 @@ public interface categoryService {
 
     public int selectCategoryCountByName(String categoryName);
 
+    public void updateCategoryCountByName(String categoryName,
+                                          int count);
+
+    public void addCategory(category category);
+
+
 }

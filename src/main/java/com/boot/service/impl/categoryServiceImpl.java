@@ -44,4 +44,14 @@ public class categoryServiceImpl implements categoryService {
     public int selectCategoryCountByName(String categoryName) {
         return categoryMapper.selectCategoryCountByName(categoryName);
     }
+
+    @Override
+    public void updateCategoryCountByName(String categoryName, int count) {
+        categoryMapper.updateCategoryCountByName(categoryName,count);
+    }
+
+    @Override
+    public void addCategory(category category) {
+        categoryMapper.addCategory(category);
+    }
 }

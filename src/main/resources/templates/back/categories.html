@@ -77,12 +77,11 @@
                             <div class="col-md-12">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <form id="cform" class="form-inline" role="form">
-                                            <input type="hidden" v-model="mid"/>
+                                        <form id="cform" class="form-inline" method="post" th:action="@{/admin/addCategory}">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" v-model="cname" placeholder="请输入分类名称">
+                                                <input type="text" class="form-control" name="categoryName" placeholder="请输入分类名称">
                                             </div>
-                                            <button type="button" class="btn btn-success waves-effect waves-light m-l-10" @click="save">
+                                            <button type="submit" class="btn btn-success waves-effect waves-light m-l-10">
                                                 保存分类
                                             </button>
                                         </form>

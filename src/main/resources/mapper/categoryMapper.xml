@@ -16,7 +16,7 @@
 
 
     <select id="selectCategories" resultType="com.boot.pojo.category">
-        select * from t_categories
+        select * from t_categories order by categoryCount desc
     </select>
 
     <update id="updateCategory">
@@ -30,6 +30,15 @@
     <select id="selectCategoryCountByName" resultType="int">
         select categoryCount from t_categories where categoryName=#{categoryName}
     </select>
+
+    <update id="updateCategoryCountByName">
+        update t_categories set categoryCount = categoryCount+ #{count} where categoryName=#{categoryName}
+    </update>
+
+    <insert id="addCategory" parameterType="com.boot.pojo.category">
+        insert into t_categories (categoryName,categoryCount) values (#{categoryName},0)
+    </insert>
+
 
 </mapper>
 

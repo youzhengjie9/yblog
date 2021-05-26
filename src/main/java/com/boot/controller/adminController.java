@@ -28,6 +28,8 @@ import java.util.Map;
 public class adminController {
 
 
+    private final String DEFAULT_CATEGORY="默认分类";
+
     @Autowired
     private articleService articleService;
 
@@ -398,10 +400,16 @@ public class adminController {
     //修改分类
     @PostMapping(path = "/updateCategory")
     public String updateCategory(String oldName,String newName,Model model){
-       //修改分类表的分类名
-        categoryService.updateCategory(oldName,newName);
-        //修改article表中有关oldName的分类，修改成newName
-        articleService.updateCategory(oldName, newName);
+        try {
+
+            //修改分类表的分类名
+            categoryService.updateCategory(oldName,newName);
+            //修改article表中有关oldName的分类，修改成newName
+            articleService.updateCategory(oldName, newName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         List<category> categories = categoryService.selectCategories();
         List<tag> tags = tagService.selectAllTag();
@@ -419,13 +427,18 @@ public class adminController {
     public String deleteCategory(@RequestParam(value = "n",defaultValue = "") String n,Model model){
         if(n!=null&&!n.equals(""))
         {
-            //把article的分类n改成默认分类
-            articleService.updateCategory(n,"默认分类");
-            //删除category表的分类n
-            int count = categoryService.selectCategoryCountByName(n); //先查再删
-            categoryService.deleteCategoryByName(n);
-            //并且把删除的数量加到默认分类的数量上
+            try{
 
+                //把article的分类n改成默认分类
+                articleService.updateCategory(n,"默认分类");
+                //删除category表的分类n
+                int count = categoryService.selectCategoryCountByName(n); //先查再删,获取删除分类的数量
+                categoryService.deleteCategoryByName(n);
+                //并且把删除的数量加到默认分类的数量上
+                categoryService.updateCategoryCountByName(DEFAULT_CATEGORY,count);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
 
@@ -439,6 +452,28 @@ public class adminController {
 
         return "back/categories";
     }
+
+
+    @PostMapping(path = "/addCategory")
+    public String addCategory(category category,Model model){
+
+        try {
+            categoryService.addCategory(category);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<category> categories = categoryService.selectCategories();
+        List<tag> tags = tagService.selectAllTag();
+
+        model.addAttribute("tags",tags);
+        model.addAttribute("categories",categories);
+        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("commons",Commons.getInstance());
+
+        return "back/categories";
+    }
+
 
 
 

@@ -22,7 +22,7 @@
     </insert>
 
     <select id="selectAllTag" resultType="com.boot.pojo.tag">
-        select tagName,tagCount from t_tag
+        select tagName,tagCount from t_tag order by tagCount desc
     </select>
 
 </mapper>
