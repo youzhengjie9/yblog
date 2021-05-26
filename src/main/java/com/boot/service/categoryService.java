@@ -12,4 +12,6 @@ public interface categoryService {
 
     public List<category> selectCategories();
 
+    public void updateCategoryCountDecr(String categoryName);
+
 }

@@ -10,10 +10,14 @@
     </update>
 
 
+    <update id="updateCategoryCountDecr">
+    update t_categories set categoryCount = categoryCount-1 where categoryName=#{categoryName}
+    </update>
+
+
     <select id="selectCategories" resultType="com.boot.pojo.category">
         select * from t_categories
     </select>
-
 
 
 

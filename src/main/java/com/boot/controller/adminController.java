@@ -191,8 +191,6 @@ public class adminController {
             //3.再把post_tags覆盖到数据库的tags上
             String[] pre_split = pre_tags.split(",");
             String[] post_split = post_tags.split(",");
-            Map<String, Integer> map1 = new LinkedHashMap<>();
-            Map<String, Integer> map2 = new LinkedHashMap<>();
 
             for (String s : pre_split) {
                 tagService.changeTagByTagNameDecr(s);
@@ -212,7 +210,6 @@ public class adminController {
                     //如果缓存中有这个标签就+1
                     tagService.changeTagByTagNameIncr(s);
                     o++;
-                    System.out.println("o++ ===>"+o);
                     redisTemplate.opsForValue().set("tag_"+s,o);
                 }
 
@@ -265,9 +262,7 @@ public class adminController {
                 Integer o = (Integer) redisTemplate.opsForValue().get("tag_" + s);
                 if(o==null){
                     //如果缓存中没有这个标签就添加
-                    tag tag = new tag();
-                    tag.setTagName(s);
-                    tagService.addTag(tag);
+                    tagService.insertTag(s);
                     //添加完数据库之后，我们还要把数据添加到redis缓存中
                     redisTemplate.opsForValue().set("tag_"+s,1);
                 }else {
@@ -299,10 +294,22 @@ public class adminController {
 
         try {
             Article article = articleService.selectArticleByArticleIdNoComment(id);
-            articleService.deleteArticleByArticleId(id);
-            commentService.deleteCommentByArticleId(id);
-            statisticService.deleteStatisticByArticleId(id);
-            categoryService.updateCategoryCount(article.getCategories());
+
+
+            articleService.deleteArticleByArticleId(id);//删除文章
+            commentService.deleteCommentByArticleId(id);//删除评论
+            statisticService.deleteStatisticByArticleId(id);//删除点击量
+            categoryService.updateCategoryCountDecr(article.getCategories());//修改分类数
+            //修改标签
+            String tags = article.getTags();
+            String[] split = tags.split(",");
+            if(split!=null&&split.length>0){
+                for (String s : split) {
+                    tagService.changeTagByTagNameDecr(s); //把每个标签-1
+                    redisTemplate.opsForValue().decrement("tag_"+s); //把redis标签数-1
+                }
+            }
+
             String username = springSecurityUtil.currentUser(session);
             java.util.Date date = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

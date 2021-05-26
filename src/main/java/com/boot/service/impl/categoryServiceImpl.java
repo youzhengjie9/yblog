@@ -24,4 +24,9 @@ public class categoryServiceImpl implements categoryService {
     public List<category> selectCategories() {
         return categoryMapper.selectCategories();
     }
+
+    @Override
+    public void updateCategoryCountDecr(String categoryName) {
+        categoryMapper.updateCategoryCountDecr(categoryName);
+    }
 }

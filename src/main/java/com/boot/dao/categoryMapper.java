@@ -14,6 +14,7 @@ public interface categoryMapper {
 
     public void updateCategoryCount(@Param("categoryName") String categoryName);
 
+    public void updateCategoryCountDecr(@Param("categoryName") String categoryName);
 
     public List<category> selectCategories();
 
