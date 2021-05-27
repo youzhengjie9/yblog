@@ -72,6 +72,7 @@
     </div>
 
     <footer class="log-footer">
+        <p style="margin: 30px; color: #2E2D3C"><a style="color: black"  th:href="@{/toSendEmailPage(l='zh_CN')}">中文</a>/<a style="color: black"  th:href="@{/toSendEmailPage(l='en_US')}">english</a> </p>
         <p style="margin: 30px; color: #2E2D3C"><time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy; Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
     </footer>
 </div>

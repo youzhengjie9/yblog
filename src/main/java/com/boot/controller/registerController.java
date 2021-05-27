@@ -92,19 +92,7 @@ public class registerController {
         return "comm/emailSend";
     }
 
-    //消息消费者
-    @RabbitListener(bindings = {@QueueBinding(value = @Queue,
-            exchange = @Exchange(name = "mail_Exchange", type = "direct"),
-            key = "mail_key")})
-    public void sendEmailComsumer(String msg) {
 
-        try {
-            emailService.sendEmailCode(msg);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     //发送验证码接口

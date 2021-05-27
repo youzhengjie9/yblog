@@ -7,7 +7,9 @@
     <meta content="Coderthemes" name="author"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
-    <link th:href="@{/back/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
     <link th:href="@{/back/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/back/css/style.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/back/css/sweetalert2.min.css}" rel="stylesheet"/>
@@ -15,6 +17,9 @@
     <script th:src="@{/back/js/html5shiv.js}"></script>
     <script th:src="@{/back/js/respond.min.js}"></script>
 </head>
+
+
+
 <div th:fragment="header-body">
 <div class="topbar">
     <div class="topbar-left">
@@ -46,6 +51,8 @@
                                                      class="img-circle"/> </a>
                         <ul class="dropdown-menu">
                             <form name="logoutform" th:action="@{/logout}" method="post"></form>
+                            <li><a target="_blank" data-toggle="modal" data-target="#myModal">
+                                <i class="fa fa-eye" aria-hidden="true"></i>个人信息</a></li>
                             <li><a th:href="@{${commons.site_url()}}" target="_blank">
                                 <i class="fa fa-eye" aria-hidden="true"></i>查看网站</a></li>
                             <li><a href="javascript:document.logoutform.submit();">
@@ -97,4 +104,11 @@
     </div>
 </div>
 </div>
+
+
+
+
+
+
+
 </html>

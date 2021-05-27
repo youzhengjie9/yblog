@@ -19,9 +19,11 @@ public class Article implements Serializable {
     private Boolean allowComment; // 是否允许评论，默认为true
     private String thumbnail;     // 文章缩略图
 
+
     private Statistic statistic;
 
     private List<Comment> comments;
+
 
 
     public Integer getId() {

@@ -63,7 +63,7 @@
                                     <ul class="list-group" th:unless="${comments}==null and ${comments.size()}==0">
                                         <li class="list-group-item" th:each="comment : ${comments}">
                                             <th:block th:text="${comment.author}"/>于 <th:block th:text="${commons.dateFormat(comment.created)}"/>：
-                                                <a th:href="${commons.site_url('/article/')}+${comment.articleId}+'#comments'"
+                                                <a href="#"
                                                 target="_blank" th:utext="${commons.article(comment.getC_content())}"></a>
                                         </li>
                                     </ul>

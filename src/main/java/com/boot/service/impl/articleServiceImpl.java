@@ -14,11 +14,11 @@ public class articleServiceImpl implements articleService {
     @Autowired
     private articleMapper articleMapper;
 
+
     @Override
     public List<Article> selectAllArticle() {
         return articleMapper.selectAllArticle();
     }
-
 
     @Override
     public Article selectArticleByArticleIdNoComment(Integer id) {
