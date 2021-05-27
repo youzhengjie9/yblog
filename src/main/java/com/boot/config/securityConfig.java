@@ -66,7 +66,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/druid/*").permitAll()
-                .antMatchers("/article_img/**", "/assets/**", "/back/**", "/user/**")
+                .antMatchers("/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("admin")
                 .anyRequest().permitAll();

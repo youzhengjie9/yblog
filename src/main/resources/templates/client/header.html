@@ -31,7 +31,12 @@
 <![endif]-->
 <header id="header" class="header bg-white">
     <div class="navbar-container">
-        <a th:href="@{/page/1}" class="navbar-logo">CrazyStone个人博客小站</a>
+        <a th:href="@{/page/1}" class="navbar-logo" th:if="${userDetail} ne null">
+            <span th:text="${userDetail.blogName}+'个人博客小站'"></span>
+        </a>
+        <a th:href="@{/page/1}" class="navbar-logo" th:if="${userDetail} eq null">
+            <span>游客个人博客小站</span>
+        </a>
         <div class="navbar-menu">
             <form name="logoutform" th:action="@{/logout}" method="post"></form>
             <a class="header-info" sec:authorize="isAnonymous()" th:href="@{/loginPage}" >登录</a>

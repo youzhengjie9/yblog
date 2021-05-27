@@ -4,8 +4,10 @@ import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.Article;
 import com.boot.pojo.Comment;
+import com.boot.pojo.userDetail;
 import com.boot.service.CommentService;
 import com.boot.service.articleService;
+import com.boot.service.userDetailService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.github.pagehelper.Page;
@@ -13,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +44,9 @@ public class clientController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private userDetailService userDetailService;
+
     private final int DEFAULT_PAGENUM = 1;
 
     private final int COMMENT_PAGESIZE = 3;
@@ -55,7 +61,7 @@ public class clientController {
     }
 
     @RequestMapping(path = {"/"})
-    public ModelAndView toIndex1() {
+    public ModelAndView toIndex1(HttpSession session) {
         PageHelper.startPage(1, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
@@ -70,6 +76,22 @@ public class clientController {
         }
 //        System.out.println(pageInfo);
         //PageInfo{pageNum=1, pageSize=5, size=5, startRow=1, endRow=5, total=12, pages=3, list=Page{count=true, pageNum=1, pageSize=5, startRow=0, endRow=5, total=12, pages=3, reasonable=false, pageSizeZero=false}[Article{id=1, title='2018新版Java学习路线图', content='&ensp;&ensp;&ensp;&ensp;播妞深知广大爱好Java的人学习是多么困难，没视频没资源，上网花钱还老担心被骗。因此专门整理了新版的学习路线图，不管你是不懂电脑的小白，还是已经步入开发的大牛，这套路线路绝对不容错过！12年传智播客黑马程序员分享免费视频教程长达10余万小时，累计下载量3000余万次，受益人数达千万。2018年我们不忘初心，继续前行。 路线图的宗旨就是分享，专业，便利，让喜爱Java的人，都能平等的学习。从今天起不要再找借口，不要再说想学Java却没有资源，赶快行动起来，Java等你来探索，高薪距你只差一步！
+
+        /**
+         * xxx个人博客标题
+         */
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            if (name != null && !name.equals("")) {
+                userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+                modelAndView.addObject("userDetail", userDetail);
+            }
+        } else {
+            userDetail userDetail = null;
+            modelAndView.addObject("userDetail", userDetail);
+        }
+
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -102,7 +124,7 @@ public class clientController {
      * @return
      */
     @RequestMapping(path = {"/page/{pageNum}"})
-    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum) {
+    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session) {
         PageHelper.startPage(pageNum, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
@@ -115,6 +137,23 @@ public class clientController {
         } else {
             modelAndView.addObject("articleOrders", as);
         }
+
+        /**
+         * xxx个人博客标题
+         */
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            if (name != null && !name.equals("")) {
+                userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+                modelAndView.addObject("userDetail", userDetail);
+            }
+        } else {
+            userDetail userDetail = null;
+            modelAndView.addObject("userDetail", userDetail);
+        }
+
+
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
         modelAndView.addObject("pageInfo", pageInfo);
@@ -125,7 +164,7 @@ public class clientController {
 
 
     @GetMapping(path = "/article/{articleId}")
-    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request) {
+    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request,HttpSession session) {
 
         //文章点击数+1
         articleService.updateHits(articleId);
@@ -134,6 +173,25 @@ public class clientController {
         boolean res = false; //判断是否传入参数“c”
         Boolean hasComment = commentService.hasComment(articleId);
         Article article = null;
+
+
+        /**
+         * xxx个人博客标题
+         */
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            if (name != null && !name.equals("")) {
+                userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+                modelAndView.addObject("userDetail", userDetail);
+            }
+        } else {
+            userDetail userDetail = null;
+            modelAndView.addObject("userDetail", userDetail);
+        }
+
+
+
 
         //从Redis数据库中获取指定文章id的数据，如果没有就从数据库查询，然后在放入redis中
         article = (Article) redisTemplate.opsForValue().get("articleId_" + articleId);

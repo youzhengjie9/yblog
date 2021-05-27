@@ -18,7 +18,7 @@
                 </div>
                 <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
                     <!-- 文章分类 -->
-                    <span class="blog-color"style="font-size: 15px;"><a>默认分类</a></span>
+                    <span class="blog-color"style="font-size: 15px;"><a th:text="${article.getCategories()}"></a></span>
                     <span>&nbsp;&nbsp;&nbsp;</span>
                     <!-- 发布时间 -->
                     <span style="font-size: 15px;" th:text="'发布于 '+ ${commons.dateFormat(article.created)}" />
@@ -74,18 +74,33 @@
     <!-- 博主信息描述 -->
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
         <div class="blog-sidebar-widget blog-bor">
-            <h2 class="blog-text-center blog-title"><span>CrazyStone</span></h2>
+            <h2 class="blog-text-center blog-title" th:if="${userDetail} ne null">
+                <span th:text="${userDetail.getBlogName()}"></span>
+            </h2>
+            <h2 class="blog-text-center blog-title" th:if="${userDetail} eq null">
+                <span>游客</span>
+            </h2>
             <img th:src="@{/assets/img/me.jpg}" alt="about me" class="blog-entry-img"/>
-            <p>
-                Java后台开发
+            <p th:if="${userDetail} ne null">
+               <span th:text="${userDetail.getJob()}"></span>
             </p>
-            <p>个人博客小站，主要发表关于Java、Spring、Docker等相关文章</p>
+            <p th:if="${userDetail} eq null">
+                <span>请登录</span>
+            </p>
+
+            <p th:if="${userDetail} ne null">
+                <span th:text="${userDetail.getDetail()}"></span>
+            </p>
         </div>
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>联系我</span></h2>
-            <p>
+            <p th:if="${userDetail} eq null">
                 <a th:href="@{https://github.com/}"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
                 <a th:href="@{https://weibo.com/}"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
+            </p>
+            <p th:if="${userDetail} ne null">
+                <a th:href="@{${userDetail.getGithub()}}"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
+                <a th:href="@{${userDetail.getWeibo()}}"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
             </p>
         </div>
     </div>

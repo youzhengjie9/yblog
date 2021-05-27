@@ -5,11 +5,16 @@ import com.boot.pojo.tag;
 import com.boot.service.articleService;
 import com.boot.service.categoryService;
 import com.boot.service.tagService;
+import com.boot.utils.SpringSecurityUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
+import javax.swing.*;
 import java.util.*;
 
 @SpringBootTest
@@ -85,12 +90,11 @@ public class test {
     @Autowired
     private categoryService categoryService;
 
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
     @Test
     public void test2(){
 
-//        int count = categoryService.selectCategoryCountByName("Spring");
-//        System.out.println(count);
-//        categoryService.updateCategoryCountByName("Spring",2);
 
     }
 
