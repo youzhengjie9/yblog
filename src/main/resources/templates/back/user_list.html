@@ -42,12 +42,13 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="panel panel-color panel-inverse">
-                            <div class="panel-heading">
+                        <div th:class="'panel panel-'+ ${bootstrap.randomColor()}+' panel-inverse'">
+
+                               <div class="panel-heading">
                                 <h3 class="panel-title">个人资料</h3>
                             </div>
                             <div class="panel-body">
-                                <form method="post" th:action="@{/user/upload}" class="form-horizontal" role="form" id="global-form" enctype="multipart/form-data" >
+                                <form method="post" th:action="@{/user/uploadIcon}" class="form-horizontal" role="form" id="global-form" enctype="multipart/form-data" >
                                     <input  type="hidden" v-model="options.site_url" class="form-control" placeholder="当前的用户名" required aria-required="true"/>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">邮箱：</label>
@@ -107,7 +108,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="panel panel-color panel-inverse">
+                        <div th:class="'panel panel-'+ ${bootstrap.randomColor()}+' panel-inverse'">
                             <div class="panel-heading">
                                 <h3 class="panel-title">修改密码</h3>
                             </div>
@@ -164,7 +165,7 @@
 <script >
     $(function () {
         $("#uploadPicture").fileinput({
-            uploadUrl: "http://localhost:8080/user/upload",
+            uploadUrl: "http://localhost:8080/user/uploadIcon",
             previewFileType: "image",
             uploadAsync: true,
             showCaption: false,

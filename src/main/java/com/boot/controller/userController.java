@@ -4,6 +4,7 @@ package com.boot.controller;
 import com.alibaba.fastjson.JSON;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.utils.Commons;
+import com.boot.utils.bootstrap;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Controller;
@@ -44,19 +45,24 @@ public class userController {
 
 
         model.addAttribute("commons", Commons.getInstance());
-
+        model.addAttribute("bootstrap",new bootstrap());
 
 
         return "back/user_list";
     }
 
 
-    @RequestMapping(path = "/upload")
+    //上传头像
+    @RequestMapping(path = "/uploadIcon")
 //    @ResponseBody
-    public String upload(Model model,MultipartFile file){
-        System.out.println("============");
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getName());
+    public String uploadIcon(Model model,MultipartFile file){
+
+        System.out.println(file);
+
+
+
+
+
         model.addAttribute("commons",Commons.getInstance());
 
         return "back/user_list";

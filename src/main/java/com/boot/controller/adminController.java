@@ -481,6 +481,7 @@ public class adminController {
     public String toSetting(Model model) {
 
         model.addAttribute("commons",Commons.getInstance());
+        model.addAttribute("bootstrap",new bootstrap());
         return "back/setting";
     }
 
