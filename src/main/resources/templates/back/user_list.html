@@ -33,28 +33,30 @@
                                     <div class="tab-content" id="myTabContent">
                                         <div class="tab-pane fade active show col-lg-6" id="data">
                                             <form class="form-horizontal" id="dataFrom" autocomplete="off">
-                                                <input class="form-control" type="hidden"
-                                                       th:value="${user.userId}" name="userId">
-<!--                                                <div class="form-group row mt-3">-->
-<!--                                                    <label class="control-label col-md-3">用户名： <span-->
-<!--                                                            data-toggle="tooltip" data-placement="top" title="用于登录"-->
-<!--                                                            style="cursor: pointer"> <i-->
-<!--                                                            class="fa fa-question-circle" aria-hidden="true"></i>-->
-<!--									</span>-->
-<!--                                                    </label>-->
+<!--                                                <input class="form-control" type="hidden"-->
+<!--                                                       th:value="${user.userId}" name="userId">-->
+
+
+                                                <div class="form-group row mt-3">
+                                                    <label class="control-label col-md-3">用户名： <span
+                                                            data-toggle="tooltip" data-placement="top" title="用于登录"
+                                                            style="cursor: pointer"> <i
+                                                            class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
+                                                    </label>
 <!--                                                    <div class="col-md-8">-->
 <!--                                                        <input class="form-control" type="text"-->
 <!--                                                               th:value="${user.userName}" name="userName">-->
 <!--                                                    </div>-->
 <!--                                                </div>-->
-<!--                                                <div class="form-group row">-->
-<!--                                                    <label class="control-label col-md-3">显示名称： <span-->
-<!--                                                            data-toggle="tooltip" data-placement="top" title="页面显示的名称"-->
-<!--                                                            style="cursor: pointer"> <i-->
-<!--                                                            class="fa fa-question-circle" aria-hidden="true"></i>-->
-<!--									</span>-->
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">显示名称： <span
+                                                            data-toggle="tooltip" data-placement="top" title="页面显示的名称"
+                                                            style="cursor: pointer"> <i
+                                                            class="fa fa-question-circle" aria-hidden="true"></i>
+									</span>
 
-<!--                                                    </label>-->
+                                                    </label>
 <!--                                                    <div class="col-md-8">-->
 <!--                                                        <input class="form-control" type="text"-->
 <!--                                                               th:value="${user.userDisplayName}" name="userDisplayName">-->
@@ -63,16 +65,18 @@
                                                 <div class="form-group row">
                                                     <label class="control-label col-md-3">邮箱：</label>
                                                     <div class="col-md-8">
+<!--                                                        <input class="form-control" type="text"-->
+<!--                                                               th:value="${user.userEmail}" name="userEmail">-->
                                                         <input class="form-control" type="text"
-                                                               th:value="${user.userEmail}" name="userEmail">
+                                                                name="userEmail">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="control-label col-md-3">头像：</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" id="userPortrait"
-                                                                   name="userPortrait" readonly="readonly" th:value="${user.userPortrait}">
+<!--                                                            <input type="text" class="form-control" id="userPortrait"-->
+<!--                                                                   name="userPortrait" readonly="readonly" th:value="${user.userPortrait}">-->
                                                             <span class="input-group-btn">
 												<button class="btn btn-default " type="button"
                                                         th:onclick="'javascript:openChoice(\''+userPortrait+'\')'">选择</button>
@@ -84,9 +88,13 @@
                                                     <label class="control-label col-md-3">个人说明：</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group">
-											<textarea class="form-control" th:value="${user.userExplain}"
-                                                      th:text="${user.userExplain}" rows="3" id=""
-                                                      name="userExplain" style="resize: none"></textarea>
+<!--											<textarea class="form-control" th:value="${user.userExplain}"-->
+<!--                                                      th:text="${user.userExplain}" rows="3" id=""-->
+<!--                                                      name="userExplain" style="resize: none"></textarea>-->
+                                                            <textarea class="form-control"
+                                                                       rows="3" id=""
+                                                                      name="userExplain" style="resize: none"></textarea>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -104,8 +112,8 @@
                                         </div>
                                         <div class="tab-pane fade col-lg-6" id="password">
                                             <form class="form-horizontal" id="pwdFrom" autocomplete="off">
-                                                <input class="form-control" type="hidden"
-                                                       th:value="${user.userId}" id="userId" name="userId">
+<!--                                                <input class="form-control" type="hidden"-->
+<!--                                                       th:value="${user.userId}" id="userId" name="userId">-->
                                                 <div class="form-group row mt-3">
                                                     <label class="control-label col-md-3">原密码：</label>
                                                     <div class="col-md-8">
@@ -163,7 +171,7 @@
 
 </body>
 
-
+<script src="/assets/js/jquery.min.js"></script>
 <script src="/plugins/layer/layer.js"></script>
 <script type="text/javascript">
     //保存资料

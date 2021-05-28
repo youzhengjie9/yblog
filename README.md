@@ -1,25 +1,32 @@
 # springBoot博客系统
-正在完善中。。。。。
+
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+springBoot博客系统，该项目简单上手，非常适合初学者学习，完成毕业设计绰绰有余，该有的功能都有，作者也在
+完善当中，希望大家来指点指点，一起学习，共同进步。
 
-#### 软件架构
-软件架构说明
-
+#### 技术栈
+* **springBoot**
+* **rabbitmq**
+* **Mybatis**
+* **Redis**
+* **Spring Security**
+* **Thymeleaf**
+* **Markdown**
+* **log4j**
+* **elasticSearch**
+* **alibaba fastjson**
+* **alibaba Druid**
+* **jQuery**
+* **bootstrap**
+* **autoMail**
 
 #### 安装教程
+* 1.找到sql包的sql文件并导入到自己的数据库中
+* 2.修改application.yml中的redis、mysql、elasticsearch、邮件发送校验码
+、rabbitmq即可
+* 3.启动redis、mysql、elasticsearch、rabbitmq的服务
+* 4.执行elasticSearchTest的es创建索引命令和执行下面的添加数据代码
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 
 
