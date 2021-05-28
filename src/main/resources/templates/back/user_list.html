@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='个人资料',active='user'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">个人资料</h4>
+                    </div>
+                    <!--                                        内容-->
+
+                    <div class="panel-body">
+
+
+                        <div class="row" style="margin-bottom: 2rem;">
+                            <div class="col-lg-12">
+                                <div class="bs-component">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a class="nav-link active"
+                                                                data-toggle="tab" href="#data">基本资料</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab"
+                                                                href="#password">密码修改</a></li>
+                                    </ul>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade active show col-lg-6" id="data">
+                                            <form class="form-horizontal" id="dataFrom" autocomplete="off">
+                                                <input class="form-control" type="hidden"
+                                                       th:value="${user.userId}" name="userId">
+<!--                                                <div class="form-group row mt-3">-->
+<!--                                                    <label class="control-label col-md-3">用户名： <span-->
+<!--                                                            data-toggle="tooltip" data-placement="top" title="用于登录"-->
+<!--                                                            style="cursor: pointer"> <i-->
+<!--                                                            class="fa fa-question-circle" aria-hidden="true"></i>-->
+<!--									</span>-->
+<!--                                                    </label>-->
+<!--                                                    <div class="col-md-8">-->
+<!--                                                        <input class="form-control" type="text"-->
+<!--                                                               th:value="${user.userName}" name="userName">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="form-group row">-->
+<!--                                                    <label class="control-label col-md-3">显示名称： <span-->
+<!--                                                            data-toggle="tooltip" data-placement="top" title="页面显示的名称"-->
+<!--                                                            style="cursor: pointer"> <i-->
+<!--                                                            class="fa fa-question-circle" aria-hidden="true"></i>-->
+<!--									</span>-->
+
+<!--                                                    </label>-->
+<!--                                                    <div class="col-md-8">-->
+<!--                                                        <input class="form-control" type="text"-->
+<!--                                                               th:value="${user.userDisplayName}" name="userDisplayName">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">邮箱：</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" type="text"
+                                                               th:value="${user.userEmail}" name="userEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">头像：</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="userPortrait"
+                                                                   name="userPortrait" readonly="readonly" th:value="${user.userPortrait}">
+                                                            <span class="input-group-btn">
+												<button class="btn btn-default " type="button"
+                                                        th:onclick="'javascript:openChoice(\''+userPortrait+'\')'">选择</button>
+											</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">个人说明：</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group">
+											<textarea class="form-control" th:value="${user.userExplain}"
+                                                      th:text="${user.userExplain}" rows="3" id=""
+                                                      name="userExplain" style="resize: none"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tile-footer">
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-md-offset-3">
+                                                            <button class="btn btn-sm btn-outline-primary" type="button"
+                                                                    onclick="save()">
+                                                                <i class="fa fa-fw fa-lg fa-check-circle"></i>保存
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade col-lg-6" id="password">
+                                            <form class="form-horizontal" id="pwdFrom" autocomplete="off">
+                                                <input class="form-control" type="hidden"
+                                                       th:value="${user.userId}" id="userId" name="userId">
+                                                <div class="form-group row mt-3">
+                                                    <label class="control-label col-md-3">原密码：</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" type="password" id="formerlyPwd">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">新密码：</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" type="password" id="nowPwd">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3">确认新密码：</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" type="password" id="confirmPwd">
+                                                    </div>
+                                                </div>
+                                                <div class="tile-footer">
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-md-offset-3">
+                                                            <button class="btn btn-sm btn-outline-primary" type="button"
+                                                                    onclick="update()">
+                                                                <i class="fa fa-fw fa-lg fa-check-circle"></i>保存
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+
+<script src="/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    //保存资料
+    function save() {
+        var obj = $('#dataFrom').serialize();
+        $.ajax({
+            type : "POST",
+            url : "/admin/profile/updateProfile",
+            data : obj,
+            dataType : "json",
+            success : function(data) {
+                if (data.flag == true) {
+                    $.toast({
+                        text : data.msg,
+                        heading : '提示',
+                        icon : 'success',
+                        showHideTransition : 'fade',
+                        allowToastClose : true,
+                        hideAfter : 1000,
+                        stack : 1,
+                        position : 'top-center',
+                        textAlign : 'left',
+                        loader : true,
+                        loaderBg : '#ffffff',
+                        afterHidden : function() {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    showMsg(data.msg, "error", 3000);
+                }
+            }
+        });
+    }
+    //修改密码
+    function update() {
+        var formerlyPwd = $("#formerlyPwd").val();
+        var nowPwd = $("#nowPwd").val();
+        var confirmPwd = $("#confirmPwd").val();
+        var userId = $("#userId").val();
+        $.ajax({
+            type : "POST",
+            url : "/admin/profile/updatePwd",
+            data : {
+                "formerlyPwd" : formerlyPwd,
+                "nowPwd" : nowPwd,
+                "confirmPwd" : confirmPwd,
+                "userId" : userId
+            },
+            dataType : "json",
+            success : function(data) {
+                if (data.flag == true) {
+                    $.toast({
+                        text : data.msg,
+                        heading : '提示',
+                        icon : 'success',
+                        showHideTransition : 'fade',
+                        allowToastClose : true,
+                        hideAfter : 1000,
+                        stack : 1,
+                        position : 'top-center',
+                        textAlign : 'left',
+                        loader : true,
+                        loaderBg : '#ffffff',
+                        afterHidden : function() {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    showMsg(data.msg, "error", 3000);
+                }
+            }
+        });
+    }
+    //选择头像
+    function openChoice(id) {
+        layer.open({
+            type : 2,
+            title : '所有附件',
+            anim : 2,
+            area : [ '90%', '90%' ],
+            shadeClose : true,
+            maxmin : true,
+            content : "profile/openChoice/" + id
+        });
+    }
+</script>
+
+
+</html>

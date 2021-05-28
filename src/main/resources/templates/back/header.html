@@ -16,6 +16,7 @@
 
     <script th:src="@{/back/js/html5shiv.js}"></script>
     <script th:src="@{/back/js/respond.min.js}"></script>
+
 </head>
 
 
@@ -51,8 +52,6 @@
                                                      class="img-circle"/> </a>
                         <ul class="dropdown-menu">
                             <form name="logoutform" th:action="@{/logout}" method="post"></form>
-                            <li><a target="_blank" data-toggle="modal" data-target="#myModal">
-                                <i class="fa fa-eye" aria-hidden="true"></i>个人信息</a></li>
                             <li><a th:href="@{${commons.site_url()}}" target="_blank">
                                 <i class="fa fa-eye" aria-hidden="true"></i>查看网站</a></li>
                             <li><a href="javascript:document.logoutform.submit();">
@@ -83,7 +82,6 @@
                        th:class="${active}=='article'?'waves-effect active':'waves-effect'"><i
                             class="fa fa-list" aria-hidden="true"></i><span> 文章管理 </span></a>
                 </li>
-                <!-- 以下功能尚未实现 -->
                 <li th:class="${active}=='comments'?'active':''">
                     <a th:href="@{/admin/toCommentList/}"  th:class="${active}=='comments'?'waves-effect active':'waves-effect'">
                         <i class="fa fa-comments" aria-hidden="true"></i><span> 评论管理 </span></a>
@@ -92,11 +90,15 @@
                     <a th:href="@{/admin/toTagList/}" th:class="${active}=='category'?'waves-effect active':'waves-effect'">
                         <i class="fa fa-tags" aria-hidden="true"></i><span> 分类/标签 </span></a>
                 </li>
-
+                <li th:class="${active}=='user'?'active':''">
+                    <a th:href="@{/admin/toUserList/}" th:class="${active}=='user'?'waves-effect active':'waves-effect'">
+                        <i class="fa fa-tags" aria-hidden="true"></i><span> 个人资料 </span></a>
+                </li>
                 <li th:class="${active}=='setting'?'active':''">
                     <a th:href="@{/admin/toSetting/}" th:class="${active}=='setting'?'waves-effect active':'waves-effect'">
                         <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>
                 </li>
+
             </ul>
             <div class="clearfix"></div>
         </div>
