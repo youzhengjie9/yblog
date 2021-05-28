@@ -2,9 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='个人资料',active='user'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
 <head>
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <!-- 默认的header name是X-CSRF-TOKEN -->
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+
+    <!-- 如果你想在上传之前修改图片大小需要加入canvas-to-blob.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.js"></script>
+
+    <!-- 如果你想在最初的预览中排序/重新排列需要引入sortable.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+
+    <!-- 如果你想在HTML文件预览中净化HTML内容则要引入purify.min.js is  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/dompurify/1.0.10/purify.min.js"></script>
+
+    <!-- 主要的 fileinput 插件库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+
+    <!-- 如果你想在放大的模态页面中查看文件详细信息需要引入bootstrap.js -->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- 可选，如果你需要像font awesome 这样的主题，就像下面的代码一样引入它 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/fa.min.js"></script>
+
+    <!-- 可选，如果你需要转换语言或翻译，就包含这个库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/zh.min.js"></script>
+
+    <!-- 自定义上传图片JS文件 -->
+    <script src="/static/js/uploadPic.js"></script>
+
 </head>
 <body class="fixed-left">
 <div id="wrapper">
@@ -12,253 +38,172 @@
     <div class="content-page">
         <div class="content">
             <div class="container">
+
+
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="page-title">个人资料</h4>
-                    </div>
-                    <!--                                        内容-->
-
-                    <div class="panel-body">
-
-
-                        <div class="row" style="margin-bottom: 2rem;">
-                            <div class="col-lg-12">
-                                <div class="bs-component">
-                                    <ul class="nav nav-tabs">
-                                        <li class="nav-item"><a class="nav-link active"
-                                                                data-toggle="tab" href="#data">基本资料</a></li>
-                                        <li class="nav-item"><a class="nav-link" data-toggle="tab"
-                                                                href="#password">密码修改</a></li>
-                                    </ul>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade active show col-lg-6" id="data">
-                                            <form class="form-horizontal" id="dataFrom" autocomplete="off">
-<!--                                                <input class="form-control" type="hidden"-->
-<!--                                                       th:value="${user.userId}" name="userId">-->
-
-
-                                                <div class="form-group row mt-3">
-                                                    <label class="control-label col-md-3">用户名： <span
-                                                            data-toggle="tooltip" data-placement="top" title="用于登录"
-                                                            style="cursor: pointer"> <i
-                                                            class="fa fa-question-circle" aria-hidden="true"></i>
-									</span>
-                                                    </label>
-<!--                                                    <div class="col-md-8">-->
-<!--                                                        <input class="form-control" type="text"-->
-<!--                                                               th:value="${user.userName}" name="userName">-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">显示名称： <span
-                                                            data-toggle="tooltip" data-placement="top" title="页面显示的名称"
-                                                            style="cursor: pointer"> <i
-                                                            class="fa fa-question-circle" aria-hidden="true"></i>
-									</span>
-
-                                                    </label>
-<!--                                                    <div class="col-md-8">-->
-<!--                                                        <input class="form-control" type="text"-->
-<!--                                                               th:value="${user.userDisplayName}" name="userDisplayName">-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">邮箱：</label>
-                                                    <div class="col-md-8">
-<!--                                                        <input class="form-control" type="text"-->
-<!--                                                               th:value="${user.userEmail}" name="userEmail">-->
-                                                        <input class="form-control" type="text"
-                                                                name="userEmail">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">头像：</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group">
-<!--                                                            <input type="text" class="form-control" id="userPortrait"-->
-<!--                                                                   name="userPortrait" readonly="readonly" th:value="${user.userPortrait}">-->
-                                                            <span class="input-group-btn">
-												<button class="btn btn-default " type="button"
-                                                        th:onclick="'javascript:openChoice(\''+userPortrait+'\')'">选择</button>
-											</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">个人说明：</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group">
-<!--											<textarea class="form-control" th:value="${user.userExplain}"-->
-<!--                                                      th:text="${user.userExplain}" rows="3" id=""-->
-<!--                                                      name="userExplain" style="resize: none"></textarea>-->
-                                                            <textarea class="form-control"
-                                                                       rows="3" id=""
-                                                                      name="userExplain" style="resize: none"></textarea>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tile-footer">
-                                                    <div class="row">
-                                                        <div class="col-md-8 col-md-offset-3">
-                                                            <button class="btn btn-sm btn-outline-primary" type="button"
-                                                                    onclick="save()">
-                                                                <i class="fa fa-fw fa-lg fa-check-circle"></i>保存
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane fade col-lg-6" id="password">
-                                            <form class="form-horizontal" id="pwdFrom" autocomplete="off">
-<!--                                                <input class="form-control" type="hidden"-->
-<!--                                                       th:value="${user.userId}" id="userId" name="userId">-->
-                                                <div class="form-group row mt-3">
-                                                    <label class="control-label col-md-3">原密码：</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" type="password" id="formerlyPwd">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">新密码：</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" type="password" id="nowPwd">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="control-label col-md-3">确认新密码：</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" type="password" id="confirmPwd">
-                                                    </div>
-                                                </div>
-                                                <div class="tile-footer">
-                                                    <div class="row">
-                                                        <div class="col-md-8 col-md-offset-3">
-                                                            <button class="btn btn-sm btn-outline-primary" type="button"
-                                                                    onclick="update()">
-                                                                <i class="fa fa-fw fa-lg fa-check-circle"></i>保存
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                    <div class="col-md-6">
+                        <div class="panel panel-color panel-inverse">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">个人资料</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form method="post" th:action="@{/user/upload}" class="form-horizontal" role="form" id="global-form" enctype="multipart/form-data" >
+                                    <input  type="hidden" v-model="options.site_url" class="form-control" placeholder="当前的用户名" required aria-required="true"/>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">邮箱：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_title" placeholder="邮箱"  aria-required="true"/>
                                         </div>
                                     </div>
-                                </div>
+
+                                    <label class="col-md-3 control-label">头像：</label>
+                                    <div class="row" style="height: 400px;width: 400px;margin-left: 130px" >
+
+                                        <input id="uploadPicture" name="file" type="file" multiple=true class="file-loading">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">博客名称：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_subtitle" placeholder="博客名称"  aria-required="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">职位：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_description" placeholder="职位"  aria-required="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">个人说明：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="个人说明"  aria-required="true"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">GitHub：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="GitHub"  aria-required="true"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">微博：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="微博"  aria-required="true"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="clearfix pull-right">
+                                        <button id="btn1" type="submit" class="btn btn-inverse waves-effect waves-light">
+                                            保存设置
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-
-
-
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="panel panel-color panel-inverse">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">修改密码</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal" role="form" id="advanced-form">
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">原密码；</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="cdnURL" placeholder="CDN地址" />
+                                            <span class="help-block"><small>您需要知道你以前的密码</small></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">新密码：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="cacheKey" placeholder="你的新密码"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">确认新密码：</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="pluginName" placeholder="请再一次输入新密码"/>
+                                        </div>
+                                    </div>
 
 
-
+                                    <div class="clearfix pull-right">
+                                        <button type="button" class="btn btn-inverse waves-effect waves-light" @click="saveAdvanced">
+                                            保存设置
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div th:replace="back/footer :: footer-content"></div>
+
+
+
+
+<!--                <div th:replace="back/footer :: footer-content"></div>-->
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-<div th:replace="back/footer :: footer"></div>
+<!--<div th:replace="back/footer :: footer"></div>-->
 
 </body>
 
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/plugins/layer/layer.js"></script>
-<script type="text/javascript">
-    //保存资料
-    function save() {
-        var obj = $('#dataFrom').serialize();
-        $.ajax({
-            type : "POST",
-            url : "/admin/profile/updateProfile",
-            data : obj,
-            dataType : "json",
-            success : function(data) {
-                if (data.flag == true) {
-                    $.toast({
-                        text : data.msg,
-                        heading : '提示',
-                        icon : 'success',
-                        showHideTransition : 'fade',
-                        allowToastClose : true,
-                        hideAfter : 1000,
-                        stack : 1,
-                        position : 'top-center',
-                        textAlign : 'left',
-                        loader : true,
-                        loaderBg : '#ffffff',
-                        afterHidden : function() {
-                            window.location.reload();
-                        }
-                    });
-                } else {
-                    showMsg(data.msg, "error", 3000);
-                }
-            }
-        });
-    }
-    //修改密码
-    function update() {
-        var formerlyPwd = $("#formerlyPwd").val();
-        var nowPwd = $("#nowPwd").val();
-        var confirmPwd = $("#confirmPwd").val();
-        var userId = $("#userId").val();
-        $.ajax({
-            type : "POST",
-            url : "/admin/profile/updatePwd",
-            data : {
-                "formerlyPwd" : formerlyPwd,
-                "nowPwd" : nowPwd,
-                "confirmPwd" : confirmPwd,
-                "userId" : userId
-            },
-            dataType : "json",
-            success : function(data) {
-                if (data.flag == true) {
-                    $.toast({
-                        text : data.msg,
-                        heading : '提示',
-                        icon : 'success',
-                        showHideTransition : 'fade',
-                        allowToastClose : true,
-                        hideAfter : 1000,
-                        stack : 1,
-                        position : 'top-center',
-                        textAlign : 'left',
-                        loader : true,
-                        loaderBg : '#ffffff',
-                        afterHidden : function() {
-                            window.location.reload();
-                        }
-                    });
-                } else {
-                    showMsg(data.msg, "error", 3000);
-                }
-            }
-        });
-    }
-    //选择头像
-    function openChoice(id) {
-        layer.open({
-            type : 2,
-            title : '所有附件',
-            anim : 2,
-            area : [ '90%', '90%' ],
-            shadeClose : true,
-            maxmin : true,
-            content : "profile/openChoice/" + id
-        });
-    }
-</script>
 
+<script >
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "http://localhost:8080/user/upload",
+            previewFileType: "image",
+            uploadAsync: true,
+            showCaption: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp", "gif"],
+            enctype : 'multipart/form-data',
+            //隐藏上传按钮
+            showUpload: false,
+            //最大上传文件数量
+            maxFileCount: 1,
+            maxFileSize: 3072,
+            showBrowse: true,
+            dropZoneTitle: '拖拽头像图片到这里...',
+            browseLabel: "选择图片",
+            uploadClass: "btn btn-info",
+            uploadLabel: "上传",
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！'
+        }).on('fileerror', function (event, data, msg) {
+            alert('图片上传失败！' + msg);
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.response.name);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            alert("图片被清除啦！");
+        });
+
+    });
+
+
+
+
+
+</script>
 
 </html>
