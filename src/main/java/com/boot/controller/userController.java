@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.text.DateFormat;
@@ -55,14 +57,23 @@ public class userController {
     //上传头像
     @RequestMapping(path = "/uploadIcon")
 //    @ResponseBody
-    public String uploadIcon(Model model,MultipartFile file){
+    public String uploadIcon(Model model,MultipartFile file,HttpServletRequest request) throws IOException {
 
-        System.out.println(file);
+//        boolean flag = file.isEmpty(); //判断是否是空
+//        if(!flag){ //如果不是空的
+//            InputStream inputStream = file.getInputStream(); //获取文件流
+//            byte fileByteArray[] =new byte[inputStream.available()];
+//            inputStream.read(fileByteArray);
+//
+//
+//
+//        }
+
+        String path = ResourceUtils.getURL("classpath:static").getPath();
+        System.out.println(path);
 
 
-
-
-
+        model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
         return "back/user_list";
