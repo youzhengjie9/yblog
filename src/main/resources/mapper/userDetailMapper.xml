@@ -9,6 +9,29 @@
         select * from t_user_detail where name =#{name}
     </select>
 
-
+    <update id="updateUserDetail" parameterType="com.boot.pojo.userDetail">
+        update t_user_detail
+        <set>
+            <if test="blogName != null and blogName != ''">
+                blogName=#{blogName},
+            </if>
+            <if test="job != null and job != ''">
+                job=#{job},
+            </if>
+            <if test="detail != null and detail != ''">
+                detail=#{detail},
+            </if>
+            <if test="github != null and github != ''">
+                github=#{github},
+            </if>
+            <if test="weibo != null and weibo != ''">
+                weibo=#{weibo},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon=#{icon}
+            </if>
+        </set>
+        where name=#{name}
+    </update>
 
 </mapper>

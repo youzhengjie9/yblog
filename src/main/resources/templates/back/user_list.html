@@ -31,6 +31,18 @@
     <!-- 自定义上传图片JS文件 -->
     <script src="/static/js/uploadPic.js"></script>
 
+    <!--    邮件自动补全插件-->
+    <!--    GitHub地址：https://github.com/shuzheng/autoMail-->
+<!--    <script type="text/javascript" th:src="@{email/autoMail.1.0.min.js}"></script>-->
+<!--    <script type="text/javascript">-->
+<!--        $(document).ready(function(){-->
+<!--            $('#email1').autoMail({-->
+<!--                emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn','gmail.com','hotmail.com','live.cn']-->
+<!--                // emails:['qq.com']-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+
 </head>
 <body class="fixed-left">
 <div id="wrapper">
@@ -48,12 +60,15 @@
                                 <h3 class="panel-title">个人资料</h3>
                             </div>
                             <div class="panel-body">
-                                <form method="post" th:action="@{/user/uploadIcon}" class="form-horizontal" role="form" id="global-form" enctype="multipart/form-data" >
-                                    <input  type="hidden" v-model="options.site_url" class="form-control" placeholder="当前的用户名" required aria-required="true"/>
+                                <form method="post" th:action="@{/myuser/uploadIcon}" class="form-horizontal" role="form" id="global-form" enctype="multipart/form-data" >
+                                    <input th:value="${curName}" name="name"  type="hidden"  class="form-control"  required aria-required="true"/>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">邮箱：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_title" placeholder="邮箱"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getEmail()} ne null">
+                                            <input id="email1" th:value="${user.getEmail()}" name="email" type="email" class="form-control" placeholder="邮箱"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getEmail()} eq null">
+                                            <input id="email1"  name="email" type="email" class="form-control" placeholder="邮箱"  aria-required="true"/>
                                         </div>
                                     </div>
 
@@ -61,44 +76,66 @@
                                     <div class="row" style="height: 400px;width: 400px;margin-left: 130px" >
 
                                         <input id="uploadPicture" name="file" type="file" multiple=true class="file-loading">
+
                                     </div>
+
+<!--                                    <div th:if="${user.getUserDetail().getIcon()} ne null" class="row" style="height: 400px;width: 400px;margin-left: 130px" >-->
+<!--                                        <input id="uploadPicture" th:value="${user.getUserDetail().getIcon()}" name="file" type="file" multiple=true class="file-loading">-->
+
+<!--                                    </div>-->
+
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">博客名称：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_subtitle" placeholder="博客名称"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} ne null">
+                                            <input type="text" th:value="${user.getUserDetail().getBlogName()}" name="blogName" class="form-control"  placeholder="博客名称"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} eq null">
+                                            <input type="text"  name="blogName" class="form-control"  placeholder="博客名称"  aria-required="true"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">职位：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_description" placeholder="职位"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} ne null">
+                                            <input type="text" th:value="${user.getUserDetail().getJob()}" name="job" class="form-control"  placeholder="职位"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} eq null">
+                                            <input type="text"  name="job" class="form-control"  placeholder="职位"  aria-required="true"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">个人说明：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="个人说明"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} ne null">
+                                            <input type="text" th:value="${user.getUserDetail().getDetail()}" name="detail" class="form-control"  placeholder="个人说明"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} eq null">
+                                            <input type="text"  name="detail" class="form-control"  placeholder="个人说明"  aria-required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">GitHub：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="GitHub"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} ne null">
+                                            <input type="text" th:value="${user.getUserDetail().getGithub()}" name="github" class="form-control"  placeholder="GitHub"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} eq null">
+                                            <input type="text"  name="github" class="form-control"  placeholder="GitHub"  aria-required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">微博：</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="options.site_keywords" placeholder="微博"  aria-required="true"/>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} ne null">
+                                            <input type="text" th:value="${user.getUserDetail().getWeibo()}" name="weibo" class="form-control"  placeholder="微博"  aria-required="true"/>
+                                        </div>
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} eq null">
+                                            <input type="text"  name="weibo" class="form-control"  placeholder="微博"  aria-required="true"/>
                                         </div>
                                     </div>
 
 
                                     <div class="clearfix pull-right">
-                                        <button id="btn1" type="submit" class="btn btn-inverse waves-effect waves-light">
+                                        <button id="btn1" type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
                                             保存设置
                                         </button>
                                     </div>
@@ -139,7 +176,7 @@
 
 
                                     <div class="clearfix pull-right">
-                                        <button type="button" class="btn btn-inverse waves-effect waves-light" @click="saveAdvanced">
+                                        <button type="button" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
                                             保存设置
                                         </button>
                                     </div>
@@ -165,11 +202,11 @@
 <script >
     $(function () {
         $("#uploadPicture").fileinput({
-            uploadUrl: "http://localhost:8080/user/uploadIcon",
+            uploadUrl: "http://localhost:8080/myuser/uploadIcon",
             previewFileType: "image",
             uploadAsync: true,
             showCaption: false,
-            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp", "gif"],
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
             enctype : 'multipart/form-data',
             //隐藏上传按钮
             showUpload: false,

@@ -13,6 +13,43 @@
         insert into t_user_authority (user_id,authority_id) values (#{user_id},#{authority_id});
     </insert>
 
+    <update id="updateEmail">
+        update t_user set email = #{email} where username=#{username}
+    </update>
+
+
+    <resultMap id="res1" type="com.boot.pojo.user">
+        <result property="email" column="email"/>
+        <association property="userDetail" javaType="com.boot.pojo.userDetail">
+            <result property="blogName" column="blogName"/>
+            <result property="job" column="job"/>
+            <result property="detail" column="detail"/>
+            <result property="github" column="github"/>
+            <result property="weibo" column="weibo"/>
+            <result property="icon" column="icon"/>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectUserInfoByuserName" resultMap="res1">
+        SELECT
+        t_user.email,
+        t_user_detail.blogName,
+        t_user_detail.job,
+        t_user_detail.detail,
+        t_user_detail.github,
+        t_user_detail.weibo,
+        t_user_detail.icon
+        FROM
+        t_user,
+        t_user_detail
+        WHERE
+        t_user.username = t_user_detail.NAME
+        AND t_user.username = #{username}
+    </select>
+
+
 </mapper>
 
 

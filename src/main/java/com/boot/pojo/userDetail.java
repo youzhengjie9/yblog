@@ -11,7 +11,15 @@ public class userDetail implements Serializable {
     private String detail; //详情
     private String github; //GitHub地址
     private String weibo; //微博地址
+    private String icon; //用户头像地址
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public int getId() {
         return id;
@@ -79,6 +87,7 @@ public class userDetail implements Serializable {
                 ", detail='" + detail + '\'' +
                 ", github='" + github + '\'' +
                 ", weibo='" + weibo + '\'' +
+                ", icon='" + icon + '\'' +
                 '}';
     }
 }

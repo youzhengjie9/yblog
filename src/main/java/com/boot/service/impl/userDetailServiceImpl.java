@@ -16,4 +16,9 @@ public class userDetailServiceImpl implements userDetailService {
     public userDetail selectUserDetailByUserName(String name) {
         return userDetailMapper.selectUserDetailByUserName(name);
     }
+
+    @Override
+    public void updateUserDetail(userDetail userDetail) {
+        userDetailMapper.updateUserDetail(userDetail);
+    }
 }

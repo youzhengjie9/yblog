@@ -23,5 +23,15 @@ public class userServiceImpl implements userService {
         userMapper.addUserAuthority(user_authority);
     }
 
+    @Override
+    public void updateEmail(String email) {
+        userMapper.updateEmail(email);
+    }
+
+    @Override
+    public user selectUserInfoByuserName(String username) {
+        return userMapper.selectUserInfoByuserName(username);
+    }
+
 
 }

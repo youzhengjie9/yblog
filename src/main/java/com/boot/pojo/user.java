@@ -12,6 +12,16 @@ public class user implements Serializable {
     private Date date; //创建日期
     private int valid;  //是否有效
 
+    private userDetail userDetail;
+
+    public com.boot.pojo.userDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(com.boot.pojo.userDetail userDetail) {
+        this.userDetail = userDetail;
+    }
+
     public int getId() {
         return id;
     }
@@ -60,6 +70,7 @@ public class user implements Serializable {
         this.valid = valid;
     }
 
+
     @Override
     public String toString() {
         return "user{" +
@@ -69,6 +80,7 @@ public class user implements Serializable {
                 ", email='" + email + '\'' +
                 ", date=" + date +
                 ", valid=" + valid +
+                ", userDetail=" + userDetail +
                 '}';
     }
 }
