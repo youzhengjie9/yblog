@@ -24,13 +24,23 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public void updateEmail(String email) {
-        userMapper.updateEmail(email);
+    public void updateEmail(String email, String username) {
+        userMapper.updateEmail(email, username);
     }
 
     @Override
     public user selectUserInfoByuserName(String username) {
         return userMapper.selectUserInfoByuserName(username);
+    }
+
+    @Override
+    public String selectPasswordByuserName(String username) {
+        return userMapper.selectPasswordByuserName(username);
+    }
+
+    @Override
+    public void updatePassword(String username, String password) {
+        userMapper.updatePassword(username,password);
     }
 
 

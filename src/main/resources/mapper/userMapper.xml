@@ -50,6 +50,16 @@
     </select>
 
 
+
+
+    <select id="selectPasswordByuserName" resultType="java.lang.String">
+        select password from t_user where username=#{username}
+    </select>
+
+    <update id="updatePassword">
+        update t_user set password = #{password} where username=#{username}
+    </update>
+
 </mapper>
 
 

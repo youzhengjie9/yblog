@@ -64,71 +64,70 @@
                                     <input th:value="${curName}" name="name"  type="hidden"  class="form-control"  required aria-required="true"/>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">邮箱：</label>
-                                        <div class="col-md-9" th:if="${user.getEmail()} ne null">
+                                        <div class="col-md-9" th:if="${user.getEmail()} ne null and ${user.getEmail()} ne ''">
                                             <input id="email1" th:value="${user.getEmail()}" name="email" type="email" class="form-control" placeholder="邮箱"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getEmail()} eq null">
+                                        <div class="col-md-9" th:if="${user.getEmail()} eq null or ${user.getEmail()} eq ''">
                                             <input id="email1"  name="email" type="email" class="form-control" placeholder="邮箱"  aria-required="true"/>
                                         </div>
                                     </div>
 
                                     <label class="col-md-3 control-label">头像：</label>
-                                    <div class="row" style="height: 400px;width: 400px;margin-left: 130px" >
+                                    <div th:if="${user.getUserDetail().getIcon()} eq null or ${user.getUserDetail().getIcon()} eq ''" class="row" style="height: 400px;width: 400px;margin-left: 130px" >
 
                                         <input id="uploadPicture" name="file" type="file" multiple=true class="file-loading">
 
                                     </div>
 
-<!--                                    <div th:if="${user.getUserDetail().getIcon()} ne null" class="row" style="height: 400px;width: 400px;margin-left: 130px" >-->
-<!--                                        <input id="uploadPicture" th:value="${user.getUserDetail().getIcon()}" name="file" type="file" multiple=true class="file-loading">-->
-
-<!--                                    </div>-->
+                                    <div th:if="${user.getUserDetail().getIcon()} ne null and ${user.getUserDetail().getIcon()} ne ''" class="row" style="height: 400px;width: 400px;margin-left: 130px" >
+                                        <input id="uploadPicture" th:text="'图片地址:'+${user.getUserDetail().getIcon()}" th:value="${user.getUserDetail().getIcon()}" name="file" type="file" multiple=true class="file-loading">
+                                    </div>
 
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">博客名称：</label>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} ne null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} ne null and ${user.getUserDetail().getBlogName()} ne ''">
                                             <input type="text" th:value="${user.getUserDetail().getBlogName()}" name="blogName" class="form-control"  placeholder="博客名称"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} eq null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getBlogName()} eq null or ${user.getUserDetail().getBlogName()} eq ''">
                                             <input type="text"  name="blogName" class="form-control"  placeholder="博客名称"  aria-required="true"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">职位：</label>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} ne null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} ne null and ${user.getUserDetail().getJob()} ne ''">
                                             <input type="text" th:value="${user.getUserDetail().getJob()}" name="job" class="form-control"  placeholder="职位"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} eq null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getJob()} eq null or ${user.getUserDetail().getJob()} eq ''">
                                             <input type="text"  name="job" class="form-control"  placeholder="职位"  aria-required="true"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">个人说明：</label>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} ne null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} ne null and ${user.getUserDetail().getDetail()} ne ''">
                                             <input type="text" th:value="${user.getUserDetail().getDetail()}" name="detail" class="form-control"  placeholder="个人说明"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} eq null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getDetail()} eq null or ${user.getUserDetail().getDetail()} eq ''">
                                             <input type="text"  name="detail" class="form-control"  placeholder="个人说明"  aria-required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">GitHub：</label>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} ne null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} ne null and ${user.getUserDetail().getGithub()} ne ''">
                                             <input type="text" th:value="${user.getUserDetail().getGithub()}" name="github" class="form-control"  placeholder="GitHub"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} eq null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getGithub()} eq null or ${user.getUserDetail().getGithub()} eq ''">
                                             <input type="text"  name="github" class="form-control"  placeholder="GitHub"  aria-required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">微博：</label>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} ne null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} ne null and ${user.getUserDetail().getWeibo()} ne ''">
                                             <input type="text" th:value="${user.getUserDetail().getWeibo()}" name="weibo" class="form-control"  placeholder="微博"  aria-required="true"/>
                                         </div>
-                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} eq null">
+                                        <div class="col-md-9" th:if="${user.getUserDetail().getWeibo()} eq null or ${user.getUserDetail().getWeibo()} eq ''">
                                             <input type="text"  name="weibo" class="form-control"  placeholder="微博"  aria-required="true"/>
                                         </div>
                                     </div>
@@ -136,7 +135,7 @@
 
                                     <div class="clearfix pull-right">
                                         <button id="btn1" type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
-                                            保存设置
+                                            保存资料
                                         </button>
                                     </div>
                                 </form>
@@ -150,12 +149,12 @@
                                 <h3 class="panel-title">修改密码</h3>
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal" role="form" id="advanced-form">
+                                <form method="post" th:action="@{/myuser/updatePassword}" autocomplete="off" class="form-horizontal" role="form" id="advanced-form">
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">原密码；</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="cdnURL" placeholder="CDN地址" />
+                                            <input type="password" class="form-control" required name="oldPassword" placeholder="原密码" />
                                             <span class="help-block"><small>您需要知道你以前的密码</small></span>
                                         </div>
                                     </div>
@@ -163,21 +162,21 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">新密码：</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="cacheKey" placeholder="你的新密码"/>
+                                            <input type="password" class="form-control" required name="newPassword1" placeholder="你的新密码"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">确认新密码：</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="pluginName" placeholder="请再一次输入新密码"/>
+                                            <input type="password" class="form-control" required name="newPassword2" placeholder="请再一次输入新密码"/>
                                         </div>
                                     </div>
 
 
                                     <div class="clearfix pull-right">
-                                        <button type="button" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
-                                            保存设置
+                                        <button type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
+                                            确认修改
                                         </button>
                                     </div>
                                 </form>

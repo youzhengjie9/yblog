@@ -15,7 +15,11 @@ public interface userMapper {
 
     void addUserAuthority(user_authority user_authority);
 
-    void updateEmail(@Param("email") String email);
+    void updateEmail(@Param("email") String email,@Param("username") String username);
 
     user selectUserInfoByuserName(@Param("username") String username);
+
+    String selectPasswordByuserName(@Param("username") String username);
+
+    void updatePassword(@Param("username") String username,@Param("password") String password);
 }

@@ -51,7 +51,7 @@ public final class fileUtil {
     }
 
     //获取静态路径
-    private static final String getStaticPath() throws FileNotFoundException {
+    public static final String getStaticPath() throws FileNotFoundException {
         String path = ResourceUtils.getURL("classpath:static").getPath();
         String substring = path.substring(1, path.length());
         return substring;

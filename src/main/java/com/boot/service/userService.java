@@ -11,7 +11,11 @@ public interface userService {
 
     void addUserAuthority(user_authority user_authority);
 
-    void updateEmail(String email);
+    void updateEmail(String email,String username);
 
     user selectUserInfoByuserName(String username);
+
+    String selectPasswordByuserName(String username);
+
+    void updatePassword(String username,String password);
 }

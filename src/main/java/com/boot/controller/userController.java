@@ -14,6 +14,7 @@ import com.boot.utils.fileUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
@@ -72,23 +73,48 @@ public class userController {
     //上传头像
     @RequestMapping(path = "/uploadIcon")
 //    @ResponseBody
-    public String uploadIcon(userDetail userDetail,String email, Model model, MultipartFile file, HttpServletRequest request) throws IOException {
+    public String uploadIcon(HttpSession session,userDetail userDetail,String email, Model model, MultipartFile file, HttpServletRequest request) throws IOException {
 
         boolean flag = file.isEmpty(); //判断是否是空
-        if(!flag){ //如果不是空的
+        String name = springSecurityUtil.currentUser(session);
+        if(!flag){ //如果不是空的,说明传入了头像
             InputStream inputStream = file.getInputStream(); //获取文件流
             byte fileByteArray[] =new byte[inputStream.available()];
             inputStream.read(fileByteArray);//读取到一个字节数组中
             String userImagePath = fileUtil.writeImage(file.getOriginalFilename(),fileByteArray); //传入头像名
-            userDetail.setIcon(userImagePath);
+
+            userDetail.setIcon(userImagePath); //把头像路径设置进去
+
+            //删除之前的头像
+            com.boot.pojo.userDetail userDetail1 = userDetailService.selectUserDetailByUserName(name);
+
+            String icon = userDetail1.getIcon();
+            String iconPath=fileUtil.getStaticPath()+icon; //拼接头像地址
+            File file1 = new File(iconPath);
+            try {
+                if (file1.exists()){
+                    file1.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         userDetailService.updateUserDetail(userDetail);
 
         if(email!=null && !email.equals("")){
-            userService.updateEmail(email);
+            userService.updateEmail(userDetail.getName(),email);
         }
 
+
+
+        user user = userService.selectUserInfoByuserName(name);
+
+
+
+        model.addAttribute("user",user);
+        model.addAttribute("curName",name);
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
@@ -96,7 +122,40 @@ public class userController {
 
     }
 
+    @RequestMapping(path = "/updatePassword")
+    public String updatePassword(String oldPassword,String newPassword1
+                                 ,String newPassword2,
+                                 HttpSession session,Model model){
 
+        boolean mt= (newPassword1.equals(newPassword2))?true:false;
+
+        String name = springSecurityUtil.currentUser(session);
+        if(mt){
+            //创建BCrypt加密器
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String password = userService.selectPasswordByuserName(name); //获取数据库已加密的密码
+            boolean matches = passwordEncoder.matches(oldPassword, password); //进行密码校对
+
+
+            if(matches){ //如果匹配成功
+
+
+                //进行修改
+                String encodePassword = passwordEncoder.encode(newPassword1); //放入数据库
+                userService.updatePassword(name,encodePassword);
+
+            }
+
+        }
+
+        user user = userService.selectUserInfoByuserName(name);
+        model.addAttribute("user",user);
+        model.addAttribute("curName",name);
+        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("commons",Commons.getInstance());
+
+        return "back/user_list";
+    }
 
 
 
