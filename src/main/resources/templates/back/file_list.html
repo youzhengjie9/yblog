@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='附件管理',active='file'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+
+    <!-- 如果你想在上传之前修改图片大小需要加入canvas-to-blob.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.js"></script>
+
+    <!-- 如果你想在最初的预览中排序/重新排列需要引入sortable.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+
+    <!-- 如果你想在HTML文件预览中净化HTML内容则要引入purify.min.js is  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/dompurify/1.0.10/purify.min.js"></script>
+
+    <!-- 主要的 fileinput 插件库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+
+    <!-- 如果你想在放大的模态页面中查看文件详细信息需要引入bootstrap.js -->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- 可选，如果你需要像font awesome 这样的主题，就像下面的代码一样引入它 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/fa.min.js"></script>
+
+    <!-- 可选，如果你需要转换语言或翻译，就包含这个库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/zh.min.js"></script>
+
+    <!-- 自定义上传图片JS文件 -->
+    <script src="/static/js/uploadPic.js"></script>
+
+
+</head>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">附件管理</h4>
+                    </div>
+                    <div class="col-md-12">
+
+                        <form method="post" th:action="@{/file/fileupload}" class="form-horizontal" role="form"
+                              id="global-form" enctype="multipart/form-data" >
+
+<!--                            <label class="col-md-3 control-label"></label>-->
+<!--                            <div th:if="${user.getUserDetail().getIcon()} eq null or ${user.getUserDetail().getIcon()} eq ''" class="row" style="height: 400px;width: 400px;margin-left: 130px" >-->
+
+                                <input id="uploadPicture" name="files" type="file" multiple=true class="file-loading">
+
+<!--                            </div>-->
+
+
+                            <div class="clearfix pull-right">
+                                <button id="btn1" type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
+                                    上传
+                                </button>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </div>
+<!--                <div th:replace="back/footer :: footer-content"></div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div th:replace="back/footer :: footer"></div>-->
+
+</body>
+
+<script >
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "http://localhost:8080/file/fileupload",
+            previewFileType: "image",
+            uploadAsync: true,
+            showCaption: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
+            enctype : 'multipart/form-data',
+            //隐藏上传按钮
+            showUpload: false,
+            //最大上传文件数量
+            maxFileCount: 8,
+            //上传文件最大大小（kb）
+            maxFileSize: 5120,
+            showBrowse: true,
+            dropZoneTitle: '拖拽头像图片到这里...',
+            browseLabel: "选择图片",
+            uploadClass: "btn btn-info",
+            uploadLabel: "上传",
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！'
+        }).on('fileerror', function (event, data, msg) {
+            alert('图片上传失败！' + msg);
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.response.name);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            alert("图片被清除啦！");
+        });
+
+    });
+
+
+
+
+
+</script>
+
+
+</html>

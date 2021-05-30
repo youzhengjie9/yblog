@@ -135,6 +135,13 @@
             <version>2.4</version>
         </dependency>
 
+<!--        google thumbnailator 图像处理工具 -->
+         <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

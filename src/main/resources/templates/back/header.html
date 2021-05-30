@@ -98,6 +98,11 @@
                            th:class="${active}=='category'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-tags" aria-hidden="true"></i><span> 分类/标签 </span></a>
                     </li>
+                    <li th:class="${active}=='file'?'active':''">
+                        <a th:href="@{/file/list}"
+                           th:class="${active}=='file'?'waves-effect active':'waves-effect'">
+                            <i class="fa fa-tags" aria-hidden="true"></i><span> 附件管理 </span></a>
+                    </li>
                     <li th:class="${active}=='user'?'active':''">
                         <a th:href="@{/myuser/list}" th:class="${active}=='user'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-tags" aria-hidden="true"></i><span> 个人资料 </span></a>
