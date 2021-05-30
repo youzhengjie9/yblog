@@ -65,6 +65,8 @@ public class userController {
         model.addAttribute("commons", Commons.getInstance());
         model.addAttribute("bootstrap",new bootstrap());
 
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+        model.addAttribute("userDetail",userDetail);
 
         return "back/user_list";
     }
@@ -101,7 +103,10 @@ public class userController {
 
         }
 
-        userDetailService.updateUserDetail(userDetail);
+        userDetailService.updateUserDetail(userDetail); //修改之后再查询一次头像地址
+
+        com.boot.pojo.userDetail userDetail1 = userDetailService.selectUserDetailByUserName(name);
+        model.addAttribute("userDetail",userDetail1);
 
         if(email!=null && !email.equals("")){
             userService.updateEmail(userDetail.getName(),email);
@@ -117,6 +122,8 @@ public class userController {
         model.addAttribute("curName",name);
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
+
+
 
         return "back/user_list";
 
@@ -153,6 +160,8 @@ public class userController {
         model.addAttribute("curName",name);
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+        model.addAttribute("userDetail",userDetail);
 
         return "back/user_list";
     }

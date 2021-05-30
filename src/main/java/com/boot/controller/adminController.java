@@ -54,6 +54,9 @@ public class adminController {
     @Autowired
     private tagService tagService;
 
+    @Autowired
+    private userDetailService userDetailService;
+
 
     //初始化redis有关t_tag表的数据
     @PostConstruct
@@ -90,6 +93,8 @@ public class adminController {
         int count = articleService.selectArticleCount();
         model.addAttribute("articleCount", count);
 
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
 
         return "back/index";
     }
@@ -103,6 +108,8 @@ public class adminController {
         logger.debug(time + "   用户名：" + username + "进入后台发布页面");
         model.addAttribute("commons", Commons.getInstance());
 
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/article_edit";
     }
 
@@ -127,6 +134,8 @@ public class adminController {
         PageInfo pageInfo = new PageInfo(articles);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("articles", articles);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/article_list";
     }
 
@@ -150,6 +159,8 @@ public class adminController {
         PageInfo pageInfo = new PageInfo(articles);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("articles", articles);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/article_list";
     }
 
@@ -163,6 +174,8 @@ public class adminController {
         model.addAttribute("commons", Commons.getInstance());
         Article article = articleService.selectArticleByArticleIdNoComment(article_id);
         model.addAttribute("contents", article);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/article_edit";
     }
 
@@ -331,7 +344,9 @@ public class adminController {
     public String toCommentList(@RequestParam(value = "delId",defaultValue = "-1") int delId,
                                 @RequestParam(value = "id",defaultValue = "-1") int id,
                                 @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                HttpSession session,
                                 Model model) {
+        String username = springSecurityUtil.currentUser(session);
         //处理审核
         if(id!=-1){
             try {
@@ -359,7 +374,8 @@ public class adminController {
         PageInfo pageInfo = new PageInfo(comments);
         model.addAttribute("comments",comments);
         model.addAttribute("pageInfo",pageInfo);
-
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/comment_list";
     }
 
@@ -382,8 +398,9 @@ public class adminController {
 
 
     @RequestMapping(path = "/toTagList")
-    public String toTagList(Model model) {
+    public String toTagList(HttpSession session,Model model) {
 
+        String username = springSecurityUtil.currentUser(session);
 
         List<category> categories = categoryService.selectCategories();
         List<tag> tags = tagService.selectAllTag();
@@ -392,14 +409,15 @@ public class adminController {
         model.addAttribute("categories",categories);
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
-
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
         return "back/categories";
     }
 
 
     //修改分类
     @PostMapping(path = "/updateCategory")
-    public String updateCategory(String oldName,String newName,Model model){
+    public String updateCategory(String oldName,String newName,HttpSession session,Model model){
         try {
 
             //修改分类表的分类名
@@ -419,12 +437,17 @@ public class adminController {
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
+        String username = springSecurityUtil.currentUser(session);
+
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
+
         return "back/categories";
 
     }
 
     @RequestMapping(path = "/deleteCategory")
-    public String deleteCategory(@RequestParam(value = "n",defaultValue = "") String n,Model model){
+    public String deleteCategory(@RequestParam(value = "n",defaultValue = "") String n,HttpSession session,Model model){
         if(n!=null&&!n.equals(""))
         {
             try{
@@ -450,12 +473,16 @@ public class adminController {
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
+        String username = springSecurityUtil.currentUser(session);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
+
         return "back/categories";
     }
 
 
     @PostMapping(path = "/addCategory")
-    public String addCategory(category category,Model model){
+    public String addCategory(category category,HttpSession session,Model model){
 
         try {
             categoryService.addCategory(category);
@@ -471,6 +498,10 @@ public class adminController {
         model.addAttribute("bootstrap",new bootstrap());
         model.addAttribute("commons",Commons.getInstance());
 
+        String username = springSecurityUtil.currentUser(session);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
+
         return "back/categories";
     }
 
@@ -478,10 +509,15 @@ public class adminController {
 
 
     @RequestMapping(path = "/toSetting")
-    public String toSetting(Model model) {
+    public String toSetting(HttpSession session,Model model) {
 
         model.addAttribute("commons",Commons.getInstance());
         model.addAttribute("bootstrap",new bootstrap());
+
+        String username = springSecurityUtil.currentUser(session);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail",userDetail);
+
         return "back/setting";
     }
 
