@@ -19,6 +19,7 @@ springBoot博客系统，该项目简单上手，非常适合初学者学习，�
 * **jQuery**
 * **bootstrap**
 * **autoMail**
+* **google Thumbnailator**
 
 #### 安装教程
 * 1.找到sql包的sql文件并导入到自己的数据库中

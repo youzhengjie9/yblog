@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='附件管理',active='file'">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='附件管理',active='img'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
 <head>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
@@ -46,9 +46,15 @@
                     <div class="col-sm-12">
                         <h4 class="page-title">附件管理</h4>
                     </div>
+                    <div class="col-lg-6 mt-3" th:each="img:${imgs}">
+                        <img width="180px" height="180px" alt="" class="img-thumbnail img-fluid"
+                             th:src="${img.small_img}">
+                    </div>
                     <div class="col-md-12">
 
-                        <form method="post" th:action="@{/file/fileupload}" class="form-horizontal" role="form"
+
+
+                        <form method="post" th:action="@{/img/imgupload}" class="form-horizontal" role="form"
                               id="global-form" enctype="multipart/form-data" >
 
 <!--                            <label class="col-md-3 control-label"></label>-->
@@ -61,7 +67,7 @@
 
                             <div class="clearfix pull-right">
                                 <button id="btn1" type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
-                                    上传
+                                    开始上传
                                 </button>
                             </div>
 
@@ -82,7 +88,7 @@
 <script >
     $(function () {
         $("#uploadPicture").fileinput({
-            uploadUrl: "http://localhost:8080/file/fileupload",
+            uploadUrl: "http://localhost:8080/img/imgupload",
             previewFileType: "image",
             uploadAsync: true,
             showCaption: false,

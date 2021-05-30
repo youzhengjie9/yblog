@@ -19,7 +19,7 @@ public final class fileUtil {
 
 
     //获取文件后缀名（会转换成小写）
-    private static final String getFileSuffix(String originalFilename){
+    public static final String getFileSuffix(String originalFilename){
 
         //获取头像后缀名 ,采用导入遍历，遇到“.”就break ，保存后缀名
         StringBuilder stringBuilder=new StringBuilder();
@@ -44,7 +44,7 @@ public final class fileUtil {
 
     }
 
-    private static final String getRandomName(){
+    public static final String getRandomName(){
         String s = UUID.randomUUID().toString();
         String s1 = s.replaceAll("-", "");
         return s1;
@@ -57,7 +57,22 @@ public final class fileUtil {
         return substring;
     }
 
-    private static final void write(String path,byte[] fileByteArray) throws IOException {
+    //获取大图文件夹路径
+    public static final String getBigImgPath() throws FileNotFoundException {
+        String staticPath = getStaticPath();
+        staticPath+="/big_img/";
+        return staticPath;
+    }
+
+    //获取缩略图文件夹路径
+    public static final String getSmallImgPath() throws FileNotFoundException {
+        String staticPath = getStaticPath();
+        staticPath+="/small_img/";
+        return staticPath;
+    }
+
+
+    public static final void write(String path,byte[] fileByteArray) throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream(new File(path));
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 
