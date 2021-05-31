@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(path = "/img")
@@ -37,7 +38,7 @@ public class ImgController {
     @Autowired
     private imgService imgService;
 
-    private static final Object lock=new Object(); //悲观锁
+//    private static final Object lock=new Object(); //悲观锁
 
     @RequestMapping(path = "/list")
     public String toFileList(HttpSession session, Model model){
@@ -60,17 +61,17 @@ public class ImgController {
 
 
         if(files.length>0){ //如果有文件
-            String bigImgPath = fileUtil.getBigImgPath();
-            String smallImgPath = fileUtil.getSmallImgPath();
 
-            synchronized (lock){
 
                 for (MultipartFile file : files) {
+                    String bigImgPath = fileUtil.getBigImgPath();
+                    String smallImgPath = fileUtil.getSmallImgPath();
                     if(!file.isEmpty()){
                         //处理大图
                         InputStream inputStream = file.getInputStream();
                         byte bytes[]=new byte[inputStream.available()];
                         inputStream.read(bytes);
+
                         String randomName = fileUtil.getRandomName();
                         String fileSuffix = fileUtil.getFileSuffix(file.getOriginalFilename()); //后缀名
                         bigImgPath+=randomName+"."+fileSuffix;
@@ -81,15 +82,18 @@ public class ImgController {
 
                         //缩略图文件名
                         String randomName2 = fileUtil.getRandomName(); //缩略图随机名
-                        smallImgPath+=randomName2+"."+fileSuffix;
+                        String fileSuffix2 = fileUtil.getFileSuffix(file.getOriginalFilename());
+                        smallImgPath+=randomName2+"."+fileSuffix2;
 
                         Thumbnails.of(bigImgPath)
                                 //图片尺寸
                                 .size(256,256)
                                 //输出质量，0-1 ，越大图片质量越好
                                 .outputQuality(0.9f)
-                                //输出格式
-                                .outputFormat(fileSuffix)
+                                /**
+                                 * keepAspectRatio(false) 默认是按照比例缩放的,所以把它关掉
+                                 */
+                                .keepAspectRatio(false)
                                 //输出到的文件全名
                                 .toFile(smallImgPath);
 
@@ -102,7 +106,7 @@ public class ImgController {
             }
 
 
-        }
+
 
         List<img> imgs = imgService.selectAllImg();
         model.addAttribute("imgs",imgs);

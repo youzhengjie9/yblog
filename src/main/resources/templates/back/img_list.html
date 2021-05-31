@@ -34,6 +34,43 @@
     <!-- 自定义上传图片JS文件 -->
     <script src="/static/js/uploadPic.js"></script>
 
+    <style type="text/css">
+        #up {
+            display: none;
+        }
+
+        #manager {
+            display: none;
+        }
+        #m1{
+            display:inline;white-space:nowrap;
+            width: 72px;
+            height: 20px;
+            float: left;
+        }
+        #s1{
+            display:inline;white-space:nowrap;
+            width: 72px;
+            height: 20px;
+            display: none;
+            float: left;
+        }
+        #s2{
+            display:inline;white-space:nowrap;
+            width: 72px;
+            height: 20px;
+            float: left;
+        }
+        #s3{
+            display:inline;white-space:nowrap;
+            width: 72px;
+            height: 20px;
+            float: left;
+            display: none;
+        }
+
+
+    </style>
 
 </head>
 <body class="fixed-left">
@@ -44,29 +81,36 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="page-title">附件管理</h4>
+                        <h4 class="page-title">
+                            <div id="m1">附件管理</div>
+                            <div id="s1"><a id="manager" href="#" onclick="changeStyle2()">附件管理</a></div>
+                            <div id="s2"><a href="#" onclick="changeStyle1()">附件上传</a></div>
+                            <div id="s3">附件上传</div>
+                        </h4>
                     </div>
-                    <div class="col-lg-6 mt-3" th:each="img:${imgs}">
-                        <img width="180px" height="180px" alt="" class="img-thumbnail img-fluid"
-                             th:src="${img.small_img}">
+                    <!--                    图片展示-->
+                    <div id="show" class="row">
+                        <th:block th:each="img : ${imgs}">
+                            <div class="col-lg-2 col-md-3 col-sm-6 co   l-6 div-thumbnail img-rounded">
+                                <a href="#"><img
+                                        class="img-thumbnail img-fluid img-responsive"
+                                        th:src="${img.getSmall_img()}"></a>
+                            </div>
+                        </th:block>
                     </div>
-                    <div class="col-md-12">
-
+                    <!--                    图片上传-->
+                    <div id="up" class="col-md-12">
 
 
                         <form method="post" th:action="@{/img/imgupload}" class="form-horizontal" role="form"
-                              id="global-form" enctype="multipart/form-data" >
+                              id="global-form" enctype="multipart/form-data">
 
-<!--                            <label class="col-md-3 control-label"></label>-->
-<!--                            <div th:if="${user.getUserDetail().getIcon()} eq null or ${user.getUserDetail().getIcon()} eq ''" class="row" style="height: 400px;width: 400px;margin-left: 130px" >-->
-
-                                <input id="uploadPicture" name="files" type="file" multiple=true class="file-loading">
-
-<!--                            </div>-->
+                            <input id="uploadPicture" name="files" type="file" multiple=true class="file-loading">
 
 
                             <div class="clearfix pull-right">
-                                <button id="btn1" type="submit" th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
+                                <button id="btn1" type="submit"
+                                        th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
                                     开始上传
                                 </button>
                             </div>
@@ -75,8 +119,10 @@
 
 
                     </div>
+
+
                 </div>
-<!--                <div th:replace="back/footer :: footer-content"></div>-->
+                <!--                <div th:replace="back/footer :: footer-content"></div>-->
             </div>
         </div>
     </div>
@@ -85,7 +131,30 @@
 
 </body>
 
-<script >
+<script>
+
+    function changeStyle1() {
+
+        document.getElementById('up').style.display = 'block';
+        document.getElementById('show').style.display = 'none';
+        document.getElementById('manager').style.display = 'block';
+        document.getElementById('m1').style.display = 'none';
+        document.getElementById('s2').style.display='none';
+        document.getElementById('s3').style.display='block';
+        document.getElementById('s1').style.display='block';
+    }
+    function changeStyle2(){
+        document.getElementById('s1').style.display='none';
+        document.getElementById('m1').style.display='block';
+        document.getElementById('s2').style.display='block';
+        document.getElementById('s3').style.display='none';
+        document.getElementById('manager').style.display='none';
+        document.getElementById('show').style.display='block';
+        document.getElementById('up').style.display='none';
+
+    }
+
+
     $(function () {
         $("#uploadPicture").fileinput({
             uploadUrl: "http://localhost:8080/img/imgupload",
@@ -93,7 +162,7 @@
             uploadAsync: true,
             showCaption: false,
             allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
-            enctype : 'multipart/form-data',
+            enctype: 'multipart/form-data',
             //隐藏上传按钮
             showUpload: false,
             //最大上传文件数量
@@ -124,9 +193,6 @@
         });
 
     });
-
-
-
 
 
 </script>
