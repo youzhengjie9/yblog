@@ -13,4 +13,8 @@
         select * from t_img
     </select>
 
+    <select id="selectImgByid" resultType="com.boot.pojo.img">
+        select * from t_img where id=#{id}
+    </select>
+
 </mapper>

@@ -26,4 +26,9 @@ public class imgServiceImpl implements imgService {
     public List<img> selectAllImg() {
         return imgMapper.selectAllImg();
     }
+
+    @Override
+    public img selectImgByid(int id) {
+        return imgMapper.selectImgByid(id);
+    }
 }

@@ -13,4 +13,5 @@ public interface imgService {
     //从数据库查找所有图片地址
     List<img> selectAllImg();
 
+    img selectImgByid(int id);
 }

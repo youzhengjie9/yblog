@@ -16,6 +16,6 @@ public interface imgMapper {
 
     List<img> selectAllImg();
 
-
+    img selectImgByid(@Param("id") int id);
 
 }
