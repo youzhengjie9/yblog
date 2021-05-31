@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='监控管理',active='monitor'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<style>
+    #m1 {
+        display: inline;
+        white-space: nowrap;
+        width: 72px;
+        height: 20px;
+        float: left;
+    }
+
+    #s1 {
+        display: inline;
+        white-space: nowrap;
+        width: 72px;
+        height: 20px;
+        display: none;
+        float: left;
+    }
+
+    #s2 {
+        display: inline;
+        white-space: nowrap;
+        width: 72px;
+        height: 20px;
+        float: left;
+    }
+
+    #s3 {
+        display: inline;
+        white-space: nowrap;
+        width: 72px;
+        height: 20px;
+        float: left;
+        display: none;
+    }
+</style>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="m1">RabbitMQ</div>
+                        <div id="s1"><a id="manager" href="#" onclick="changeStyle2()">RabbitMQ</a></div>
+                        <div id="s2"><a href="#" onclick="changeStyle1()">Elasticsearch</a></div>
+                        <div id="s3">Elasticsearch</div>
+                    </div>
+                    <div id="show" class="col-md-12">
+
+                        <iframe  width="1320px" height="800px" scrolling="no" frameborder="0"
+                                src="http://localhost:15672/"></iframe>
+
+                    </div>
+                    <div id="up" class="col-md-12">
+
+                        <iframe  width="1320px" height="800px" scrolling="no" frameborder="0"
+                                src="http://localhost:5601/"></iframe>
+
+                    </div>
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+<script>
+    function changeStyle1() {
+
+        document.getElementById('up').style.display = 'block';
+        document.getElementById('show').style.display = 'none';
+        document.getElementById('m1').style.display = 'none';
+        document.getElementById('s2').style.display = 'none';
+        document.getElementById('s3').style.display = 'block';
+        document.getElementById('s1').style.display = 'block';
+    }
+
+    function changeStyle2() {
+        document.getElementById('s1').style.display = 'none';
+        document.getElementById('m1').style.display = 'block';
+        document.getElementById('s2').style.display = 'block';
+        document.getElementById('s3').style.display = 'none';
+        document.getElementById('show').style.display = 'block';
+        document.getElementById('up').style.display = 'none';
+
+    }
+</script>
+
+
+</html>

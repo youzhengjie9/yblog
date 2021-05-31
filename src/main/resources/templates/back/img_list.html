@@ -46,7 +46,7 @@
         #m1 {
             display: inline;
             white-space: nowrap;
-            width: 72px;
+            width: 85px;
             height: 20px;
             float: left;
         }
@@ -54,7 +54,7 @@
         #s1 {
             display: inline;
             white-space: nowrap;
-            width: 72px;
+            width: 85px;
             height: 20px;
             display: none;
             float: left;
@@ -63,7 +63,7 @@
         #s2 {
             display: inline;
             white-space: nowrap;
-            width: 72px;
+            width: 85px;
             height: 20px;
             float: left;
         }
@@ -71,12 +71,11 @@
         #s3 {
             display: inline;
             white-space: nowrap;
-            width: 72px;
+            width: 85px;
             height: 20px;
             float: left;
             display: none;
         }
-
 
 
     </style>
@@ -98,33 +97,19 @@
                         </h4>
                     </div>
                     <!--                    图片展示-->
-<!--                    <div id="show" class="row">-->
-<!--                        <th:block th:each="img,imgStat: ${imgs}">-->
-<!--                            <div class="col-lg-2 col-md-3 col-sm-6 col-6 div-thumbnail img-rounded">-->
-<!--                                <a href="#"><img-->
-<!--                                        class="img-thumbnail img-fluid img-responsive"-->
-<!--                                        th:src="${img.getSmall_img()}"></a>-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                                <button>下载</button>-->
-<!--                            </div>-->
 
-<!--                        </th:block>-->
-<!--                    </div>-->
-
-
-<!--                    col-md-2 col-xs-6 text-center m-t-10-->
                     <div id="show" class="row">
 
-                        <div  class="col-lg-2 col-md-3 col-sm-6 col-6 div-thumbnail img-rounded text-center m-t-10" th:each="img: ${imgs}">
-                            <a  target="_blank">
+                        <div class="col-lg-2 col-md-3 col-sm-6 col-6 div-thumbnail img-rounded text-center m-t-10"
+                             th:each="img: ${imgs}">
+                            <a target="_blank">
                                 <img class="img-thumbnail img-fluid img-responsive"
                                      th:src="${img.getSmall_img()}">
                             </a>
 
                             <div class="clearfix">
                                 <a type="button" th:href="@{'/img/dowmloadImg?f='+${img.getId()}}"
-                                        class="btn btn-warning btn-sm waves-effect waves-light m-t-5 copy">
+                                   class="btn btn-warning btn-sm waves-effect waves-light m-t-5 copy">
                                     <i class="fa fa-copy"></i>
                                     <span>下载</span>
                                 </a>
