@@ -53,8 +53,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .failureForwardUrl("/LoginfailPage")
                 .and()
-                //关闭csrf
-//                .csrf().disable()
+                //不写这段代码，druid监控sql将失效（原因未明）
+                .csrf().ignoringAntMatchers("/druid/**")
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/page/1")
@@ -65,7 +66,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loginPage").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/article/**").permitAll()
-                .antMatchers("/druid/*").permitAll()
+                .antMatchers("/druid/**").permitAll()
                 .antMatchers("/user/**","/email/**","/plugins/**","/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
                 .antMatchers("/admin/**","/monitor/**").hasRole("admin")
