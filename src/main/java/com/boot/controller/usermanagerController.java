@@ -6,11 +6,13 @@ import com.boot.pojo.user;
 import com.boot.pojo.userDetail;
 import com.boot.pojo.user_authority;
 import com.boot.service.authorityService;
+import com.boot.service.userAuthorityService;
 import com.boot.service.userDetailService;
 import com.boot.service.userService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,9 @@ public class usermanagerController {
 
     @Autowired
     private authorityService authorityService;
+
+    @Autowired
+    private userAuthorityService userAuthorityService;
 
     @RequestMapping(path = "/list")
     public String toUserManager(HttpSession session, Model model){
@@ -78,9 +83,14 @@ public class usermanagerController {
                              String email,
                              HttpSession session,
                              Model model){
+        if(!StringUtils.isEmpty(email)){
+            userService.updateUserForEmail(id, email); //修改email
+        }
 
-        userService.updateUser(id, authorityid, email);
-        
+        user_authority user_authority = new user_authority();
+        user_authority.setUser_id(id);
+        user_authority.setAuthority_id(authorityid);
+        userAuthorityService.changeUserAuthority(user_authority);
 
 
         List<authority> authorities = authorityService.selectUserAuthority();

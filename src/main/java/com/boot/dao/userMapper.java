@@ -17,13 +17,13 @@ public interface userMapper {
 
     void addUserAuthority(user_authority user_authority);
 
-    void updateEmail(@Param("email") String email,@Param("username") String username);
+    void updateEmail(@Param("email") String email, @Param("username") String username);
 
     user selectUserInfoByuserName(@Param("username") String username);
 
     String selectPasswordByuserName(@Param("username") String username);
 
-    void updatePassword(@Param("username") String username,@Param("password") String password);
+    void updatePassword(@Param("username") String username, @Param("password") String password);
 
     List<user> selectAllUser();
 
@@ -33,7 +33,7 @@ public interface userMapper {
     //生效==valid变成1
     void updateValidTo_1(@Param("username") String username);
 
-    void updateUser(@Param("id") int id,
-                    @Param("email") String email);
+    void updateUserForEmail(@Param("id") int id,
+                            @Param("email") String email);
 
 }
