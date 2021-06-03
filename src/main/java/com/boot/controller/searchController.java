@@ -1,8 +1,10 @@
 package com.boot.controller;
 
 import com.boot.pojo.Article;
+import com.boot.pojo.link;
 import com.boot.service.articleService;
 import com.boot.service.elasticSearchService;
+import com.boot.service.linkService;
 import com.boot.utils.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,6 +34,9 @@ public class searchController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private linkService linkService;
 
     @Autowired
     private elasticSearchService elasticSearchService;
@@ -82,7 +87,9 @@ public class searchController {
         }
         modelAndView.addObject("commons", Commons.getInstance());
 
-
+        //友链
+        List<link> links = linkService.selectAllLink();
+        modelAndView.addObject("links",links);
         modelAndView.setViewName("client/index");
         return modelAndView;
 

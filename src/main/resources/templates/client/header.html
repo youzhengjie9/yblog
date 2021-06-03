@@ -8,12 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-transform"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+
+
     <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
     <link rel="apple-touch-icon" th:href="@{/user/img/apple-touch-icon.png}"/>
     <title><th:block th:text="${title ?: '首页'}"></th:block></title>
     <link th:href="@{/user/css/xcode.min.css}" rel="stylesheet"/>
     <link th:href="@{/user/css/style.min.css}" rel="stylesheet"/>
-    <script th:src="@{/assets/js/jquery.min.js}"></script>
+
+
+
     <script th:src="@{/assets/js/amazeui.min.js}"></script>
     <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
     <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
@@ -22,8 +28,9 @@
     <script th:src="@{/back/js/respond.min.js}"></script>
     <![endif]-->
 </head>
-<body  gtools_scp_screen_capture_injected="true" th:class="${is_post}?'':'bg-
-'">
+
+
+<body  gtools_scp_screen_capture_injected="true" th:class="${is_post}?'':'bg-'">
 <!--[if lt IE 8]>
 <div class="browsehappy" role="dialog">
     当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/" target="_blank">升级你的浏览器</a>。
@@ -42,10 +49,12 @@
             <a class="header-info" sec:authorize="isAnonymous()" th:href="@{/loginPage}" >登录</a>
             <a class="header-info" sec:authorize="isAuthenticated()" href="javascript:document.logoutform.submit();" >退出</a>
             <a  class="header-info" th:href="@{/toSendEmailPage}">注册</a>
+            <a id="link"  class="header-info" data-toggle="modal" data-target="#myModal">友链</a>
             <a  class="header-info" th:href="@{/admin/}">后台管理</a>
 
 
         </div>
+
         <div id="searchbox" class="navbar-search">
             <span class="icon-search" onclick="submitData()"></span>
             <form id="form" role="search" th:action="@{/search/1}">
@@ -57,6 +66,7 @@
         </div>
 
 
+
     </div>
 
     <script>
@@ -65,8 +75,12 @@
             document.getElementById("form").submit();
         }
 
-
     </script>
+
+
+
+
+
 
 
 </header>

@@ -4,9 +4,11 @@ import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.Article;
 import com.boot.pojo.Comment;
+import com.boot.pojo.link;
 import com.boot.pojo.userDetail;
 import com.boot.service.CommentService;
 import com.boot.service.articleService;
+import com.boot.service.linkService;
 import com.boot.service.userDetailService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
@@ -48,6 +50,9 @@ public class clientController {
 
     @Autowired
     private userDetailService userDetailService;
+
+    @Autowired
+    private linkService linkService;
 
     private final int DEFAULT_PAGENUM = 1;
 
@@ -94,6 +99,10 @@ public class clientController {
             modelAndView.addObject("userDetail", userDetail);
         }
 
+
+        //友链
+        List<link> links = linkService.selectAllLink();
+        modelAndView.addObject("links",links);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -155,6 +164,9 @@ public class clientController {
             modelAndView.addObject("userDetail", userDetail);
         }
 
+        //友链
+        List<link> links = linkService.selectAllLink();
+        modelAndView.addObject("links",links);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -243,6 +255,11 @@ public class clientController {
                 modelAndView.addObject("pageInfo", pageInfo);
                 modelAndView.addObject("comments", comments);
             }
+
+            //友链
+            List<link> links = linkService.selectAllLink();
+            modelAndView.addObject("links",links);
+
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
             modelAndView.addObject("articleId", articleId);
