@@ -11,8 +11,18 @@ public class user implements Serializable {
     private String email; //邮箱
     private Date date; //创建日期
     private int valid;  //是否有效
+    private user_authority user_authority;//拥有权限
 
     private userDetail userDetail;
+
+
+    public com.boot.pojo.user_authority getUser_authority() {
+        return user_authority;
+    }
+
+    public void setUser_authority(com.boot.pojo.user_authority user_authority) {
+        this.user_authority = user_authority;
+    }
 
     public com.boot.pojo.userDetail getUserDetail() {
         return userDetail;
@@ -70,7 +80,6 @@ public class user implements Serializable {
         this.valid = valid;
     }
 
-
     @Override
     public String toString() {
         return "user{" +
@@ -80,6 +89,7 @@ public class user implements Serializable {
                 ", email='" + email + '\'' +
                 ", date=" + date +
                 ", valid=" + valid +
+                ", user_authority=" + user_authority +
                 ", userDetail=" + userDetail +
                 '}';
     }

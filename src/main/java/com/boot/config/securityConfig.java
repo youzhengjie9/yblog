@@ -69,8 +69,13 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/user/**","/email/**","/plugins/**","/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
-                .antMatchers("/admin/**","/monitor/**").hasRole("admin")
+                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/**").hasRole("admin")
                 .antMatchers("/myuser/**","/img/**").hasAnyRole("admin","common")
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and()
+//                如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）
+                .headers()
+                .frameOptions()
+                .disable();
     }
 }

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface userMapper {
@@ -22,4 +24,16 @@ public interface userMapper {
     String selectPasswordByuserName(@Param("username") String username);
 
     void updatePassword(@Param("username") String username,@Param("password") String password);
+
+    List<user> selectAllUser();
+
+    //失效==valid变成0
+    void updateValidTo_0(@Param("username") String username);
+
+    //生效==valid变成1
+    void updateValidTo_1(@Param("username") String username);
+
+    void updateUser(@Param("id") int id,
+                    @Param("email") String email);
+
 }

@@ -80,7 +80,7 @@
                                     </div>
 
                                     <div th:if="${user.getUserDetail().getIcon()} ne null and ${user.getUserDetail().getIcon()} ne ''" class="row" style="height: 400px;width: 400px;margin-left: 130px" >
-                                        <input id="uploadPicture" th:text="'图片地址:'+${user.getUserDetail().getIcon()}" th:value="${user.getUserDetail().getIcon()}" name="file" type="file" multiple=true class="file-loading">
+                                        <input id="uploadPicture" th:utext="'图片地址:'+${user.getUserDetail().getIcon()}" th:value="${user.getUserDetail().getIcon()}" name="file" type="file" multiple=true class="file-loading">
                                     </div>
 
 
@@ -188,7 +188,7 @@
 
 
 
-<!--                <div th:replace="back/footer :: footer-content"></div>-->
+                <div th:replace="back/footer :: footer-content"></div>
             </div>
         </div>
     </div>

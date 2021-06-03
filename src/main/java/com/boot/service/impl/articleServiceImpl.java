@@ -95,4 +95,14 @@ public class articleServiceImpl implements articleService {
         articleMapper.updateCategory(oldName, newName);
     }
 
+    @Override
+    public void updateAllowCommentTo_0(int id) {
+        articleMapper.updateAllowCommentTo_0(id);
+    }
+
+    @Override
+    public void updateAllowCommentTo_1(int id) {
+        articleMapper.updateAllowCommentTo_1(id);
+    }
+
 }

@@ -4,6 +4,8 @@ import com.boot.pojo.user;
 import com.boot.pojo.user_authority;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface userService {
 
 
@@ -18,4 +20,16 @@ public interface userService {
     String selectPasswordByuserName(String username);
 
     void updatePassword(String username,String password);
+
+    List<user> selectAllUser();
+
+    //失效==valid变成0
+    void updateValidTo_0(String username);
+
+    //生效==valid变成1
+    void updateValidTo_1(String username);
+
+    void updateUser(int id,
+                    int authorityid,
+                    String email);
 }

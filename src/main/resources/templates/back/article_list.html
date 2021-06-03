@@ -5,7 +5,78 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+
+    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+
 </head>
+<style>
+    .switch {
+        width: 57px;
+        height: 28px;
+        position: relative;
+        border: 1px solid #dfdfdf;
+        background-color: #fdfdfd;
+        box-shadow: #dfdfdf 0 0 0 0 inset;
+        border-radius: 20px;
+        background-clip: content-box;
+        display: inline-block;
+        -webkit-appearance: none;
+        user-select: none;
+        outline: none;
+    }
+
+    .switch:before {
+        content: '';
+        width: 26px;
+        height: 26px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 20px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .switch:checked {
+        border-color: #64bd63;
+        box-shadow: #64bd63 0 0 0 16px inset;
+        background-color: #64bd63;
+    }
+
+    .switch:checked:before {
+        left: 30px;
+    }
+
+    .switch.switch-anim {
+        transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+    }
+
+    .switch.switch-anim:before {
+        transition: left 0.3s;
+    }
+
+    .switch.switch-anim:checked {
+        box-shadow: #64bd63 0 0 0 16px inset;
+        background-color: #64bd63;
+        transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+    }
+
+    .switch.switch-anim:checked:before {
+        transition: left 0.3s;
+    }
+</style>
 <body class="fixed-left">
 <div id="wrapper">
     <div th:replace="back/header::header-body"></div>
@@ -24,6 +95,7 @@
                                 <th width="15%">发布时间</th>
                                 <th>浏览量</th>
                                 <th>所属分类</th>
+                                <th>开启评论</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -36,6 +108,14 @@
                                     <td><th:block th:text="${commons.dateFormat(article.created)}"/></td>
                                     <td><th:block th:text="${article.getStatistic().getHits()}"/></td>
                                     <td><th:block th:text="${article.categories}"/></td>
+
+                                    <td>
+                                        <input th:if="${article.allowComment}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax([[${article.allowComment}]],[[${article.id}]])"
+                                               type="checkbox" checked/>
+                                        <input th:if="${not article.allowComment}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax([[${article.allowComment}]],[[${article.id}]])"
+                                               type="checkbox"/>
+                                    </td>
+
                                     <td>
                                         <a th:href="@{'/admin/toEditArticle/'+${article.id}}"
                                            class="btn btn-primary btn-sm waves-effect waves-light m-b-5">
@@ -43,7 +123,7 @@
                                         <a href="javascript:void(0)" th:onclick="'delArticle('+${article.id}+');'"
                                            class="btn btn-danger btn-sm waves-effect waves-light m-b-5">
                                             <i class="fa fa-trash-o"></i> <span>删除</span></a>
-                                        <a class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="javascript:void(0)">
+                                        <a onclick="f1()" class="btn btn-warning btn-sm waves-effect waves-light m-b-5" href="javascript:void(0)">
                                             <i class="fa fa-rocket"></i> <span>预览</span></a>
                                     </td>
                                 </tr>
@@ -125,6 +205,51 @@
             });
         }
     }
+
+    function checkNum() {
+        if ($('.switch-anim').prop('checked')) {
+            console.log("选中");
+        } else {
+            console.log("没选中");
+        }
+    }
+
+    function f1() {
+        alert('该功能暂未实现');
+    }
+
+    /**
+     *发送Ajax
+     */
+    function sendAjax(allow,id) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        // alert('send')
+        xmlhttp.open("GET", "http://localhost:8080/article/updateAllowComment?allow=" + allow+"&id="+id, true);
+        xmlhttp.send();
+
+        //4.接受并处理来自服务器的响应结果
+        //获取方式 ：xmlhttp.responseText
+        //当xmlhttp对象的就绪状态改变时，触发事件onreadystatechange。
+        //接收服务器端的响应(readyState=4表示请求已完成且响应已就绪 status=200表示请求响应一切正常)
+        xmlhttp.onreadystatechange = function () {
+            //判断readyState就绪状态是否为4，判断status响应状态码是否为200
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //获取服务器的响应结果
+                var responseText = xmlhttp.responseText;
+                // alert(responseText);
+
+
+            }
+
+        }
+    }
+
+
 </script>
 </body>
 </html>

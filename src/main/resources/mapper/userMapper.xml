@@ -60,6 +60,49 @@
         update t_user set password = #{password} where username=#{username}
     </update>
 
+
+    <resultMap id="res2" type="com.boot.pojo.user">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="created" property="date"/>
+        <result column="valid" property="valid"/>
+
+        <association property="user_authority" javaType="com.boot.pojo.user_authority">
+            <result column="authority_id" property="authority_id"/>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectAllUser" resultMap="res2">
+    SELECT
+    t_user.id,
+	t_user.username,
+	t_user.email,
+	t_user.created,
+	t_user.valid,
+	t_user_authority.authority_id
+    FROM
+	t_user,
+	t_user_authority
+    WHERE
+	t_user.id = t_user_authority.user_id
+
+    </select>
+
+    <update id="updateValidTo_0">
+        update t_user set valid = 0 where username=#{username}
+    </update>
+
+    <update id="updateValidTo_1">
+        update t_user set valid = 1 where username=#{username}
+    </update>
+
+    <update id="updateUser" parameterType="com.boot.pojo.user">
+        update t_user set email=#{email}
+    </update>
+
 </mapper>
 
 

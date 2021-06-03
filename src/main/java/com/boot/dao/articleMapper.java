@@ -45,5 +45,9 @@ public interface articleMapper {
     public void updateTagsByArticleId(@Param("tags") String tags,@Param("id") int id);
 
     public void updateCategory(@Param("oldName") String oldName,@Param("newName") String newName);
-
+    //是否可以评论功能
+    //变成0
+    void updateAllowCommentTo_0(@Param("id") int id);
+    //变成1
+    void updateAllowCommentTo_1(@Param("id") int id);
 }

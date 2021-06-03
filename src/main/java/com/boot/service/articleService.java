@@ -41,4 +41,10 @@ public interface articleService {
 
     public void updateCategory(String oldName,String newName);
 
+    //是否可以评论功能
+    //变成0
+    void updateAllowCommentTo_0(int id);
+    //变成1
+    void updateAllowCommentTo_1(int id);
+
 }

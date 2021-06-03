@@ -7,6 +7,8 @@ import com.boot.service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class userServiceImpl implements userService {
 
@@ -43,5 +45,24 @@ public class userServiceImpl implements userService {
         userMapper.updatePassword(username,password);
     }
 
+    @Override
+    public List<user> selectAllUser() {
+        return userMapper.selectAllUser();
+    }
+
+    @Override
+    public void updateValidTo_0(String username) {
+        userMapper.updateValidTo_0(username);
+    }
+
+    @Override
+    public void updateValidTo_1(String username) {
+        userMapper.updateValidTo_1(username);
+    }
+
+    @Override
+    public void updateUser(int id, int authorityid, String email) {
+        userMapper.updateUser(id, authorityid, email);
+    }
 
 }

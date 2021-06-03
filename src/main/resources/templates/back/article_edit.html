@@ -7,6 +7,7 @@
 
 <link th:href="@{/back/plugins/mditor/css/mditor.min.css}" rel="stylesheet"/>
 <link th:href="@{/back/plugins/dropzone/4.3.0/min/dropzone.min.css}" rel="stylesheet">
+
 <style>
     #tags_tagsinput {
         background-color: #fafafa;
@@ -21,16 +22,19 @@
         margin-top: -5px;
     }
 
-    .mditor .editor{
+    .mditor .editor {
         font-size: 14px;
-        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-    .mditor .backdrop, .mditor .textarea, .mditor .viewer{
-        font-size: 14px;
-    }
-    .markdown-body{
+
+    .mditor .backdrop, .mditor .textarea, .mditor .viewer {
         font-size: 14px;
     }
+
+    .markdown-body {
+        font-size: 14px;
+    }
+
     .note-toolbar {
         text-align: center;
     }
@@ -55,17 +59,20 @@
     #articleForm #dropzone {
         min-height: 200px;
         background-color: #dbdde0;
-        line-height:200px;
+        line-height: 200px;
         margin-bottom: 10px;
     }
+
     #articleForm .dropzone {
         border: 1px dashed #8662c6;
         border-radius: 5px;
         background: white;
     }
+
     #articleForm .dropzone .dz-message {
         font-weight: 400;
     }
+
     #articleForm .dropzone .dz-message .note {
         font-size: 0.8em;
         font-weight: 200;
@@ -111,29 +118,33 @@
                             </div>
                             <div class="form-group col-md-6" style="padding: 0 10px 0 0;">
                                 <th:block th:if="${null != contents}">
-                                    <input name="tags" id="tags" type="text" class="form-control" th:value="${contents.tags}" />
+                                    <input name="tags" id="tags" type="text" class="form-control"
+                                           th:value="${contents.tags}"/>
                                 </th:block>
                                 <th:block th:unless="${null != contents}">
-                                    <input name="tags" id="tags" type="text" class="form-control" placeholder="请输入文章标签" />
+                                    <input name="tags" id="tags" type="text" class="form-control"
+                                           placeholder="请输入文章标签"/>
                                 </th:block>
                             </div>
                             <div class="clearfix"></div>
                             <div id="md-container" class="form-group">
-                                <textarea id="md-editor" th:utext="${contents!=null and contents.content !=null}?${contents.content}: ''"></textarea>
+                                <textarea id="md-editor"
+                                          th:utext="${contents!=null and contents.content !=null}?${contents.content}: ''"></textarea>
                             </div>
 
-                 <!--           <div class="form-group col-md-3 col-sm-4">
-                                <label class="col-sm-4">开启评论</label>
-                                <div class="col-sm-8">
-                                    <div th:class="${contents!=null and contents.allowComment!=null }?'toggle toggle-success allow-'+${contents.allowComment}:'toggle toggle-success allow-true'"></div>
-                                </div>
-                            </div>-->
+                            <!--           <div class="form-group col-md-3 col-sm-4">
+                                           <label class="col-sm-4">开启评论</label>
+                                           <div class="col-sm-8">
+                                               <div th:class="${contents!=null and contents.allowComment!=null }?'toggle toggle-success allow-'+${contents.allowComment}:'toggle toggle-success allow-true'"></div>
+                                           </div>
+                                       </div>-->
 
                             <div class="clearfix"></div>
 
                             <div class="text-right">
                                 <a class="btn btn-default waves-effect waves-light" th:href="@{/admin/toArticleList}">返回列表</a>
-                                <button type="button" class="btn btn-primary waves-effect waves-light" onclick="subArticle('publish');">
+                                <button type="button" class="btn btn-primary waves-effect waves-light"
+                                        onclick="subArticle('publish');">
                                     保存文章
                                 </button>
                             </div>

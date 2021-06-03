@@ -338,5 +338,13 @@
         update t_article set categories = #{newName} where categories=#{oldName}
     </update>
 
+    
+    <update id="updateAllowCommentTo_0">
+        update t_article set allow_comment = 0 where id=#{id}
+    </update>
+
+    <update id="updateAllowCommentTo_1">
+        update t_article set allow_comment = 1 where id=#{id}
+    </update>
 
 </mapper>
