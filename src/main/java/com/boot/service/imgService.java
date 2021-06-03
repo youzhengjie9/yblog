@@ -14,4 +14,6 @@ public interface imgService {
     List<img> selectAllImg();
 
     img selectImgByid(int id);
+
+    int selectImgCount();
 }

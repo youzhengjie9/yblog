@@ -49,7 +49,7 @@ public class usermanagerController {
 
 
         List<authority> authorities = authorityService.selectUserAuthority();
-        model.addAttribute("authorities",authorities);
+        model.addAttribute("auths",authorities);
         List<user> users = userService.selectAllUser();
         String name = springSecurityUtil.currentUser(session);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
@@ -83,6 +83,9 @@ public class usermanagerController {
                              String email,
                              HttpSession session,
                              Model model){
+
+        System.out.println(id +"====> "+authorityid+"==>"+email);
+
         if(!StringUtils.isEmpty(email)){
             userService.updateUserForEmail(id, email); //修改email
         }
@@ -94,7 +97,7 @@ public class usermanagerController {
 
 
         List<authority> authorities = authorityService.selectUserAuthority();
-        model.addAttribute("authorities",authorities);
+        model.addAttribute("auths",authorities);
         List<user> users = userService.selectAllUser();
         String name = springSecurityUtil.currentUser(session);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(name);

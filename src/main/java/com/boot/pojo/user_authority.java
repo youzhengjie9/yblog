@@ -1,5 +1,8 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "用户权限实体类",description = "封装每个用户对应的权限")
 public class user_authority {
 
     private int user_id;

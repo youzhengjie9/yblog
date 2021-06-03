@@ -1,10 +1,13 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
 /**
  * 文章相关动态数据统计实体类
  * */
+@ApiModel(value = "文章数据统计实体类",description = "封装每个文章的点击量和评论量")
 public class Statistic implements Serializable {
     private Integer id;
     private Integer articleId;   // 评论的文章id

@@ -31,4 +31,9 @@ public class imgServiceImpl implements imgService {
     public img selectImgByid(int id) {
         return imgMapper.selectImgByid(id);
     }
+
+    @Override
+    public int selectImgCount() {
+        return imgMapper.selectImgCount();
+    }
 }

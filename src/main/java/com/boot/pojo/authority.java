@@ -1,7 +1,10 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
+@ApiModel(value = "权限实体类",description = "封装权限")
 public class authority implements Serializable {
 
     private int id;

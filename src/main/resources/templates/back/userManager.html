@@ -201,15 +201,13 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" id="tid">
                     <br/>
-                    <input type="text" name="authorityid" id="t_authid">
-
-                    <select name="authorityid">
-                       <option th:each="authority:${authorities}" th:text="${authority.getAuthority()}" th:value="${authority.getId()}"></option>
+                    用户权限：<select id="selectauth" name="authorityid">
+                       <option th:each="auth:${auths}" th:text="${auth.getAuthority()}" th:value="${auth.getId()}"></option>
                     </select>
 
 
                     <br/>
-                    <input type="email" name="email" id="email">
+                    邮箱：<input type="email" name="email" id="email">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -239,7 +237,7 @@
 
     function changeUser(tid,t_authid,email) {
         document.getElementById('tid').value=tid;
-        document.getElementById('t_authid').value=t_authid;
+        document.getElementById('selectauth').value=t_authid;
         document.getElementById('email').value=email;
     }
 

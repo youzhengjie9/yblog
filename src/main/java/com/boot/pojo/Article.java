@@ -1,5 +1,7 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
  * 博客文章实体类
  * 1、使用定制的RedisConfig配置类，实现缓存时的JSON序列化机制
  */
+@ApiModel(value = "文章实体类",description = "封装文章内容")
 public class Article implements Serializable {
     private Integer id;          // 文章id
     private String title;       // 文章标题

@@ -1,7 +1,10 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
+@ApiModel(value = "分类实体类",description = "封装分类信息")
 public class category implements Serializable {
 
     private String categoryName;

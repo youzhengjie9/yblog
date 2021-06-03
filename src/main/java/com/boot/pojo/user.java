@@ -1,8 +1,11 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 import java.sql.Date;
 
+@ApiModel(value = "用户实体类",description = "封装用户信息")
 public class user implements Serializable {
 
     private int id;

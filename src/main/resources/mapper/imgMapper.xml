@@ -17,4 +17,8 @@
         select * from t_img where id=#{id}
     </select>
 
+    <select id="selectImgCount" resultType="int">
+        select count(*) from t_img
+    </select>
+
 </mapper>

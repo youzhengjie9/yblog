@@ -1,7 +1,10 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
+@ApiModel(value = "用户详情实体类",description = "封装了用户详情")
 public class userDetail implements Serializable {
 
     private int id; //id

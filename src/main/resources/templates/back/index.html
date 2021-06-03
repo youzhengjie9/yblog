@@ -29,6 +29,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="mini-stat clearfix bg-pink bx-shadow">
+                                <span class="mini-stat-icon"><i class="fa fa-file-photo-o" aria-hidden="true"></i></span>
+                                <div class="mini-stat-info text-right">
+                                    上传了<span class="counter" th:text="${imgcount}"></span>个附件
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -70,7 +78,35 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">最新上传附件</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                       <li class="list-group-item">
+                                           <span style="color: #3bb4f2">上传的附件已被隐藏，请移步到附件管理中查看！！！</span>
+                                       </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
+
+
+
+
+
+
+
+
+
                 </div>
                 <div th:replace="back/footer :: footer-content"></div>
             </div>

@@ -1,5 +1,7 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * 博客评论实体类
  * 1、使用定制的RedisConfig配置类，实现缓存时的JSON序列化机制
  */
+@ApiModel(value = "评论实体类",description = "封装评论信息")
 public class Comment implements Serializable {
     private Integer id;         // 评论id
     private Integer articleId; // 评论的文章id

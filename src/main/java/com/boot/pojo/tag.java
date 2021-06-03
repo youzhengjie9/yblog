@@ -1,5 +1,8 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "标签实体类",description = "封装标签名称和使用的数量")
 public class tag {
 
     private String tagName;

@@ -18,4 +18,6 @@ public interface imgMapper {
 
     img selectImgByid(@Param("id") int id);
 
+    int selectImgCount();
+
 }

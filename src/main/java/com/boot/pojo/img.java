@@ -1,7 +1,10 @@
 package com.boot.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
+@ApiModel(value = "上传的附件图片实体类",description = "封装大图和缩略图的路径")
 public class img implements Serializable {
 
     /**

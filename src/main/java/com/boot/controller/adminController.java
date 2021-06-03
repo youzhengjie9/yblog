@@ -8,6 +8,8 @@ import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.bootstrap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,8 +27,8 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
+@Api("后台管理控制器")
 public class adminController {
-
 
     private final String DEFAULT_CATEGORY="默认分类";
 
@@ -57,6 +59,9 @@ public class adminController {
     @Autowired
     private userDetailService userDetailService;
 
+    @Autowired
+    private imgService imgService;
+
 
     //初始化redis有关t_tag表的数据
     @PostConstruct
@@ -73,6 +78,7 @@ public class adminController {
 
 
     @GetMapping(path = "/")
+    @ApiOperation(value = "去后台管理界面",notes = "以/作为路径进入")
     public String toAdmin(Model model, HttpSession session) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -92,7 +98,8 @@ public class adminController {
         model.addAttribute("commons", Commons.getInstance());
         int count = articleService.selectArticleCount();
         model.addAttribute("articleCount", count);
-
+        int i = imgService.selectImgCount();
+        model.addAttribute("imgcount",i);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail",userDetail);
 
