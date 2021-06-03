@@ -25,7 +25,7 @@ public class swaggerConfig {  //配置swagger2
     public Docket getUserDocket() {
         ApiInfo apiInfo = new ApiInfoBuilder()
                 //api标题
-                .title("用户管理")
+                .title("blog system")
                 // api描述
                 .description("blog system")
                 //版本号

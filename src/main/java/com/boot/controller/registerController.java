@@ -5,6 +5,7 @@ import com.boot.pojo.user;
 import com.boot.pojo.user_authority;
 import com.boot.service.emailService;
 import com.boot.service.userService;
+import io.swagger.annotations.Api;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -24,6 +25,7 @@ import javax.mail.MessagingException;
 import java.sql.Date;
 
 @Controller
+@Api("注册帐号控制器")
 public class registerController {
 
     @Autowired

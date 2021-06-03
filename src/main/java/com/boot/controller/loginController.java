@@ -3,6 +3,7 @@ package com.boot.controller;
 import com.boot.dao.articleMapper;
 import com.boot.pojo.Article;
 import com.boot.utils.Commons;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
+@Api("登录控制器")
 public class loginController {
 
     @Autowired

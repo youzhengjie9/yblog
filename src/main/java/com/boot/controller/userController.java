@@ -11,6 +11,7 @@ import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.bootstrap;
 import com.boot.utils.fileUtil;
+import io.swagger.annotations.Api;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping(path = "/myuser")
+@Api("个人资料控制器")
 public class userController {
 
     @Autowired

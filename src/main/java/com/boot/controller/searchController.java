@@ -6,6 +6,7 @@ import com.boot.service.elasticSearchService;
 import com.boot.utils.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Controller
+@Api("全局搜索控制器")
 public class searchController {
 
 

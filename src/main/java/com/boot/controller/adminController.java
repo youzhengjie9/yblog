@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
-@Api("后台管理控制器")
+@Api(value = "后台管理控制器")
 public class adminController {
 
     private final String DEFAULT_CATEGORY="默认分类";
@@ -107,6 +107,7 @@ public class adminController {
     }
 
     @RequestMapping(path = "/toPublishArticle")
+    @ApiOperation(value = "进入发布文章界面",notes = "进入发布文章界面")
     public String toPublishArticle(Model model, HttpSession session) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -123,6 +124,7 @@ public class adminController {
 
     // 默认第一页
     @RequestMapping(path = "/toArticleList")
+    @ApiOperation(value = "进入文章列表界面",notes = "进入文章列表界面，分页默认是第一页")
     public String toArticleList1(Model model, HttpSession session) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -148,6 +150,7 @@ public class adminController {
 
 
     @RequestMapping(path = "/toArticleList/{pageNum}")
+    @ApiOperation(value = "进入文章列表界面",notes = "进入文章列表界面,分页是由前端传入")
     public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -172,6 +175,7 @@ public class adminController {
     }
 
     @RequestMapping(path = "/toEditArticle/{article_id}")
+    @ApiOperation(value = "进入编辑文章页面")
     public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -189,6 +193,7 @@ public class adminController {
 
     @RequestMapping(path = "/modify")
     @ResponseBody //要加
+    @ApiOperation(value = "修改文章")
     public ArticleResponseData modify(Article article, Model model, HttpSession session) {
         model.addAttribute("commons", Commons.getInstance());
         System.out.println("modify:" + article);
@@ -260,6 +265,7 @@ public class adminController {
 
     @RequestMapping(path = "/publish")
     @ResponseBody //要加
+    @ApiOperation("发布文章")
     public ArticleResponseData publish(Article article, HttpSession session, Model model) {
         model.addAttribute("commons", Commons.getInstance());
         System.out.println("publish:" + article);
@@ -312,6 +318,7 @@ public class adminController {
 
     @RequestMapping(path = "/deleteArticle")
     @ResponseBody
+    @ApiOperation("删除文章")
     public ArticleResponseData deleteArticle(Integer id, HttpSession session) {
 
         try {
@@ -348,6 +355,7 @@ public class adminController {
 //    评论管理
     //跳转评论列表兼处理审核通过请求、删除请求
     @RequestMapping(path = "/toCommentList")
+    @ApiOperation("进入评论列表")
     public String toCommentList(@RequestParam(value = "delId",defaultValue = "-1") int delId,
                                 @RequestParam(value = "id",defaultValue = "-1") int id,
                                 @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
@@ -405,6 +413,7 @@ public class adminController {
 
 
     @RequestMapping(path = "/toTagList")
+    @ApiOperation("进入分类标签界面")
     public String toTagList(HttpSession session,Model model) {
 
         String username = springSecurityUtil.currentUser(session);
@@ -424,6 +433,7 @@ public class adminController {
 
     //修改分类
     @PostMapping(path = "/updateCategory")
+    @ApiOperation("修改分类")
     public String updateCategory(String oldName,String newName,HttpSession session,Model model){
         try {
 
@@ -454,6 +464,7 @@ public class adminController {
     }
 
     @RequestMapping(path = "/deleteCategory")
+    @ApiOperation("删除分类")
     public String deleteCategory(@RequestParam(value = "n",defaultValue = "") String n,HttpSession session,Model model){
         if(n!=null&&!n.equals(""))
         {
@@ -489,6 +500,7 @@ public class adminController {
 
 
     @PostMapping(path = "/addCategory")
+    @ApiOperation("添加分类")
     public String addCategory(category category,HttpSession session,Model model){
 
         try {
@@ -516,6 +528,7 @@ public class adminController {
 
 
     @RequestMapping(path = "/toSetting")
+    @ApiOperation("进入系统设置界面")
     public String toSetting(HttpSession session,Model model) {
 
         model.addAttribute("commons",Commons.getInstance());
@@ -531,12 +544,7 @@ public class adminController {
 
 
 
-
-
-
-
-
-    //权限功能、秒杀产品服务
+    //秒杀产品服务
 
 
 

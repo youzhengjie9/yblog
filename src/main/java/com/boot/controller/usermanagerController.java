@@ -12,6 +12,7 @@ import com.boot.service.userService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.github.pagehelper.PageHelper;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "/usermanager")
+@Api("用户管理控制器")
 public class usermanagerController {
 
     @Autowired

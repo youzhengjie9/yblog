@@ -8,6 +8,7 @@ import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.bootstrap;
 import com.boot.utils.fileUtil;
+import io.swagger.annotations.Api;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping(path = "/img")
+@Api("图片附件控制器")
 public class ImgController {
 
     /**
