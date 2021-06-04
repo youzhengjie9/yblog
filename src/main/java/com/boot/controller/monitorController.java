@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping(path = "/monitor")
 @Api("监控管理控制器")

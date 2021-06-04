@@ -36,7 +36,9 @@ import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping(path = "/myuser")
 @Api("个人资料控制器")

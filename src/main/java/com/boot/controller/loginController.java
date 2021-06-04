@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @Api("登录控制器")
 public class loginController {

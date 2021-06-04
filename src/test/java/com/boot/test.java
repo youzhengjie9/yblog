@@ -1,7 +1,9 @@
 package com.boot;
 
 import com.boot.pojo.Article;
+import com.boot.pojo.archive;
 import com.boot.pojo.tag;
+import com.boot.service.archiveService;
 import com.boot.service.articleService;
 import com.boot.service.categoryService;
 import com.boot.service.tagService;
@@ -93,6 +95,9 @@ public class test {
 
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private archiveService archiveService;
     @Test
     public void test2(){
 
@@ -102,6 +107,9 @@ public class test {
 //        boolean matches = bCryptPasswordEncoder.matches("123456", "$2a$10$5ooQI8dir8jv0/gCa1Six.GpzAdIPf6pMqdminZ/3ijYzivCyPlfK");
 //        System.out.println(matches);
 //
+
+        List<archive> archives = archiveService.selectAllArchiveGroup();
+        System.out.println(archives);
 
     }
 

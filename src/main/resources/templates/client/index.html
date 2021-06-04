@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--timeline-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" th:href="@{/assets/css/mystyle.css}">
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
       integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -11,11 +15,19 @@
 
 <!-- 载入文章头部页面，位置在/client文件夹下的header模板页面，模板名称th:fragment为header -->
 <div th:replace="/client/header::header(null,null)"/>
+
+
+<style>
+    .container span.number span:first-child{
+        top: 100px;
+    }
+</style>
+
 <body>
 <div class="am-g am-g-fixed blog-fixed index-page">
     <div class="am-u-md-8 am-u-sm-12">
         <!-- 文章遍历并分页展示 -->
-        <div th:each="article: ${articles}">
+        <div th:each="article: ${articles}" th:if="${isArchive} eq null or ${isArchive} eq ''">
             <article class="am-g blog-entry-article">
                 <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
                     <img width="100%" class="am-u-sm-12" th:src="@{${commons.show_thumb(article)}}"/>
@@ -37,8 +49,9 @@
                 </div>
             </article>
         </div>
-        文章分页信息
-        <div class="am-pagination">
+
+<!--        文章分页信息-->
+        <div class="am-pagination" th:if="${isArchive} eq null or ${isArchive} eq ''">
             <nav aria-label="Page navigation">
 
                 <!--                分成三个ul class="pagination" ，一个是上一页 ，一个是th：each遍历 ，一个是下一页-->
@@ -78,6 +91,37 @@
                 </ul>
             </nav>
         </div>
+
+
+
+
+<!--        archive-->
+
+        <div class="container" th:if="${isArchive} eq 'true'">
+            <ul th:each="map:${archiveMap}" style="padding: 1px 30px;">
+                 <span class="number" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">
+                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>
+                    </span>
+                <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">
+<!--                    <span></span>-->
+                    <div>
+                        <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>
+                        <div class="info" th:utext="${commons.intro(article,75)}" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>
+<!--                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>-->
+                    </div>
+<!--                    <span class="number" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">-->
+<!--                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>-->
+<!--                    </span>-->
+                </li>
+
+            </ul>
+        </div>
+
+
+
+
+
+
     </div>
     <!-- 博主信息描述 -->
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
@@ -119,6 +163,8 @@
             </p>
         </div>
     </div>
+
+
     <!-- 阅读排行榜 -->
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
         <div class="blog-sidebar-widget blog-bor">

@@ -24,7 +24,9 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping(path = "/img")
 @Api("图片附件控制器")

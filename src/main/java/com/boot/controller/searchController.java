@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @Api("全局搜索控制器")
 public class searchController {

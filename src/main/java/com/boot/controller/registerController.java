@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.mail.MessagingException;
 import java.sql.Date;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @Api("注册帐号控制器")
 public class registerController {

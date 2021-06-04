@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping(path = "/usermanager")
 @Api("用户管理控制器")

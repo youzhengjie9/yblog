@@ -69,7 +69,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/user/**","/email/**","/plugins/**","/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
-                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/**").hasRole("admin")
+                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/updateAllowComment").hasRole("admin")
                 .antMatchers("/myuser/**","/img/**").hasAnyRole("admin","common")
                 .anyRequest().permitAll()
                 .and()

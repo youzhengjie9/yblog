@@ -25,6 +25,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping("/admin")
 @Api(value = "后台管理控制器")

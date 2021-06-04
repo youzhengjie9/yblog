@@ -12,7 +12,7 @@ public final class bootstrap {
     public static final String randomColor(){
 
         Random random = new Random();
-        int i = random.nextInt(5);
+        int i = random.nextInt(color.length);
 
         return color[i];
     }
