@@ -4,6 +4,7 @@ import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.user;
 import com.boot.pojo.user_authority;
 import com.boot.service.emailService;
+import com.boot.service.registerService;
 import com.boot.service.userService;
 import io.swagger.annotations.Api;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -25,6 +26,7 @@ import javax.mail.MessagingException;
 import java.sql.Date;
 /**
  * @author 游政杰
+ * 2021/5/23 2:16
  */
 @Controller
 @Api("注册帐号控制器")
@@ -38,6 +40,9 @@ public class registerController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private registerService registerService;
 
     @Autowired
     private userService userService;
@@ -59,19 +64,7 @@ public class registerController {
             //可以注册,但是用户名相同会注册失败
             try {
                 //注册代码
-                Date date = new Date(new java.util.Date().getTime());
-                BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
-                //进行BCryptPasswordEncoder加密
-                String encode_password = bCryptPasswordEncoder.encode(user.getPassword());
-                user.setPassword(encode_password);
-                user.setDate(date);
-                user.setValid(1);
-                userService.addUser(user);
-                System.out.println("主键user："+user.getId());
-                user_authority user_authority = new user_authority();
-                user_authority.setUser_id(user.getId());
-                user_authority.setAuthority_id(2);
-                userService.addUserAuthority(user_authority);
+                registerService.register(user);
                 model.addAttribute("registerSuccess",1);
                 return "comm/login";
             }catch (Exception e){

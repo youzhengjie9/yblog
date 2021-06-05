@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author 游政杰
+ * 2021/6/3
  */
 @Controller
 @RequestMapping(path = "/article")

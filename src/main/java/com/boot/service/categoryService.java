@@ -14,7 +14,7 @@ public interface categoryService {
 
     public void updateCategoryCountDecr(String categoryName);
 
-    public void updateCategory(String oldName,String newName);
+    public void updateCategory(String oldName, String newName);
 
     public void deleteCategoryByName(String categoryName);
 
@@ -24,6 +24,13 @@ public interface categoryService {
                                           int count);
 
     public void addCategory(category category);
+
+
+    //代码重构
+
+    public void updateCategory_service(String oldName,String newName);
+
+    public void deleteCategory_service(String n, String DEFAULT_CATEGORY);
 
 
 }

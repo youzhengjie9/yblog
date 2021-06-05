@@ -47,4 +47,16 @@ public interface articleService {
     //变成1
     void updateAllowCommentTo_1(int id);
 
+
+    /**
+     * 代码重构
+     */
+    void changeArticle_service(Article article);
+
+
+    void publishArticle_service(Article article);
+
+    void deleteArticle_service(Integer id);
+
+
 }
