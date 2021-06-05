@@ -6,6 +6,7 @@ import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.bootstrap;
+import com.boot.utils.ipUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -82,7 +84,11 @@ public class adminController {
 
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面",notes = "以/作为路径进入")
-    public String toAdmin(Model model, HttpSession session) {
+    public String toAdmin(Model model, HttpSession session, HttpServletRequest request) {
+
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug("ip:"+ipAddr+"访问了后台管理界面");
+
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -111,12 +117,13 @@ public class adminController {
 
     @RequestMapping(path = "/toPublishArticle")
     @ApiOperation(value = "进入发布文章界面",notes = "进入发布文章界面")
-    public String toPublishArticle(Model model, HttpSession session) {
+    public String toPublishArticle(Model model, HttpSession session,HttpServletRequest request) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date);
-        logger.debug(time + "   用户名：" + username + "进入后台发布页面");
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "进入后台发布页面：ip为"+ipAddr);
         model.addAttribute("commons", Commons.getInstance());
 
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
@@ -128,12 +135,13 @@ public class adminController {
     // 默认第一页
     @RequestMapping(path = "/toArticleList")
     @ApiOperation(value = "进入文章列表界面",notes = "进入文章列表界面，分页默认是第一页")
-    public String toArticleList1(Model model, HttpSession session) {
+    public String toArticleList1(Model model, HttpSession session,HttpServletRequest request) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date);
-        logger.debug(time + "   用户名：" + username + "查看文章列表");
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "查看文章列表,ip为："+ipAddr);
         model.addAttribute("commons", Commons.getInstance());
         //此处我们也加了一层缓存,当有新文章发布时，我们就把这个key删除
 //        List<Article> articles = (List<Article>) redisTemplate.opsForValue().get("articleList");
@@ -154,12 +162,13 @@ public class adminController {
 
     @RequestMapping(path = "/toArticleList/{pageNum}")
     @ApiOperation(value = "进入文章列表界面",notes = "进入文章列表界面,分页是由前端传入")
-    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session) {
+    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session,HttpServletRequest request) {
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date);
-        logger.debug(time + "   用户名：" + username + "查看文章列表");
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "查看文章列表,ip为："+ipAddr);
         model.addAttribute("commons", Commons.getInstance());
         //此处我们也加了一层缓存,当有新文章发布时，我们就把这个key删除
 //        List<Article> articles = (List<Article>) redisTemplate.opsForValue().get("articleList");
@@ -197,7 +206,7 @@ public class adminController {
     @RequestMapping(path = "/modify")
     @ResponseBody //要加
     @ApiOperation(value = "修改文章")
-    public ArticleResponseData modify(Article article, Model model, HttpSession session) {
+    public ArticleResponseData modify(Article article, Model model, HttpSession session,HttpServletRequest request) {
         model.addAttribute("commons", Commons.getInstance());
         System.out.println("modify:" + article);
         List<Article> articles = articleService.selectAllArticleByCreated();
@@ -256,7 +265,8 @@ public class adminController {
             java.util.Date date2 = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time2 = simpleDateFormat.format(date2);
-            logger.debug(time2 + "   用户名：" + username + "修改文章信息成功，修改信息的JSON串为：" + article);
+            String ipAddr = ipUtils.getIpAddr(request);
+            logger.debug(time2 + "   用户名：" + username + "修改文章信息成功,ip为："+ipAddr);
             return ArticleResponseData.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,7 +279,7 @@ public class adminController {
     @RequestMapping(path = "/publish")
     @ResponseBody //要加
     @ApiOperation("发布文章")
-    public ArticleResponseData publish(Article article, HttpSession session, Model model) {
+    public ArticleResponseData publish(Article article, HttpSession session, Model model,HttpServletRequest request) {
         model.addAttribute("commons", Commons.getInstance());
         System.out.println("publish:" + article);
         List<Article> articles = articleService.selectAllArticleByCreated();
@@ -309,7 +319,8 @@ public class adminController {
             java.util.Date date2 = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = simpleDateFormat.format(date2);
-            logger.debug(time + "   用户名：" + username + "发布成功，发布信息的JSON串为：" + article);
+            String ipAddr = ipUtils.getIpAddr(request);
+            logger.debug(time + "   用户名：" + username + "发布成功,ip为："+ipAddr);
 //            redisTemplate.delete("articleList");
             return ArticleResponseData.ok();
         } catch (Exception e) {
@@ -322,7 +333,7 @@ public class adminController {
     @RequestMapping(path = "/deleteArticle")
     @ResponseBody
     @ApiOperation("删除文章")
-    public ArticleResponseData deleteArticle(Integer id, HttpSession session) {
+    public ArticleResponseData deleteArticle(Integer id, HttpSession session,HttpServletRequest request) {
 
         try {
             Article article = articleService.selectArticleByArticleIdNoComment(id);
@@ -346,7 +357,8 @@ public class adminController {
             java.util.Date date = new java.util.Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = simpleDateFormat.format(date);
-            logger.debug(time + "   用户名：" + username + "删除文章成功，删除的文章id为：" + id);
+            String ipAddr = ipUtils.getIpAddr(request);
+            logger.debug(time + "   用户名：" + username + "删除文章成功，删除的文章id为：" + id+",ip为："+ipAddr);
 //            redisTemplate.delete("articleList");
             return ArticleResponseData.ok();
         } catch (Exception e) {

@@ -15,7 +15,7 @@ spring:
     password: 18420163207
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    filters: stat,wall,log4j
+    filters: stat,wall
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录  慢查询：增删改查
     druid:
       connection-properties:

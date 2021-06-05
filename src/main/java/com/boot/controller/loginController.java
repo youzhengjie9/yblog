@@ -3,6 +3,7 @@ package com.boot.controller;
 import com.boot.dao.articleMapper;
 import com.boot.pojo.Article;
 import com.boot.utils.Commons;
+import com.boot.utils.ipUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,8 +39,7 @@ public class loginController {
 
 
     @RequestMapping(path = "/login")
-    public void login(String username, String password, HttpServletResponse response) throws IOException {
-
+    public void login(String username, String password, HttpServletResponse response,HttpServletRequest request) throws IOException {
 
         response.sendRedirect("/");
     }

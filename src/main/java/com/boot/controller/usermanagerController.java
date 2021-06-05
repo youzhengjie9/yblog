@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.List;
 /**
  * @author 游政杰
@@ -45,6 +47,9 @@ public class usermanagerController {
     @Autowired
     private authorityService authorityService;
 
+    private Logger logger= Logger.getLogger(usermanagerController.class);
+
+
     @Autowired
     private userAuthorityService userAuthorityService;
 
@@ -60,6 +65,13 @@ public class usermanagerController {
         model.addAttribute("userDetail",userDetail);
         model.addAttribute("users",users);
         model.addAttribute("commons", Commons.getInstance());
+
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        logger.debug(time + "   用户名：" + name + "进入后台用户管理页面");
+
+
         return "back/userManager";
     }
 
@@ -77,7 +89,10 @@ public class usermanagerController {
          }
 
 //        System.out.println(valid+"  ====>" +name);
-
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        logger.debug(time + "   用户名：" + name + "进入后台把用户"+name+"进行失效处理");
         return JSON.toJSONString("ajax success");
     }
 
@@ -108,6 +123,10 @@ public class usermanagerController {
         model.addAttribute("userDetail",userDetail);
         model.addAttribute("users",users);
         model.addAttribute("commons", Commons.getInstance());
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        logger.debug(time + "   用户名：" + name + "进入后台修改用户id为"+id+"的用户");
         return "back/userManager";
     }
 

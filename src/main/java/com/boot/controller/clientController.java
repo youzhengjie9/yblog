@@ -12,6 +12,7 @@ import com.boot.service.linkService;
 import com.boot.service.userDetailService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.ipUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -273,14 +274,15 @@ public class clientController {
 
     @ResponseBody
     @PostMapping(path = "/publishComment")
-    public ArticleResponseData publishComment(Integer aid, String text, HttpSession session) {
+    public ArticleResponseData publishComment(Integer aid, String text, HttpSession session,HttpServletRequest request) {
         try {
             //发布评论
             Comment comment = new Comment();
             comment.setArticleId(aid);
             comment.setC_content(text);
             comment.setStatus("no_audit"); //默认未审核
-            comment.setIp("0:0:0:0:0:0:0:1"); //获取ip的功能未完善，之后可能会进行完善，暂且给一个默认值
+            String ipAddr = ipUtils.getIpAddr(request); //获取ip
+            comment.setIp(ipAddr);
             Date date = new Date(new java.util.Date().getTime());
             comment.setCreated(date);
             String username = securityUtil.currentUser(session);

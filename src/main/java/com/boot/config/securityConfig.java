@@ -1,21 +1,30 @@
 package com.boot.config;
 
+import com.boot.utils.ipUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     DataSource dataSource;
+
+    private final Logger logger=Logger.getLogger(securityConfig.class);
 
 
     /**
@@ -50,8 +59,22 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .loginPage("/login")
+//                .loginPage("/login")
+                .loginPage("/loginPage") //登录页接口
+                .loginProcessingUrl("/login") //登录过程接口（也就是登录表单提交的接口）
+                //登录成功处理
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                        String ipAddr = ipUtils.getIpAddr(request);
+                        System.out.println("=====================");
+                        System.out.println("登录成功：访问者ip地址："+ipAddr);
+                        logger.debug("ip地址："+ipAddr+"登录成功");
+                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
+                    }
+                })
                 .failureForwardUrl("/LoginfailPage")
+
                 .and()
                 //不写这段代码，druid监控sql将失效（原因未明）
                 .csrf().ignoringAntMatchers("/druid/**")
