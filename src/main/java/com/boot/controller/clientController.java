@@ -32,6 +32,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 /**
  * @author 游政杰
  * 2021/5/20 17:08
@@ -106,7 +107,7 @@ public class clientController {
 
         //友链
         List<link> links = linkService.selectAllLink();
-        modelAndView.addObject("links",links);
+        modelAndView.addObject("links", links);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -170,7 +171,7 @@ public class clientController {
 
         //友链
         List<link> links = linkService.selectAllLink();
-        modelAndView.addObject("links",links);
+        modelAndView.addObject("links", links);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -182,10 +183,19 @@ public class clientController {
 
 
     @GetMapping(path = "/article/{articleId}")
-    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request,HttpSession session) {
+    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session) {
 
-        //文章点击数+1
-        articleService.updateHits(articleId);
+        //当某个ip在短时间内不断访问某篇文章会造成点击量+1
+        //需求：我们想让用户ip访问文章后2分钟内，再次点击这篇文章点击量不会+1，防止用户刷点击量
+        String ipAddr = ipUtils.getIpAddr(request); //1.先获取ip
+        String key = "ip_" + ipAddr + "_ar_" + articleId;
+        Object o = redisTemplate.opsForValue().get(key);//2.通过ip和文章id，去查询有没有对应的值
+        if (o == null) {
+            //文章点击数+1
+            articleService.updateHits(articleId);
+            redisTemplate.opsForValue().set(key, "1", 60 * 2, TimeUnit.SECONDS); //设置2分钟的过期时间
+        }
+
 
         ModelAndView modelAndView = new ModelAndView();
         boolean res = false; //判断是否传入参数“c”
@@ -207,8 +217,6 @@ public class clientController {
             userDetail userDetail = null;
             modelAndView.addObject("userDetail", userDetail);
         }
-
-
 
 
         //从Redis数据库中获取指定文章id的数据，如果没有就从数据库查询，然后在放入redis中
@@ -262,7 +270,7 @@ public class clientController {
 
             //友链
             List<link> links = linkService.selectAllLink();
-            modelAndView.addObject("links",links);
+            modelAndView.addObject("links", links);
 
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
@@ -275,7 +283,7 @@ public class clientController {
 
     @ResponseBody
     @PostMapping(path = "/publishComment")
-    public ArticleResponseData publishComment(Integer aid, String text, HttpSession session,HttpServletRequest request) {
+    public ArticleResponseData publishComment(Integer aid, String text, HttpSession session, HttpServletRequest request) {
         try {
             //发布评论
             Comment comment = new Comment();

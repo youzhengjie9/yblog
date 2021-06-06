@@ -6,9 +6,19 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>登录博客后台</title>
-
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!-- 移动设备优先 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/amazeui.min.js}"></script>
@@ -16,12 +26,41 @@
     <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
 </head>
 
+<!--<style type="text/css">-->
+
+
+<!--    .middle {-->
+<!--        margin-top: 110px;-->
+<!--        margin-bottom: 110px;-->
+<!--        padding: 100px 50px 50px 50px;-->
+<!--        background-color: white;-->
+<!--        border-radius: 15px;-->
+<!--        box-shadow: 10px 10px 5px rgb(0, 0, 0, 0.1);-->
+
+<!--    }-->
+
+<!--    .login {-->
+<!--        margin-left: 20px;-->
+<!--    }-->
+
+<!--    .font2 {-->
+<!--        font-size: 0.6em;-->
+<!--    }-->
+
+<!--    .btn {-->
+<!--        border-radius: 28px;-->
+<!--    }-->
+
+<!--</style>-->
+
+
 <body>
 
 <div class="log">
     <div class="am-g">
-        <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
-            <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">~欢迎登录博客~</h1>
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content" style=" border:3px solid #e3e197; border-radius: 20px;box-shadow: 10px 10px 5px rgb(0,0,0,0.1);">
+            <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">
+                ~欢迎登录博客~</h1>
             <br>
             <div th:if="${error==1}" class="am-input-group am-animation-slide-left log-animation-delay">
                 <i style="color: red">登录失败，请检查帐号或者密码是否正确！</i>
@@ -34,32 +73,95 @@
                     <input type="hidden" name="url" th:value="${url}">
                 </div>
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{login.username}" name="username" required />
+                    <input type="text" class="am-radius" th:placeholder="#{login.username}" name="username" required/>
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-user am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{login.password}" name="password" required />
+                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{login.password}"
+                           name="password" required/>
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <div style="padding-top: 10px;">
                     <input type="submit" th:value="#{login.sub}"
-                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay" />
+                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
                 </div>
             </form>
 
 
         </div>
     </div>
-
-    <footer class="log-footer">
-        <p style="margin: 30px; color: #2E2D3C"><a style="color: black"  th:href="@{/loginPage(l='zh_CN')}">中文</a>/<a style="color: black"  th:href="@{/loginPage(l='en_US')}">english</a> </p>
-        <p style="margin: 30px; color: #2E2D3C"><time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy; Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
+    <footer style="text-align: center;">
+        <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/loginPage(l='zh_CN')}">中文</a>/<a
+                style="color: black" th:href="@{/loginPage(l='en_US')}">english</a></p>
+        <p style="margin: 30px; color: #2E2D3C">
+            <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;
+            Powered By <a style="color: #0e90d2" rel="nofollow">游政杰</a></p>
     </footer>
+
+
+<!--<div class="log">-->
+<!--    <div class="container" style="height: 100%">-->
+<!--        <div class="middle mx-auto h-50 w-50">-->
+<!--            <div class="row">-->
+<!--                <div class="col col-12 col-md-6">-->
+<!--                    <img class="rounded img-fluid" src="/assets/image/login.png" alt="web开发">-->
+<!--                </div>-->
+<!--                <div class="col col-12 col-md-6">-->
+<!--                    <div class="login">-->
+<!--                        <h5 class="font-weight-bold">扁平化响应式平台登录</h5>-->
+<!--                        <p class="font-weight-light font2">一个AI技术交流的平台</p>-->
+
+<!--                        <form>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="email" class="sr-only">Email address:</label>-->
+
+<!--                                <input type="email" class="form-control" id="email" placeholder="Email">-->
+<!--                            </div>-->
+
+<!--                            <div class="form-group">-->
+<!--                                <label for="pwd" class="sr-only">Password:</label>-->
+<!--                                <input type="password" class="form-control" id="pwd" placeholder="Password">-->
+<!--                            </div>-->
+
+<!--                            <div class="xuan custom-control custom-checkbox">-->
+<!--                                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">-->
+<!--                                <label class="custom-control-label font-weight-light small" for="customCheck">记住用户名</label>-->
+<!--                            </div>-->
+
+<!--                            <br>-->
+<!--                            <button type="button" class="btn btn-primary btn-block w-75 mx-auto">登 录</button>-->
+<!--                        </form>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        <footer style="text-align: center;">-->
+<!--            <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/loginPage(l='zh_CN')}">中文</a>/<a-->
+<!--                    style="color: black" th:href="@{/loginPage(l='en_US')}">english</a></p>-->
+<!--            <p style="margin: 30px; color: #2E2D3C">-->
+<!--                <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;-->
+<!--                Powered By <a style="color: #0e90d2" rel="nofollow">游政杰</a></p>-->
+<!--        </footer>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+
 </div>
 </body>
 </html>
+
+
+<!---->
+
+
+
