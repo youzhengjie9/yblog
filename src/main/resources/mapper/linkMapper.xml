@@ -8,5 +8,13 @@
         select * from t_link
     </select>
 
+    <update id="updateLink" parameterType="com.boot.pojo.link">
+         update t_link set title=#{title},link=#{link} where id=#{id}
+    </update>
 
+    <insert id="insertLink" parameterType="com.boot.pojo.link">
+        insert into t_link(title,link) values(#{title},#{link})
+    </insert>
+    
+    
 </mapper>

@@ -18,4 +18,14 @@ public class linkServiceImpl implements linkService {
     public List<link> selectAllLink() {
         return linkMapper.selectAllLink();
     }
+
+    @Override
+    public void updateLink(link link) {
+        linkMapper.updateLink(link);
+    }
+
+    @Override
+    public void insertLink(link link) {
+        linkMapper.insertLink(link);
+    }
 }

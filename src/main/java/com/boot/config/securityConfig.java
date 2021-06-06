@@ -70,7 +70,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                         System.out.println("=====================");
                         System.out.println("登录成功：访问者ip地址："+ipAddr);
                         logger.debug("ip地址："+ipAddr+"登录成功");
-                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
+                        //这里不要用转发，不然会有一些bug
+//                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
+                        httpServletResponse.sendRedirect("/");
                     }
                 })
                 .failureForwardUrl("/LoginfailPage")
@@ -92,7 +94,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/user/**","/email/**","/plugins/**","/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
-                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/updateAllowComment").hasRole("admin")
+                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/updateAllowComment","/link/**").hasRole("admin")
                 .antMatchers("/myuser/**","/img/**").hasAnyRole("admin","common")
                 .anyRequest().permitAll()
                 .and()

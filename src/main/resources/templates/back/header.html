@@ -125,6 +125,17 @@
                             <i class="fa fa-tags" aria-hidden="true"></i><span> 监控管理 </span></a>
                     </li>
 
+                    <li th:class="${active}=='link'?'active':''">
+                        <a th:href="@{/link/list}"
+                           th:class="${active}=='link'?'waves-effect active':'waves-effect'">
+                            <i class="fa fa-tags" aria-hidden="true"></i><span> 友链管理 </span></a>
+                    </li>
+
+<!--                    <li th:class="${active}=='monitor'?'active':''">-->
+<!--                        <a th:href="@{/monitor/list}"-->
+<!--                           th:class="${active}=='monitor'?'waves-effect active':'waves-effect'">-->
+<!--                            <i class="fa fa-tags" aria-hidden="true"></i><span> IP管理 </span></a>-->
+<!--                    </li>-->
 <!--                    -->
 
 

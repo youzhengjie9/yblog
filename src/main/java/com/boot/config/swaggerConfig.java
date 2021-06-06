@@ -31,7 +31,7 @@ public class swaggerConfig {  //配置swagger2
                 //版本号
                 .version("1.0.1")
                 //本API负责人的联系信息
-                .contact(new Contact("游政杰","baidu.com","1550324080@qq.com"))
+                .contact(new Contact("游政杰", "baidu.com", "1550324080@qq.com"))
                 .build();
         return new Docket(DocumentationType.SWAGGER_2)//文档类型（swagger2）
                 .apiInfo(apiInfo)//设置包含在json ResourceListing响应中的api元信息
