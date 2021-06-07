@@ -5,9 +5,16 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "用户权限实体类",description = "封装每个用户对应的权限")
 public class user_authority {
 
-    private int user_id;
-    private int authority_id;
+    private int user_id; //用户id
+    private int authority_id; //所拥有的权限id
 
+    public user_authority() {
+    }
+
+    public user_authority(int user_id, int authority_id) {
+        this.user_id = user_id;
+        this.authority_id = authority_id;
+    }
 
     public int getUser_id() {
         return user_id;

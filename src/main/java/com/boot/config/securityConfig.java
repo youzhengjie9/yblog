@@ -24,7 +24,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    private final Logger logger=Logger.getLogger(securityConfig.class);
+    private final Logger logger = Logger.getLogger(securityConfig.class);
 
 
     /**
@@ -68,8 +68,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         String ipAddr = ipUtils.getIpAddr(request);
                         System.out.println("=====================");
-                        System.out.println("登录成功：访问者ip地址："+ipAddr);
-                        logger.debug("ip地址："+ipAddr+"登录成功");
+                        System.out.println("登录成功：访问者ip地址：" + ipAddr);
+                        logger.debug("ip地址：" + ipAddr + "登录成功");
                         //这里不要用转发，不然会有一些bug
 //                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
                         httpServletResponse.sendRedirect("/");
@@ -92,10 +92,12 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
-                .antMatchers("/user/**","/email/**","/plugins/**","/user_img/**","/article_img/**", "/assets/**", "/back/**", "/user/**")
+                .antMatchers("/user/**", "/email/**", "/plugins/**", "/user_img/**", "/article_img/**", "/assets/**", "/back/**", "/user/**")
                 .permitAll()
-                .antMatchers("/admin/**","/monitor/**","/usermanager/**","/article/updateAllowComment","/link/**").hasRole("admin")
-                .antMatchers("/myuser/**","/img/**").hasAnyRole("admin","common")
+                .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
+                        "/article/updateAllowComment",
+                        "/link/**", "/visitor/**").hasRole("admin")
+                .antMatchers("/myuser/**", "/img/**").hasAnyRole("admin", "common")
                 .anyRequest().permitAll()
                 .and()
 //                如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）

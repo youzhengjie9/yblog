@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 
-@ApiModel(value = "用户详情实体类",description = "封装了用户详情")
+@ApiModel(value = "用户详情实体类", description = "封装了用户详情")
 public class userDetail implements Serializable {
 
     private int id; //id
@@ -15,6 +15,22 @@ public class userDetail implements Serializable {
     private String github; //GitHub地址
     private String weibo; //微博地址
     private String icon; //用户头像地址
+
+    public userDetail() {
+    }
+
+    public userDetail(int id, String name, String blogName,
+                      String job, String detail, String github,
+                      String weibo, String icon) {
+        this.id = id;
+        this.name = name;
+        this.blogName = blogName;
+        this.job = job;
+        this.detail = detail;
+        this.github = github;
+        this.weibo = weibo;
+        this.icon = icon;
+    }
 
     public String getIcon() {
         return icon;

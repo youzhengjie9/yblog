@@ -1,22 +1,19 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.boot.pojo.authority;
-import com.boot.pojo.user;
-import com.boot.pojo.userDetail;
-import com.boot.pojo.user_authority;
-import com.boot.service.authorityService;
-import com.boot.service.userAuthorityService;
-import com.boot.service.userDetailService;
-import com.boot.service.userService;
+import com.boot.pojo.*;
+import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.visitorUtil;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 游政杰
  * 2021/5/31
@@ -50,12 +50,31 @@ public class usermanagerController {
 
     private Logger logger= Logger.getLogger(usermanagerController.class);
 
+    @Autowired
+    private com.boot.service.visitorService visitorService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private final int type=2; //类型为1就是首页，类型为2就是后台管理
 
     @Autowired
     private userAuthorityService userAuthorityService;
 
     @RequestMapping(path = "/list")
-    public String toUserManager(HttpSession session, Model model){
+    public String toUserManager(HttpSession session, Model model, HttpServletRequest request,@Value("进入用户管理界面") String desc){
+
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
+
 
 
         List<authority> authorities = authorityService.selectUserAuthority();

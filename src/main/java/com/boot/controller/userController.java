@@ -5,16 +5,18 @@ import com.alibaba.fastjson.JSON;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.user;
 import com.boot.pojo.userDetail;
+import com.boot.pojo.visitor;
 import com.boot.service.userDetailService;
 import com.boot.service.userService;
-import com.boot.utils.Commons;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.bootstrap;
-import com.boot.utils.fileUtil;
+import com.boot.service.visitorService;
+import com.boot.utils.*;
 import io.swagger.annotations.Api;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,8 @@ import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 游政杰
  * 2021/5/28
@@ -54,9 +58,27 @@ public class userController {
     @Autowired
     private userService userService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private com.boot.service.visitorService visitorService;
+
+    private final int type=2; //类型为1就是首页，类型为2就是后台管理
+
     @RequestMapping(path = "/list")
 //    @ResponseBody
-    public String toUserList(HttpSession session, Model model){
+    public String toUserList(HttpSession session, Model model,HttpServletRequest request,@Value("进入个人资料") String desc){
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
 
 
 

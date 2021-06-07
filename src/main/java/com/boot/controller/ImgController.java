@@ -2,15 +2,17 @@ package com.boot.controller;
 
 import com.boot.pojo.img;
 import com.boot.pojo.userDetail;
+import com.boot.pojo.visitor;
 import com.boot.service.imgService;
 import com.boot.service.userDetailService;
-import com.boot.utils.Commons;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.bootstrap;
-import com.boot.utils.fileUtil;
+import com.boot.service.visitorService;
+import com.boot.utils.*;
 import io.swagger.annotations.Api;
 import net.coobird.thumbnailator.Thumbnails;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 游政杰
  * 2021/5/29
@@ -45,11 +50,28 @@ public class ImgController {
     @Autowired
     private imgService imgService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private visitorService visitorService;
+
+    private final int type=2; //类型为1就是首页，类型为2就是后台管理
+
 //    private static final Object lock=new Object(); //悲观锁
 
     @RequestMapping(path = "/list")
-    public String toFileList(HttpSession session, Model model){
+    public String toFileList(HttpSession session, Model model, HttpServletRequest request,@Value("进入后台界面") String desc){
 
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
 
         List<img> imgs = imgService.selectAllImg();
         System.out.println(imgs);

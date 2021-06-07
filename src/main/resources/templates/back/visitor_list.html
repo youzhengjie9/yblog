@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='访客管理',active='visitor'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+
+    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+
+
+    <style>
+        .switch {
+            width: 57px;
+            height: 28px;
+            position: relative;
+            border: 1px solid #dfdfdf;
+            background-color: #fdfdfd;
+            box-shadow: #dfdfdf 0 0 0 0 inset;
+            border-radius: 20px;
+            background-clip: content-box;
+            display: inline-block;
+            -webkit-appearance: none;
+            user-select: none;
+            outline: none;
+        }
+
+        .switch:before {
+            content: '';
+            width: 26px;
+            height: 26px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .switch:checked {
+            border-color: #64bd63;
+            box-shadow: #64bd63 0 0 0 16px inset;
+            background-color: #64bd63;
+        }
+
+        .switch:checked:before {
+            left: 30px;
+        }
+
+        .switch.switch-anim {
+            transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+        }
+
+        .switch.switch-anim:before {
+            transition: left 0.3s;
+        }
+
+        .switch.switch-anim:checked {
+            box-shadow: #64bd63 0 0 0 16px inset;
+            background-color: #64bd63;
+            transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+        }
+
+        .switch.switch-anim:checked:before {
+            transition: left 0.3s;
+        }
+    </style>
+</head>
+
+<body class="fixed-left">
+
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <h4 class="page-title">访客管理</h4>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div class="table-responsive">
+                            <table th:if="${visitors!=null and visitors.size()>0}"
+                                   class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>IP</th>
+                                    <th>所在地</th>
+                                    <th>使用的浏览器</th>
+                                    <th>操作系统</th>
+                                    <th>访问时间</th>
+                                    <th>操作描述</th>
+                                    <!--                                    <th>是否禁止IP</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="visitor:${visitors}">
+                                    <td th:text="${visitor.getId()}"></td>
+                                    <td th:text="${visitor.getVisit_ip()}"></td>
+                                    <td th:text="${visitor.getVisit_address()}"></td>
+                                    <td th:text="${visitor.getBrowser()}"></td>
+                                    <td th:text="${visitor.getOs()}"></td>
+                                    <td th:text="${visitor.getVisit_time()}"></td>
+                                    <td th:text="${visitor.getVisit_describe()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="am-pagination">
+                            <nav aria-label="Page navigation">
+
+                                <!--                分成三个ul class="pagination" ，一个是上一页 ，一个是th：each遍历 ，一个是下一页-->
+                                <ul class="pagination">
+
+                                    <li th:if="${pageInfo.pageNum!=1}">
+                                        <a th:href="@{'/visitor/list?pageNum='+${pageInfo.pageNum-1}}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:if="${pageInfo.pageNum==1}" class="disabled">
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="pagination" th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+                                    <li th:if="${pageInfo.pageNum==index}" class="active"><a
+                                            th:href="@{'/visitor/list?pageNum='+${index}}"
+                                            th:text="${index}"></a></li>
+                                    <li th:if="${pageInfo.pageNum!=index}"><a
+                                            th:href="@{'/visitor/list?pageNum='+${index}}"
+                                            th:text="${index}"></a></li>
+
+                                </ul>
+
+                                <ul class="pagination">
+                                    <li th:if="${pageInfo.pageNum!=pageInfo.pages}">
+                                        <a th:href="@{'/visitor/list?pageNum='+${pageInfo.pageNum+1}}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:if="${pageInfo.pageNum==pageInfo.pages}" class="disabled">
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+<script>
+    function checkNum() {
+        if ($('.switch-anim').prop('checked')) {
+            console.log("选中");
+        } else {
+            console.log("没选中");
+        }
+    }
+
+
+    /**
+     *发送Ajax
+     */
+    // function sendAjax(valid, name) {
+    //     var xmlhttp;
+    //     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+    //         xmlhttp = new XMLHttpRequest();
+    //     } else {// code for IE6, IE5
+    //         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    //     }
+    //     // alert('send')
+    //     xmlhttp.open("GET", "http://localhost:8080/usermanager/updateVaild?valid=" + valid + "&name=" + name, true);
+    //     xmlhttp.send();
+    //
+    //     //4.接受并处理来自服务器的响应结果
+    //     //获取方式 ：xmlhttp.responseText
+    //     //当xmlhttp对象的就绪状态改变时，触发事件onreadystatechange。
+    //     //接收服务器端的响应(readyState=4表示请求已完成且响应已就绪 status=200表示请求响应一切正常)
+    //     xmlhttp.onreadystatechange = function () {
+    //         //判断readyState就绪状态是否为4，判断status响应状态码是否为200
+    //         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //             //获取服务器的响应结果
+    //             var responseText = xmlhttp.responseText;
+    //             // alert(responseText);
+    //
+    //
+    //         }
+    //
+    //     }
+    // }
+
+
+</script>
+
+

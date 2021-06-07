@@ -10,6 +10,14 @@ public class category implements Serializable {
     private String categoryName;
     private int categoryCount;
 
+    public category() {
+    }
+
+    public category(String categoryName, int categoryCount) {
+        this.categoryName = categoryName;
+        this.categoryCount = categoryCount;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

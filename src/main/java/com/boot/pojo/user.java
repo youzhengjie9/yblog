@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.sql.Date;
 
-@ApiModel(value = "用户实体类",description = "封装用户信息")
+@ApiModel(value = "用户实体类", description = "封装用户信息")
 public class user implements Serializable {
 
     private int id;
@@ -18,6 +18,21 @@ public class user implements Serializable {
 
     private userDetail userDetail;
 
+    public user() {
+    }
+
+    public user(int id, String username, String password,
+                String email, Date date, int valid,
+                com.boot.pojo.user_authority user_authority, com.boot.pojo.userDetail userDetail) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.date = date;
+        this.valid = valid;
+        this.user_authority = user_authority;
+        this.userDetail = userDetail;
+    }
 
     public com.boot.pojo.user_authority getUser_authority() {
         return user_authority;

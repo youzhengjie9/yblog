@@ -2,22 +2,20 @@ package com.boot.controller;
 
 import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ArticleResponseData;
-import com.boot.pojo.Article;
-import com.boot.pojo.Comment;
-import com.boot.pojo.link;
-import com.boot.pojo.userDetail;
-import com.boot.service.CommentService;
-import com.boot.service.articleService;
-import com.boot.service.linkService;
-import com.boot.service.userDetailService;
-import com.boot.utils.Commons;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.ipUtils;
+import com.boot.pojo.*;
+import com.boot.service.*;
+import com.boot.utils.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
+import eu.bitwalker.useragentutils.Version;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.parameters.P;
@@ -32,6 +30,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static com.boot.utils.browserOS.*;
 
 /**
  * @author 游政杰
@@ -59,9 +59,17 @@ public class clientController {
     @Autowired
     private linkService linkService;
 
+    @Autowired
+    private browserOS browserOS;
+
+    @Autowired
+    private visitorService visitorService;
+
     private final int DEFAULT_PAGENUM = 1;
 
     private final int COMMENT_PAGESIZE = 3;
+
+    private final int type = 1; //类型为1就是首页，类型为2就是后台管理
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -72,8 +80,21 @@ public class clientController {
         return list;
     }
 
+
     @RequestMapping(path = {"/"})
-    public ModelAndView toIndex1(HttpSession session) {
+    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
+
+
         PageHelper.startPage(1, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
@@ -117,30 +138,22 @@ public class clientController {
         return modelAndView;
     }
 
-    /**
-     * public class PageInfo<T> extends PageSerializable<T> {
-     * private int pageNum;
-     * private int pageSize;
-     * private int size;
-     * private int startRow;
-     * private int endRow;
-     * private int pages;
-     * private int prePage;
-     * private int nextPage;
-     * private boolean isFirstPage;
-     * private boolean isLastPage;
-     * private boolean hasPreviousPage;
-     * private boolean hasNextPage;
-     * private int navigatePages;
-     * private int[] navigatepageNums;
-     * private int navigateFirstPage;
-     * private int navigateLastPage;
-     *
-     * @param pageNum
-     * @return
-     */
+
     @RequestMapping(path = {"/page/{pageNum}"})
-    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session) {
+    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
+
+
+
         PageHelper.startPage(pageNum, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
@@ -183,7 +196,8 @@ public class clientController {
 
 
     @GetMapping(path = "/article/{articleId}")
-    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session) {
+    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session, @Value("访问文章") String desc) {
+
 
         //当某个ip在短时间内不断访问某篇文章会造成点击量+1
         //需求：我们想让用户ip访问文章后2分钟内，再次点击这篇文章点击量不会+1，防止用户刷点击量
@@ -195,6 +209,18 @@ public class clientController {
             articleService.updateHits(articleId);
             redisTemplate.opsForValue().set(key, "1", 60 * 2, TimeUnit.SECONDS); //设置2分钟的过期时间
         }
+
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key1 = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key1);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key1, "1", 60 * 5, TimeUnit.SECONDS);
+        }
+
 
 
         ModelAndView modelAndView = new ModelAndView();

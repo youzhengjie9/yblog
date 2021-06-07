@@ -14,6 +14,14 @@ public class img implements Serializable {
     private String big_img; //大图
     private String small_img; //缩略图
 
+    public img() {
+    }
+
+    public img(int id, String big_img, String small_img) {
+        this.id = id;
+        this.big_img = big_img;
+        this.small_img = small_img;
+    }
 
     public int getId() {
         return id;

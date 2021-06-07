@@ -13,6 +13,14 @@ public class archive implements Serializable {
     private String months; //归档年-月
     private String count; //对应归档年-月匹配的文章数量
 
+    public archive() {
+    }
+
+    public archive(String months, String count) {
+        this.months = months;
+        this.count = count;
+    }
+
     public String getMonths() {
         return months;
     }

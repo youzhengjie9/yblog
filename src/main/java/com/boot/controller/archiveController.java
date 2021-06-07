@@ -1,19 +1,16 @@
 package com.boot.controller;
 
-import com.boot.pojo.Article;
-import com.boot.pojo.archive;
-import com.boot.pojo.link;
-import com.boot.pojo.userDetail;
-import com.boot.service.archiveService;
-import com.boot.service.articleService;
-import com.boot.service.linkService;
-import com.boot.service.userDetailService;
+import com.boot.pojo.*;
+import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.cssUtil;
+import com.boot.utils.visitorUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,12 @@ public class archiveController {
     private archiveService archiveService;
 
     @Autowired
+    private visitorService visitorService;
+
+    @Autowired
     private cssUtil cssUtil;
+
+    private final int type = 1; //类型为1就是首页，类型为2就是后台管理
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -70,7 +73,7 @@ public class archiveController {
 
     @GetMapping(path = "/list")
     @ApiOperation(value = "去归档页面")
-    public ModelAndView toArchiveList(HttpSession session){
+    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request, @Value("归档页面") String desc){
         ModelAndView modelAndView = new ModelAndView();
         //前端进行判断，isArchive是不是等于空，如果不是就是归档页面，进行页面代码的复用，省去写一个新的页面
         modelAndView.addObject("isArchive","true");
@@ -78,6 +81,17 @@ public class archiveController {
         List<archive> archives = archiveService.selectAllArchiveGroup(); //获取归档分组信息
 //        modelAndView.addObject("archives",archives);
         modelAndView.addObject("cssUtil",cssUtil);
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key1 = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key1);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key1, "1", 60 * 5, TimeUnit.SECONDS);
+        }
+
 
         /**
          * 可以通过hashMap来维护归档数据

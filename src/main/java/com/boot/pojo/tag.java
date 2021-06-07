@@ -8,6 +8,14 @@ public class tag {
     private String tagName;
     private int tagCount;
 
+    public tag() {
+    }
+
+    public tag(String tagName, int tagCount) {
+        this.tagName = tagName;
+        this.tagCount = tagCount;
+    }
+
     public String getTagName() {
         return tagName;
     }

@@ -10,7 +10,13 @@ public class authority implements Serializable {
     private int id;
     private String authority;
 
+    public authority() {
+    }
 
+    public authority(int id, String authority) {
+        this.id = id;
+        this.authority = authority;
+    }
 
     public int getId() {
         return id;

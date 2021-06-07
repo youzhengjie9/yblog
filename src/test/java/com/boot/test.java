@@ -1,5 +1,7 @@
 package com.boot;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.boot.pojo.Article;
 import com.boot.pojo.archive;
 import com.boot.pojo.tag;
@@ -7,6 +9,7 @@ import com.boot.service.archiveService;
 import com.boot.service.articleService;
 import com.boot.service.categoryService;
 import com.boot.service.tagService;
+import com.boot.utils.IpToAddressUtil;
 import com.boot.utils.SpringSecurityUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +113,29 @@ public class test {
 
         List<archive> archives = archiveService.selectAllArchiveGroup();
         System.out.println(archives);
+
+    }
+
+
+
+
+    @Test
+    public void test3(){
+//        String ipInfo = IpToAddressUtil.sendGet("120.85.62.189", "W57BZ-TVM3R-6PJWD-W5UG6-4LC4K-J2BKI");
+//
+//        JSONObject jsonObject = JSONObject.parseObject(ipInfo); //转换成json对象
+//        System.out.println(jsonObject.getJSONObject("result").get("ip")); //ip
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lng")); //经度
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lat")); //纬度
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("nation")); //国家
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("province")); //省
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("city")); //市
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("district")); //区
+//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("adcode")); //城市码
+
+
+
+
 
     }
 
