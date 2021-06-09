@@ -24,4 +24,7 @@ public interface tagMapper {
 
     public List<tag> selectAllTag();
 
+    //echarts
+    List<tag> selectTags_echarts();
+
 }

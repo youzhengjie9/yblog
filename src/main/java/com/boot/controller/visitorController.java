@@ -1,8 +1,11 @@
 package com.boot.controller;
 
+import com.boot.pojo.userDetail;
 import com.boot.pojo.visitor;
+import com.boot.service.userDetailService;
 import com.boot.service.visitorService;
 import com.boot.utils.Commons;
+import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.visitorUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Api(value = "访客控制器")
 public class visitorController {
 
-    private final int type=2; //类型为1就是首页，类型为2就是后台管理
+    private final int type = 1;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -34,10 +38,17 @@ public class visitorController {
     @Autowired
     private visitorService visitorService;
 
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private userDetailService userDetailService;
+
 
     @GetMapping(path = "/list")
-    public String toVisitorList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, Model model,
-                                HttpServletRequest request, @Value("进入访客管理界面") String desc){
+    public String toVisitorList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
+                                HttpServletRequest request, @Value("进入访客管理界面") String desc
+                              , HttpSession session) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -49,12 +60,17 @@ public class visitorController {
             redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
         }
 
-        PageHelper.startPage(pageNum,8);
+        PageHelper.startPage(pageNum, 8);
         List<com.boot.pojo.visitor> visitors = visitorService.selectVisitor();
 
         PageInfo pageInfo = new PageInfo(visitors);
-        model.addAttribute("pageInfo",pageInfo);
-        model.addAttribute("visitors",visitors);
+
+        String username = springSecurityUtil.currentUser(session);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail", userDetail);
+
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("visitors", visitors);
         model.addAttribute("commons", Commons.getInstance());
         return "back/visitor_list";
     }

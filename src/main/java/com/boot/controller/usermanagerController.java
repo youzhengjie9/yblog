@@ -56,7 +56,7 @@ public class usermanagerController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    private final int type=2; //类型为1就是首页，类型为2就是后台管理
+    private final int type=1;
 
     @Autowired
     private userAuthorityService userAuthorityService;

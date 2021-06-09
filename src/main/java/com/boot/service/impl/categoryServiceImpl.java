@@ -60,6 +60,11 @@ public class categoryServiceImpl implements categoryService {
 
     }
 
+    @Override
+    public List<category> selectCategories_echarts() {
+        return categoryMapper.selectCategories_echarts();
+    }
+
 
     @Override
     public List<category> selectCategories() {

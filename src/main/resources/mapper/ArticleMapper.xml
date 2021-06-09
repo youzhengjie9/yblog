@@ -21,7 +21,6 @@
         </association>
 
 
-
     </resultMap>
 
     <select id="selectAllArticle" resultMap="articleRes1">
@@ -42,6 +41,34 @@
 	t_statistic
     WHERE
 	t_article.id = t_statistic.article_id
+    </select>
+
+    <resultMap id="charts1" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="created" property="created"/>
+
+        <association property="statistic" javaType="com.boot.pojo.Statistic">
+            <result property="articleId" column="article_id"/>
+            <result property="hits" column="hits"/>
+        </association>
+
+
+    </resultMap>
+
+    <select id="selectArticleStatistic" resultMap="charts1">
+    SELECT
+	t_article.id,
+	t_article.title,
+	t_article.created,
+	t_statistic.hits
+    FROM
+    t_article,
+	t_statistic
+    WHERE
+	t_article.id = t_statistic.article_id
+	order by t_statistic.hits desc
+	limit 7
     </select>
 
 
@@ -91,9 +118,6 @@
     </select>
 
 
-
-
-
     <resultMap id="articleRes3" type="com.boot.pojo.Article">
         <result column="id" property="id"/>
         <result column="title" property="title"/>
@@ -124,10 +148,6 @@
     </select>
 
 
-
-
-
-
     <resultMap id="articleRes4" type="com.boot.pojo.Article">
         <result column="id" property="id"/>
         <result column="title" property="title"/>
@@ -144,7 +164,6 @@
             <result property="hits" column="hits"/>
             <result property="commentsNum" column="comments_num"/>
         </association>
-
 
 
     </resultMap>
@@ -219,14 +238,9 @@
     </select>
 
 
-
     <select id="selectArticleCount" resultType="int">
         select count('article_id') from t_article;
     </select>
-
-
-
-
 
 
     <resultMap id="articleRes6" type="com.boot.pojo.Article">
@@ -245,7 +259,6 @@
             <result property="hits" column="hits"/>
             <result property="commentsNum" column="comments_num"/>
         </association>
-
 
 
     </resultMap>
@@ -329,7 +342,7 @@
     <select id="selectTagsByArticleId" resultType="java.lang.String">
         select tags from t_article where id=#{id}
     </select>
-    
+
     <update id="updateTagsByArticleId">
         update t_article set tags = #{tags} where id=#{id}
     </update>
@@ -338,7 +351,7 @@
         update t_article set categories = #{newName} where categories=#{oldName}
     </update>
 
-    
+
     <update id="updateAllowCommentTo_0">
         update t_article set allow_comment = 0 where id=#{id}
     </update>

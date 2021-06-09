@@ -1,6 +1,7 @@
 package com.boot.service.impl;
 
 import com.boot.dao.visitorMapper;
+import com.boot.pojo.onedayVisitor;
 import com.boot.pojo.visitor;
 import com.boot.service.visitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class visitorServiceImpl implements visitorService {
     @Override
     public List<visitor> selectVisitor() {
         return visitorMapper.selectVisitor();
+    }
+
+    @Override
+    public List<onedayVisitor> selectOneDayVisitor() {
+        return visitorMapper.selectOneDayVisitor();
     }
 }

@@ -69,7 +69,7 @@ public class clientController {
 
     private final int COMMENT_PAGESIZE = 3;
 
-    private final int type = 1; //类型为1就是首页，类型为2就是后台管理
+    private final int type = 1;
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -153,7 +153,6 @@ public class clientController {
         }
 
 
-
         PageHelper.startPage(pageNum, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
@@ -220,7 +219,6 @@ public class clientController {
             //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
             redisTemplate.opsForValue().set(key1, "1", 60 * 5, TimeUnit.SECONDS);
         }
-
 
 
         ModelAndView modelAndView = new ModelAndView();

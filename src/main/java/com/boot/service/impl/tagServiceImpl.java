@@ -38,4 +38,9 @@ public class tagServiceImpl implements tagService {
     public void insertTag(String tagName) {
         tagMapper.insertTag(tagName);
     }
+
+    @Override
+    public List<tag> selectTags_echarts() {
+        return tagMapper.selectTags_echarts();
+    }
 }

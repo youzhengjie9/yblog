@@ -87,6 +87,11 @@
                            th:class="${active}=='home'?'waves-effect active':'waves-effect'"><i
                                 class="fa fa-dashboard" aria-hidden="true"></i><span> 仪表盘 </span></a>
                     </li>
+                    <li th:class="${active}=='charts'?'active':''">
+                        <a th:href="@{/chart/list}"
+                           th:class="${active}=='charts'?'waves-effect active':'waves-effect'"><i
+                                class="fa fa-dashboard" aria-hidden="true"></i><span>统计图表</span></a>
+                    </li>
                     <li th:class="${active}=='publish'?'active':''">
                         <a th:href="@{/admin/toPublishArticle}"
                            th:class="${active}=='publish'?'waves-effect active':'waves-effect'"><i

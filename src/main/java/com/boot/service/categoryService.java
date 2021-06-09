@@ -32,5 +32,6 @@ public interface categoryService {
 
     public void deleteCategory_service(String n, String DEFAULT_CATEGORY);
 
-
+    //echarts
+    List<category> selectCategories_echarts();
 }

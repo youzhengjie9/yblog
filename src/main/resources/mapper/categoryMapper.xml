@@ -39,6 +39,9 @@
         insert into t_categories (categoryName,categoryCount) values (#{categoryName},0)
     </insert>
 
+    <select id="selectCategories_echarts" resultType="com.boot.pojo.category">
+        select * from t_categories order by categoryCount desc limit 4
+    </select>
 
 </mapper>
 

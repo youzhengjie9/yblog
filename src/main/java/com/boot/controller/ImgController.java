@@ -56,7 +56,7 @@ public class ImgController {
     @Autowired
     private visitorService visitorService;
 
-    private final int type=2; //类型为1就是首页，类型为2就是后台管理
+    private final int type=1;
 
 //    private static final Object lock=new Object(); //悲观锁
 

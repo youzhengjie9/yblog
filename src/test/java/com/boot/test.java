@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.pojo.Article;
 import com.boot.pojo.archive;
+import com.boot.pojo.onedayVisitor;
 import com.boot.pojo.tag;
-import com.boot.service.archiveService;
-import com.boot.service.articleService;
-import com.boot.service.categoryService;
-import com.boot.service.tagService;
+import com.boot.service.*;
 import com.boot.utils.IpToAddressUtil;
 import com.boot.utils.SpringSecurityUtil;
 import org.junit.jupiter.api.Test;
@@ -116,7 +114,8 @@ public class test {
 
     }
 
-
+    @Autowired
+    private visitorService visitorService;
 
 
     @Test
@@ -133,9 +132,9 @@ public class test {
 //        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("district")); //区
 //        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("adcode")); //城市码
 
-
-
-
+        List<onedayVisitor> onedayVisitors = visitorService.selectOneDayVisitor();
+        System.out.println(onedayVisitors.get(0).getDay());
+        System.out.println(onedayVisitors.get(0).getCount());
 
     }
 

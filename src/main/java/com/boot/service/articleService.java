@@ -58,5 +58,6 @@ public interface articleService {
 
     void deleteArticle_service(Integer id);
 
-
+    //echarts
+    List<Article> selectArticleStatistic();
 }

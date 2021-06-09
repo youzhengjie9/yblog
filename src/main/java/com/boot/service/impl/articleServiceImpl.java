@@ -173,6 +173,11 @@ public class articleServiceImpl implements articleService {
 
     }
 
+    @Override
+    public List<Article> selectArticleStatistic() {
+        return articleMapper.selectArticleStatistic();
+    }
+
 
     @Override
     public List<Article> selectAllArticle() {

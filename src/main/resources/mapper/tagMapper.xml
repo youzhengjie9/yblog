@@ -25,4 +25,8 @@
         select tagName,tagCount from t_tag order by tagCount desc
     </select>
 
+    <select id="selectTags_echarts" resultType="com.boot.pojo.tag">
+         select tagName,tagCount from t_tag order by tagCount desc limit 4
+    </select>
+
 </mapper>

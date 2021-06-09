@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='统计图表',active='charts'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <!--    引入echarts-->
+    <script th:src="@{/assets/js/echarts.js}"></script>
+
+    <style>
+        #main1 {
+            float: left;
+        }
+
+        #main2 {
+            float: left;
+        }
+        #main3{
+            float: left;
+        }
+        #main4{
+            float: left;
+        }
+    </style>
+</head>
+
+<body class="fixed-left">
+
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <h4 class="page-title">统计图表</h4>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div id="main1" style="width: 760px;height:300px;"></div>
+
+                        <div id="main2" style="width: 370px;height: 300px"></div>
+
+                        <div id="main4" style="width: 760px;height: 300px;"></div>
+
+                        <div id="main3" style="width: 370px;height: 300px;"></div>
+                    </div>
+                    <div th:replace="back/footer :: footer-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+<!-- 一定要使用 th:inline="javascript"，不然js不能获取model传来的集合-->
+<script th:inline="javascript">
+    //1.
+    // 基于准备好的dom，初始化echarts实例
+    var myChart1 = echarts.init(document.getElementById('main1'));
+
+
+    // 指定图表的配置项和数据
+    var option1 = {
+        title: {
+            text: '文章阅读量top7'
+        },
+        tooltip: {},
+        legend: {
+            data: ['阅读量']
+        },
+        xAxis: {
+            data: ["top1", "top2", "top3", "top4", "top5", "top6", "top7"]
+        },
+        yAxis: {},
+        series: [{
+            name: '阅读量',
+            type: 'bar',
+            data: [
+                [[${articles.get(0).getStatistic().getHits()}]],
+                [[${articles.get(1).getStatistic().getHits()}]],
+                [[${articles.get(2).getStatistic().getHits()}]],
+                [[${articles.get(3).getStatistic().getHits()}]],
+                [[${articles.get(4).getStatistic().getHits()}]],
+                [[${articles.get(5).getStatistic().getHits()}]],
+                [[${articles.get(6).getStatistic().getHits()}]]
+            ]
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option1);
+
+    //2.
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    myChart2.setOption({
+        title: {
+            text: '分类统计top4'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '分类统计',
+                type: 'pie',
+                radius: '55%',
+                label: {
+                    position: 'outside',
+                    formatter: '{b}\n共{c}个 (占比:{d}%)'
+                },
+                data: [
+                    {
+                        value: [[${categories.get(0).getCategoryCount()}]],
+                        name: [[${categories.get(0).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(1).getCategoryCount()}]],
+                        name: [[${categories.get(1).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(2).getCategoryCount()}]],
+                        name: [[${categories.get(2).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(3).getCategoryCount()}]],
+                        name: [[${categories.get(3).getCategoryName()}]]
+                    }
+                ]
+            }
+        ]
+
+    })
+
+    //3.
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    myChart3.setOption({
+        title: {
+            text: '标签统计top4'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '标签统计',
+                type: 'pie',
+                radius: '55%',
+                label: {
+                    position: 'outside',
+                    formatter: '{b}\n共{c}个 (占比:{d}%)'
+                },
+                data: [
+                    {
+                        value: [[${tags.get(0).getTagCount()}]],
+                        name: [[${tags.get(0).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(1).getTagCount()}]],
+                        name: [[${tags.get(1).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(2).getTagCount()}]],
+                        name: [[${tags.get(2).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(3).getTagCount()}]],
+                        name: [[${tags.get(3).getTagName()}]]
+                    }
+                ]
+            }
+        ]
+
+    })
+
+    //4.
+    var myChart4 = echarts.init(document.getElementById('main4'));
+    myChart4.setOption({
+        xAxis: {
+            type: 'category',
+            data: [
+                [[${onedayVisitors.get(0).getDay()}]], [[${onedayVisitors.get(1).getDay()}]],
+                [[${onedayVisitors.get(2).getDay()}]], [[${onedayVisitors.get(3).getDay()}]],
+                [[${onedayVisitors.get(4).getDay()}]], [[${onedayVisitors.get(5).getDay()}]],
+                [[${onedayVisitors.get(5).getDay()}]]
+            ]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: 'line'
+        }]
+    });
+
+
+</script>
+
+
+</html>
+
+

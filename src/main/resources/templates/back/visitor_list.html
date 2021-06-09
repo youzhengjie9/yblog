@@ -104,7 +104,6 @@
                                     <th>使用的浏览器</th>
                                     <th>操作系统</th>
                                     <th>访问时间</th>
-                                    <th>操作描述</th>
                                     <!--                                    <th>是否禁止IP</th>-->
                                 </tr>
                                 </thead>
@@ -116,7 +115,6 @@
                                     <td th:text="${visitor.getBrowser()}"></td>
                                     <td th:text="${visitor.getOs()}"></td>
                                     <td th:text="${visitor.getVisit_time()}"></td>
-                                    <td th:text="${visitor.getVisit_describe()}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -192,39 +190,7 @@
         }
     }
 
-
-    /**
-     *发送Ajax
-     */
-    // function sendAjax(valid, name) {
-    //     var xmlhttp;
-    //     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-    //         xmlhttp = new XMLHttpRequest();
-    //     } else {// code for IE6, IE5
-    //         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    //     }
-    //     // alert('send')
-    //     xmlhttp.open("GET", "http://localhost:8080/usermanager/updateVaild?valid=" + valid + "&name=" + name, true);
-    //     xmlhttp.send();
-    //
-    //     //4.接受并处理来自服务器的响应结果
-    //     //获取方式 ：xmlhttp.responseText
-    //     //当xmlhttp对象的就绪状态改变时，触发事件onreadystatechange。
-    //     //接收服务器端的响应(readyState=4表示请求已完成且响应已就绪 status=200表示请求响应一切正常)
-    //     xmlhttp.onreadystatechange = function () {
-    //         //判断readyState就绪状态是否为4，判断status响应状态码是否为200
-    //         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-    //             //获取服务器的响应结果
-    //             var responseText = xmlhttp.responseText;
-    //             // alert(responseText);
-    //
-    //
-    //         }
-    //
-    //     }
-    // }
-
-
 </script>
 
 
+</html>

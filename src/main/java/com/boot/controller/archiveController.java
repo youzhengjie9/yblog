@@ -60,7 +60,7 @@ public class archiveController {
     @Autowired
     private cssUtil cssUtil;
 
-    private final int type = 1; //类型为1就是首页，类型为2就是后台管理
+    private final int type=1;
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {

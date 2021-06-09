@@ -28,4 +28,9 @@ public interface categoryMapper {
                                           @Param("count") int count);
 
     public void addCategory(category category);
+
+    //echarts
+    List<category> selectCategories_echarts();
+
+
 }

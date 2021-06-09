@@ -18,4 +18,7 @@ public interface tagService {
     public List<tag> selectAllTag();
 
     public void insertTag(String tagName);
+
+    //echarts
+    List<tag> selectTags_echarts();
 }
