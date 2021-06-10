@@ -26,32 +26,36 @@
     <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
 </head>
 
-<!--<style type="text/css">-->
+<style type="text/css">
 
 
-<!--    .middle {-->
-<!--        margin-top: 110px;-->
-<!--        margin-bottom: 110px;-->
-<!--        padding: 100px 50px 50px 50px;-->
-<!--        background-color: white;-->
-<!--        border-radius: 15px;-->
-<!--        box-shadow: 10px 10px 5px rgb(0, 0, 0, 0.1);-->
+    /*.middle {*/
+    /*    margin-top: 110px;*/
+    /*    margin-bottom: 110px;*/
+    /*    padding: 100px 50px 50px 50px;*/
+    /*    background-color: white;*/
+    /*    border-radius: 15px;*/
+    /*    box-shadow: 10px 10px 5px rgb(0, 0, 0, 0.1);*/
 
-<!--    }-->
+    /*}*/
 
-<!--    .login {-->
-<!--        margin-left: 20px;-->
-<!--    }-->
+    /*.login {*/
+    /*    margin-left: 20px;*/
+    /*}*/
 
-<!--    .font2 {-->
-<!--        font-size: 0.6em;-->
-<!--    }-->
+    /*.font2 {*/
+    /*    font-size: 0.6em;*/
+    /*}*/
 
-<!--    .btn {-->
-<!--        border-radius: 28px;-->
-<!--    }-->
+    /*.btn {*/
+    /*    border-radius: 28px;*/
+    /*}*/
 
-<!--</style>-->
+    .am-u-lg-3{
+        width: 28%;
+    }
+
+</style>
 
 
 <body>
@@ -73,10 +77,11 @@
                     <input type="hidden" name="url" th:value="${url}">
                 </div>
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{login.username}" name="username" required/>
+                    <input id="un" onblur="f()" type="text" class="am-radius" th:placeholder="#{login.username}" name="username" required/>
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-user am-icon-sm am-icon-fw"></i>
                     </span>
+                    <span id="context"></span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
@@ -104,64 +109,33 @@
     </footer>
 
 
-<!--<div class="log">-->
-<!--    <div class="container" style="height: 100%">-->
-<!--        <div class="middle mx-auto h-50 w-50">-->
-<!--            <div class="row">-->
-<!--                <div class="col col-12 col-md-6">-->
-<!--                    <img class="rounded img-fluid" src="/assets/image/login.png" alt="web开发">-->
-<!--                </div>-->
-<!--                <div class="col col-12 col-md-6">-->
-<!--                    <div class="login">-->
-<!--                        <h5 class="font-weight-bold">扁平化响应式平台登录</h5>-->
-<!--                        <p class="font-weight-light font2">一个AI技术交流的平台</p>-->
-
-<!--                        <form>-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="email" class="sr-only">Email address:</label>-->
-
-<!--                                <input type="email" class="form-control" id="email" placeholder="Email">-->
-<!--                            </div>-->
-
-<!--                            <div class="form-group">-->
-<!--                                <label for="pwd" class="sr-only">Password:</label>-->
-<!--                                <input type="password" class="form-control" id="pwd" placeholder="Password">-->
-<!--                            </div>-->
-
-<!--                            <div class="xuan custom-control custom-checkbox">-->
-<!--                                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">-->
-<!--                                <label class="custom-control-label font-weight-light small" for="customCheck">记住用户名</label>-->
-<!--                            </div>-->
-
-<!--                            <br>-->
-<!--                            <button type="button" class="btn btn-primary btn-block w-75 mx-auto">登 录</button>-->
-<!--                        </form>-->
-
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--        </div>-->
-
-<!--        <footer style="text-align: center;">-->
-<!--            <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/loginPage(l='zh_CN')}">中文</a>/<a-->
-<!--                    style="color: black" th:href="@{/loginPage(l='en_US')}">english</a></p>-->
-<!--            <p style="margin: 30px; color: #2E2D3C">-->
-<!--                <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;-->
-<!--                Powered By <a style="color: #0e90d2" rel="nofollow">游政杰</a></p>-->
-<!--        </footer>-->
-<!--    </div>-->
-
-<!--</div>-->
-
-
 </div>
 </body>
+
+<script>
+    function f() {
+        $.ajax({
+            url:"/check",
+            data:{
+                "username":$("#un").val()
+            },
+            success:function (data) {
+                var json = JSON.parse(data);
+                if(json.result==200)
+                {
+                    $("#context").html("<span style='color: #01AAED'>用户合法</span>")
+                }else {
+                    $("#context").html("<span style='color: #01AAED'>用户不存在</span>")
+                }
+
+            }
+
+        })
+
+    }
+</script>
+
+
 </html>
-
-
-<!---->
-
 
 

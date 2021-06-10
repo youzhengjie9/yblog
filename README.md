@@ -25,6 +25,8 @@
 | Swagger2                  | https://swagger.io/               |
 | Druid                       |    https://github.com/alibaba/druid                    |
 | fastjson                          |   https://github.com/alibaba/fastjson/                |
+| log4j                     |   http://logging.apache.org/log4j/1.2/  |
+| thumbnailator                         |   https://github.com/coobird/thumbnailator                   |
 #### 前端
 
 | 名称            | 描述       | 官网                                                     |

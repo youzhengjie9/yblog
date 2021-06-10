@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='标签/分类管理',active='category'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
-<head>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-</head>
 <body class="fixed-left">
 <div id="wrapper">
     <div th:replace="back/header::header-body"></div>
@@ -127,7 +125,7 @@
 
 
 
-<!--<div th:replace="back/footer :: footer"></div>-->
+<div th:replace="back/footer :: footer"></div>
 
 </body>
 

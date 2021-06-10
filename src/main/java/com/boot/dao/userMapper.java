@@ -36,4 +36,6 @@ public interface userMapper {
     void updateUserForEmail(@Param("id") int id,
                             @Param("email") String email);
 
+
+
 }

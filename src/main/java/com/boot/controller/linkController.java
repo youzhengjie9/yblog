@@ -88,5 +88,25 @@ public class linkController {
         return "back/link_list";
     }
 
+    @GetMapping(path = "/deleteLink")
+    public String deleteLink(int id,Model model,HttpSession session,HttpServletRequest request){
+
+        linkService.deleteLink(id);
+
+        String username = springSecurityUtil.currentUser(session);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail", userDetail);
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "删除了友链：ip为" + ipAddr);
+        List<link> links = linkService.selectAllLink();
+        model.addAttribute("links", links);
+        model.addAttribute("commons", Commons.getInstance());
+        return "back/link_list";
+    }
+
+
 
 }

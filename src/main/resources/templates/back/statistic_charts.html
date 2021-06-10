@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='统计图表',active='charts'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
-<head>
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <!-- 默认的header name是X-CSRF-TOKEN -->
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<!-- 默认的header name是X-CSRF-TOKEN -->
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
-    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
-    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
-            crossorigin="anonymous"></script>
-    <!--    引入echarts-->
-    <script th:src="@{/assets/js/echarts.js}"></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+<!--    引入echarts-->
+<script th:src="@{/assets/js/echarts.js}"></script>
 
-    <style>
-        #main1 {
-            float: left;
-        }
+<style>
+    #main1 {
+        float: left;
+    }
 
-        #main2 {
-            float: left;
-        }
-        #main3{
-            float: left;
-        }
-        #main4{
-            float: left;
-        }
-    </style>
-</head>
+    #main2 {
+        float: left;
+    }
+
+    #main3 {
+        float: left;
+    }
+
+    #main4 {
+        float: left;
+    }
+    .topbar{
+        height: 70px;
+    }
+</style>
+
+
 
 <body class="fixed-left">
 
@@ -80,6 +85,27 @@
         title: {
             text: '文章阅读量top7'
         },
+
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
         tooltip: {},
         legend: {
             data: ['阅读量']
@@ -89,6 +115,7 @@
         },
         yAxis: {},
         series: [{
+
             name: '阅读量',
             type: 'bar',
             data: [
@@ -100,16 +127,36 @@
                 [[${articles.get(5).getStatistic().getHits()}]],
                 [[${articles.get(6).getStatistic().getHits()}]]
             ]
+
+
         }]
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart1.setOption(option1);
+
 
     //2.
     var myChart2 = echarts.init(document.getElementById('main2'));
     myChart2.setOption({
         title: {
             text: '分类统计top4'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                }
+            }
         },
         tooltip: {
             trigger: 'item',
@@ -153,6 +200,23 @@
         title: {
             text: '标签统计top4'
         },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                }
+            }
+        },
         tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -192,20 +256,53 @@
     //4.
     var myChart4 = echarts.init(document.getElementById('main4'));
     myChart4.setOption({
+        title: {
+            text: '近7天的访客量'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        tooltip: {
+            // trigger: 'axis',
+            // formatter: '{c}个'
+            trigger: 'item'
+        },
         xAxis: {
             type: 'category',
             data: [
                 [[${onedayVisitors.get(0).getDay()}]], [[${onedayVisitors.get(1).getDay()}]],
                 [[${onedayVisitors.get(2).getDay()}]], [[${onedayVisitors.get(3).getDay()}]],
                 [[${onedayVisitors.get(4).getDay()}]], [[${onedayVisitors.get(5).getDay()}]],
-                [[${onedayVisitors.get(5).getDay()}]]
+                [[${onedayVisitors.get(6).getDay()}]]
             ]
         },
         yAxis: {
             type: 'value'
         },
         series: [{
-            data: [150, 230, 224, 218, 135, 147, 260],
+            data: [
+                [[${onedayVisitors.get(0).count}]], [[${onedayVisitors.get(1).count}]],
+                [[${onedayVisitors.get(2).count}]], [[${onedayVisitors.get(3).count}]],
+                [[${onedayVisitors.get(4).count}]], [[${onedayVisitors.get(5).count}]],
+                [[${onedayVisitors.get(6).count}]]
+            ],
             type: 'line'
         }]
     });

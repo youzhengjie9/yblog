@@ -71,7 +71,7 @@ public class adminController {
     @Autowired
     private visitorService visitorService;
 
-    private final int type=1;
+    private final int type = 1;
 
 
     //初始化redis有关t_tag表的数据
@@ -88,7 +88,7 @@ public class adminController {
 
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
-    public String toAdmin(Model model, HttpSession session, HttpServletRequest request,@Value("进入后台界面") String desc) {
+    public String toAdmin(Model model, HttpSession session, HttpServletRequest request, @Value("进入后台界面") String desc) {
 
 
         //添加访客信息
@@ -100,7 +100,6 @@ public class adminController {
             //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
             redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
         }
-
 
 
         String ipAddr = ipUtils.getIpAddr(request);
@@ -134,7 +133,7 @@ public class adminController {
 
     @RequestMapping(path = "/toPublishArticle")
     @ApiOperation(value = "进入发布文章界面", notes = "进入发布文章界面")
-    public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request,@Value("进入发布文章界面") String desc) {
+    public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request, @Value("进入发布文章界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -164,7 +163,7 @@ public class adminController {
     // 默认第一页
     @RequestMapping(path = "/toArticleList")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面，分页默认是第一页")
-    public String toArticleList1(Model model, HttpSession session, HttpServletRequest request,@Value("进入文章列表界面") String desc) {
+    public String toArticleList1(Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -203,7 +202,7 @@ public class adminController {
 
     @RequestMapping(path = "/toArticleList/{pageNum}")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面,分页是由前端传入")
-    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request,@Value("进入文章列表界面") String desc) {
+    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -241,7 +240,7 @@ public class adminController {
 
     @RequestMapping(path = "/toEditArticle/{article_id}")
     @ApiOperation(value = "进入编辑文章页面")
-    public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model,HttpServletRequest request,@Value("进入文章列表界面") String desc) {
+    public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -380,7 +379,7 @@ public class adminController {
     public String toCommentList(@RequestParam(value = "delId", defaultValue = "-1") int delId,
                                 @RequestParam(value = "id", defaultValue = "-1") int id,
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                HttpSession session,HttpServletRequest request,@Value("进入评论列表") String desc,
+                                HttpSession session, HttpServletRequest request, @Value("进入评论列表") String desc,
                                 Model model) {
 
         //添加访客信息
@@ -446,7 +445,7 @@ public class adminController {
 
     @RequestMapping(path = "/toTagList")
     @ApiOperation("进入分类标签界面")
-    public String toTagList(HttpSession session, Model model,HttpServletRequest request,@Value("进入分类标签界面") String desc) {
+    public String toTagList(HttpSession session, Model model, HttpServletRequest request, @Value("进入分类标签界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -558,7 +557,7 @@ public class adminController {
 
     @RequestMapping(path = "/toSetting")
     @ApiOperation("进入系统设置界面")
-    public String toSetting(HttpSession session, Model model,HttpServletRequest request,@Value("进入系统设置界面") String desc) {
+    public String toSetting(HttpSession session, Model model, HttpServletRequest request, @Value("进入系统设置界面") String desc) {
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);

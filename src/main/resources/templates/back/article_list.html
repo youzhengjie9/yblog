@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='文章管理',active='article'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
-<head>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -19,8 +18,6 @@
             integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
             crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
-
-</head>
 <style>
     .switch {
         width: 57px;
@@ -75,6 +72,9 @@
 
     .switch.switch-anim:checked:before {
         transition: left 0.3s;
+    }
+    .topbar{
+        height: 70px;
     }
 </style>
 <body class="fixed-left">

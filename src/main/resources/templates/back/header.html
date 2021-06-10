@@ -12,15 +12,15 @@
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css"
+          rel="stylesheet">
 
-    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
-
-
-
 
     <link th:href="@{/back/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/back/css/style.min.css}" rel="stylesheet" type="text/css"/>
@@ -29,10 +29,17 @@
     <script th:src="@{/back/js/html5shiv.js}"></script>
     <script th:src="@{/back/js/respond.min.js}"></script>
 
+    <style>
+        #sidebar-menu ul ul a:hover {
+            color: #7a8c53;
+        }
+    </style>
+
 </head>
 
 
 <div th:fragment="header-body">
+
     <div class="topbar">
         <div class="topbar-left">
             <div class="text-center p-t-10" style="margin: 0 auto;">
@@ -42,7 +49,7 @@
                     </a>
                 </div>
                 <div class="pull-left" style="padding-left: 10px;">
-                    <span style="font-size: 28px; color: #2f353f; line-height: 50px;">MyBlog</span>
+                    <span style="font-size: 28px; color: #2f353f; line-height: 50px;">yblog</span>
                 </div>
             </div>
         </div>
@@ -78,30 +85,51 @@
             </div>
         </div>
     </div>
+
+    <!--    -->
     <div class="left side-menu">
         <div class="sidebar-inner slimscrollleft">
             <div id="sidebar-menu">
+
                 <ul>
                     <li th:class="${active}=='home'?'active':''">
                         <a th:href="@{/admin/}"
                            th:class="${active}=='home'?'waves-effect active':'waves-effect'"><i
                                 class="fa fa-dashboard" aria-hidden="true"></i><span> 仪表盘 </span></a>
                     </li>
+
+
+                    <!--                    下拉菜单开始-->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                class="fa fa-dashboard" aria-hidden="true"></i><span>文章</span><b class="caret"></b></a>
+
+
+                        <ul class="dropdown-menu">
+                            <li th:class="${active}=='publish'?'active':''"
+                                style=" width: 240px;height: 49.3667px;background-color: #272c35;">
+                                <a th:href="@{/admin/toPublishArticle}"
+                                   th:class="${active}=='publish'?'waves-effect active':'waves-effect'"><i
+                                        class="fa fa-pencil-square-o" aria-hidden="true"></i><span> 发布文章 </span></a>
+                            </li>
+                            <li th:class="${active}=='article'?'active':''"
+                                style=" width: 240px;height: 49.3667px;background-color: #272c35;">
+                                <a th:href="@{/admin/toArticleList/}"
+                                   th:class="${active}=='article'?'waves-effect active':'waves-effect'"><i
+                                        class="fa fa-list" aria-hidden="true"></i><span> 文章管理 </span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <!--                    下拉菜单结束-->
+
                     <li th:class="${active}=='charts'?'active':''">
                         <a th:href="@{/chart/list}"
                            th:class="${active}=='charts'?'waves-effect active':'waves-effect'"><i
                                 class="fa fa-dashboard" aria-hidden="true"></i><span>统计图表</span></a>
                     </li>
-                    <li th:class="${active}=='publish'?'active':''">
-                        <a th:href="@{/admin/toPublishArticle}"
-                           th:class="${active}=='publish'?'waves-effect active':'waves-effect'"><i
-                                class="fa fa-pencil-square-o" aria-hidden="true"></i><span> 发布文章 </span></a>
-                    </li>
-                    <li th:class="${active}=='article'?'active':''">
-                        <a th:href="@{/admin/toArticleList/}"
-                           th:class="${active}=='article'?'waves-effect active':'waves-effect'"><i
-                                class="fa fa-list" aria-hidden="true"></i><span> 文章管理 </span></a>
-                    </li>
+
+
                     <li th:class="${active}=='comments'?'active':''">
                         <a th:href="@{/admin/toCommentList/}"
                            th:class="${active}=='comments'?'waves-effect active':'waves-effect'">
@@ -136,25 +164,43 @@
                             <i class="fa fa-tags" aria-hidden="true"></i><span> 友链管理 </span></a>
                     </li>
 
-                    <li th:class="${active}=='visitor'?'active':''">
-                        <a th:href="@{/visitor/list}"
-                           th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
-                            <i class="fa fa-tags" aria-hidden="true"></i><span> 访客管理 </span></a>
-                    </li>
 
+                    <!--                    下拉菜单开始-->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                class="fa fa-dashboard" aria-hidden="true"></i><span>访客管理</span><b class="caret"></b></a>
+
+
+                        <ul class="dropdown-menu">
+                            <li th:class="${active}=='visitor'?'active':''"
+                                style=" width: 240px;height: 49.3667px;background-color: #272c35;">
+                                <a th:href="@{/visitor/list}"
+                                   th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
+                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 访客记录 </span></a>
+                            </li>
+                            <li th:class="${active}=='visitor'?'active':''"
+                                style=" width: 240px;height: 49.3667px;background-color: #272c35;">
+                                <a href="#"
+                                   th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
+                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 黑名单 </span></a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <!--                    下拉菜单结束-->
 
 
                     <li th:class="${active}=='user'?'active':''">
                         <a th:href="@{/myuser/list}" th:class="${active}=='user'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-tags" aria-hidden="true"></i><span> 个人资料 </span></a>
                     </li>
-<!--                    暂不实现-->
+                    <!--                    暂不实现-->
 
-<!--                    <li th:class="${active}=='setting'?'active':''">-->
-<!--                        <a th:href="@{/admin/toSetting/}"-->
-<!--                           th:class="${active}=='setting'?'waves-effect active':'waves-effect'">-->
-<!--                            <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>-->
-<!--                    </li>-->
+                    <!--                    <li th:class="${active}=='setting'?'active':''">-->
+                    <!--                        <a th:href="@{/admin/toSetting/}"-->
+                    <!--                           th:class="${active}=='setting'?'waves-effect active':'waves-effect'">-->
+                    <!--                            <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>-->
+                    <!--                    </li>-->
 
                 </ul>
                 <div class="clearfix"></div>
@@ -162,8 +208,11 @@
             <div class="clearfix"></div>
         </div>
     </div>
-</div>
 
+    <!--    -->
+
+
+</div>
 
 
 </html>

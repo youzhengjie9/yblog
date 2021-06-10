@@ -28,4 +28,9 @@ public class linkServiceImpl implements linkService {
     public void insertLink(link link) {
         linkMapper.insertLink(link);
     }
+
+    @Override
+    public void deleteLink(int id) {
+        linkMapper.deleteLink(id);
+    }
 }

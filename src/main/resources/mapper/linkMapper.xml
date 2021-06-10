@@ -15,6 +15,9 @@
     <insert id="insertLink" parameterType="com.boot.pojo.link">
         insert into t_link(title,link) values(#{title},#{link})
     </insert>
-    
+
+    <delete id="deleteLink">
+        delete from t_link where id=#{id}
+    </delete>
     
 </mapper>

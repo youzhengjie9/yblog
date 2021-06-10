@@ -2,10 +2,7 @@ package com.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.boot.pojo.Article;
-import com.boot.pojo.archive;
-import com.boot.pojo.onedayVisitor;
-import com.boot.pojo.tag;
+import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.IpToAddressUtil;
 import com.boot.utils.SpringSecurityUtil;
@@ -30,6 +27,9 @@ public class test {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private userDetailService userDetailService;
 
 //    @Test
 //    public void test(){
@@ -136,6 +136,14 @@ public class test {
         System.out.println(onedayVisitors.get(0).getDay());
         System.out.println(onedayVisitors.get(0).getCount());
 
+    }
+
+    @Test
+    public void test4(){
+        userDetail admin = userDetailService.selectUserDetailByUserName("admin");
+        userDetail adminsss = userDetailService.selectUserDetailByUserName("adminsss");
+        System.out.println("admin:"+admin);
+        System.out.println("adminsss:"+adminsss);
     }
 
 
