@@ -146,6 +146,13 @@ public class test {
         System.out.println("adminsss:"+adminsss);
     }
 
+    @Autowired
+    private blacklistService blacklistService;
+    @Test
+    public void test5(){
+
+    }
+
 
 
 }

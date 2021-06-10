@@ -2,14 +2,20 @@ package com.boot.controller;
 
 import com.boot.pojo.link;
 import com.boot.pojo.userDetail;
+import com.boot.pojo.visitor;
 import com.boot.service.linkService;
 import com.boot.service.userDetailService;
+import com.boot.service.visitorService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.ipUtils;
+import com.boot.utils.visitorUtil;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @Api(value = "友情链接控制器")
@@ -36,8 +43,26 @@ public class linkController {
     @Autowired
     private userDetailService userDetailService;
 
+    private final int type = 1;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private visitorService visitorService;
+
     @GetMapping(path = "/list")
-    public String to_Link(Model model, HttpSession session) {
+    public String to_Link(Model model, HttpSession session,HttpServletRequest request,@Value("进入友链管理") String desc) {
+
+        //添加访客信息
+        visitor visitor = visitorUtil.getVisitor(request, desc);
+        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
+        String s = (String) redisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(s)) {
+            visitorService.insertVisitor(visitor);
+            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
+            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
+        }
 
         String name = springSecurityUtil.currentUser(session);
         List<link> links = linkService.selectAllLink();

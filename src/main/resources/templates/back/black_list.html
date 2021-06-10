@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='黑名单',active='black'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<head>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    .topbar {
+        height: 70px;
+    }
+
+    .ip_input {
+        width: 40px;
+        height: 20px;
+        font: normal 16px 宋体;
+        color: #000000;
+        border: 0px;
+        text-align: center;
+        position: relative;
+        top: 1px;
+    }
+
+    .all_input {
+        width: 210px;
+        height: 30px;
+        font: normal 8px 宋体;
+        color: #000000;
+        border: 1px solid #000000;
+        text-align: center;
+    }
+
+</style>
+
+<body class="fixed-left">
+
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <!--                    <div class="col-sm-12"></div>-->
+                    <div class="col-sm-12">
+                        <h4 class="page-title">黑名单</h4>
+                        <a class="btn btn-info" data-toggle="modal" data-target="#myModal2">手动添加黑名单IP</a>
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <div class="table-responsive">
+                            <table th:if="${blacklists!=null and blacklists.size()>0}"
+                                   class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>黑名单IP</th>
+                                    <th>所在地</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="blacklist:${blacklists}">
+                                    <td th:text="${blacklist.getId()}"></td>
+                                    <td th:text="${blacklist.getBlack_ip()}"></td>
+                                    <td th:text="${blacklist.getBlack_address()}"></td>
+                                    <td>
+
+                                        <a th:onclick="f1(this,[[${blacklist.getBlack_ip()}]])" href="#"
+                                           class="btn btn-danger btn-sm waves-effect waves-light m-b-5">
+                                            <i class="fa fa-trash-o"></i> <span>删除</span></a>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">手动添加黑名单IP</h4>
+            </div>
+            <form method="post" th:action="@{/black/addBlackList}" autocomplete="off">
+                <div class="modal-body">
+                    IP:
+                    <div class=all_input>
+                        <input name=ip1 class=ip_input maxlength=3 onkeydown=keyDownEvent(this) onkeyup=keyUpEvent(ip1,ip1,ip2)><span style="font-size: 16px">.</span>
+                        <input name=ip2 class=ip_input maxlength=3 onkeydown=keyDownEvent(this) onkeyup=keyUpEvent(ip1,ip2,ip3)><span style="font-size: 16px">.</span>
+                        <input name=ip3 class=ip_input maxlength=3 onkeydown=keyDownEvent(this) onkeyup=keyUpEvent(ip2,ip3,ip4)><span style="font-size: 16px">.</span>
+                        <input name=ip4 class=ip_input maxlength=3 onkeydown=keyDownEvent(this) onkeyup=keyUpEventForIp4(ip3,ip4)>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">确认添加</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+<script>
+
+    function getPos(obj) {
+        obj.focus();
+        var workRange = document.selection.createRange();
+        obj.select();
+        var allRange = document.selection.createRange();
+        workRange.setEndPoint("StartToStart", allRange);
+        var len = workRange.text.length;
+        workRange.collapse(false);
+        workRange.select();
+        return len;
+    }
+
+
+    function setCursor(obj, num) {
+        range = obj.createTextRange();
+        range.collapse(true);
+        range.moveStart('character', num);
+        range.select();
+    }
+
+    function keyDownEvent(obj) {
+        code = event.keyCode;
+        if (!((code >= 48 && code <= 57) || (code >= 96 && code <= 105) || code == 190 || code == 110 || code == 13 || code == 9 || code == 39 || code == 8 || code == 46 || code == 99 || code == 37))
+            event.returnValue = false;
+        if (code == 13)
+            event.keyCode = 9;
+        if (code == 110 || code == 190)
+            if (obj.value)
+                event.keyCode = 9;
+            else
+                event.returnValue = false;
+    }
+
+    function keyUpEvent(obj0, obj1, obj2) {
+        if (obj1.value > 255) {
+            alert("填写范围必须在 0 - 255间");
+            obj1.value = obj1.value.substring(0, obj1.value.length - 1);
+            return;
+        }
+        code = event.keyCode
+
+        if (obj1.value.length >= 3 && code != 37 && code != 39 && code != 16 && code != 9 && code != 13)
+            obj2.focus();
+
+        if (code == 32)
+            obj2.focus();
+
+        if (code == 8 && obj1.value.length == 0) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+
+        if (code == 37 && (getPos(obj1) == 0)) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+        if (code == 39 && (getPos(obj1) == obj1.value.length)) {
+            obj2.focus();
+        }
+    }
+
+    function keyUpEventForIp4(obj0, obj) {
+        if (obj.value > 255) {
+            alert("填写范围必须在 0 - 255间");
+            obj.value = obj.value.substring(0, obj.value.length - 1);
+            return;
+        }
+        if (code == 8 && obj.value.length == 0) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+        if (code == 37 && (getPos(obj) == 0)) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+
+    }
+
+    function getipvalue(obj1, obj2, obj3, obj4, obj) {
+        obj.value = obj1.value + "." + obj2.value + "." + obj3.value + "." + obj4.value;
+        alert(obj.value);
+    }
+
+    function f1(obj, ip) {
+        var res = confirm("您是否要把IP：" + ip + "移除黑名单");
+        if (res == true) {
+            obj.href = '/black/deleteBlackList?ip=' + ip;
+        } else {
+        }
+
+    }
+
+
+</script>
+
+
+</html>

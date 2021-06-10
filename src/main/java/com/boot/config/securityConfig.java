@@ -96,7 +96,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
                         "/article/updateAllowComment",
-                        "/link/**", "/visitor/**","/chart/**").hasRole("admin")
+                        "/link/**", "/visitor/**","/chart/**","/black/**").hasRole("admin")
                 .antMatchers("/myuser/**", "/img/**").hasAnyRole("admin", "common")
                 .anyRequest().permitAll()
                 .and()

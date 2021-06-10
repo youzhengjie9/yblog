@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.boot.dao.blacklistMapper">
+
+    <select id="selectBlackList" resultType="com.boot.pojo.blacklist">
+        select * from t_blacklist
+    </select>
+
+    <delete id="deleteBlackListByIp">
+        delete from t_blacklist where black_ip=#{ip}
+    </delete>
+
+
+    <insert id="addBlackList" parameterType="com.boot.pojo.blacklist">
+        insert into t_blacklist(black_ip,black_address) values(#{black_ip},#{black_address})
+    </insert>
+
+    <select id="selectBlackListByIp" resultType="java.lang.String">
+        select black_ip from t_blacklist where black_ip=#{ip}
+    </select>
+
+
+</mapper>
