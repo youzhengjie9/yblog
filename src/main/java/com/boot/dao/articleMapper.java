@@ -53,9 +53,13 @@ public interface articleMapper {
     //变成1
     void updateAllowCommentTo_1(@Param("id") int id);
 
-
     //echarts
-
     List<Article> selectArticleStatistic();
+
+
+    //修改是否推荐
+    void updateRecommendTo_0(@Param("id") int id);
+
+    void updateRecommendTo_1(@Param("id") int id);
 
 }

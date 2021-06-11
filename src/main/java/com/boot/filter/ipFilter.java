@@ -29,13 +29,7 @@ public class ipFilter implements Filter {
         System.out.println(ipAddr);
         boolean var = blacklistService.checkIpHasBlack(ipAddr);
         if(var){ //如果是黑名单
-
-//           HttpServletResponse httpServletResponse=   (HttpServletResponse)servletResponse;
-//
-//           httpServletResponse.sendRedirect("/err/black");
-
             HttpServletRequest request=(HttpServletRequest)servletRequest;
-
             request.getRequestDispatcher("/err/black").forward(servletRequest, servletResponse);
 
         }else {

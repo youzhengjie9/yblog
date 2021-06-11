@@ -252,6 +252,7 @@
         <result column="categories" property="categories"/>
         <result column="tags" property="tags"/>
         <result column="allow_comment" property="allowComment"/>
+        <result column="recommend" property="recommend"/>
         <result column="thumbnail" property="thumbnail"/>
 
         <association property="statistic" javaType="com.boot.pojo.Statistic">
@@ -273,6 +274,7 @@
 	t_article.categories,
 	t_article.tags,
 	t_article.allow_comment,
+	t_article.recommend,
 	t_article.thumbnail,
 	t_statistic.hits,
 	t_statistic.comments_num
@@ -358,6 +360,14 @@
 
     <update id="updateAllowCommentTo_1">
         update t_article set allow_comment = 1 where id=#{id}
+    </update>
+
+    <update id="updateRecommendTo_0">
+        update t_article set recommend =0 where id=#{id}
+    </update>
+
+    <update id="updateRecommendTo_1">
+        update t_article set recommend =1 where id=#{id}
     </update>
 
 </mapper>

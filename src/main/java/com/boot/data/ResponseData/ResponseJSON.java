@@ -4,16 +4,16 @@ import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 
-@ApiModel("登录界面输入框触发ajax异步发送数据，后台封装json串给前端")
-public class loginResponseJSON implements Serializable {
+@ApiModel("响应JSON，向前端传入数据封装到此类中")
+public class ResponseJSON implements Serializable {
 
     private String data; //数据
     private int result; //结果
 
-    public loginResponseJSON() {
+    public ResponseJSON() {
     }
 
-    public loginResponseJSON(String data, int result) {
+    public ResponseJSON(String data, int result) {
         this.data = data;
         this.result = result;
     }
@@ -36,7 +36,7 @@ public class loginResponseJSON implements Serializable {
 
     @Override
     public String toString() {
-        return "loginResponseJSON{" +
+        return "ResponseJSON{" +
                 "data='" + data + '\'' +
                 ", result=" + result +
                 '}';

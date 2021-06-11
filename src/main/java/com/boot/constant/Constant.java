@@ -1,6 +1,6 @@
 package com.boot.constant;
 
-public final class loginConstant {
+public final class Constant {
 
     public static final int SUCCESS=200; //成功
 

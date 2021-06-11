@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='ip地址查询',active='ipsearch'">
+<header th:replace="back/header::headerFragment(${title},${active})"></header>
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<!-- 默认的header name是X-CSRF-TOKEN -->
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+<style>
+    .topbar {
+        height: 70px;
+    }
+
+    .ip_input {
+        width: 40px;
+        height: 20px;
+        font: normal 16px 宋体;
+        color: #000000;
+        border: 0px;
+        text-align: center;
+        position: relative;
+        top: 1px;
+    }
+
+    .all_input {
+        width: 210px;
+        height: 30px;
+        font: normal 8px 宋体;
+        color: #000000;
+        border: 1px solid #000000;
+        text-align: center;
+    }
+
+    #i1 {
+        width: 260px;
+        height: 30px;
+        float: left;
+    }
+
+    #i2 {
+        width: 54px;
+        height: 33.6px;
+        float: left;
+    }
+    #context{
+        width: 190px;
+        height: 33.6px;
+        float: left;
+    }
+
+</style>
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:replace="back/header::header-body"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">ip地址查询</h4>
+                    </div>
+                    <!--                                        内容-->
+
+                    <div class="panel-body">
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div id="p1" class="panel panel-color panel-purple">
+                                    <div class="panel-heading">
+                                        <h1 class="panel-title" style="line-height:20px;">ip地址查询</h1>
+                                    </div>
+                                    <div class="panel-body">
+                                        <form id="cform" class="form-inline" method="post" href="#">
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <input type="text" class="form-control" name="categoryName"-->
+                                            <!--                                                       placeholder="请输入ip">-->
+                                            <!--                                            </div>-->
+                                            <div id="i1" class=all_input>
+                                                <input id="s1" name=ip1 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                       onkeyup=keyUpEvent(ip1,ip1,ip2)><span
+                                                    style="font-size: 16px">.</span>
+                                                <input id="s2" name=ip2 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                       onkeyup=keyUpEvent(ip1,ip2,ip3)><span
+                                                    style="font-size: 16px">.</span>
+                                                <input id="s3" name=ip3 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                       onkeyup=keyUpEvent(ip2,ip3,ip4)><span
+                                                    style="font-size: 16px">.</span>
+                                                <input id="s4" name=ip4 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                       onkeyup=keyUpEventForIp4(ip3,ip4)>
+                                            </div>
+                                            <div id="i2">
+                                                <button type="button" onclick="f()"
+                                                        class="btn btn-success waves-effect waves-light m-l-10">
+                                                    查询
+                                                </button>
+                                            </div>
+                                            <div id="context"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div th:replace="back/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="back/footer :: footer"></div>
+
+</body>
+
+
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+
+<script>
+
+    function f() {
+        $.ajax({
+            url: "/visitor/searchIpaddress",
+            data: {
+                "ip1": $("#s1").val(),
+                "ip2": $("#s2").val(),
+                "ip3": $("#s3").val(),
+                "ip4": $("#s4").val()
+            },
+            success: function (data) {
+                var json = JSON.parse(data);
+                if (json.result == 200) {
+                    $("#context").html("<span style='color: #01AAED'>"+json.data+"</span>")
+                } else {
+                    $("#context").html("<span style='color: #01AAED'>查询异常</span>")
+                }
+
+            }
+
+        })
+
+    }
+
+    function getPos(obj) {
+        obj.focus();
+        var workRange = document.selection.createRange();
+        obj.select();
+        var allRange = document.selection.createRange();
+        workRange.setEndPoint("StartToStart", allRange);
+        var len = workRange.text.length;
+        workRange.collapse(false);
+        workRange.select();
+        return len;
+    }
+
+
+    function setCursor(obj, num) {
+        range = obj.createTextRange();
+        range.collapse(true);
+        range.moveStart('character', num);
+        range.select();
+    }
+
+    function keyDownEvent(obj) {
+        code = event.keyCode;
+        if (!((code >= 48 && code <= 57) || (code >= 96 && code <= 105) || code == 190 || code == 110 || code == 13 || code == 9 || code == 39 || code == 8 || code == 46 || code == 99 || code == 37))
+            event.returnValue = false;
+        if (code == 13)
+            event.keyCode = 9;
+        if (code == 110 || code == 190)
+            if (obj.value)
+                event.keyCode = 9;
+            else
+                event.returnValue = false;
+    }
+
+    function keyUpEvent(obj0, obj1, obj2) {
+        if (obj1.value > 255) {
+            alert("填写范围必须在 0 - 255间");
+            obj1.value = obj1.value.substring(0, obj1.value.length - 1);
+            return;
+        }
+        code = event.keyCode
+
+        if (obj1.value.length >= 3 && code != 37 && code != 39 && code != 16 && code != 9 && code != 13)
+            obj2.focus();
+
+        if (code == 32)
+            obj2.focus();
+
+        if (code == 8 && obj1.value.length == 0) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+
+        if (code == 37 && (getPos(obj1) == 0)) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+        if (code == 39 && (getPos(obj1) == obj1.value.length)) {
+            obj2.focus();
+        }
+    }
+
+    function keyUpEventForIp4(obj0, obj) {
+        if (obj.value > 255) {
+            alert("填写范围必须在 0 - 255间");
+            obj.value = obj.value.substring(0, obj.value.length - 1);
+            return;
+        }
+        if (code == 8 && obj.value.length == 0) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+        if (code == 37 && (getPos(obj) == 0)) {
+            obj0.focus();
+            setCursor(obj0, obj0.value.length);
+        }
+
+    }
+
+    function getipvalue(obj1, obj2, obj3, obj4, obj) {
+        obj.value = obj1.value + "." + obj2.value + "." + obj3.value + "." + obj4.value;
+        alert(obj.value);
+    }
+
+    function f1(obj, ip) {
+        var res = confirm("您是否要把IP：" + ip + "移除黑名单");
+        if (res == true) {
+            obj.href = '/black/deleteBlackList?ip=' + ip;
+        } else {
+        }
+
+    }
+
+
+</script>
+
+
+</html>

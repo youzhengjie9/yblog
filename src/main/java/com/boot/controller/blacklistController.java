@@ -1,5 +1,8 @@
 package com.boot.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.boot.constant.Constant;
+import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.blacklist;
 import com.boot.pojo.link;
 import com.boot.pojo.userDetail;
@@ -19,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -99,11 +103,11 @@ public class blacklistController {
         blacklist.setBlack_ip(ip);
         //通过前端传来的ip去获取地址
         String cityInfo = IpToAddressUtil.getCityInfo(ip);
-        if (StringUtils.isEmpty(cityInfo)) {
-            blacklist.setBlack_address("暂未检测到所在地址");
-        } else {
+//        if (StringUtils.isEmpty(cityInfo)) {
+//            blacklist.setBlack_address("暂未检测到所在地址");
+//        } else {
             blacklist.setBlack_address(cityInfo);
-        }
+//        }
         blacklistService.addBlackList(blacklist);
 
         List<blacklist> blacklists = blacklistService.selectBlackList();
@@ -114,6 +118,8 @@ public class blacklistController {
         model.addAttribute("commons", Commons.getInstance());
         return "back/black_list";
     }
+
+
 
 
 }

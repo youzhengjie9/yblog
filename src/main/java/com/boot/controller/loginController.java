@@ -1,9 +1,9 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.boot.constant.loginConstant;
+import com.boot.constant.Constant;
 import com.boot.dao.articleMapper;
-import com.boot.data.ResponseData.loginResponseJSON;
+import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.Article;
 import com.boot.pojo.userDetail;
 import com.boot.service.userDetailService;
@@ -60,15 +60,15 @@ public class loginController {
     public String checkUsername(String username) {
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         if (userDetail != null) { //成功
-            loginResponseJSON loginResponseJSON = new loginResponseJSON();
-            loginResponseJSON.setData(userDetail.getIcon()); //这个数据我传的是头像
-            loginResponseJSON.setResult(loginConstant.SUCCESS);
-            String json = JSON.toJSONString(loginResponseJSON);
+            ResponseJSON responseJSON = new ResponseJSON();
+            responseJSON.setData(userDetail.getIcon()); //这个数据我传的是头像
+            responseJSON.setResult(Constant.SUCCESS);
+            String json = JSON.toJSONString(responseJSON);
             return json;
         } else {        //失败
-            loginResponseJSON loginResponseJSON = new loginResponseJSON();
-            loginResponseJSON.setResult(loginConstant.ERROR);
-            String json = JSON.toJSONString(loginResponseJSON);
+            ResponseJSON responseJSON = new ResponseJSON();
+            responseJSON.setResult(Constant.ERROR);
+            String json = JSON.toJSONString(responseJSON);
             return json;
         }
 

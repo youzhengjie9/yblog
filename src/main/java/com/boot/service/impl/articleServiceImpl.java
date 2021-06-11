@@ -178,6 +178,16 @@ public class articleServiceImpl implements articleService {
         return articleMapper.selectArticleStatistic();
     }
 
+    @Override
+    public void updateRecommendTo_0(int id) {
+        articleMapper.updateRecommendTo_0(id);
+    }
+
+    @Override
+    public void updateRecommendTo_1(int id) {
+        articleMapper.updateRecommendTo_1(id);
+    }
+
 
     @Override
     public List<Article> selectAllArticle() {

@@ -24,28 +24,12 @@ public class DruidConfig {
         return new DruidDataSource();
     }
 
-
-    /**
-     * public ServletRegistrationBean(T servlet, String... urlMappings)
-     * <p>
-     * <p>
-     * public abstract class ResourceServlet extends HttpServlet {
-     * private static final Log LOG = LogFactory.getLog(ResourceServlet.class);
-     * public static final String SESSION_USER_KEY = "druid-user";
-     * public static final String PARAM_NAME_USERNAME = "loginUsername";
-     * public static final String PARAM_NAME_PASSWORD = "loginPassword";
-     * public static final String PARAM_NAME_ALLOW = "allow";
-     * public static final String PARAM_NAME_DENY = "deny";
-     * public static final String PARAM_REMOTE_ADDR = "remoteAddress";
-     *
-     * @return Bean
-     */
     @Bean
     public ServletRegistrationBean druidStatBean() {
         ServletRegistrationBean servletServletRegistrationBean = new ServletRegistrationBean(new StatViewServlet());
         servletServletRegistrationBean.addUrlMappings("/druid/*");
-//        servletServletRegistrationBean.addInitParameter("loginUsername","admin");
-//        servletServletRegistrationBean.addInitParameter("loginPassword","123456");
+        servletServletRegistrationBean.addInitParameter("loginUsername", "admin");
+        servletServletRegistrationBean.addInitParameter("loginPassword", "123456");
         return servletServletRegistrationBean;
     }
 

@@ -29,6 +29,11 @@
     <script th:src="@{/back/js/html5shiv.js}"></script>
     <script th:src="@{/back/js/respond.min.js}"></script>
 
+<!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_6dipjy22j2n.css">
+
+
+
     <style>
         #sidebar-menu ul ul a:hover {
             color: #7a8c53;
@@ -102,7 +107,7 @@
                     <!--                    下拉菜单开始-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="fa fa-dashboard" aria-hidden="true"></i><span>文章</span><b class="caret"></b></a>
+                                class="iconfont icon-16"></i><span>文章</span><b class="caret"></b></a>
 
 
                         <ul class="dropdown-menu">
@@ -122,7 +127,7 @@
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/admin/toTagList/}"
                                    th:class="${active}=='category'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 分类/标签 </span></a>
+                                    <i class="iconfont icon-icon04" aria-hidden="true"></i><span> 分类/标签 </span></a>
                             </li>
                         </ul>
                     </li>
@@ -131,7 +136,7 @@
                     <li th:class="${active}=='charts'?'active':''">
                         <a th:href="@{/chart/list}"
                            th:class="${active}=='charts'?'waves-effect active':'waves-effect'"><i
-                                class="fa fa-dashboard" aria-hidden="true"></i><span>图表</span></a>
+                                class="iconfont icon-tongjitubiao" aria-hidden="true"></i><span>图表</span></a>
                     </li>
 
 
@@ -144,14 +149,14 @@
                     <li th:class="${active}=='img'?'active':''">
                         <a th:href="@{/img/list}"
                            th:class="${active}=='img'?'waves-effect active':'waves-effect'">
-                            <i class="fa fa-tags" aria-hidden="true"></i><span> 附件 </span></a>
+                            <i class="iconfont icon-attachment" aria-hidden="true"></i><span> 附件 </span></a>
                     </li>
 
 
                     <!--                    下拉菜单开始-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="fa fa-dashboard" aria-hidden="true"></i><span>用户</span><b class="caret"></b></a>
+                                class="iconfont icon-yonghu" aria-hidden="true"></i><span>用户</span><b class="caret"></b></a>
 
 
                         <ul class="dropdown-menu">
@@ -159,18 +164,18 @@
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/usermanager/list}"
                                    th:class="${active}=='userManager'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 用户管理 </span></a>
+                                    <i class="iconfont icon-yonghuguanli" aria-hidden="true"></i><span> 用户管理 </span></a>
                             </li>
                             <li th:class="${active}=='link'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/link/list}"
                                    th:class="${active}=='link'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 友链管理 </span></a>
+                                    <i class="iconfont icon-icon_xinyong_xianxing_jijin-" aria-hidden="true"></i><span> 友链管理 </span></a>
                             </li>
                             <li th:class="${active}=='user'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/myuser/list}" th:class="${active}=='user'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 个人资料 </span></a>
+                                    <i class="iconfont icon-gerenziliao" aria-hidden="true"></i><span> 个人资料 </span></a>
                             </li>
                         </ul>
                     </li>
@@ -179,7 +184,7 @@
                     <!--                    下拉菜单开始-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="fa fa-dashboard" aria-hidden="true"></i><span>访客</span><b
+                                class="iconfont icon-fangke" aria-hidden="true"></i><span>访客</span><b
                                 class="caret"></b></a>
 
 
@@ -188,20 +193,25 @@
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/visitor/list}"
                                    th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 访客记录 </span></a>
+                                    <i class="iconfont icon-fangke" aria-hidden="true"></i><span> 访客记录 </span></a>
                             </li>
                             <li th:class="${active}=='black'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/black/list}"
                                    th:class="${active}=='black'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 黑名单 </span></a>
+                                    <i class="iconfont icon-ziyuan" aria-hidden="true"></i><span> 黑名单 </span></a>
                             </li>
-
+                            <li th:class="${active}=='ipsearch'?'active':''"
+                                style=" width: 240px;height: 49.3667px;background-color: #272c35;">
+                                <a th:href="@{/visitor/ipsearchList}"
+                                   th:class="${active}=='ipsearch'?'waves-effect active':'waves-effect'">
+                                    <i class="iconfont icon-chaxun" aria-hidden="true"></i><span> IP查询 </span></a>
+                            </li>
                             <li th:class="${active}=='visitor'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a href="#"
                                    th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
-                                    <i class="fa fa-tags" aria-hidden="true"></i><span> 拦截记录 </span></a>
+                                    <i class="iconfont icon-lanjiedingdan" aria-hidden="true"></i><span> 拦截记录 </span></a>
                             </li>
                         </ul>
                     </li>
@@ -211,7 +221,7 @@
                     <li th:class="${active}=='monitor'?'active':''">
                         <a th:href="@{/monitor/list}"
                            th:class="${active}=='monitor'?'waves-effect active':'waves-effect'">
-                            <i class="fa fa-tags" aria-hidden="true"></i><span> 监控 </span></a>
+                            <i class="iconfont icon-jiankong" aria-hidden="true"></i><span> 监控 </span></a>
                     </li>
 
 

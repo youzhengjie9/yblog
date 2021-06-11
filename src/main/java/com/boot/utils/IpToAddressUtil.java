@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class IpToAddressUtil {
 
-    //使用腾讯的接口通过ip拿到城市信息
+    //使用腾讯位置服务的接口通过ip拿到城市信息
     private static final String KEY = "W57BZ-TVM3R-6PJWD-W5UG6-4LC4K-J2BKI"; //腾讯位置服务接口key
 
     public static String getCityInfo(String ip) {
@@ -24,17 +24,38 @@ public class IpToAddressUtil {
         if ("query ok".equals(message)) {
             Map result = (Map) map.get("result");
             Map addressInfo = (Map) result.get("ad_info");
+            //下面的值可能查询不出来
             String nation = (String) addressInfo.get("nation");
             String province = (String) addressInfo.get("province");
             String city = (String) addressInfo.get("city");
-            String district = (String) addressInfo.get("district"); //可能查询不出来
-            String address="";
-            if(StringUtils.isEmpty(district)){
-                 address = nation + "-" + province + "-" + city;
-            }else {
-                 address = nation + "-" + province + "-" + city + "-" + district;
+            String district = (String) addressInfo.get("district");
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (StringUtils.isEmpty(nation)) {
+
+                stringBuilder.append("暂未检测到所在地址");
+
+            } else {
+
+                stringBuilder.append(nation);
+
+                if (!StringUtils.isEmpty(province)) {
+                    stringBuilder.append("-" + province);
+
+                    if (!StringUtils.isEmpty(city)) {
+                        stringBuilder.append("-" + city);
+
+                        if (!StringUtils.isEmpty(district)) {
+                            stringBuilder.append("-" + district);
+                        }
+                    }
+
+                }
+
             }
-            return address;
+
+            return stringBuilder.toString();
         } else {
             System.out.println(message);
             return null;

@@ -20,6 +20,7 @@ public class Article implements Serializable {
     private String categories; // 文章分类
     private String tags;        // 文章标签
     private Boolean allowComment; // 是否允许评论，默认为true
+    private int recommend;        //是否为推荐文章
     private String thumbnail;     // 文章缩略图
 
 
@@ -36,6 +37,7 @@ public class Article implements Serializable {
                    Date modified, String categories,
                    String tags, Boolean allowComment,
                    String thumbnail, Statistic statistic,
+                   int recommend,
                    List<Comment> comments) {
         this.id = id;
         this.title = title;
@@ -45,9 +47,18 @@ public class Article implements Serializable {
         this.categories = categories;
         this.tags = tags;
         this.allowComment = allowComment;
+        this.recommend=recommend;
         this.thumbnail = thumbnail;
         this.statistic = statistic;
         this.comments = comments;
+    }
+
+    public int getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(int recommend) {
+        this.recommend = recommend;
     }
 
     public Integer getId() {
@@ -149,6 +160,7 @@ public class Article implements Serializable {
                 ", categories='" + categories + '\'' +
                 ", tags='" + tags + '\'' +
                 ", allowComment=" + allowComment +
+                ", recommend=" + recommend +
                 ", thumbnail='" + thumbnail + '\'' +
                 ", statistic=" + statistic +
                 ", comments=" + comments +

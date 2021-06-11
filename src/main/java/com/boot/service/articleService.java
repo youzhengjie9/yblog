@@ -60,4 +60,9 @@ public interface articleService {
 
     //echarts
     List<Article> selectArticleStatistic();
+
+    //修改是否推荐
+    void updateRecommendTo_0(int id);
+
+    void updateRecommendTo_1(int id);
 }

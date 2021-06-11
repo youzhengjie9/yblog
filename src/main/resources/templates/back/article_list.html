@@ -96,6 +96,7 @@
                                 <th>浏览量</th>
                                 <th>所属分类</th>
                                 <th>开启评论</th>
+                                <th>是否推荐</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -113,6 +114,13 @@
                                         <input th:if="${article.allowComment}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax([[${article.allowComment}]],[[${article.id}]])"
                                                type="checkbox" checked/>
                                         <input th:if="${not article.allowComment}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax([[${article.allowComment}]],[[${article.id}]])"
+                                               type="checkbox"/>
+                                    </td>
+
+                                    <td>
+                                        <input th:if="${article.getRecommend()==1}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax2([[${article.recommend}]],[[${article.id}]])"
+                                               type="checkbox" checked/>
+                                        <input th:if="${article.getRecommend()==0}" class="switch switch-anim" onchange="checkNum()" th:onclick="sendAjax2([[${article.recommend}]],[[${article.id}]])"
                                                type="checkbox"/>
                                     </td>
 
@@ -219,7 +227,7 @@
     }
 
     /**
-     *发送Ajax
+     *发送Ajax,修改是否开启评论
      */
     function sendAjax(allow,id) {
         var xmlhttp;
@@ -229,7 +237,7 @@
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
         // alert('send')
-        xmlhttp.open("GET", "http://localhost:8080/article/updateAllowComment?allow=" + allow+"&id="+id, true);
+        xmlhttp.open("GET", "/article/updateAllowComment?allow=" + allow+"&id="+id, true);
         xmlhttp.send();
 
         //4.接受并处理来自服务器的响应结果
@@ -243,6 +251,32 @@
                 var responseText = xmlhttp.responseText;
                 // alert(responseText);
 
+
+            }
+
+        }
+    }
+
+    /**
+     *修改是否推荐
+     */
+    function sendAjax2(recommend,id) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        // alert('send')
+        xmlhttp.open("GET", "/article/updateRecommend?recommend=" + recommend+"&id="+id, true);
+        xmlhttp.send();
+
+        xmlhttp.onreadystatechange = function () {
+            //判断readyState就绪状态是否为4，判断status响应状态码是否为200
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //获取服务器的响应结果
+                var responseText = xmlhttp.responseText;
+                // alert(responseText);
 
             }
 
