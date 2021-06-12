@@ -26,7 +26,7 @@ public class ipFilter implements Filter {
 
         //获取当前ip地址
         String ipAddr = ipUtils.getIpAddr((HttpServletRequest) servletRequest);
-        System.out.println(ipAddr);
+//        System.out.println(ipAddr);
         boolean var = blacklistService.checkIpHasBlack(ipAddr);
         if(var){ //如果是黑名单
             HttpServletRequest request=(HttpServletRequest)servletRequest;

@@ -45,8 +45,30 @@
 * 3.启动redis、mysql、elasticsearch、rabbitmq的服务
 * 4.执行elasticSearchTest的es创建索引命令和执行下面的添加数据代码
 
-
-
+* 如需使用爬虫功能，则需要对mysql做出如下配置。
+* 1.修改mysql的配置文件mysql/bin/my.ini, 添加如下内容：
+```text
+[client]
+default-character-set=utf8mb4
+ 
+[mysql]
+default-character-set=utf8mb4
+ 
+[mysqld]
+character-set-client-handshake=FALSE
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+init_connect='SET NAMES utf8mb4'
+```
+* 2.重启数据库服务。点击此电脑，右键打开管理，点击服务和应用程序、点击服务、找到MYSQL服务
+，右键重新启动即可
+* 3.进入mysql命令行，输入ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4;
+把mysql的utf8编码切换成utf8mb4，以支持爬取的emoji表情，不然遇到4字节的宽字符就会插入异常了。
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
+* Druid监控帐号：admin 密码： 123456
+* RabbitMQ帐号：guest 密码： guest
+
+####第三方插件
+* 弹框插件 https://gitee.com/ydq/alertjs

@@ -1,6 +1,6 @@
 package com.boot;
 
-import com.boot.utils.jsoupUtils;
+import com.boot.service.catchDataService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 @SpringBootTest
@@ -21,8 +20,6 @@ public class jsoupTest {
 
     private String url2="https://blog.csdn.net/l1028386804/article/details/117740163?utm_medium=distribute.pc_category.none-task-blog-hot-4.nonecase&depth_1-utm_source=distribute.pc_category.none-task-blog-hot-4.nonecase";
 
-    @Autowired
-    private jsoupUtils jsoupUtils;
 
     /**
      * jsoup爬取csdn标题和内容

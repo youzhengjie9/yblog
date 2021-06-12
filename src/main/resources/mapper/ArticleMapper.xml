@@ -41,6 +41,7 @@
 	t_statistic
     WHERE
 	t_article.id = t_statistic.article_id
+	order by t_article.created desc
     </select>
 
     <resultMap id="charts1" type="com.boot.pojo.Article">

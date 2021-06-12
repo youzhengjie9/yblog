@@ -140,16 +140,16 @@
                     </li>
 
 
-                    <li th:class="${active}=='comments'?'active':''">
-                        <a th:href="@{/admin/toCommentList/}"
-                           th:class="${active}=='comments'?'waves-effect active':'waves-effect'">
-                            <i class="fa fa-comments" aria-hidden="true"></i><span> 评论 </span></a>
-                    </li>
-
                     <li th:class="${active}=='img'?'active':''">
                         <a th:href="@{/img/list}"
                            th:class="${active}=='img'?'waves-effect active':'waves-effect'">
                             <i class="iconfont icon-attachment" aria-hidden="true"></i><span> 附件 </span></a>
+                    </li>
+
+                    <li th:class="${active}=='comments'?'active':''">
+                        <a th:href="@{/admin/toCommentList/}"
+                           th:class="${active}=='comments'?'waves-effect active':'waves-effect'">
+                            <i class="fa fa-comments" aria-hidden="true"></i><span> 评论 </span></a>
                     </li>
 
 

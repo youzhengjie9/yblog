@@ -4,6 +4,7 @@
 <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <!-- 默认的header name是X-CSRF-TOKEN -->
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <style>
     .topbar {
         height: 70px;
@@ -27,6 +28,17 @@
 
     }
 
+    #i5 {
+        width: 260px;
+        height: 30px;
+        float: left;
+    }
+
+    #i6 {
+        width: 54px;
+        height: 33.6px;
+        float: left;
+    }
 
 </style>
 <body class="fixed-left">
@@ -37,7 +49,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="page-title">ip地址查询</h4>
+                        <h4 class="page-title">抓取文章</h4>
                     </div>
                     <!--                                        内容-->
 
@@ -81,8 +93,23 @@
                                         <h1 class="panel-title" style="line-height:20px;">抓取指定模块文章</h1>
                                     </div>
                                     <div class="panel-body">
+                                        <form method="post" href="#" autocomplete="off">
 
+                                            <div id="i5">
+                                                <select id="ss5" name="type" th:each="select:${selects}" th:value="${select}">
+                                                    <option th:text="${select}" th:value="${select}"></option>
+                                                </select>
+                                                <textarea id="iurl5" name="url" required
+                                                          placeholder="输入具体模块url"></textarea>
+                                            </div>
 
+                                            <div id="i6">
+                                                <button type="button" onclick="startCatch2()"
+                                                        class="btn btn-success waves-effect waves-light m-l-10">
+                                                    开始抓取
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -108,9 +135,9 @@
 
 
 <script th:src="@{/assets/js/jquery.min.js}"></script>
-
+<!--  alert弹框插件，必须要有jQuery的支持-->
+<script type="text/javascript" th:src="@{/assets/js/alertJS/alert.min.js}"></script>
 <script>
-
     function startCatch1() {
         $.ajax({
             url: '/catchArticle/catchArticle',
@@ -121,16 +148,35 @@
             success: function (data) {
                 var json = JSON.parse(data);
                 if (json.result==200) {
-                    alert("抓取数据成功！！！");
+                    $.alert("抓取文章数据成功！！！");
                 } else {
-                    alert('抓取数据失败！！！')
+                    // alert('抓取数据失败！！！')
+                    $.alert('抓取文章数据失败！！！');
                 }
             }
         });
 
     }
 
+    function startCatch2() {
+        $.ajax({
+            url: '/catchArticle/catchModelArticle',
+            data: {
+                "url": $("#iurl5").val(),
+                "type": $("#ss5").val()
+            },
+            success: function (data) {
+                var json = JSON.parse(data);
+                if (json.result==200) {
+                    $.alert("抓取模块数据成功！！！");
+                } else {
+                    // alert('抓取数据失败！！！')
+                    $.alert('抓取模块数据失败！！！');
+                }
+            }
+        });
 
+    }
 
 
 
