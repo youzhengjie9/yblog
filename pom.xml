@@ -17,13 +17,22 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
-<!--        用来获取访问者的设备的各种信息-->
+
+        <!--        jsoup-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
+
+        <!--        用来获取访问者的设备的各种信息-->
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
             <version>1.20</version>
         </dependency>
-<!--        swagger2-->
+        <!--        swagger2-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -110,9 +119,9 @@
         </dependency>
         <!-- devtools热部署工具 -->
         <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-devtools</artifactId>
-        <scope>runtime</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- pom.xml添加log4j依赖,最新版本可以去maven网站下载 -->
         <dependency>
@@ -121,41 +130,41 @@
             <version>1.3.8.RELEASE</version>
         </dependency>
 
-<!--        注意es依赖版本需要和服务器（本机）的es版本一致-->
-<!--        elasticSearch-->
+        <!--        注意es依赖版本需要和服务器（本机）的es版本一致-->
+        <!--        elasticSearch-->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>7.6.1</version>
         </dependency>
-<!--        restHighLevelClient-->
+        <!--        restHighLevelClient-->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>7.6.1</version>
         </dependency>
-<!--        alibaba fastjson-->
-          <dependency>
+        <!--        alibaba fastjson-->
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.73</version>
         </dependency>
 
-<!--        rabbitmq-->
+        <!--        rabbitmq-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
-<!--        文件上传-->
+        <!--        文件上传-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
 
-<!--        google thumbnailator 图像处理工具 -->
-         <dependency>
+        <!--        google thumbnailator 图像处理工具 -->
+        <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
             <version>0.4.8</version>
