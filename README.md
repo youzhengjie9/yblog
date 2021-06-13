@@ -27,6 +27,7 @@
 | fastjson                          |   https://github.com/alibaba/fastjson/                |
 | log4j                     |   http://logging.apache.org/log4j/1.2/  |
 | thumbnailator                         |   https://github.com/coobird/thumbnailator                   |
+| Nginx                       |     http://nginx.org/en/download.html
 #### 前端
 
 | 名称            | 描述       | 官网                                                     |
@@ -36,7 +37,7 @@
 | echarts         | 可视化图表库       | https://echarts.apache.org/zh/index.html        |                        |                             |
 | Thymeleaf                  | 模板引擎                | https://www.thymeleaf.org/      |
 | Markdown        |  富文本编辑器         |  http://markdown.p2hp.com/  |
-
+| alertJs          |弹框插件          |  https://gitee.com/ydq/alertjs
 
 #### 安装教程
 * 1.找到sql包的sql文件并导入到自己的数据库中
@@ -45,7 +46,7 @@
 * 3.启动redis、mysql、elasticsearch、rabbitmq的服务
 * 4.执行elasticSearchTest的es创建索引命令和执行下面的添加数据代码
 
-* 如需使用爬虫功能，则需要对mysql做出如下配置。
+* 第一点注意：如需使用爬虫功能，则需要对mysql做出如下配置。
 * 1.修改mysql的配置文件mysql/bin/my.ini, 添加如下内容：
 ```text
 [client]
@@ -65,10 +66,48 @@ init_connect='SET NAMES utf8mb4'
 * 3.进入mysql命令行，输入ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4;
 把mysql的utf8编码切换成utf8mb4，以支持爬取的emoji表情，不然遇到4字节的宽字符就会插入异常了。
 
+* 第二点注意：本项目使用了Nginx做负载均衡，本机器的nginx.conf文件如下：
+```text
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+upstream yblog.cn{
+
+	server localhost:8080 weight=1;
+	server localhost:8081 weight=1;
+	server localhost:8082 weight=1;
+}
+    server {
+        listen       8888;
+        server_name  localhost;
+
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+			proxy_pass http://yblog.cn;
+        }      
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    
+    }
+}
+```
+* 所以我们只需要把项目的8080、8081、8082端口打开，然后访问localhost:8888即可实现负载均衡。
+
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
 * Druid监控帐号：admin 密码： 123456
 * RabbitMQ帐号：guest 密码： guest
-
-####第三方插件
-* 弹框插件 https://gitee.com/ydq/alertjs

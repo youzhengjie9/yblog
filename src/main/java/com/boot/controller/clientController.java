@@ -41,6 +41,9 @@ import static com.boot.utils.browserOS.*;
 @Api("客户端界面控制器")
 public class clientController {
 
+    @Value("${server.port}")
+    private String port;
+
     @Autowired
     private articleService articleService;
 
@@ -83,6 +86,8 @@ public class clientController {
 
     @RequestMapping(path = {"/"})
     public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+
+        System.out.println("测试负载均衡==当前端口是："+port);
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
