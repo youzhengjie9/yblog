@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/layer.js}"></script>
+<!--    引入valine-->
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 </head>
 <div th:replace="client/header::header(${article.title},null)"></div>
 <body>
@@ -17,6 +22,9 @@
     <div id="post-content" class="post-content content" th:utext="${commons.article(article.content)}"></div>
 </article>
 <div th:replace="client/comments::comments"></div>
+
+
+
 <div th:replace="client/footer::footer"></div>
 <!-- 使用layer.js实现图片缩放功能 -->
 <script type="text/JavaScript">
@@ -33,6 +41,7 @@
                     '\<\img style="width:'+(w-50)+'px;" src='+imgurl+'\>\<\/div>'
         });
     });
+
 </script>
 </body>
 </html>

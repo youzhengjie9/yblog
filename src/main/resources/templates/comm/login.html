@@ -24,10 +24,41 @@
     <script th:src="@{/assets/js/amazeui.min.js}"></script>
     <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
     <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
+    <link th:href="@{/assets/lib/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/disk/slidercaptcha.min.css}" rel="stylesheet" />
+
 </head>
 
 <style type="text/css">
+    .modal-body{
+        padding: 15rem;
+    }
+    .slidercaptcha {
+        margin: 0 auto;
+        width: 314px;
+        height: 286px;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.125);
+        margin-top: 40px;
+    }
 
+    .slidercaptcha .card-body {
+        padding: 1rem;
+    }
+
+    .slidercaptcha canvas:first-child {
+        border-radius: 4px;
+        border: 1px solid #e6e8eb;
+    }
+
+    .slidercaptcha.card .card-header {
+        background-image: none;
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .refreshIcon {
+        top: -54px;
+    }
 
     /*.middle {*/
     /*    margin-top: 110px;*/
@@ -54,18 +85,54 @@
     .am-u-lg-3{
         width: 28%;
     }
+    #myModal{
+
+    }
 
 </style>
 
 
 <body>
 
+
 <div class="log">
+
     <div class="am-g">
         <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content" style=" border:3px solid #e3e197; border-radius: 20px;box-shadow: 10px 10px 5px rgb(0,0,0,0.1);">
             <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">
                 ~欢迎登录博客~</h1>
             <br>
+
+
+
+            <!-- 模态框（Modal） -->
+            <div  class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--                <div class="modal-dialog">-->
+<!--                    <div class="modal-content">-->
+                        <div class="modal-body">
+                            <div id="t" class="container-fluid">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <div class="slidercaptcha card">
+                                            <div class="card-header">
+                                                <span>请完成安全验证!</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="captcha"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+
+
+
+
             <div th:if="${error==1}" class="am-input-group am-animation-slide-left log-animation-delay">
                 <i style="color: red">登录失败，请检查帐号或者密码是否正确！</i>
             </div>
@@ -92,6 +159,10 @@
                     </span>
                 </div>
                 <div style="padding-top: 10px;">
+                    <input type="button" th:value="#{login.check}" onclick="s()" data-toggle="modal" data-target="#myModal"
+                           class="am-btn am-btn-default am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
+                </div>
+                <div style="padding-top: 10px;">
                     <input type="submit" th:value="#{login.sub}"
                            class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
                 </div>
@@ -111,7 +182,7 @@
 
 </div>
 </body>
-
+<script th:src="@{/assets/disk/longbow.slidercaptcha.min.js}"></script>
 <script>
     function f() {
         $.ajax({
@@ -133,6 +204,27 @@
         })
 
     }
+
+    $('#myModal').hide();
+    function s(){
+        $('#myModal').show();
+    }
+
+
+    var captcha = sliderCaptcha({
+        id: 'captcha',
+        repeatIcon: 'fa fa-redo',
+        setSrc: function () {
+            return 'http://imgs.blazor.zone/images/Pic' + Math.round(Math.random() * 136) + '.jpg';
+        },
+        onSuccess: function () {  //成功事件
+            // window.location.href = 'https://gitee.com/LongbowEnterprise/SliderCaptcha';
+            alert('success');
+            window.location='/sliderCaptcha/checkSuccess';
+            $('#btn').hide();
+        }
+    });
+
 </script>
 
 

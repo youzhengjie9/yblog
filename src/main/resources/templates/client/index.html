@@ -189,7 +189,7 @@
                 </div>
                 <div class="modal-body">
 <!--                    内容-->
-                    <p th:each="link:${links}" th:utext="${link.getTitle()}+'&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;'+'<a href='+${link.getLink()}+'>'+${link.getLink()}+'</a>'">
+                    <p th:each="link:${links}" th:utext="'<a href='+${link.getLink()}+'>'+${link.getTitle()}+'</a>'">
                     </p>
 
                 </div>

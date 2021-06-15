@@ -240,6 +240,7 @@ public class clientController {
             String name = securityUtil.currentUser(session);
             if (name != null && !name.equals("")) {
                 userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+                modelAndView.addObject("name",name);
                 modelAndView.addObject("userDetail", userDetail);
             }
         } else {
