@@ -22,9 +22,10 @@
 
 
     <style>
-        .topbar{
+        .topbar {
             height: 70px;
         }
+
         .switch {
             width: 57px;
             height: 28px;
@@ -205,8 +206,9 @@
                     <input type="hidden" name="id" id="tid">
                     <br/>
                     用户权限：<select id="selectauth" name="authorityid">
-                       <option th:each="auth:${auths}" th:text="${auth.getAuthority()}" th:value="${auth.getId()}"></option>
-                    </select>
+                    <option th:each="auth:${auths}" th:text="${auth.getAuthority()}"
+                            th:value="${auth.getId()}"></option>
+                </select>
 
 
                     <br/>
@@ -238,10 +240,10 @@
         alert('该功能禁止使用，如有所需，可以把对应用户的"是否有效"开关进行关闭')
     }
 
-    function changeUser(tid,t_authid,email) {
-        document.getElementById('tid').value=tid;
-        document.getElementById('selectauth').value=t_authid;
-        document.getElementById('email').value=email;
+    function changeUser(tid, t_authid, email) {
+        document.getElementById('tid').value = tid;
+        document.getElementById('selectauth').value = t_authid;
+        document.getElementById('email').value = email;
     }
 
 

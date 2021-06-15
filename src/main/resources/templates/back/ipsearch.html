@@ -40,7 +40,8 @@
         height: 33.6px;
         float: left;
     }
-    #context{
+
+    #context {
         width: 190px;
         height: 33.6px;
         float: left;
@@ -76,16 +77,20 @@
                                             <!--                                                       placeholder="请输入ip">-->
                                             <!--                                            </div>-->
                                             <div id="i1" class=all_input>
-                                                <input id="s1" name=ip1 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                <input id="s1" name=ip1 class=ip_input maxlength=3
+                                                       onkeydown=keyDownEvent(this)
                                                        onkeyup=keyUpEvent(ip1,ip1,ip2)><span
                                                     style="font-size: 16px">.</span>
-                                                <input id="s2" name=ip2 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                <input id="s2" name=ip2 class=ip_input maxlength=3
+                                                       onkeydown=keyDownEvent(this)
                                                        onkeyup=keyUpEvent(ip1,ip2,ip3)><span
                                                     style="font-size: 16px">.</span>
-                                                <input id="s3" name=ip3 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                <input id="s3" name=ip3 class=ip_input maxlength=3
+                                                       onkeydown=keyDownEvent(this)
                                                        onkeyup=keyUpEvent(ip2,ip3,ip4)><span
                                                     style="font-size: 16px">.</span>
-                                                <input id="s4" name=ip4 class=ip_input maxlength=3 onkeydown=keyDownEvent(this)
+                                                <input id="s4" name=ip4 class=ip_input maxlength=3
+                                                       onkeydown=keyDownEvent(this)
                                                        onkeyup=keyUpEventForIp4(ip3,ip4)>
                                             </div>
                                             <div id="i2">
@@ -132,7 +137,7 @@
             success: function (data) {
                 var json = JSON.parse(data);
                 if (json.result == 200) {
-                    $("#context").html("<span style='color: #01AAED'>"+json.data+"</span>")
+                    $("#context").html("<span style='color: #01AAED'>" + json.data + "</span>")
                 } else {
                     $("#context").html("<span style='color: #01AAED'>查询异常</span>")
                 }

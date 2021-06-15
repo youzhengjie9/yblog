@@ -217,9 +217,9 @@
 
     $('#sb').hide();
 
-    var ch= [[${ch}]];
+    var ch = [[${ch}]];
     //进行是否校验过的判断
-    if(ch!=null){
+    if (ch != null) {
         $('#c').val('success');
         $('#c').attr('disabled', true);
         $('#sb').show();
@@ -243,7 +243,8 @@
 
         if (console.clear) {
             console.clear()
-        };
+        }
+        ;
 
         if (typeof console.profiles == "object") {
 
@@ -251,6 +252,7 @@
         }
 
     }
+
     function hehe() {
 
         if ((window.console && (console.firebug || console.table && /firebug/i.test(console.table()))) || (typeof opera == 'object' && typeof opera.postError == 'function' && console.profile.length > 0)) {
@@ -339,10 +341,10 @@
                 },
                 async: false,
                 cache: false,
-                traditional:true,
+                traditional: true,
                 success: function (result) {
                     var json = JSON.parse(result);
-                    result=json.dt;
+                    result = json.dt;
                     ret = result;
                 }
             });

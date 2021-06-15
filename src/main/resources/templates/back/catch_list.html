@@ -67,7 +67,8 @@
                                         <form id="cform" method="post" href="#" autocomplete="off">
 
                                             <div id="i1">
-                                                <select id="ss" name="type" th:each="select:${selects}" th:value="${select}">
+                                                <select id="ss" name="type" th:each="select:${selects}"
+                                                        th:value="${select}">
                                                     <option th:text="${select}" th:value="${select}"></option>
                                                 </select>
                                                 <textarea id="iurl" name="url" required
@@ -96,7 +97,8 @@
                                         <form method="post" href="#" autocomplete="off">
 
                                             <div id="i5">
-                                                <select id="ss5" name="type" th:each="select:${selects}" th:value="${select}">
+                                                <select id="ss5" name="type" th:each="select:${selects}"
+                                                        th:value="${select}">
                                                     <option th:text="${select}" th:value="${select}"></option>
                                                 </select>
                                                 <textarea id="iurl5" name="url" required
@@ -132,8 +134,6 @@
 </body>
 
 
-
-
 <script th:src="@{/assets/js/jquery.min.js}"></script>
 <!--  alert弹框插件，必须要有jQuery的支持-->
 <script type="text/javascript" th:src="@{/assets/js/alertJS/alert.min.js}"></script>
@@ -147,7 +147,7 @@
             },
             success: function (data) {
                 var json = JSON.parse(data);
-                if (json.result==200) {
+                if (json.result == 200) {
                     $.alert("抓取文章数据成功！！！");
                 } else {
                     // alert('抓取数据失败！！！')
@@ -167,7 +167,7 @@
             },
             success: function (data) {
                 var json = JSON.parse(data);
-                if (json.result==200) {
+                if (json.result == 200) {
                     $.alert("抓取模块数据成功！！！");
                 } else {
                     // alert('抓取数据失败！！！')
@@ -177,7 +177,6 @@
         });
 
     }
-
 
 
 </script>

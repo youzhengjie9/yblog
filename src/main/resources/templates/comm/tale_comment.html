@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="tale_comment" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="tale_comment">
 <body>
 <script type="text/javascript">
     /*<![CDATA[*/
     (function () {
         window.TaleComment = {
             subComment: function () {
-                    $.ajax({
+                $.ajax({
                     type: 'post',
                     url: '/publishComment',
                     data: $('#comment-form').serialize(),

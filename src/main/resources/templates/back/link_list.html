@@ -16,7 +16,7 @@
             crossorigin="anonymous"></script>
 </head>
 <style>
-    .topbar{
+    .topbar {
         height: 70px;
     }
 </style>
@@ -141,11 +141,12 @@
         document.getElementById('link').value = link;
     }
 
-    function f1(obj,id) {
-       var res = confirm("你是否要删除"+id+"号友链");
-       if(res==true){
-           obj.href='/link/deleteLink?id='+id;
-       }else {}
+    function f1(obj, id) {
+        var res = confirm("你是否要删除" + id + "号友链");
+        if (res == true) {
+            obj.href = '/link/deleteLink?id=' + id;
+        } else {
+        }
 
     }
 

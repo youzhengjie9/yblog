@@ -21,47 +21,51 @@
 <div class="log">
     <div class="am-g">
         <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
-            <h2  style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h2>
+            <h2 style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h2>
             <h5 th:if="${register_error==1}" style="color: red" th:text="#{register.error}">注册失败,请检查输入的信息</h5>
             <form class="am-form" id="loginForm" th:action="@{/register}" method="post">
                 <div>
                     <input type="hidden" name="url" th:value="${url}">
                 </div>
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username" required />
+                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username"
+                           required/>
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-user am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{register.password}" name="password" required />
+                    <input type="password" class="am-form-field am-radius log-input"
+                           th:placeholder="#{register.password}" name="password" required/>
                     <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>
                 </div>
                 <br/>
-                    <!--                qq邮箱-->
-                    <div class="am-input-group am-animation-slide-left log-animation-delay">
-                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}" name="email" required/>
-                        <span class="am-input-group-label log-icon am-radius">
+                <!--                qq邮箱-->
+                <div class="am-input-group am-animation-slide-left log-animation-delay">
+                    <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}"
+                           name="email" required/>
+                    <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
                     </span>
-                    </div>
-                    <br/>
-                    <!--                验证码-->
-                    <div class="am-input-group am-animation-slide-left log-animation-delay">
-                        <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}" name="code" required />
-                        <span class="am-input-group-label log-icon am-radius">
+                </div>
+                <br/>
+                <!--                验证码-->
+                <div class="am-input-group am-animation-slide-left log-animation-delay">
+                    <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}"
+                           name="code" required/>
+                    <span class="am-input-group-label log-icon am-radius">
                         <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
-<!--                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>-->
+                        <!--                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>-->
                     </span>
-                    </div>
-                    <br/>
+                </div>
+                <br/>
 
                 <div style="padding-top: 10px;">
                     <input type="submit" th:value="#{register.sub}"
-                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay" />
+                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
                 </div>
             </form>
 
@@ -70,8 +74,11 @@
     </div>
 
     <footer class="log-footer">
-        <p style="margin: 30px; color: #2E2D3C"><a style="color: black"  th:href="@{/toregister(l='zh_CN')}">中文</a>/<a style="color: black"  th:href="@{/toregister(l='en_US')}">english</a> </p>
-        <p style="margin: 30px; color: #2E2D3C"><time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy; Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
+        <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/toregister(l='zh_CN')}">中文</a>/<a
+                style="color: black" th:href="@{/toregister(l='en_US')}">english</a></p>
+        <p style="margin: 30px; color: #2E2D3C">
+            <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;
+            Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
     </footer>
 </div>
 
@@ -80,44 +87,41 @@
 <script>
 
     //获取手机验证码
-    var countdown=60;
+    var countdown = 60;
     var flag = true;
 
-    function setTime(obj) {
+    function setTime(obj) {
 
-        var data = {
-
-        };
-        if(flag){
+        var data = {};
+        if (flag) {
             $.ajax({
-                url:"/sendCode",
-                type:'POST',
-                success:function(data){
+                url: "/sendCode",
+                type: 'POST',
+                success: function (data) {
                     console.log(data)
                 }
             })
             flag = false;
         }
 
-        if (countdown == 0) {
+        if (countdown == 0) {
             obj.removeAttribute("disabled");
-            obj.value="免费获取验证码";
-            countdown = 60;
+            obj.value = "免费获取验证码";
+            countdown = 60;
             return;
-        } else {
-            obj.setAttribute("disabled", true);
-            obj.value="重新发送(" + countdown + ")";
+        } else {
+            obj.setAttribute("disabled", true);
+            obj.value = "重新发送(" + countdown + ")";
             countdown--;
         }
-        setTimeout(function() {
-                setTime(obj) }
-            ,1000)
+        setTimeout(function () {
+                setTime(obj)
+            }
+            , 1000)
     }
 
 
 </script>
-
-
 
 
 </body>
