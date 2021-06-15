@@ -8,9 +8,18 @@ import java.io.Serializable;
 public class ResponseJSON implements Serializable {
 
     private String data; //数据
+    private boolean dt; //布尔
     private int result; //结果
 
     public ResponseJSON() {
+    }
+
+    public boolean isDt() {
+        return dt;
+    }
+
+    public void setDt(boolean dt) {
+        this.dt = dt;
     }
 
     public ResponseJSON(String data, int result) {
@@ -38,6 +47,7 @@ public class ResponseJSON implements Serializable {
     public String toString() {
         return "ResponseJSON{" +
                 "data='" + data + '\'' +
+                ", dt=" + dt +
                 ", result=" + result +
                 '}';
     }

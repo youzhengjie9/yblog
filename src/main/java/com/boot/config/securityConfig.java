@@ -4,6 +4,7 @@ import com.boot.utils.ipUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +24,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     DataSource dataSource;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     private final Logger logger = Logger.getLogger(securityConfig.class);
 
@@ -69,6 +73,10 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                         String ipAddr = ipUtils.getIpAddr(request);
                         System.out.println("=====================");
                         System.out.println("登录成功：访问者ip地址：" + ipAddr);
+
+                        //登入成功之后要把登入验证码的缓存标记给删除掉
+                        redisTemplate.delete(ipAddr + "_lg");
+
                         logger.debug("ip地址：" + ipAddr + "登录成功");
                         //这里不要用转发，不然会有一些bug
 //                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
@@ -98,6 +106,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                         "/article/updateAllowComment",
                         "/link/**", "/visitor/**","/chart/**","/black/**").hasRole("admin")
                 .antMatchers("/myuser/**", "/img/**","/catchArticle/**").hasAnyRole("admin", "common")
+                .antMatchers("/sliderCaptcha/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
 //                如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）

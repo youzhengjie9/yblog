@@ -11,6 +11,7 @@ import com.boot.utils.Commons;
 import com.boot.utils.ipUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +36,15 @@ public class loginController {
 
     @Autowired
     private userDetailService userDetailService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/loginPage")
-    public String toLoginPage() {
+    public String toLoginPage(Model model,HttpServletRequest request) {
 
+        String ipAddr = ipUtils.getIpAddr(request);
+        Object o = redisTemplate.opsForValue().get(ipAddr + "_lg");
+        model.addAttribute("ch",o);
         return "comm/login";
     }
 
