@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>首页</title>
+    <!--timeline-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
+    <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
+    <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
+    <link th:href="@{/assets/index2/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
+
+    <script th:src="@{/assets/index2/jquery/jquery.min.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
+
+    <style>
+        /*body {*/
+        /*    height: 100vh;*/
+        /*    font-family: "Open Sans", sans-serif;*/
+        /*    !* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#bea2e7+0,86b7e7+100 *!*/
+        /*    background: #bea2e7;*/
+        /*    !* Old browsers *!*/
+        /*    background: -moz-linear-gradient(top, #bea2e7 0%, #86b7e7 100%);*/
+        /*    !* FF3.6-15 *!*/
+        /*    background: -webkit-linear-gradient(top, #bea2e7 0%, #86b7e7 100%);*/
+        /*    !* Chrome10-25,Safari5.1-6 *!*/
+        /*    background: linear-gradient(to bottom, #bea2e7 0%, #86b7e7 100%);*/
+        /*    !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+        /*    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bea2e7', endColorstr='#86b7e7',GradientType=0 );*/
+        /*    !* IE6-9 *!*/
+        /*}*/
+        .container1 ul {
+            margin: 0;
+            margin-top: 25px;
+            list-style: none;
+            position: relative;
+            padding: 1px 100px;
+            color: #fff;
+            font-size: 13px;
+        }
+        .container1 ul:before {
+            content: "";
+            width: 1px;
+            height: 100%;
+            position: absolute;
+            border-left: 2px dashed #fff;
+        }
+        .container1 ul li {
+            position: relative;
+            margin-left: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 14px;
+            border-radius: 6px;
+            width: 250px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.08);
+        }
+
+    </style>
+</head>
+<body>
+<div class="cl-header container-fluid">
+    <div class="header-content container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">
+                <img th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">首页<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/test/archive}">归档</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="link" class="nav-link" href="#" data-toggle="modal" data-target="#myModal">友链</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/}">后台管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/toSendEmailPage}">注册</a>
+                    </li>
+                    <form name="logoutform" th:action="@{/logout}" method="post"></form>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/loginPage}">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()"
+                           href="javascript:document.logoutform.submit();">
+                            退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<div class="cl-cantainer container">
+    <div class="row">
+        <div class="col-md-9 cl-left">
+
+            <div class="cl-card" th:each="article: ${articles}" th:if="${isArchive} eq null or ${isArchive} eq ''">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a href="articleDetails2.html">
+                        <img th:src="@{${commons.show_thumb(article)}}" class="img-fluid" alt=""></a>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-12 cl-card-main">
+                        <h3 class="cl-card-main-title">
+                            <a th:href="${commons.permalink(article.id)}" th:utext="${article.title}">
+                            </a>
+                        </h3>
+                        <p class="cl-card-main-info" th:utext="${commons.intro(article,75)}">
+                        </p>
+                        <p class="cl-card-more"><a th:href="${commons.permalink(article.id)}">阅读更多...</a>
+                            &nbsp;&nbsp;&nbsp;<span th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <nav aria-label="Page navigation example" th:if="${isArchive} eq null or ${isArchive} eq ''">
+                <ul class="pagination justify-content-center">
+
+                    <li th:if="${pageInfo.pageNum!=1}" class="page-item">
+                        <a class="page-link" th:href="@{'/page/'+${pageInfo.pageNum-1}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pageInfo.pageNum==1}" class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <div th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+                        <li th:if="${pageInfo.pageNum==index}" class="page-item active">
+                            <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
+                        </li>
+                        <li th:if="${pageInfo.pageNum!=index}" class="page-item">
+                            <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
+                        </li>
+                    </div>
+
+
+                    <li class="page-item" th:if="${pageInfo.pageNum!=pageInfo.pages}">
+                        <a class="page-link" th:href="@{'/page/'+${pageInfo.pageNum+1}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pageInfo.pageNum==pageInfo.pages}" class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+
+            <!--            -->
+
+            <!--        archive-->
+
+            <div class="container1" th:if="${isArchive} eq 'true'">
+                <ul th:each="map:${archiveMap}" style="padding: 1px 30px;">
+                 <span class="number"
+                       th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">
+                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>
+                    </span>
+                    <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">
+                        <!--                    <span></span>-->
+                        <div>
+                            <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}"
+                               th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>
+                            <div class="info" th:utext="${commons.intro(article,75)}"
+                                 th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>
+                            <!--                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>-->
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+
+
+        </div>
+        <div class="col-md-3 cl-right">
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title" th:if="${userDetail} ne null">[[${${userDetail.getJob()}}]]</div>
+                    <div style="text-align: center;" class="right-card-title" th:if="${userDetail} eq null">请登录</div>
+                    <div class="cl-code">
+                        <img th:src="@{/user_img/user_default.jpg}" alt="about me" class="img-fluid"
+                             th:if="${userDetail} eq null or ${userDetail.getIcon()} eq '' or ${userDetail.getIcon()} eq null  ">
+                        <img th:src="${userDetail.getIcon()}" alt="about me" class="img-fluid"
+                             th:if="${userDetail} ne null and  ${userDetail.getIcon()} ne '' and  ${userDetail.getIcon()} ne null">
+                        <!--                        <p th:if="${userDetail} ne null">-->
+                        <!--                            <span th:text="${userDetail.getDetail()}"></span>-->
+                        <!--                        </p>-->
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title">阅读排行榜</div>
+                    <!--                    <div class="right-recommended"><a href="#"><img src="#" class="img-fluid" alt=""></a></div>-->
+                    <ul class="right-recommended-list">
+                        <li th:each="articleOrder :${articleOrders}">
+                            <a th:href="@{'/article/'+${articleOrder.id}}">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <span th:text="${articleOrderStat.index+1}+'、'+${articleOrder.title}+'('+${articleOrder.statistic.hits}+')'"></span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title">热门标签</div>
+                    <ul class="label">
+                        <li th:each="tag:${tags}">
+                            <a href="#" th:text="${tag.getTagName()}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">友情链接</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!--                    内容-->
+                    <p th:each="link:${links}" th:utext="'<a href='+${link.getLink()}+'>'+${link.getTitle()}+'</a>'">
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+
+<div class="container-fluid cl-footer">
+    <div class="container">
+        <p class="cl-copyright">2021 &copy; Powered By 游政杰</p>
+    </div>
+</div>
+
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>文章详情</title>
+
+    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
+    <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
+    <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
+    <link th:href="@{/assets/index2/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
+
+    <script th:src="@{/assets/index2/jquery/jquery.min.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
+
+    <script th:src="@{/assets/js/layer.js}"></script>
+    <!--    引入valine-->
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+</head>
+<body>
+<div class="cl-header container-fluid">
+    <div class="header-content container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">
+                <img th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">首页<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/test/archive}">归档</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="link" class="nav-link" href="#" data-toggle="modal" data-target="#myModal">友链</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/}">后台管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/toSendEmailPage}">注册</a>
+                    </li>
+                    <form name="logoutform" th:action="@{/logout}" method="post"></form>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/loginPage}">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()" href="javascript:document.logoutform.submit();">
+                            退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+
+
+<div class="cl-cantainer container">
+    <div class="row">
+        <div class="col-md-9 cl-left">
+            <div class="cl-artical-content">
+                <h2 class="cl-artical-title" th:text="${article.title}"></h2>
+                <div class="cl-card-tag">
+                    <!--                    <div><span>124</span>人浏览 / <span>3</span>人评论</div>-->
+                    <time th:datetime="${commons.dateFormat(article.created)}" itemprop="datePublished"
+                          th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></time>
+                </div>
+                <!--                内容-->
+                <div id="post-content" class="cl-artical" th:utext="${commons.article(article.content)}">
+                </div>
+            </div>
+
+            <!--            暂不实现-->
+
+            <!--            <div class="recommend-panel">-->
+            <!--                <h4 class="right-card-title">相关文章</h4>-->
+            <!--                <div class="card-deck">-->
+            <!--                    <div class="card ll-panel">-->
+            <!--                        <a class="recommend-panel-link" href="articleDetails2.html">-->
+            <!--                            <div class="recommend-panel-top">-->
+            <!--                                <img src="temporary-img/list-image1.jpg" class="img-fluid" alt="">-->
+            <!--                            </div>-->
+            <!--                            <div class="recommend-panel-bottom">-->
+            <!--                                如何有效避免设计作品“空”？-->
+            <!--                            </div>-->
+            <!--                        </a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+
+            <div th:if="${article}!=null">
+                <div th:id="${article.id ?: 0}" class="comment-container">
+                    <div id="comments" class="clearfix">
+                        <div th:if="${article.allowComment}">
+                <span class="response">
+                    <form name="logoutform" th:action="@{/logout}" method="post"></form>
+                    <th:block sec:authorize="isAuthenticated()">
+                        Hello，<a data-no-instant="" sec:authentication="name"></a>
+                        如果你想 <a href="javascript:document.logoutform.submit();">注销</a> ?
+                        <span style="color: pink">评论或者回复时,请单击一下下面的昵称文本框！</span>
+                    </th:block>
+                    <th:block sec:authorize="isAnonymous()">
+                        用户想要评论或者查看评论，请先<a th:href="@{/loginPage}" title="登录" data-no-instant="">登录</a>!
+                    </th:block>
+                </span>
+
+                            <div id="vcomments" sec:authorize="isAuthenticated()">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 cl-right">
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title" th:if="${userDetail} ne null">[[${${userDetail.getJob()}}]]</div>
+                    <div style="text-align: center;" class="right-card-title" th:if="${userDetail} eq null">请登录</div>
+                    <div class="cl-code">
+                        <img th:src="@{/user_img/user_default.jpg}" alt="about me" class="img-fluid"
+                             th:if="${userDetail} eq null or ${userDetail.getIcon()} eq '' or ${userDetail.getIcon()} eq null  ">
+                        <img th:src="${userDetail.getIcon()}" alt="about me" class="img-fluid"
+                             th:if="${userDetail} ne null and  ${userDetail.getIcon()} ne '' and  ${userDetail.getIcon()} ne null">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title">阅读排行榜</div>
+                    <!--                    <div class="right-recommended"><a href="#"><img src="#" class="img-fluid" alt=""></a></div>-->
+                    <ul class="right-recommended-list">
+                        <li th:each="articleOrder :${articleOrders}">
+                            <a th:href="@{'/article/'+${articleOrder.id}}">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <span th:text="${articleOrderStat.index+1}+'、'+${articleOrder.title}+'('+${articleOrder.statistic.hits}+')'"></span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title">热门标签</div>
+                    <ul class="label">
+                        <li th:each="tag:${tags}">
+                            <a href="#" th:text="${tag.getTagName()}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid cl-footer">
+    <div class="container">
+        <p class="cl-copyright">2021 &copy; Powered By 游政杰</p>
+    </div>
+</div>
+<script th:inline="javascript">
+    hljs.initHighlightingOnLoad();
+
+    <!-- 使用layer.js实现图片缩放功能 -->
+
+    $('.post-content img').on('click', function () {
+        var imgurl = $(this).attr('src');
+        var w = this.width * 2;
+        var h = this.height * 2 + 50;
+        layer.open({
+            type: 1,
+            title: false, //不显示标题栏
+            area: [w + "px", h + "px"],
+            shadeClose: true, //点击遮罩关闭
+            content: '\<\div style="padding:20px;">' +
+                '\<\img style="width:' + (w - 50) + 'px;" src=' + imgurl + '\>\<\/div>'
+        });
+    });
+
+
+    new Valine({
+        el: '#vcomments',
+        appId: 'xxx',
+        appKey: 'yyy',
+        placeholder: '请输入内容',
+        pageSize: 3,
+        recordIP: true,
+        avatar: '',
+        requiredFields: ['nick']
+    });
+    //隐藏div vheader
+    // document.getElementsByClassName('vheader')[0].style.display="none";
+    document.getElementsByClassName('vmail')[0].style.display = "none";
+    document.getElementsByClassName('vlink')[0].style.display = "none";
+    var name = [[${name}]];
+    if (name != null) {
+        //因为这个vnick文本框用了延迟加载，所以我们需要延迟更长的时间才能修改他
+        function after() {
+            document.getElementsByClassName('vnick')[0].value = name;
+            document.getElementsByClassName('vmail')[0].value = "";
+            document.getElementsByClassName('vnick')[0].readOnly = true;
+        }
+
+        setTimeout("after()", 100);
+    }
+
+
+</script>
+
+
+</body>
+</html>

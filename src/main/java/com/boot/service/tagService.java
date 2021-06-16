@@ -21,4 +21,7 @@ public interface tagService {
 
     //echarts
     List<tag> selectTags_echarts();
+
+    //首页标签
+    List<tag> selectTags_limit8();
 }

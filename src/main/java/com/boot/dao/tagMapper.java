@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.tag;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,5 +27,9 @@ public interface tagMapper {
 
     //echarts
     List<tag> selectTags_echarts();
+
+    //首页标签
+    @Select("select * from t_tag  order by tagCount desc limit 8")
+    List<tag> selectTags_limit8();
 
 }

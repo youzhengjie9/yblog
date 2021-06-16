@@ -138,7 +138,6 @@
                  th:if="${userDetail} ne null and  ${userDetail.getIcon()} ne '' and  ${userDetail.getIcon()} ne null"
                  th:src=" ${userDetail.getIcon()}" alt="about me" class="blog-entry-img"/>
 
-
             <p th:if="${userDetail} ne null">
                 <span th:text="${userDetail.getJob()}"></span>
             </p>
