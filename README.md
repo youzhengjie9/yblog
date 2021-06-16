@@ -114,3 +114,31 @@ upstream yblog.cn{
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
 * Druid监控帐号：admin 密码： 123456
 * RabbitMQ帐号：guest 密码： guest
+
+### 图片演示
+![01.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/01.PNG)
+![02.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/02.PNG)
+![03.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/03.PNG)
+![04.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/04.PNG)
+![05.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/05.PNG)
+![06.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/06.PNG)
+![07.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/07.PNG)
+![08.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/08.PNG)
+![09.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/09.PNG)
+![10.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/10.PNG)
+![11.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/11.PNG)
+![12.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/12.PNG)
+![13.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/13.PNG)
+![14.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/14.PNG)
+![15.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/15.PNG)
+![16.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/16.PNG)
+![17.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/17.PNG)
+![19.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/19.PNG)
+![20.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/20.PNG)
+
+
+
+
+
+
+
