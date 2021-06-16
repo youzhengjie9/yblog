@@ -107,6 +107,9 @@ upstream yblog.cn{
 ```
 * 所以我们只需要把项目的8080、8081、8082端口打开，然后访问localhost:8888即可实现负载均衡。
 
+
+
+
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
 * Druid监控帐号：admin 密码： 123456

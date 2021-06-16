@@ -31,6 +31,20 @@
 
 <style type="text/css">
 
+    .modal-dialog{
+        margin: 15rem auto;
+    }
+
+    /*让model变透明*/
+    .modal-content{
+        background-color: rgba(0,0,0,0);
+    }
+    /*去除边框  */
+    .modal-content{
+        border: 0px;
+    }
+     
+
     .slidercaptcha {
         margin: 0 auto;
         width: 314px;
@@ -100,34 +114,6 @@
             <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">
                 ~欢迎登录博客~</h1>
             <br>
-
-
-            <!--            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-            <!--                 aria-hidden="true">-->
-            <!--                <div class="modal-body">-->
-            <!--                    <div class="modal-content">-->
-            <!--                    <div id="t" class="container-fluid">-->
-            <!--                        <div class="form-row">-->
-            <!--                            <div class="col-12">-->
-            <!--                                <div class="slidercaptcha card">-->
-            <!--                                    <div class="card-header">-->
-            <!--                                        <span>请完成安全验证!</span>-->
-            <!--                                    </div>-->
-            <!--                                    <div class="card-body">-->
-            <!--                                        <div id="captcha"></div>-->
-            <!--                                    </div>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                        <div class="modal-footer">-->
-            <!--                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-            <!--                            <button type="button" class="btn btn-primary">提交更改</button>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-
-            <!--                </div>-->
-            <!--            </div>-->
 
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -226,55 +212,55 @@
     }
 
     // 禁止使用开发者工具和F12的代码开始
-    function fuckyou() {
-
-        alert('不允许用开发者工具')
-        window.close();
-
-        window.location = "about:blank";
-
-    }
-
-    function ck() {
-
-        console.profile();
-
-        console.profileEnd();
-
-        if (console.clear) {
-            console.clear()
-        }
-        ;
-
-        if (typeof console.profiles == "object") {
-
-            return console.profiles.length > 0;
-        }
-
-    }
-
-    function hehe() {
-
-        if ((window.console && (console.firebug || console.table && /firebug/i.test(console.table()))) || (typeof opera == 'object' && typeof opera.postError == 'function' && console.profile.length > 0)) {
-
-            fuckyou();
-        }
-        if (typeof console.profiles == "object" && console.profiles.length > 0) {
-
-            fuckyou();
-
-        }
-    }
-
-    hehe();
-
-    window.onresize = function () {
-
-        if ((window.outerHeight - window.innerHeight) > 200)
-
-            fuckyou();
-
-    }
+    // function fuckyou() {
+    //
+    //     alert('不允许用开发者工具')
+    //     window.close();
+    //
+    //     window.location = "about:blank";
+    //
+    // }
+    //
+    // function ck() {
+    //
+    //     console.profile();
+    //
+    //     console.profileEnd();
+    //
+    //     if (console.clear) {
+    //         console.clear()
+    //     }
+    //     ;
+    //
+    //     if (typeof console.profiles == "object") {
+    //
+    //         return console.profiles.length > 0;
+    //     }
+    //
+    // }
+    //
+    // function hehe() {
+    //
+    //     if ((window.console && (console.firebug || console.table && /firebug/i.test(console.table()))) || (typeof opera == 'object' && typeof opera.postError == 'function' && console.profile.length > 0)) {
+    //
+    //         fuckyou();
+    //     }
+    //     if (typeof console.profiles == "object" && console.profiles.length > 0) {
+    //
+    //         fuckyou();
+    //
+    //     }
+    // }
+    //
+    // hehe();
+    //
+    // window.onresize = function () {
+    //
+    //     if ((window.outerHeight - window.innerHeight) > 200)
+    //
+    //         fuckyou();
+    //
+    // }
     //禁用F12结束
 
 
