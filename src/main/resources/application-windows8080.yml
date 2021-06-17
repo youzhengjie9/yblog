@@ -51,3 +51,7 @@ spring:
     basename: i18n.logo
 mybatis:
   mapper-locations: classpath:/mapper/*
+
+#自定义
+scan:
+  packageName: com.boot.controller

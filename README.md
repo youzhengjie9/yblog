@@ -104,7 +104,7 @@ upstream yblog.cn{
 * 所以我们只需要把项目的8080、8081、8082端口打开，然后访问localhost:8888即可实现负载均衡。
 
 
-* 评论模块需要自己去https://www.leancloud.cn/注册，获取AppID、AppKey，并加入到下面对应的js
+* 评论模块需要自己去https://www.leancloud.cn/ 注册，获取AppID、AppKey，并加入到下面对应的js
 ```js
 new Valine({
         el: '#vcomments',

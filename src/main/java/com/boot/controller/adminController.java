@@ -85,12 +85,7 @@ public class adminController {
 
     }
 
-
-    @GetMapping(path = "/")
-    @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
-    public String toAdmin(Model model, HttpSession session, HttpServletRequest request, @Value("进入后台界面") String desc) {
-
-
+    private void addVisitor(HttpServletRequest request,String desc){
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
         String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
@@ -100,6 +95,17 @@ public class adminController {
             //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
             redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
         }
+
+    }
+
+
+    @GetMapping(path = "/")
+    @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
+    public String toAdmin(Model model, HttpSession session, HttpServletRequest request, @Value("进入后台界面") String desc) {
+
+
+        //添加访客信息
+        this.addVisitor(request,desc);
 
 
         String ipAddr = ipUtils.getIpAddr(request);
@@ -136,14 +142,7 @@ public class adminController {
     public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request, @Value("进入发布文章界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -166,14 +165,7 @@ public class adminController {
     public String toArticleList1(Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+       this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -205,14 +197,7 @@ public class adminController {
     public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -243,14 +228,7 @@ public class adminController {
     public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -383,14 +361,7 @@ public class adminController {
                                 Model model) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -448,14 +419,7 @@ public class adminController {
     public String toTagList(HttpSession session, Model model, HttpServletRequest request, @Value("进入分类标签界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
         String username = springSecurityUtil.currentUser(session);
 
@@ -560,14 +524,7 @@ public class adminController {
     public String toSetting(HttpSession session, Model model, HttpServletRequest request, @Value("进入系统设置界面") String desc) {
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVisitor(request,desc);
 
         model.addAttribute("commons", Commons.getInstance());
         model.addAttribute("bootstrap", new bootstrap());

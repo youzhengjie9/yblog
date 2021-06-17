@@ -2,6 +2,7 @@ package com.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.boot.config.scanClassProperties;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.IpToAddressUtil;
@@ -147,9 +148,23 @@ public class test {
     }
 
     @Autowired
-    private blacklistService blacklistService;
+    private scanClassProperties scanClassProperties;
     @Test
     public void test5(){
+        String p = scanClassProperties.getPackageName();
+        StringBuilder stringBuilder=new StringBuilder();
+        for (int i = 0; i < p.length(); i++) {
+            if(p.charAt(i)=='.'){
+                stringBuilder.append("\\");
+            }else {
+                stringBuilder.append(p.charAt(i));
+            }
+        }
+        String packageName = stringBuilder.toString();
+        String s = (String) System.getProperties().get("user.dir");
+        s+="\\src\\main\\java\\";
+        String scan=s+packageName;
+        System.out.println(scan);
 
     }
 
