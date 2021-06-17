@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.constant.themeConstant;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
@@ -60,7 +61,13 @@ public class archiveController {
     @Autowired
     private cssUtil cssUtil;
 
-    private final int type=1;
+    private final int type = 1;
+
+    @Autowired
+    private tagService tagService;
+
+    //主题暂时写死
+    private String curTheme = themeConstant.CALM_THEME; //切换到第二套主题
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -73,14 +80,28 @@ public class archiveController {
 
     @GetMapping(path = "/list")
     @ApiOperation(value = "去归档页面")
-    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request, @Value("归档页面") String desc){
+    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request, @Value("归档页面") String desc) {
         ModelAndView modelAndView = new ModelAndView();
+
+        //跳转不同页面主题判断
+        if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
+            modelAndView.setViewName("client/index2"); //跳转页面
+            modelAndView.addObject("archiveAc","active");
+            List<tag> tags = tagService.selectTags_limit8();
+            modelAndView.addObject("tags", tags);
+
+        } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
+            modelAndView.setViewName("client/index"); //跳转页面
+
+        }
+
+
         //前端进行判断，isArchive是不是等于空，如果不是就是归档页面，进行页面代码的复用，省去写一个新的页面
-        modelAndView.addObject("isArchive","true");
+        modelAndView.addObject("isArchive", "true");
 
         List<archive> archives = archiveService.selectAllArchiveGroup(); //获取归档分组信息
 //        modelAndView.addObject("archives",archives);
-        modelAndView.addObject("cssUtil",cssUtil);
+        modelAndView.addObject("cssUtil", cssUtil);
 
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
@@ -102,9 +123,9 @@ public class archiveController {
         for (archive archive : archives) {
             String months = archive.getMonths();
             List<Article> articles = archiveService.selectArticleByarchiveTime(months);
-            concurrentHashMap.put(months,articles);
+            concurrentHashMap.put(months, articles);
         }
-        modelAndView.addObject("archiveMap",concurrentHashMap); //传入前端
+        modelAndView.addObject("archiveMap", concurrentHashMap); //传入前端
 
 
         List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
@@ -134,16 +155,11 @@ public class archiveController {
 
         //友链
         List<link> links = linkService.selectAllLink();
-        modelAndView.addObject("links",links);
+        modelAndView.addObject("links", links);
         modelAndView.addObject("commons", Commons.getInstance());
-        modelAndView.setViewName("client/index");
+
         return modelAndView;
     }
-
-
-
-
-
 
 
 }

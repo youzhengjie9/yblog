@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.constant.themeConstant;
 import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.*;
@@ -74,6 +75,13 @@ public class clientController {
 
     private final int type = 1;
 
+    @Autowired
+    private tagService tagService;
+
+    //主题暂时写死
+    private String curTheme= themeConstant.CALM_THEME; //切换到第二套主题
+
+
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
         List<Article> list = new ArrayList<>(10);
@@ -83,12 +91,7 @@ public class clientController {
         return list;
     }
 
-
-    @RequestMapping(path = {"/"})
-    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
-
-        System.out.println("测试负载均衡==当前端口是："+port);
-
+    private void addVistor(HttpServletRequest request,String desc){
         //添加访客信息
         visitor visitor = visitorUtil.getVisitor(request, desc);
         String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
@@ -98,26 +101,9 @@ public class clientController {
             //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
             redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
         }
+    }
 
-
-        PageHelper.startPage(1, 5);
-        List<Article> list = articleService.selectAllArticle();
-        PageInfo pageInfo = new PageInfo(list);
-        ModelAndView modelAndView = new ModelAndView();
-        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
-        if (as == null) {
-            List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-            redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
-            modelAndView.addObject("articleOrders", articleOrders);
-        } else {
-            modelAndView.addObject("articleOrders", as);
-        }
-//        System.out.println(pageInfo);
-        //PageInfo{pageNum=1, pageSize=5, size=5, startRow=1, endRow=5, total=12, pages=3, list=Page{count=true, pageNum=1, pageSize=5, startRow=0, endRow=5, total=12, pages=3, reasonable=false, pageSizeZero=false}[Article{id=1, title='2018新版Java学习路线图', content='&ensp;&ensp;&ensp;&ensp;播妞深知广大爱好Java的人学习是多么困难，没视频没资源，上网花钱还老担心被骗。因此专门整理了新版的学习路线图，不管你是不懂电脑的小白，还是已经步入开发的大牛，这套路线路绝对不容错过！12年传智播客黑马程序员分享免费视频教程长达10余万小时，累计下载量3000余万次，受益人数达千万。2018年我们不忘初心，继续前行。 路线图的宗旨就是分享，专业，便利，让喜爱Java的人，都能平等的学习。从今天起不要再找借口，不要再说想学Java却没有资源，赶快行动起来，Java等你来探索，高薪距你只差一步！
-
-        /**
-         * xxx个人博客标题
-         */
+    private void queryUserDeail(HttpSession session,ModelAndView modelAndView){
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (securityContext != null) {
             String name = securityUtil.currentUser(session);
@@ -129,6 +115,49 @@ public class clientController {
             userDetail userDetail = null;
             modelAndView.addObject("userDetail", userDetail);
         }
+    }
+
+
+    @RequestMapping(path = {"/"})
+    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+        ModelAndView modelAndView = new ModelAndView();
+
+//        System.out.println("测试负载均衡==当前端口是："+port);
+
+        //跳转不同页面主题判断
+        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+            modelAndView.setViewName("client/index2"); //跳转页面
+            List<tag> tags = tagService.selectTags_limit8();
+            modelAndView.addObject("indexAc","active");
+            modelAndView.addObject("tags",tags);
+
+        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+            modelAndView.setViewName("client/index"); //跳转页面
+
+        }
+
+
+        //添加访客信息
+        this.addVistor(request,desc);
+
+
+        PageHelper.startPage(1, 5);
+        List<Article> list = articleService.selectAllArticle();
+        PageInfo pageInfo = new PageInfo(list);
+
+        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
+        if (as == null) {
+            List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
+            redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
+            modelAndView.addObject("articleOrders", articleOrders);
+        } else {
+            modelAndView.addObject("articleOrders", as);
+        }
+
+        /**
+         * xxx个人博客标题
+         */
+        this.queryUserDeail(session,modelAndView);
 
 
         //友链
@@ -139,29 +168,32 @@ public class clientController {
         modelAndView.addObject("commons", Commons.getInstance());
         modelAndView.addObject("pageInfo", pageInfo);
 
-        modelAndView.setViewName("client/index");
         return modelAndView;
     }
 
 
     @RequestMapping(path = {"/page/{pageNum}"})
     public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
-
+        ModelAndView modelAndView = new ModelAndView();
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVistor(request,desc);
 
+        //跳转不同页面主题判断
+        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+            modelAndView.setViewName("client/index2"); //跳转页面
+            modelAndView.addObject("indexAc","active");
+            List<tag> tags = tagService.selectTags_limit8();
+            modelAndView.addObject("tags",tags);
+
+        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+            modelAndView.setViewName("client/index"); //跳转页面
+
+        }
 
         PageHelper.startPage(pageNum, 5);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
-        ModelAndView modelAndView = new ModelAndView();
+
         List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
         if (as == null) {
             List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
@@ -174,17 +206,9 @@ public class clientController {
         /**
          * xxx个人博客标题
          */
-        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        if (securityContext != null) {
-            String name = securityUtil.currentUser(session);
-            if (name != null && !name.equals("")) {
-                userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
-                modelAndView.addObject("userDetail", userDetail);
-            }
-        } else {
-            userDetail userDetail = null;
-            modelAndView.addObject("userDetail", userDetail);
-        }
+        this.queryUserDeail(session,modelAndView);
+
+
 
         //友链
         List<link> links = linkService.selectAllLink();
@@ -194,13 +218,13 @@ public class clientController {
         modelAndView.addObject("commons", Commons.getInstance());
         modelAndView.addObject("pageInfo", pageInfo);
 
-        modelAndView.setViewName("client/index");
         return modelAndView;
     }
 
 
     @GetMapping(path = "/article/{articleId}")
     public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session, @Value("访问文章") String desc) {
+        ModelAndView modelAndView = new ModelAndView();
 
 
         //当某个ip在短时间内不断访问某篇文章会造成点击量+1
@@ -216,17 +240,12 @@ public class clientController {
 
 
         //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key1 = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key1);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key1, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+        this.addVistor(request,desc);
+
+        //传入
+        modelAndView.addObject("indexAc","active");
 
 
-        ModelAndView modelAndView = new ModelAndView();
         boolean res = false; //判断是否传入参数“c”
         Boolean hasComment = commentService.hasComment(articleId);
         Article article = null;
@@ -279,7 +298,12 @@ public class clientController {
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
             modelAndView.addObject("articleId", articleId);
-            modelAndView.setViewName("client/articleDetails");
+            if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+                modelAndView.setViewName("client/articleDetails2"); //跳转页面
+
+            }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+                modelAndView.setViewName("client/articleDetails"); //跳转页面
+            }
             return modelAndView;
 
 
@@ -305,7 +329,26 @@ public class clientController {
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
             modelAndView.addObject("articleId", articleId);
-            modelAndView.setViewName("client/articleDetails");
+
+            //跳转不同页面主题判断
+            if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+                modelAndView.setViewName("client/articleDetails2"); //跳转页面
+                List<tag> tags = tagService.selectTags_limit8();
+                modelAndView.addObject("tags",tags);
+                List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
+                if (as == null) {
+                    List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
+                    redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
+                    modelAndView.addObject("articleOrders", articleOrders);
+                } else {
+                    modelAndView.addObject("articleOrders", as);
+                }
+
+            }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+                modelAndView.setViewName("client/articleDetails"); //跳转页面
+
+            }
+
             return modelAndView;
 
         }

@@ -77,12 +77,21 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">首页<span class="sr-only">(current)</span></a>
+                    <li th:if="${indexAc} ne null" class="nav-item active">
+                        <a class="nav-link" th:href="@{/page/1}">首页<span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/test/archive}">归档</a>
+                    <li th:if="${indexAc} eq null" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/1}">首页<span class="sr-only"></span></a>
                     </li>
+
+                    <li th:if="${archiveAc} ne null" class="nav-item active">
+                        <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>
+                    </li>
+                    <li th:if="${archiveAc} eq null" class="nav-item">
+                        <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>
+                    </li>
+
+
                     <li class="nav-item">
                         <a id="link" class="nav-link" href="#" data-toggle="modal" data-target="#myModal">友链</a>
                     </li>
@@ -203,16 +212,14 @@
             <div class="right-card">
 
                 <div class="right-card-main">
-                    <div class="right-card-title" th:if="${userDetail} ne null">[[${${userDetail.getJob()}}]]</div>
+                    <div class="right-card-title" th:if="${userDetail} ne null" th:text="${userDetail.getJob()}"></div>
                     <div style="text-align: center;" class="right-card-title" th:if="${userDetail} eq null">请登录</div>
                     <div class="cl-code">
                         <img th:src="@{/user_img/user_default.jpg}" alt="about me" class="img-fluid"
                              th:if="${userDetail} eq null or ${userDetail.getIcon()} eq '' or ${userDetail.getIcon()} eq null  ">
                         <img th:src="${userDetail.getIcon()}" alt="about me" class="img-fluid"
                              th:if="${userDetail} ne null and  ${userDetail.getIcon()} ne '' and  ${userDetail.getIcon()} ne null">
-                        <!--                        <p th:if="${userDetail} ne null">-->
-                        <!--                            <span th:text="${userDetail.getDetail()}"></span>-->
-                        <!--                        </p>-->
+
                     </div>
 
                 </div>
