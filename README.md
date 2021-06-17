@@ -104,7 +104,20 @@ upstream yblog.cn{
 * 所以我们只需要把项目的8080、8081、8082端口打开，然后访问localhost:8888即可实现负载均衡。
 
 
-
+* 评论模块需要自己去https://www.leancloud.cn/注册，获取AppID、AppKey，并加入到下面对应的js
+```js
+new Valine({
+        el: '#vcomments',
+        appId: 'xxx',
+        appKey: 'yyy',
+        placeholder: '请输入内容',
+        pageSize: 3 ,
+        recordIP: true,
+        avatar:'',
+        requiredFields: ['nick']
+    });
+````
+，弄好了之后评论功能就能运行了。
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档

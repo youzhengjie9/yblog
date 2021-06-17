@@ -30,9 +30,8 @@
     <script th:src="@{/back/js/html5shiv.js}"></script>
     <script th:src="@{/back/js/respond.min.js}"></script>
 
-<!--    引入alibaba iconfont-->
+    <!--    引入alibaba iconfont-->
     <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_otr0rdkf7c.css">
-
 
 
     <style>
@@ -157,7 +156,8 @@
                     <!--                    下拉菜单开始-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                class="iconfont icon-pachong" aria-hidden="true"></i><span>爬虫</span><b class="caret"></b></a>
+                                class="iconfont icon-pachong" aria-hidden="true"></i><span>爬虫</span><b
+                                class="caret"></b></a>
 
 
                         <ul class="dropdown-menu">
@@ -165,13 +165,13 @@
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a th:href="@{/catchArticle/list}"
                                    th:class="${active}=='catchArticle'?'waves-effect active':'waves-effect'">
-                                    <i class="iconfont icon-shoudongzhuaqushuju" aria-hidden="true"></i><span> 抓取文章 </span></a>
+                                    <i class="iconfont icon-shoudongzhuaqushuju"
+                                       aria-hidden="true"></i><span> 抓取文章 </span></a>
                             </li>
 
                         </ul>
                     </li>
                     <!--                    下拉菜单结束-->
-
 
 
                     <!--                    下拉菜单开始-->
@@ -195,7 +195,8 @@
                             </li>
                             <li th:class="${active}=='user'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
-                                <a th:href="@{/myuser/list}" th:class="${active}=='user'?'waves-effect active':'waves-effect'">
+                                <a th:href="@{/myuser/list}"
+                                   th:class="${active}=='user'?'waves-effect active':'waves-effect'">
                                     <i class="iconfont icon-gerenziliao" aria-hidden="true"></i><span> 个人资料 </span></a>
                             </li>
                         </ul>
@@ -232,7 +233,8 @@
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
                                 <a href="#"
                                    th:class="${active}=='visitor'?'waves-effect active':'waves-effect'">
-                                    <i class="iconfont icon-lanjiedingdan" aria-hidden="true"></i><span> 拦截记录 </span></a>
+                                    <i class="iconfont icon-lanjiedingdan"
+                                       aria-hidden="true"></i><span> 拦截记录 </span></a>
                             </li>
                         </ul>
                     </li>
@@ -246,13 +248,13 @@
                     </li>
 
 
-                    <!--                    暂不实现-->
+                    <!--                待实现-->
 
-                    <!--                    <li th:class="${active}=='setting'?'active':''">-->
-                    <!--                        <a th:href="@{/admin/toSetting/}"-->
-                    <!--                           th:class="${active}=='setting'?'waves-effect active':'waves-effect'">-->
-                    <!--                            <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>-->
-                    <!--                    </li>-->
+                    <li th:class="${active}=='setting'?'active':''">
+                        <a th:href="@{/admin/toSetting/}"
+                           th:class="${active}=='setting'?'waves-effect active':'waves-effect'">
+                            <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>
+                    </li>
 
                 </ul>
                 <div class="clearfix"></div>

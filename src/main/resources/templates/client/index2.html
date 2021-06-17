@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>首页</title>
+    <title>yblog</title>
     <!--timeline-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
@@ -124,7 +124,7 @@
 
             <div class="cl-card" th:each="article: ${articles}" th:if="${isArchive} eq null or ${isArchive} eq ''">
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a href="articleDetails2.html">
+                    <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a th:href="${commons.permalink(article.id)}">
                         <img th:src="@{${commons.show_thumb(article)}}" class="img-fluid" alt=""></a>
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-12 cl-card-main">
