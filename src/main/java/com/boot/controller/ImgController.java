@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.annotation.Visitor;
 import com.boot.pojo.img;
 import com.boot.pojo.userDetail;
 import com.boot.pojo.visitor;
@@ -60,18 +61,11 @@ public class ImgController {
 
 //    private static final Object lock=new Object(); //悲观锁
 
+    @Visitor(desc = "进入附件管理")
     @RequestMapping(path = "/list")
-    public String toFileList(HttpSession session, Model model, HttpServletRequest request,@Value("进入后台界面") String desc){
+    public String toFileList(HttpSession session, Model model, HttpServletRequest request){
 
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
+
 
         List<img> imgs = imgService.selectAllImg();
         System.out.println(imgs);

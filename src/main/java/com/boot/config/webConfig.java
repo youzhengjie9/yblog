@@ -17,10 +17,9 @@ public class webConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(visitorInterceptor)
                 .addPathPatterns("/admin/**","/archive/list","/black/list","/catchArticle/list","/chart/list")
-                .addPathPatterns("/").addPathPatterns("/page/**")
-                .addPathPatterns("/article/**")
+                .addPathPatterns("/","/page/**","/img/list","/link/list","/usermanager/list")
+                .addPathPatterns("/article/**","/visitor/list","/myuser/list")
                 .excludePathPatterns("/admin/modify","/admin/publish","/admin/deleteArticle"
-                        ,"/admin/updateCategory","/admin/deleteCategory","/admin/addCategory"
-                );
+                        ,"/admin/updateCategory","/admin/deleteCategory","/admin/addCategory");
     }
 }

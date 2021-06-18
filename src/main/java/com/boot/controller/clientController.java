@@ -80,7 +80,7 @@ public class clientController {
     private tagService tagService;
 
     //主题暂时写死
-    private String curTheme= themeConstant.CALM_THEME; //切换到第二套主题
+    private String curTheme = themeConstant.CALM_THEME; //切换到第二套主题
 
 
     //前10排行
@@ -92,7 +92,7 @@ public class clientController {
         return list;
     }
 
-    private void queryUserDeail(HttpSession session,ModelAndView modelAndView){
+    private void queryUserDeail(HttpSession session, ModelAndView modelAndView) {
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (securityContext != null) {
             String name = securityUtil.currentUser(session);
@@ -114,17 +114,16 @@ public class clientController {
 //        System.out.println("测试负载均衡==当前端口是："+port);
 
         //跳转不同页面主题判断
-        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+        if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
             List<tag> tags = tagService.selectTags_limit8();
-            modelAndView.addObject("indexAc","active");
-            modelAndView.addObject("tags",tags);
+            modelAndView.addObject("indexAc", "active");
+            modelAndView.addObject("tags", tags);
 
-        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+        } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
             modelAndView.setViewName("client/index"); //跳转页面
 
         }
-
 
 
         PageHelper.startPage(1, 5);
@@ -143,7 +142,7 @@ public class clientController {
         /**
          * xxx个人博客标题
          */
-        this.queryUserDeail(session,modelAndView);
+        this.queryUserDeail(session, modelAndView);
 
 
         //友链
@@ -164,13 +163,13 @@ public class clientController {
         ModelAndView modelAndView = new ModelAndView();
 
         //跳转不同页面主题判断
-        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+        if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
-            modelAndView.addObject("indexAc","active");
+            modelAndView.addObject("indexAc", "active");
             List<tag> tags = tagService.selectTags_limit8();
-            modelAndView.addObject("tags",tags);
+            modelAndView.addObject("tags", tags);
 
-        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+        } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
             modelAndView.setViewName("client/index"); //跳转页面
 
         }
@@ -191,8 +190,7 @@ public class clientController {
         /**
          * xxx个人博客标题
          */
-        this.queryUserDeail(session,modelAndView);
-
+        this.queryUserDeail(session, modelAndView);
 
 
         //友链
@@ -226,7 +224,7 @@ public class clientController {
 
 
         //传入
-        modelAndView.addObject("indexAc","active");
+        modelAndView.addObject("indexAc", "active");
 
 
         boolean res = false; //判断是否传入参数“c”
@@ -242,7 +240,7 @@ public class clientController {
             String name = securityUtil.currentUser(session);
             if (name != null && !name.equals("")) {
                 userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
-                modelAndView.addObject("name",name);
+                modelAndView.addObject("name", name);
                 modelAndView.addObject("userDetail", userDetail);
             }
         } else {
@@ -281,10 +279,10 @@ public class clientController {
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
             modelAndView.addObject("articleId", articleId);
-            if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+            if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
                 modelAndView.setViewName("client/articleDetails2"); //跳转页面
 
-            }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+            } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
                 modelAndView.setViewName("client/articleDetails"); //跳转页面
             }
             return modelAndView;
@@ -314,10 +312,10 @@ public class clientController {
             modelAndView.addObject("articleId", articleId);
 
             //跳转不同页面主题判断
-            if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+            if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
                 modelAndView.setViewName("client/articleDetails2"); //跳转页面
                 List<tag> tags = tagService.selectTags_limit8();
-                modelAndView.addObject("tags",tags);
+                modelAndView.addObject("tags", tags);
                 List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
                 if (as == null) {
                     List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
@@ -327,7 +325,7 @@ public class clientController {
                     modelAndView.addObject("articleOrders", as);
                 }
 
-            }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+            } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
                 modelAndView.setViewName("client/articleDetails"); //跳转页面
 
             }

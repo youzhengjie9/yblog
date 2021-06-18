@@ -1,6 +1,7 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.userDetail;
@@ -47,20 +48,12 @@ public class visitorController {
     private userDetailService userDetailService;
 
 
+    @Visitor(desc = "进入访客管理")
     @GetMapping(path = "/list")
     public String toVisitorList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model,
-                                HttpServletRequest request, @Value("进入访客管理界面") String desc
+                                HttpServletRequest request
             , HttpSession session) {
 
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
 
         PageHelper.startPage(pageNum, 8);
         List<com.boot.pojo.visitor> visitors = visitorService.selectVisitor();

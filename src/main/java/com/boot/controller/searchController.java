@@ -1,10 +1,13 @@
 package com.boot.controller;
 
+import com.boot.constant.themeConstant;
 import com.boot.pojo.Article;
 import com.boot.pojo.link;
+import com.boot.pojo.tag;
 import com.boot.service.articleService;
 import com.boot.service.elasticSearchService;
 import com.boot.service.linkService;
+import com.boot.service.tagService;
 import com.boot.utils.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,6 +47,11 @@ public class searchController {
     @Autowired
     private elasticSearchService elasticSearchService;
 
+    //主题暂时写死
+    private String curTheme= themeConstant.CALM_THEME; //切换到第二套主题
+
+    @Autowired
+    private tagService tagService;
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -59,6 +67,18 @@ public class searchController {
     public ModelAndView search_article(@PathVariable("page") int page, String searchText) throws IOException {
 
         ModelAndView modelAndView = new ModelAndView();
+
+        //跳转不同页面主题判断
+        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+            modelAndView.setViewName("client/index2"); //跳转页面
+            modelAndView.addObject("indexAc","active");
+            List<tag> tags = tagService.selectTags_limit8();
+            modelAndView.addObject("tags",tags);
+
+        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+            modelAndView.setViewName("client/index"); //跳转页面
+
+        }
 
         //搜索内容为空代表搜素全部
         if (searchText == null || searchText.equals("")) {
@@ -93,7 +113,6 @@ public class searchController {
         //友链
         List<link> links = linkService.selectAllLink();
         modelAndView.addObject("links",links);
-        modelAndView.setViewName("client/index");
         return modelAndView;
 
     }

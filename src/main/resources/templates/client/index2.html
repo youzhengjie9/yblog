@@ -8,7 +8,7 @@
     <title>yblog</title>
     <!--timeline-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
     <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
     <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
@@ -45,6 +45,7 @@
             color: #fff;
             font-size: 13px;
         }
+
         .container1 ul:before {
             content: "";
             width: 1px;
@@ -52,6 +53,7 @@
             position: absolute;
             border-left: 2px dashed #fff;
         }
+
         .container1 ul li {
             position: relative;
             margin-left: 30px;
@@ -77,6 +79,24 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
+
+
+                    <li class="nav-item">
+                        <div id="searchbox" class="navbar-search" style="height: 40px;">
+                                                        <span class="icon-search" onclick="submitData()"></span>
+                            <form id="form" role="search" th:action="@{/search/1}">
+                           <span class="search-box">
+                                <input style="height: 40px;" type="text" name="searchText" id="search-inp" class="input" placeholder="全站搜索..."
+                                       maxlength="30"
+                                       autocomplete="off"/>
+                          </span>
+                                <input style="height: 40px;" type="button" value="搜索" onclick="submitData()">
+                            </form>
+                        </div>
+                    </li>
+
+
+
                     <li th:if="${indexAc} ne null" class="nav-item active">
                         <a class="nav-link" th:href="@{/page/1}">首页<span class="sr-only"></span></a>
                     </li>
@@ -111,6 +131,8 @@
                             退出
                         </a>
                     </li>
+
+
                 </ul>
             </div>
         </nav>
@@ -124,7 +146,8 @@
 
             <div class="cl-card" th:each="article: ${articles}" th:if="${isArchive} eq null or ${isArchive} eq ''">
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a th:href="${commons.permalink(article.id)}">
+                    <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a
+                            th:href="${commons.permalink(article.id)}">
                         <img th:src="@{${commons.show_thumb(article)}}" class="img-fluid" alt=""></a>
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-12 cl-card-main">
@@ -206,7 +229,6 @@
             </div>
 
 
-
         </div>
         <div class="col-md-3 cl-right">
             <div class="right-card">
@@ -284,6 +306,14 @@
     </div>
 </div>
 
-<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    hljs.initHighlightingOnLoad();
+
+    //js提交表单
+    function submitData() {
+        document.getElementById("form").submit();
+    }
+
+</script>
 </body>
 </html>

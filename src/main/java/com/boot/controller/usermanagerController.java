@@ -1,6 +1,7 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
@@ -61,20 +62,9 @@ public class usermanagerController {
     @Autowired
     private userAuthorityService userAuthorityService;
 
+    @Visitor(desc = "进入用户管理界面")
     @RequestMapping(path = "/list")
-    public String toUserManager(HttpSession session, Model model, HttpServletRequest request,@Value("进入用户管理界面") String desc){
-
-
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
-
+    public String toUserManager(HttpSession session, Model model, HttpServletRequest request){
 
 
         List<authority> authorities = authorityService.selectUserAuthority();
