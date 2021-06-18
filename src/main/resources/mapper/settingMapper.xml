@@ -24,7 +24,12 @@
     <update id="changeSettingByUser" parameterType="com.boot.pojo.setting">
         update t_setting
         <set>
-            logo=#{logo}
+            <if test="logo == null">
+                logo='/user/img/bloglogo.jpg'
+            </if>
+            <if test="logo != null">
+                logo=#{logo}
+            </if>
             <if test="foot == null">
                 ,foot=''
             </if>

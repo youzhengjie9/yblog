@@ -28,7 +28,8 @@
     <div class="header-content container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="#">
-                <img th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
+                <img th:if="${setting} eq null or ${setting.logo} eq null or ${setting.logo} eq ''" th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
+                <img th:if="${setting} ne null and ${setting.logo} ne null and ${setting.logo} ne ''" th:src="@{${setting.logo}}" width="144" height="72" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -183,7 +184,8 @@
 
 <div class="container-fluid cl-footer">
     <div class="container">
-        <p class="cl-copyright">2021 &copy; Powered By 游政杰</p>
+        <p class="cl-copyright" th:if="${setting} eq null or ${setting.foot} eq null">2021 &copy; Powered By 游政杰</p>
+        <p class="cl-copyright" th:if="${setting} ne null and ${setting.foot} ne null" th:text="${setting.foot}"></p>
     </div>
 </div>
 <script th:inline="javascript">

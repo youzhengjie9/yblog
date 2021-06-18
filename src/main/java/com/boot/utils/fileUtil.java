@@ -106,7 +106,25 @@ public final class fileUtil {
     }
 
 
+    //获取logo所在地址
+    public static final String writeImageLogo(String originalFilename, byte[] fileByteArray) throws IOException {
 
+        String staticPath = fileUtil.getStaticPath();
+
+        String usericonPath_datebase="/user/img/"; //存入数据库的地址
+        String randomName = fileUtil.getRandomName();
+        String fileSuffix = fileUtil.getFileSuffix(originalFilename); //获取文件后缀名
+        String fileName=randomName+"."+fileSuffix;
+        usericonPath_datebase+=fileName;
+
+
+        staticPath+=usericonPath_datebase;
+
+        //写文件
+        write(staticPath,fileByteArray);
+
+        return usericonPath_datebase; //返回需要存储到数据库的图片地址
+    }
 
 
 

@@ -21,10 +21,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,7 +86,7 @@ public class adminController {
     @Autowired
     private settingService settingService;
 
-    private static List<String> themes=new ArrayList<>();
+    private static List<String> themes = new ArrayList<>();
 
     static {
 
@@ -107,12 +111,15 @@ public class adminController {
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
     public String toAdmin(Model model, HttpSession session, HttpServletRequest request) {
+        String username = springSecurityUtil.currentUser(session);
 
+
+        setting setting = settingService.selectUserSetting(username);
+        model.addAttribute("setting",setting); //传入系统设置
 
         String ipAddr = ipUtils.getIpAddr(request);
         logger.debug("ip:" + ipAddr + "访问了后台管理界面");
 
-        String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date);
@@ -504,36 +511,63 @@ public class adminController {
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
 
 
-
         model.addAttribute("userDetail", userDetail);
-        model.addAttribute("themes",this.themes);
+        model.addAttribute("themes", this.themes);
         model.addAttribute("setting", setting);
         model.addAttribute("commons", Commons.getInstance());
         model.addAttribute("bootstrap", new bootstrap());
-        model.addAttribute("curName",username);
+        model.addAttribute("curName", username);
 
         return "back/setting";
     }
 
-    @ResponseBody
     @PostMapping(path = "/updateSetting")
     @ApiOperation("修改系统设置")
-    public ResponseJSON updateSetting(MultipartFile logo,String name,String foot,String theme){
+    public ModelAndView updateSetting(MultipartFile logo, String name, String foot, String theme, HttpSession session) throws IOException {
+        ModelAndView modelAndView = new ModelAndView();
 
-        setting setting = new setting();
-        setting.setLogo(logo.getOriginalFilename());
-        setting.setFoot(foot);
-        setting.setName(name);
-        setting.setTheme(theme);
 
-        ResponseJSON responseJSON = new ResponseJSON();
-        responseJSON.setResult(200);
-        responseJSON.setData(JSON.toJSONString(setting));
-        return responseJSON;
+        boolean flag = logo.isEmpty(); //判断是否是空
+        String logoPath = null;
+        if (!flag) {
+            InputStream inputStream = logo.getInputStream(); //获取文件流
+            byte fileByteArray[] = new byte[inputStream.available()];
+            inputStream.read(fileByteArray);//读取到一个字节数组中
+            logoPath = fileUtil.writeImageLogo(logo.getOriginalFilename(), fileByteArray);
+
+            setting setting = settingService.selectUserSetting(name);
+            String staticPath = fileUtil.getStaticPath();
+            String s = staticPath + setting.getLogo();
+            File file = new File(s); //如果当前这个头像不是默认的bloglogo.jpg就删除
+            if(file.exists()){
+                if(!file.getName().equals("bloglogo.jpg")){
+                    file.delete();
+                }
+            }
+
+        }
+        setting st = new setting();
+        st.setLogo(logoPath);
+        st.setFoot(foot);
+        st.setName(name);
+        st.setTheme(theme);
+
+        settingService.changeSettingByUser(st);
+
+        setting setting = settingService.selectUserSetting(name);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+
+
+        modelAndView.addObject("userDetail", userDetail);
+        modelAndView.addObject("themes", this.themes);
+        modelAndView.addObject("setting", setting);
+        modelAndView.addObject("commons", Commons.getInstance());
+        modelAndView.addObject("bootstrap", new bootstrap());
+        modelAndView.addObject("curName", name);
+
+        modelAndView.setViewName("back/setting");
+        return modelAndView;
     }
-
-
-
 
 
 }

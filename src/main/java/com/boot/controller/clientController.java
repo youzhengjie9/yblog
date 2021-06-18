@@ -82,6 +82,9 @@ public class clientController {
     //主题暂时写死
     private String curTheme = themeConstant.CALM_THEME; //切换到第二套主题
 
+    @Autowired
+    private settingService settingService;
+
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -106,12 +109,29 @@ public class clientController {
         }
     }
 
+    private void setting(HttpSession session,ModelAndView modelAndView){
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            setting setting = settingService.selectUserSetting(name);
+            modelAndView.addObject("setting",setting);
+        }else {
+            modelAndView.addObject("setting",null);
+        }
+
+    }
+
+
     @Visitor(desc = "访问首页")
     @RequestMapping(path = {"/"})
     public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
 //        System.out.println("测试负载均衡==当前端口是："+port);
+
+        //传setting给前端
+        this.setting(session,modelAndView);
+
 
         //跳转不同页面主题判断
         if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
@@ -162,6 +182,9 @@ public class clientController {
     public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
+        //传setting给前端
+        this.setting(session,modelAndView);
+
         //跳转不同页面主题判断
         if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
@@ -210,6 +233,8 @@ public class clientController {
     public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
+        //传setting给前端
+        this.setting(session,modelAndView);
 
         //当某个ip在短时间内不断访问某篇文章会造成点击量+1
         //需求：我们想让用户ip访问文章后2分钟内，再次点击这篇文章点击量不会+1，防止用户刷点击量

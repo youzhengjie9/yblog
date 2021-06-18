@@ -101,6 +101,8 @@ upstream yblog.cn{
     }
 }
 ```
+* 在Run/Debug Configurations的SpringBoot environment设置VM options
+* 把三个服务分别设置成-Dserver.port=8080、-Dserver.port=8081、-Dserver.port=8082
 * 所以我们只需要把项目的8080、8081、8082端口打开，然后访问localhost:8888即可实现负载均衡。
 
 

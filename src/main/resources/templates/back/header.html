@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta content="Coderthemes" name="author"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+    <link th:if="${setting} eq null or ${setting.logo} eq null or ${setting.logo} eq ''" rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+    <link th:if="${setting} ne null and ${setting.logo} ne null and ${setting.logo} ne ''" rel="shortcut icon" th:href="@{${setting.logo}}"/>
+
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">

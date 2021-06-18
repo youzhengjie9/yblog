@@ -70,6 +70,9 @@ public class archiveController {
     //主题暂时写死
     private String curTheme = themeConstant.CALM_THEME; //切换到第二套主题
 
+    @Autowired
+    private settingService settingService;
+
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
         List<Article> list = new ArrayList<>(10);
@@ -79,11 +82,25 @@ public class archiveController {
         return list;
     }
 
+    private void setting(HttpSession session,ModelAndView modelAndView){
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            setting setting = settingService.selectUserSetting(name);
+            modelAndView.addObject("setting",setting);
+        }else {
+            modelAndView.addObject("setting",null);
+        }
+
+    }
+
     @Visitor(desc = "去归档页面")
     @GetMapping(path = "/list")
     @ApiOperation(value = "去归档页面")
     public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
+
+        this.setting(session,modelAndView);
 
         //跳转不同页面主题判断
         if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题

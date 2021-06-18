@@ -11,7 +11,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
 
-    <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+    <link th:if="${setting} eq null or ${setting.logo} eq null or ${setting.logo} eq ''" rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
+    <link th:if="${setting} ne null and ${setting.logo} ne null and ${setting.logo} ne ''" rel="shortcut icon" th:href="@{${setting.logo}}"/>
+
+
     <link rel="apple-touch-icon" th:href="@{/user/img/apple-touch-icon.png}"/>
     <title>
         <th:block th:text="${title ?: '首页'}"></th:block>
