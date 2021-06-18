@@ -16,4 +16,19 @@ public class settingServiceImpl implements settingService {
     public setting selectUserSetting(String name) {
         return settingMapper.selectUserSetting(name);
     }
+
+    @Override
+    public void addSettingByUser(setting setting) {
+        settingMapper.addSettingByUser(setting);
+    }
+
+    @Override
+    public void changeSettingByUser(setting setting) {
+        settingMapper.changeSettingByUser(setting);
+    }
+
+    @Override
+    public void deleteSettingByUser(String name) {
+        settingMapper.deleteSettingByUser(name);
+    }
 }
