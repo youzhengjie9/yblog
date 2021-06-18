@@ -35,199 +35,138 @@
     <!-- 自定义上传图片JS文件 -->
     <script src="/static/js/uploadPic.js"></script>
 </head>
+<style>
+    .topbar {
+        height: 70px;
+    }
+</style>
+
 <body class="fixed-left">
 <div id="wrapper">
     <div th:replace="back/header::header-body"></div>
     <div class="content-page">
         <div class="content">
             <div class="container">
+
+
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="page-title">系统设置</h4>
-                    </div>
+                    <div class="col-md-6">
+                        <div th:class="'panel panel-'+ ${bootstrap.randomColor()}+' panel-inverse'">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div th:class="'panel panel-'+ ${bootstrap.randomColor()}+' panel-inverse'">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">站点设置</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <form class="form-horizontal" role="form" id="global-form">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">网站地址</label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-model="options.site_url" class="form-control"
-                                                       placeholder="网站地址" required aria-required="true"/>
-                                                <span class="help-block"><small>请和你当前访问的域名保持一致，否则会出现渲染错误。</small></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">站点标题</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" v-model="options.site_title"
-                                                       placeholder="站点子标题" required aria-required="true"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">站点子标题</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" v-model="options.site_subtitle"
-                                                       placeholder="站点子标题" required aria-required="true"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">站点描述</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"
-                                                       v-model="options.site_description" placeholder="站点描述" required
-                                                       aria-required="true"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">站点关键词</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" v-model="options.site_keywords"
-                                                       placeholder="站点关键词" required aria-required="true"/>
-                                            </div>
-                                        </div>
+                            <div class="panel-heading">
+                                <h3 class="panel-title">系统设置</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form method="post" th:action="@{/admin/updateSetting}" class="form-horizontal"
+                                      role="form" id="global-form" enctype="multipart/form-data">
+                                    <input th:value="${curName}" name="name" type="hidden" class="form-control" required
+                                           aria-required="true"/>
 
-                                        <div class="clearfix pull-right">
-                                            <button type="button" class="btn btn-inverse waves-effect waves-light"
-                                                    @click="saveSetting">
-                                                保存设置
-                                            </button>
+
+                                    <label class="col-md-3 control-label">博客logo：</label>
+                                    <div th:if="${setting.getLogo()} eq null or ${setting.getLogo()} eq ''"
+                                         class="row" style="height: 400px;width: 400px;margin-left: 130px">
+
+                                        <input id="uploadPicture" name="logo" type="file" multiple=true
+                                               class="file-loading">
+
+                                    </div>
+
+                                    <div th:if="${setting.getLogo()} ne null and ${setting.getLogo()} ne ''"
+                                         class="row" style="height: 400px;width: 400px;margin-left: 130px">
+                                        <input id="uploadPicture" th:utext="'logo地址:'+${setting.getLogo()}"
+                                               th:value="${setting.getLogo()}" name="logo" type="file"
+                                               multiple=true class="file-loading">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">博客页尾：</label>
+                                        <div class="col-md-9"
+                                             th:if="${setting.getFoot()} ne null and ${setting.getFoot()} ne ''">
+                                            <input type="text" th:value="${setting.getFoot()}"
+                                                   name="foot" class="form-control" placeholder="博客页尾"
+                                                   aria-required="true"/>
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="col-md-9"
+                                             th:if="${setting.getFoot()} eq null or ${setting.getFoot()} eq ''">
+                                            <input type="text" name="foot" class="form-control" placeholder="博客页尾"
+                                                   aria-required="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">博客主题：</label>
+                                        <select name="theme" required>
+                                            <option th:each="theme:${themes}" th:text="${theme}" th:value="${theme}"></option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="clearfix pull-right">
+                                        <button id="btn1" type="submit"
+                                                th:class="'btn btn-'+${bootstrap.randomColor()}+ ' waves-effect waves-light'">
+                                            保存设置
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-
                     </div>
+
+
                 </div>
 
 
+                <div th:replace="back/footer :: footer-content"></div>
             </div>
-            <div th:replace="back/footer :: footer-content"></div>
         </div>
     </div>
 </div>
-</div>
-<div th:replace="back/footer :: footer"></div>
 
 </body>
 
 
+
+
 <script>
-    var tale = new $.tale();
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            options: {},
-            allowInstall: '',
-            allowCommentAudit: '',
-            allowCloudCDN: '',
-            isLoading: true
-        },
-        beforeCreate: function () {
-            vueLoding = this.$loading.show();
-        },
-        mounted: function () {
-            this.load();
-        },
-        methods: {
-            load: function () {
-                var $vm = this;
-                tale.get({
-                    url: '/admin/api/options',
-                    success: function (data) {
-                        $vm.options = data.payload;
-                        $vm.allowInstall = data.payload.allow_install;
-                        $vm.allowCommentAudit = data.payload.allow_comment_audit;
-                        $vm.allowCloudCDN = data.payload.allow_cloud_CDN;
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "http://localhost:8080/admin/updateSetting",
+            previewFileType: "image",
+            uploadAsync: true,
+            showCaption: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
+            enctype: 'multipart/form-data',
+            //隐藏上传按钮
+            showUpload: false,
+            //最大上传文件数量
+            maxFileCount: 1,
+            maxFileSize: 3072,
+            showBrowse: true,
+            dropZoneTitle: '拖拽头像图片到这里...',
+            browseLabel: "选择图片",
+            uploadClass: "btn btn-info",
+            uploadLabel: "上传",
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！'
+        }).on('fileerror', function (event, data, msg) {
+            alert('图片上传失败！' + msg);
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.response.name);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            alert("图片被清除啦！");
+        });
 
-                        $('#allowInstall').toggles({
-                            on: $vm.allowInstall === 'true',
-                            text: {
-                                on: '开启',
-                                off: '关闭'
-                            }
-                        });
-
-                        $('#allowCommentAudit').toggles({
-                            on: $vm.allowCommentAudit === 'true',
-                            text: {
-                                on: '开启',
-                                off: '关闭'
-                            }
-                        });
-
-                        $('#allowCloudCDN').toggles({
-                            on: $vm.allowCloudCDN === 'true',
-                            text: {
-                                on: '开启',
-                                off: '关闭'
-                            }
-                        });
-
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert(error || '数据加载失败');
-                    }
-                });
-            },
-            saveSetting: function () {
-                var $vm = this;
-                var param = tale.copy($vm.options);
-                tale.postWithForm({
-                    url: '/admin/api/options/save',
-                    data: param,
-                    success: function (result) {
-                        if (result && result.success) {
-                            tale.alertOk('设置保存成功');
-                            $vm.load();
-                        } else {
-                            tale.alertError(result.msg || '保存失败');
-                        }
-                    }
-                });
-            },
-            saveAdvanced: function () {
-                var param = $('#advanced-form').serialize();
-                tale.post({
-                    url: '/admin/api/advanced/save',
-                    data: param,
-                    success: function (result) {
-                        if (result && result.success) {
-                            tale.alertOk('选项保存成功');
-                            $vm.load();
-                        } else {
-                            tale.alertError(result.msg || '选项保存失败');
-                        }
-                    }
-                });
-            }
-        }
     });
 
-    $('#allowInstall').on('toggle', function (e, active) {
-        vm.allowInstall = active;
-    });
-
-    $('#allowCommentAudit').on('toggle', function (e, active) {
-        vm.allowCommentAudit = active;
-    });
-
-    $('#allowCloudCDN').on('toggle', function (e, active) {
-        vm.allowCloudCDN = active;
-    });
-
-    $(document).ready(function () {
-        vm.isLoading = false;
-        vueLoding.hide();
-    });
 
 </script>
 </html>

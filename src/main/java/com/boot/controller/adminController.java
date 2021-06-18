@@ -1,7 +1,10 @@
 package com.boot.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Visitor;
+import com.boot.constant.themeConstant;
 import com.boot.data.ResponseData.ArticleResponseData;
+import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.*;
@@ -17,12 +20,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +79,17 @@ public class adminController {
 
     private final int type = 1;
 
+    @Autowired
+    private settingService settingService;
+
+    private static List<String> themes=new ArrayList<>();
+
+    static {
+
+        themes.add("default");
+        themes.add("calmlog");
+    }
+
 
     //初始化redis有关t_tag表的数据
     @PostConstruct
@@ -91,7 +107,6 @@ public class adminController {
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
     public String toAdmin(Model model, HttpSession session, HttpServletRequest request) {
-
 
 
         String ipAddr = ipUtils.getIpAddr(request);
@@ -127,7 +142,6 @@ public class adminController {
     @RequestMapping(path = "/toPublishArticle")
     @ApiOperation(value = "进入发布文章界面", notes = "进入发布文章界面")
     public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request) {
-
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -179,7 +193,6 @@ public class adminController {
     @RequestMapping(path = "/toArticleList/{pageNum}")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面,分页是由前端传入")
     public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request) {
-
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -343,7 +356,6 @@ public class adminController {
                                 Model model) {
 
 
-
         String username = springSecurityUtil.currentUser(session);
         //处理审核
         if (id != -1) {
@@ -487,18 +499,41 @@ public class adminController {
     public String toSetting(HttpSession session, Model model, HttpServletRequest request) {
 
 
+        String username = springSecurityUtil.currentUser(session);
+        setting setting = settingService.selectUserSetting(username);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+
+
+
+        model.addAttribute("userDetail", userDetail);
+        model.addAttribute("themes",this.themes);
+        model.addAttribute("setting", setting);
         model.addAttribute("commons", Commons.getInstance());
         model.addAttribute("bootstrap", new bootstrap());
-
-        String username = springSecurityUtil.currentUser(session);
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
-        model.addAttribute("userDetail", userDetail);
+        model.addAttribute("curName",username);
 
         return "back/setting";
     }
 
+    @ResponseBody
+    @PostMapping(path = "/updateSetting")
+    @ApiOperation("修改系统设置")
+    public ResponseJSON updateSetting(MultipartFile logo,String name,String foot,String theme){
 
-    //秒杀产品服务
+        setting setting = new setting();
+        setting.setLogo(logo.getOriginalFilename());
+        setting.setFoot(foot);
+        setting.setName(name);
+        setting.setTheme(theme);
+
+        ResponseJSON responseJSON = new ResponseJSON();
+        responseJSON.setResult(200);
+        responseJSON.setData(JSON.toJSONString(setting));
+        return responseJSON;
+    }
+
+
+
 
 
 }
