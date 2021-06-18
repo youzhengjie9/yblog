@@ -1,6 +1,7 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.userDetail;
@@ -44,6 +45,7 @@ public class catchArticleController {
     }
 
 
+    @Visitor(desc = "进入爬虫页面")
     @GetMapping(path = "/list")
     public String toCatchArticleList(Model model, HttpSession session) {
         String username = springSecurityUtil.currentUser(session);

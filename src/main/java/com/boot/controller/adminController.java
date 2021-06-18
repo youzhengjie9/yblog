@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.annotation.Visitor;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.pojo.*;
 import com.boot.service.*;
@@ -85,27 +86,12 @@ public class adminController {
 
     }
 
-    private void addVisitor(HttpServletRequest request,String desc){
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
 
-    }
-
-
+    @Visitor(desc = "进入后台界面")
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
-    public String toAdmin(Model model, HttpSession session, HttpServletRequest request, @Value("进入后台界面") String desc) {
+    public String toAdmin(Model model, HttpSession session, HttpServletRequest request) {
 
-
-        //添加访客信息
-        this.addVisitor(request,desc);
 
 
         String ipAddr = ipUtils.getIpAddr(request);
@@ -137,12 +123,11 @@ public class adminController {
         return "back/index";
     }
 
+    @Visitor(desc = "进入发布文章界面")
     @RequestMapping(path = "/toPublishArticle")
     @ApiOperation(value = "进入发布文章界面", notes = "进入发布文章界面")
-    public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request, @Value("进入发布文章界面") String desc) {
+    public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request) {
 
-        //添加访客信息
-        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -160,12 +145,10 @@ public class adminController {
 
 
     // 默认第一页
+    @Visitor(desc = "进入文章列表界面")
     @RequestMapping(path = "/toArticleList")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面，分页默认是第一页")
-    public String toArticleList1(Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
-
-        //添加访客信息
-       this.addVisitor(request,desc);
+    public String toArticleList1(Model model, HttpSession session, HttpServletRequest request) {
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -192,12 +175,11 @@ public class adminController {
     }
 
 
+    @Visitor(desc = "进入文章列表界面")
     @RequestMapping(path = "/toArticleList/{pageNum}")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面,分页是由前端传入")
-    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
+    public String toArticleList2(@PathVariable("pageNum") Integer pageNum, Model model, HttpSession session, HttpServletRequest request) {
 
-        //添加访客信息
-        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -223,12 +205,11 @@ public class adminController {
         return "back/article_list";
     }
 
+    @Visitor(desc = "进入编辑文章页面")
     @RequestMapping(path = "/toEditArticle/{article_id}")
     @ApiOperation(value = "进入编辑文章页面")
-    public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model, HttpServletRequest request, @Value("进入文章列表界面") String desc) {
+    public String toEditArticle(@PathVariable("article_id") Integer article_id, HttpSession session, Model model, HttpServletRequest request) {
 
-        //添加访客信息
-        this.addVisitor(request,desc);
 
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -352,16 +333,15 @@ public class adminController {
 
     //    评论管理
     //跳转评论列表兼处理审核通过请求、删除请求
+    @Visitor(desc = "进入评论列表")
     @RequestMapping(path = "/toCommentList")
     @ApiOperation("进入评论列表")
     public String toCommentList(@RequestParam(value = "delId", defaultValue = "-1") int delId,
                                 @RequestParam(value = "id", defaultValue = "-1") int id,
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                HttpSession session, HttpServletRequest request, @Value("进入评论列表") String desc,
+                                HttpSession session, HttpServletRequest request,
                                 Model model) {
 
-        //添加访客信息
-        this.addVisitor(request,desc);
 
 
         String username = springSecurityUtil.currentUser(session);
@@ -398,28 +378,10 @@ public class adminController {
     }
 
 
-//    //审核通过
-//    @RequestMapping(path = "/checkSuccess")
-//    public String checkSuccess(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, Model model){
-//
-//
-//
-//
-//        model.addAttribute("commons",Commons.getInstance());
-//        PageHelper.startPage(pageNum,5);
-//        List<Comment> comments = commentService.selectCommentsOrderCreateDate();
-//        model.addAttribute("comments",comments);
-//
-//        return "back/comment_list";
-//    }
-
-
+    @Visitor(desc = "进入分类标签界面")
     @RequestMapping(path = "/toTagList")
     @ApiOperation("进入分类标签界面")
-    public String toTagList(HttpSession session, Model model, HttpServletRequest request, @Value("进入分类标签界面") String desc) {
-
-        //添加访客信息
-        this.addVisitor(request,desc);
+    public String toTagList(HttpSession session, Model model, HttpServletRequest request) {
 
         String username = springSecurityUtil.currentUser(session);
 
@@ -519,12 +481,11 @@ public class adminController {
     }
 
 
+    @Visitor(desc = "进入系统设置界面")
     @RequestMapping(path = "/toSetting")
     @ApiOperation("进入系统设置界面")
-    public String toSetting(HttpSession session, Model model, HttpServletRequest request, @Value("进入系统设置界面") String desc) {
+    public String toSetting(HttpSession session, Model model, HttpServletRequest request) {
 
-        //添加访客信息
-        this.addVisitor(request,desc);
 
         model.addAttribute("commons", Commons.getInstance());
         model.addAttribute("bootstrap", new bootstrap());

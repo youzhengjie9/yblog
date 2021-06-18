@@ -1,6 +1,7 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
@@ -38,6 +39,7 @@ public class chartController {
     @Autowired
     private visitorService visitorService;
 
+    @Visitor(desc = "进入统计图表页面")
     @GetMapping(path = "/list")
     public String toStatisticCharts(HttpSession session, Model model) {
 

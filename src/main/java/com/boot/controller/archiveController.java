@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.annotation.Visitor;
 import com.boot.constant.themeConstant;
 import com.boot.pojo.*;
 import com.boot.service.*;
@@ -78,9 +79,10 @@ public class archiveController {
         return list;
     }
 
+    @Visitor(desc = "去归档页面")
     @GetMapping(path = "/list")
     @ApiOperation(value = "去归档页面")
-    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request, @Value("归档页面") String desc) {
+    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
         //跳转不同页面主题判断
@@ -103,15 +105,6 @@ public class archiveController {
 //        modelAndView.addObject("archives",archives);
         modelAndView.addObject("cssUtil", cssUtil);
 
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key1 = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key1);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key1, "1", 60 * 5, TimeUnit.SECONDS);
-        }
 
 
         /**

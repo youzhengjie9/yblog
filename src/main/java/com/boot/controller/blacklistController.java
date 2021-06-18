@@ -1,6 +1,7 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.pojo.blacklist;
@@ -54,19 +55,9 @@ public class blacklistController {
     @Autowired
     private visitorService visitorService;
 
+    @Visitor(desc = "进入黑名单管理")
     @GetMapping(path = "/list")
-    public String toBlackList(Model model, HttpSession session, HttpServletRequest request, @Value("进入黑名单管理") String desc) {
-
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
-
+    public String toBlackList(Model model, HttpSession session, HttpServletRequest request) {
 
         List<blacklist> blacklists = blacklistService.selectBlackList();
         model.addAttribute("blacklists", blacklists);

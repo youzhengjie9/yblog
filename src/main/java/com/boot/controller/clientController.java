@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.annotation.Visitor;
 import com.boot.constant.themeConstant;
 import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ArticleResponseData;
@@ -91,18 +92,6 @@ public class clientController {
         return list;
     }
 
-    private void addVistor(HttpServletRequest request,String desc){
-        //添加访客信息
-        visitor visitor = visitorUtil.getVisitor(request, desc);
-        String key = "visit_ip_" + visitor.getVisit_ip() + "_type_" + type;
-        String s = (String) redisTemplate.opsForValue().get(key);
-        if (StringUtils.isEmpty(s)) {
-            visitorService.insertVisitor(visitor);
-            //由ip和type组成的key放入redis缓存,5分钟内访问过的不再添加访客
-            redisTemplate.opsForValue().set(key, "1", 60 * 5, TimeUnit.SECONDS);
-        }
-    }
-
     private void queryUserDeail(HttpSession session,ModelAndView modelAndView){
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (securityContext != null) {
@@ -117,9 +106,9 @@ public class clientController {
         }
     }
 
-
+    @Visitor(desc = "访问首页")
     @RequestMapping(path = {"/"})
-    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
 //        System.out.println("测试负载均衡==当前端口是："+port);
@@ -136,9 +125,6 @@ public class clientController {
 
         }
 
-
-        //添加访客信息
-        this.addVistor(request,desc);
 
 
         PageHelper.startPage(1, 5);
@@ -172,11 +158,10 @@ public class clientController {
     }
 
 
+    @Visitor(desc = "访问首页")
     @RequestMapping(path = {"/page/{pageNum}"})
-    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session, HttpServletRequest request, @Value("访问首页") String desc) {
+    public ModelAndView toIndex2(@PathVariable("pageNum") int pageNum, HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-        //添加访客信息
-        this.addVistor(request,desc);
 
         //跳转不同页面主题判断
         if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
@@ -222,8 +207,9 @@ public class clientController {
     }
 
 
+    @Visitor(desc = "访问文章")
     @GetMapping(path = "/article/{articleId}")
-    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session, @Value("访问文章") String desc) {
+    public ModelAndView toArticleDetailByID(@PathVariable("articleId") Integer articleId, HttpServletRequest request, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
 
@@ -238,9 +224,6 @@ public class clientController {
             redisTemplate.opsForValue().set(key, "1", 60 * 2, TimeUnit.SECONDS); //设置2分钟的过期时间
         }
 
-
-        //添加访客信息
-        this.addVistor(request,desc);
 
         //传入
         modelAndView.addObject("indexAc","active");

@@ -16,7 +16,11 @@ public class webConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(visitorInterceptor)
-                .addPathPatterns("/test/**");
-
+                .addPathPatterns("/admin/**","/archive/list","/black/list","/catchArticle/list","/chart/list")
+                .addPathPatterns("/").addPathPatterns("/page/**")
+                .addPathPatterns("/article/**")
+                .excludePathPatterns("/admin/modify","/admin/publish","/admin/deleteArticle"
+                        ,"/admin/updateCategory","/admin/deleteCategory","/admin/addCategory"
+                );
     }
 }
