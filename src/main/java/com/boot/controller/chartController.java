@@ -1,20 +1,31 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.TypeReference;
 import com.boot.annotation.Visitor;
 import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.timeUtil;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @Api(value = "统计图表控制器")
@@ -39,6 +50,13 @@ public class chartController {
     @Autowired
     private visitorService visitorService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private final String ECHARTS_DAYS = "echarts_days"; //redis存储日期的key
+
+    private final String ECHARTS_COUNTS = "echarts_counts";//redis存储对应的访问量的key
+
     @Visitor(desc = "进入统计图表页面")
     @GetMapping(path = "/list")
     public String toStatisticCharts(HttpSession session, Model model) {
@@ -57,11 +75,45 @@ public class chartController {
 //        tags.get(0).getTagCount()
         model.addAttribute("tags", tags);
 
-        //提供近7天内每一天的访问量
-        List<onedayVisitor> onedayVisitors = visitorService.selectOneDayVisitor();
-//        onedayVisitors.get(0).getDay()
-//        onedayVisitors.get(0).getCount()
-        model.addAttribute("onedayVisitors", onedayVisitors);
+        //从缓存中查有没有近7天的缓存
+
+
+        Object var1 =redisTemplate.opsForValue().get(ECHARTS_DAYS);
+        Object var2 =redisTemplate.opsForValue().get(ECHARTS_COUNTS);
+
+        List<String> ds = JSON.parseArray((String) var1, String.class);
+        List<Integer> cs = JSON.parseArray((String) var2, Integer.class);
+
+        if (ds == null || ds.size() < 7 || cs == null || cs.size() < 7) { //这种情况就要重新查
+            List<String> days = visitorService.selectDaysBy7(); //维护日期
+            List<Integer> counts = new ArrayList<>(); //维护访问量
+            for (String day : days) {
+                int count = visitorService.selectOneDayVisitor(day);
+                counts.add(count);
+            }
+            model.addAttribute("days", days);
+            model.addAttribute("counts", counts);
+            //让集合变成json放入redis
+            String d = JSON.toJSONString(days);
+            String c = JSON.toJSONString(counts);
+            //让缓存在晚上12点整点就失效
+            Long second = timeUtil.getSecondByCurTimeTo12Point();
+            redisTemplate.opsForValue().set(ECHARTS_DAYS, d, second, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(ECHARTS_COUNTS, c, second, TimeUnit.SECONDS);
+        } else {
+            //如果还有缓存（说明没有过一天），并且数据没被篡改过（都是7个数据），就执行这里的代码
+            //这个时候我们只需要更新一下最后一天（也就是今天）的数据即可
+            String s = ds.get(6); //获取今天的日期
+            int i = visitorService.selectOneDayVisitor(s);
+            cs.set(6,i);
+            String list = JSON.toJSONString(cs); ////记得转换成json
+            model.addAttribute("days", ds);
+            model.addAttribute("counts", cs);
+            //重新放入redis
+            Long second = timeUtil.getSecondByCurTimeTo12Point();
+            redisTemplate.opsForValue().set(ECHARTS_COUNTS, list, second, TimeUnit.SECONDS);
+
+        }
 
         String username = springSecurityUtil.currentUser(session);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);

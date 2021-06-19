@@ -287,10 +287,10 @@
         xAxis: {
             type: 'category',
             data: [
-                [[${onedayVisitors.get(0).getDay()}]], [[${onedayVisitors.get(1).getDay()}]],
-                [[${onedayVisitors.get(2).getDay()}]], [[${onedayVisitors.get(3).getDay()}]],
-                [[${onedayVisitors.get(4).getDay()}]], [[${onedayVisitors.get(5).getDay()}]],
-                [[${onedayVisitors.get(6).getDay()}]]
+                [[${days.get(0)}]], [[${days.get(1)}]],
+                [[${days.get(2)}]], [[${days.get(3)}]],
+                [[${days.get(4)}]], [[${days.get(5)}]],
+                [[${days.get(6)}]]
             ]
         },
         yAxis: {
@@ -298,10 +298,10 @@
         },
         series: [{
             data: [
-                [[${onedayVisitors.get(0).count}]], [[${onedayVisitors.get(1).count}]],
-                [[${onedayVisitors.get(2).count}]], [[${onedayVisitors.get(3).count}]],
-                [[${onedayVisitors.get(4).count}]], [[${onedayVisitors.get(5).count}]],
-                [[${onedayVisitors.get(6).count}]]
+                [[${counts.get(0)}]], [[${counts.get(1)}]],
+                [[${counts.get(2)}]], [[${counts.get(3)}]],
+                [[${counts.get(4)}]], [[${counts.get(5)}]],
+                [[${counts.get(6)}]]
             ],
             type: 'line'
         }]

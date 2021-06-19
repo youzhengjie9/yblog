@@ -26,7 +26,14 @@ public class visitorServiceImpl implements visitorService {
     }
 
     @Override
-    public List<onedayVisitor> selectOneDayVisitor() {
-        return visitorMapper.selectOneDayVisitor();
+    public List<String> selectDaysBy7() {
+        return visitorMapper.selectDaysBy7();
     }
+
+    @Override
+    public int selectOneDayVisitor(String day) {
+        return visitorMapper.selectOneDayVisitor(day);
+    }
+
+
 }

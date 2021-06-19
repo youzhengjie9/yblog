@@ -7,6 +7,7 @@ import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.IpToAddressUtil;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.timeUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpSessionContext;
 import javax.swing.*;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 public class test {
@@ -120,25 +124,25 @@ public class test {
     private visitorService visitorService;
 
 
-    @Test
-    public void test3() {
-//        String ipInfo = IpToAddressUtil.sendGet("120.85.62.189", "W57BZ-TVM3R-6PJWD-W5UG6-4LC4K-J2BKI");
+//    @Test
+//    public void test3() {
+////        String ipInfo = IpToAddressUtil.sendGet("120.85.62.189", "W57BZ-TVM3R-6PJWD-W5UG6-4LC4K-J2BKI");
+////
+////        JSONObject jsonObject = JSONObject.parseObject(ipInfo); //转换成json对象
+////        System.out.println(jsonObject.getJSONObject("result").get("ip")); //ip
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lng")); //经度
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lat")); //纬度
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("nation")); //国家
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("province")); //省
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("city")); //市
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("district")); //区
+////        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("adcode")); //城市码
 //
-//        JSONObject jsonObject = JSONObject.parseObject(ipInfo); //转换成json对象
-//        System.out.println(jsonObject.getJSONObject("result").get("ip")); //ip
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lng")); //经度
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("location").get("lat")); //纬度
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("nation")); //国家
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("province")); //省
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("city")); //市
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("district")); //区
-//        System.out.println(jsonObject.getJSONObject("result").getJSONObject("ad_info").get("adcode")); //城市码
-
-        List<onedayVisitor> onedayVisitors = visitorService.selectOneDayVisitor();
-        System.out.println(onedayVisitors.get(0).getDay());
-        System.out.println(onedayVisitors.get(0).getCount());
-
-    }
+//        List<onedayVisitor> onedayVisitors = visitorService.selectOneDayVisitor();
+//        System.out.println(onedayVisitors.get(0).getDay());
+//        System.out.println(onedayVisitors.get(0).getCount());
+//
+//    }
 
 //    @Test
 //    public void test4() {
@@ -152,11 +156,11 @@ public class test {
     private scanClassProperties scanClassProperties;
 
 
-    /**
-     * 处理文件后缀
-     * @param name
-     * @return
-     */
+//    /**
+//     * 处理文件后缀
+//     * @param name
+//     * @return
+//     */
 //    private String cutFileName(String name) {
 //        int index=-1; //记录最后一个点的index
 //        //获取到最后一个'.'的index
@@ -221,6 +225,38 @@ public class test {
 //        listFiles(scanPackage,p);
 //
 //    }
+
+
+    @Test
+    public void test1(){
+        //统计图表的访问记录
+
+
+        List<String> days = visitorService.selectDaysBy7();
+        Map<String,Integer> maps=new ConcurrentHashMap<>(); //维护时间--对应的访问量
+        for (String day : days) {
+            int count = visitorService.selectOneDayVisitor(day);
+            maps.put(day,count);
+        }
+
+        Set<String> strings = maps.keySet();
+        for (String string : strings) {
+            System.out.println(string+"===>"+maps.get(string));
+        }
+    }
+
+    @Test
+    public void test3(){
+        Object var1 =redisTemplate.opsForValue().get("echarts_days");
+        Object var2 = redisTemplate.opsForValue().get("echarts_counts");
+
+        List<String> ds = JSON.parseArray((String) var1, String.class);
+        List<Integer> cs = JSON.parseArray((String) var2, Integer.class);
+
+        System.out.println(ds);
+        System.out.println(cs);
+    }
+
 
 
 }

@@ -124,8 +124,9 @@ new Valine({
 
 
 ##### Linux部署
-* 即将实现（采用docker容器化部署）
-
+* 把8080、8081、8082端口的项目打成jar包，通过xftp发布到Linux服务器上,通过java -jar xxx.jar --spring.profiles.active=各自的配置文件名
+##### Docker容器化部署
+* 即将实现
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档

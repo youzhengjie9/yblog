@@ -13,17 +13,25 @@
         select id,visit_ip,visit_address,browser,os,visit_time from t_visitor order by visit_time desc
     </select>
 
+    <select id="selectDaysBy7" resultType="java.lang.String">
+        select DATE_SUB(curdate(),INTERVAL 6 DAY) day1 union
+        select DATE_SUB(curdate(),INTERVAL 5 DAY) day2 union
+        select DATE_SUB(curdate(),INTERVAL 4 DAY) day3 union
+        select DATE_SUB(curdate(),INTERVAL 3 DAY) day4 union
+        select DATE_SUB(curdate(),INTERVAL 2 DAY) day5 union
+        select DATE_SUB(curdate(),INTERVAL 1 DAY) day6 union
+        select DATE_SUB(curdate(),INTERVAL 0 DAY) day7;
+    </select>
 
-    <select id="selectOneDayVisitor" resultType="com.boot.pojo.onedayVisitor">
+    <select id="selectOneDayVisitor" resultType="int">
         SELECT
-        DATE_FORMAT( visit_time, '%Y-%m-%d' ) day,
-        COUNT( id ) count
+	count(*)
         FROM
-        t_visitor
+	t_visitor
         WHERE
-        date_sub(CURDATE(),INTERVAL 7    DAY)&lt;= DATE(visit_time)
-        GROUP BY day
-
+	(
+		datediff ( visit_time,#{day} ) = 0
+	)
     </select>
 
 </mapper>
