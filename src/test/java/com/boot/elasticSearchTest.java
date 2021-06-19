@@ -97,26 +97,26 @@ public class elasticSearchTest {
 
 
     //将数据库的数据添加到es
-    @Test
-    void putDocument() throws IOException {
-
-        List<Article> articles = articleService.selectAllArticle();
-
-        BulkRequest bulkRequest = new BulkRequest();
-
-        for (int i = 0; i < articles.size(); i++) {
-            IndexRequest indexRequest = new IndexRequest(); //文档
-            indexRequest.index(INDEX);//指定索引
-            indexRequest.id(i+""); //文档id
-            indexRequest.source(JSON.toJSONString(articles.get(i)),XContentType.JSON);
-            bulkRequest.add(indexRequest);
-        }
-
-
-
-        client.bulk(bulkRequest,RequestOptions.DEFAULT);
-
-    }
+//    @Test
+//    void putDocument() throws IOException {
+//
+//        List<Article> articles = articleService.selectAllArticle();
+//
+//        BulkRequest bulkRequest = new BulkRequest();
+//
+//        for (int i = 0; i < articles.size(); i++) {
+//            IndexRequest indexRequest = new IndexRequest(); //文档
+//            indexRequest.index(INDEX);//指定索引
+//            indexRequest.id(i+""); //文档id
+//            indexRequest.source(JSON.toJSONString(articles.get(i)),XContentType.JSON);
+//            bulkRequest.add(indexRequest);
+//        }
+//
+//
+//
+//        client.bulk(bulkRequest,RequestOptions.DEFAULT);
+//
+//    }
 
     /**
      * [statistic, created, allowComment, categories, id, title, content, tags]

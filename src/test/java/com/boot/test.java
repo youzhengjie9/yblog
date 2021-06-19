@@ -45,13 +45,13 @@ public class test {
 //    }
 
     //删除缓存数据，初始化
-    @Test
-    public void deleteRedis() {
-        Set keys = redisTemplate.keys("*");
-        for (Object key : keys) {
-            redisTemplate.delete(key);
-        }
-    }
+//    @Test
+//    public void deleteRedis() {
+//        Set keys = redisTemplate.keys("*");
+//        for (Object key : keys) {
+//            redisTemplate.delete(key);
+//        }
+//    }
 
 
     /**
@@ -62,35 +62,35 @@ public class test {
     @Autowired
     private tagService tagService;
 
-    @Test
-    public void test1() {
-        List<Article> articles = articleService.selectTagsByArticle();
-        for (Article article : articles) {
-            String tags = article.getTags();
-            String[] split = tags.split(",");
-            for (String s : split) {
-
-                if (map.containsKey(s)) {
-                    int i = map.get(s);
-                    i++;
-                    map.put(s, i);
-
-                } else {
-                    map.put(s, 1);
-                }
-            }
-
-        }
-        Set<String> strings = map.keySet();
-        for (String string : strings) {
-            tag tag = new tag();
-            tag.setTagName(string);
-            tag.setTagCount(map.get(string));
-            tagService.addTag(tag);
-
-        }
-
-    }
+//    @Test
+//    public void test1() {
+//        List<Article> articles = articleService.selectTagsByArticle();
+//        for (Article article : articles) {
+//            String tags = article.getTags();
+//            String[] split = tags.split(",");
+//            for (String s : split) {
+//
+//                if (map.containsKey(s)) {
+//                    int i = map.get(s);
+//                    i++;
+//                    map.put(s, i);
+//
+//                } else {
+//                    map.put(s, 1);
+//                }
+//            }
+//
+//        }
+//        Set<String> strings = map.keySet();
+//        for (String string : strings) {
+//            tag tag = new tag();
+//            tag.setTagName(string);
+//            tag.setTagCount(map.get(string));
+//            tagService.addTag(tag);
+//
+//        }
+//
+//    }
 
     @Autowired
     private categoryService categoryService;
@@ -140,13 +140,13 @@ public class test {
 
     }
 
-    @Test
-    public void test4() {
-        userDetail admin = userDetailService.selectUserDetailByUserName("admin");
-        userDetail adminsss = userDetailService.selectUserDetailByUserName("adminsss");
-        System.out.println("admin:" + admin);
-        System.out.println("adminsss:" + adminsss);
-    }
+//    @Test
+//    public void test4() {
+//        userDetail admin = userDetailService.selectUserDetailByUserName("admin");
+//        userDetail adminsss = userDetailService.selectUserDetailByUserName("adminsss");
+//        System.out.println("admin:" + admin);
+//        System.out.println("adminsss:" + adminsss);
+//    }
 
     @Autowired
     private scanClassProperties scanClassProperties;
@@ -157,70 +157,70 @@ public class test {
      * @param name
      * @return
      */
-    private String cutFileName(String name) {
-        int index=-1; //记录最后一个点的index
-        //获取到最后一个'.'的index
-        for (int i = name.length()-1; i >=0 ; i--) {
-            if(name.charAt(i)=='.'){
-                index=i;
-                break;
-            }
-        }
-        String substring = name.substring(0, index);
-
-        return substring;
-    }
-
-
-    //遍历文件夹
-    private void listFiles(String packageName,String scanPackage) {
-        File file = new File(packageName);
-
-        if(!file.exists()){
-            return;
-        }
-        File[] files = file.listFiles(); //获取子文件
-        for (File f : files) {
-
-            if(f.isFile()){
-                String fileName=packageName+"\\"+f.getName(); //文件的绝对路径
-
-                String name = f.getName();
-                //这里的文件名是有后缀的,比如有.java,所以我们要进行处理
-                 String newName= cutFileName(name);
-
-                String javaClassFileName=scanPackage+"."+newName; //Java中文件的全类名
-                System.out.println(javaClassFileName);
-
-            }else if(f.isDirectory()){
-                listFiles(packageName+"\\"+f.getName(),scanPackage+"."+f.getName()); //递归
-            }
-
-        }
-
-    }
-
-
-
-    @Test
-    public void test5() {
-        String p = scanClassProperties.getPackageName(); //获取全包名
-        StringBuilder stringBuilder = new StringBuilder(); //封装格式化后的全包名
-        for (int i = 0; i < p.length(); i++) { //进行格式化
-            if (p.charAt(i) == '.') {
-                stringBuilder.append("\\");
-            } else {
-                stringBuilder.append(p.charAt(i));
-            }
-        }
-        String packageName = stringBuilder.toString(); //格式化后的全包名
-        String s = (String) System.getProperties().get("user.dir"); //项目路径
-        s += "\\src\\main\\java\\";
-        String scanPackage = s + packageName; //最终结果
-
-        listFiles(scanPackage,p);
-
-    }
+//    private String cutFileName(String name) {
+//        int index=-1; //记录最后一个点的index
+//        //获取到最后一个'.'的index
+//        for (int i = name.length()-1; i >=0 ; i--) {
+//            if(name.charAt(i)=='.'){
+//                index=i;
+//                break;
+//            }
+//        }
+//        String substring = name.substring(0, index);
+//
+//        return substring;
+//    }
+//
+//
+//    //遍历文件夹
+//    private void listFiles(String packageName,String scanPackage) {
+//        File file = new File(packageName);
+//
+//        if(!file.exists()){
+//            return;
+//        }
+//        File[] files = file.listFiles(); //获取子文件
+//        for (File f : files) {
+//
+//            if(f.isFile()){
+//                String fileName=packageName+"\\"+f.getName(); //文件的绝对路径
+//
+//                String name = f.getName();
+//                //这里的文件名是有后缀的,比如有.java,所以我们要进行处理
+//                 String newName= cutFileName(name);
+//
+//                String javaClassFileName=scanPackage+"."+newName; //Java中文件的全类名
+//                System.out.println(javaClassFileName);
+//
+//            }else if(f.isDirectory()){
+//                listFiles(packageName+"\\"+f.getName(),scanPackage+"."+f.getName()); //递归
+//            }
+//
+//        }
+//
+//    }
+//
+//
+//
+//    @Test
+//    public void test5() {
+//        String p = scanClassProperties.getPackageName(); //获取全包名
+//        StringBuilder stringBuilder = new StringBuilder(); //封装格式化后的全包名
+//        for (int i = 0; i < p.length(); i++) { //进行格式化
+//            if (p.charAt(i) == '.') {
+//                stringBuilder.append("\\");
+//            } else {
+//                stringBuilder.append(p.charAt(i));
+//            }
+//        }
+//        String packageName = stringBuilder.toString(); //格式化后的全包名
+//        String s = (String) System.getProperties().get("user.dir"); //项目路径
+//        s += "\\src\\main\\java\\";
+//        String scanPackage = s + packageName; //最终结果
+//
+//        listFiles(scanPackage,p);
+//
+//    }
 
 
 }

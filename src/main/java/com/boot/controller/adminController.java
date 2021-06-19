@@ -554,6 +554,9 @@ public class adminController {
 
         settingService.changeSettingByUser(st);
 
+        //写入本地的jvm内存
+        themeConstant.curTheme=st.getTheme();
+
         setting setting = settingService.selectUserSetting(name);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
 

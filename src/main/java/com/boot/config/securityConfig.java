@@ -1,10 +1,15 @@
 package com.boot.config;
 
+import com.boot.constant.themeConstant;
+import com.boot.pojo.setting;
+import com.boot.service.settingService;
+import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.ipUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -30,6 +35,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     private final Logger logger = Logger.getLogger(securityConfig.class);
 
+    @Autowired
+    private settingService settingService;
 
     /**
      * private String usersByUsernameQuery = "select username,password,enabled from users where username = ?";
@@ -77,6 +84,13 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                         //登入成功之后要把登入验证码的缓存标记给删除掉
                         redisTemplate.delete(ipAddr + "_lg");
 
+                        UsernamePasswordAuthenticationToken s = (UsernamePasswordAuthenticationToken) authentication;
+
+                        String name = s.getName(); //获取登录用户名
+
+                        themeConstant.curTheme=settingService.selectUserSetting(name).getTheme(); //查询用户主题
+
+
                         logger.debug("ip地址：" + ipAddr + "登录成功");
                         //这里不要用转发，不然会有一些bug
 //                        request.getRequestDispatcher("/").forward(request,httpServletResponse);
@@ -105,8 +119,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
                         "/article/updateAllowComment",
-                        "/link/**", "/visitor/**","/chart/**","/black/**").hasRole("admin")
-                .antMatchers("/myuser/**", "/img/**","/catchArticle/**").hasAnyRole("admin", "common")
+                        "/link/**", "/visitor/**", "/chart/**", "/black/**").hasRole("admin")
+                .antMatchers("/myuser/**", "/img/**", "/catchArticle/**").hasAnyRole("admin", "common")
                 .antMatchers("/sliderCaptcha/**").permitAll()
                 .anyRequest().permitAll()
                 .and()

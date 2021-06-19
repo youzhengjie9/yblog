@@ -79,8 +79,6 @@ public class clientController {
     @Autowired
     private tagService tagService;
 
-    //主题暂时写死
-    private String curTheme = themeConstant.CALM_THEME; //切换到第二套主题
 
     @Autowired
     private settingService settingService;
@@ -134,13 +132,13 @@ public class clientController {
 
 
         //跳转不同页面主题判断
-        if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
+        if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
             List<tag> tags = tagService.selectTags_limit8();
             modelAndView.addObject("indexAc", "active");
             modelAndView.addObject("tags", tags);
 
-        } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
+        } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
             modelAndView.setViewName("client/index"); //跳转页面
 
         }
@@ -186,13 +184,13 @@ public class clientController {
         this.setting(session,modelAndView);
 
         //跳转不同页面主题判断
-        if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
+        if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
             modelAndView.addObject("indexAc", "active");
             List<tag> tags = tagService.selectTags_limit8();
             modelAndView.addObject("tags", tags);
 
-        } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
+        } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
             modelAndView.setViewName("client/index"); //跳转页面
 
         }
@@ -304,10 +302,10 @@ public class clientController {
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());
             modelAndView.addObject("articleId", articleId);
-            if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
+            if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
                 modelAndView.setViewName("client/articleDetails2"); //跳转页面
 
-            } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
+            } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
                 modelAndView.setViewName("client/articleDetails"); //跳转页面
             }
             return modelAndView;
@@ -337,7 +335,7 @@ public class clientController {
             modelAndView.addObject("articleId", articleId);
 
             //跳转不同页面主题判断
-            if (curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
+            if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
                 modelAndView.setViewName("client/articleDetails2"); //跳转页面
                 List<tag> tags = tagService.selectTags_limit8();
                 modelAndView.addObject("tags", tags);
@@ -350,7 +348,7 @@ public class clientController {
                     modelAndView.addObject("articleOrders", as);
                 }
 
-            } else if (curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
+            } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
                 modelAndView.setViewName("client/articleDetails"); //跳转页面
 
             }

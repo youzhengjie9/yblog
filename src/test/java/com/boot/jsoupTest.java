@@ -24,52 +24,52 @@ public class jsoupTest {
     /**
      * jsoup爬取csdn标题和内容
      */
-    @Test
-    public void jsoup_csdn() throws IOException {
-        Document document = Jsoup.parse(new URL(url2), 1000 * 10);
-        Element titleElement = document.getElementById("articleContentId");
-        String title = titleElement.html(); //爬取标题
-        Element contentElement = document.getElementById("content_views");
-        String content = contentElement.toString(); //爬取内容
-        System.out.println(title);
-        System.out.println("===========");
-        System.out.println(content);
-    }
+//    @Test
+//    public void jsoup_csdn() throws IOException {
+//        Document document = Jsoup.parse(new URL(url2), 1000 * 10);
+//        Element titleElement = document.getElementById("articleContentId");
+//        String title = titleElement.html(); //爬取标题
+//        Element contentElement = document.getElementById("content_views");
+//        String content = contentElement.toString(); //爬取内容
+//        System.out.println(title);
+//        System.out.println("===========");
+//        System.out.println(content);
+//    }
 
     /**
      * jsoup批量获取一个模块的文章url
      */
 
-    @Test
-    public void jsoup_csdn_url() throws IOException {
-
-        Document document = Jsoup.parse(new URL("https://blog.csdn.net/nav/java"), 1000 * 10);
-
-        Element feedlist_id = document.getElementById("feedlist_id");
-
-        Elements li = feedlist_id.getElementsByTag("li");
-        for (int i = 0; i < li.size(); i++) {
-            Element element = li.get(i);
-            Elements e1 = element.getElementsByClass("title");
-
-            if(e1!=null&&e1.size()>0){
-                Elements aElement = e1.get(0).getElementsByTag("a");
-
-                if(aElement!=null&&aElement.size()>0){
-
-                    String link = aElement.get(0).attr("href");
-
-                    System.out.println(link); //获取到文章url
-
-                }
-
-
-            }
-
-        }
-
-
-    }
+//    @Test
+//    public void jsoup_csdn_url() throws IOException {
+//
+//        Document document = Jsoup.parse(new URL("https://blog.csdn.net/nav/java"), 1000 * 10);
+//
+//        Element feedlist_id = document.getElementById("feedlist_id");
+//
+//        Elements li = feedlist_id.getElementsByTag("li");
+//        for (int i = 0; i < li.size(); i++) {
+//            Element element = li.get(i);
+//            Elements e1 = element.getElementsByClass("title");
+//
+//            if(e1!=null&&e1.size()>0){
+//                Elements aElement = e1.get(0).getElementsByTag("a");
+//
+//                if(aElement!=null&&aElement.size()>0){
+//
+//                    String link = aElement.get(0).attr("href");
+//
+//                    System.out.println(link); //获取到文章url
+//
+//                }
+//
+//
+//            }
+//
+//        }
+//
+//
+//    }
 
 
 

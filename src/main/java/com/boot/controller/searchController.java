@@ -47,8 +47,6 @@ public class searchController {
     @Autowired
     private elasticSearchService elasticSearchService;
 
-    //主题暂时写死
-    private String curTheme= themeConstant.CALM_THEME; //切换到第二套主题
 
     @Autowired
     private tagService tagService;
@@ -69,13 +67,13 @@ public class searchController {
         ModelAndView modelAndView = new ModelAndView();
 
         //跳转不同页面主题判断
-        if (curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
+        if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
             modelAndView.addObject("indexAc","active");
             List<tag> tags = tagService.selectTags_limit8();
             modelAndView.addObject("tags",tags);
 
-        }else if(curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
+        }else if(themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)){ //默认主题
             modelAndView.setViewName("client/index"); //跳转页面
 
         }
