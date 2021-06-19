@@ -36,6 +36,7 @@
 | alertJs          |弹框插件          |  https://gitee.com/ydq/alertjs
 
 #### 安装教程
+##### Windows部署
 * 1.找到sql包的sql文件并导入到自己的数据库中
 * 2.修改application.yml中的redis、mysql、elasticsearch、邮件发送校验码
 、rabbitmq即可
@@ -120,6 +121,11 @@ new Valine({
     });
 ````
 ，弄好了之后评论功能就能运行了。
+
+
+##### Linux部署
+* 即将实现（采用docker容器化部署）
+
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
