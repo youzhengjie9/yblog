@@ -122,7 +122,7 @@ new Valine({
 ````
 ，弄好了之后评论功能就能运行了。
 
-##### 第三方登录
+##### 第三方登录（暂时只支持gitee）
 ###### gitee
 * 接入gitee第三方授权配置,先在gitee的第三方应用上对网站进行授权，获得Client ID和Client Secret，并且要设置回调地址
 * 然后把springBoot配置文件的gitee.oauth.callback的端口改成项目的端口

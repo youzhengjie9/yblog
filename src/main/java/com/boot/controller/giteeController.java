@@ -82,7 +82,7 @@ public class giteeController {
     @RequestMapping("/login")
     public String login() throws Exception{
 
-        return "/comm/login";// TODO 修改成自己需要返回的页面...
+        return "/comm/login";
     }
 
 
