@@ -3,9 +3,11 @@ package com.boot.service.impl;
 import com.boot.constant.themeConstant;
 import com.boot.pojo.setting;
 import com.boot.pojo.user;
+import com.boot.pojo.userDetail;
 import com.boot.pojo.user_authority;
 import com.boot.service.registerService;
 import com.boot.service.settingService;
+import com.boot.service.userDetailService;
 import com.boot.service.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +26,9 @@ public class registerServiceImpl implements registerService {
     @Autowired
     private settingService settingService;
 
+    @Autowired
+    private userDetailService userDetailService;
+
     @Override
     public void register(user user) {
         try {
@@ -41,6 +46,11 @@ public class registerServiceImpl implements registerService {
             user_authority.setUser_id(user.getId());
             user_authority.setAuthority_id(2);
             userService.addUserAuthority(user_authority);
+
+            //设置userDetail
+            userDetail userDetail = new userDetail();
+            userDetail.setName(user.getUsername());
+            userDetailService.addUserDetail(userDetail);
             //添加用户默认设置
             setting setting = new setting();
             setting.setName(user.getUsername());

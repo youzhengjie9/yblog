@@ -125,6 +125,9 @@ public class clientController {
     public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
+        System.out.println("SPRING_SECURITY_CONTEXT:"+session.getAttribute("SPRING_SECURITY_CONTEXT"));
+
+
 //        System.out.println("测试负载均衡==当前端口是："+port);
 
         //传setting给前端
@@ -222,6 +225,11 @@ public class clientController {
         //友链
         List<link> links = linkService.selectAllLink();
         modelAndView.addObject("links", links);
+
+        //推荐文章
+        PageHelper.startPage(1,5);
+        List<Article> recommends = articleService.selectArticleByRecommend();
+        modelAndView.addObject("recommends",recommends);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -334,6 +342,11 @@ public class clientController {
             //友链
             List<link> links = linkService.selectAllLink();
             modelAndView.addObject("links", links);
+
+            //推荐文章
+            PageHelper.startPage(1,5);
+            List<Article> recommends = articleService.selectArticleByRecommend();
+            modelAndView.addObject("recommends",recommends);
 
             modelAndView.addObject("article", article);
             modelAndView.addObject("commons", Commons.getInstance());

@@ -34,4 +34,19 @@
         where name=#{name}
     </update>
 
+
+    <insert id="addUserDetail" parameterType="com.boot.pojo.userDetail">
+        INSERT INTO t_user_detail ( name, blogName, job, detail, github, weibo, icon )
+        VALUES
+	    (
+		#{name},
+		'yblog',
+		'编程',
+		'暂无详情',
+		'https://github.com/',
+	    'https://weibo.com/',
+	    NULL)
+    </insert>
+
+
 </mapper>

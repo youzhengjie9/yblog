@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='管理中心',active='home'">
 <header th:replace="back/header::headerFragment(${title},${active})"></header>
+
+<!--    引入echarts-->
+<script th:src="@{/assets/js/echarts.js}"></script>
+
+<style>
+    /*#main4 {*/
+    /*    float: left;*/
+    /*}*/
+</style>
+
 <body class="fixed-left">
 <div id="wrapper">
     <div th:replace="back/header::header-body"></div>
@@ -26,7 +36,7 @@
                             <div class="mini-stat clearfix bg-purple bx-shadow">
                                 <span class="mini-stat-icon"><i class="fa fa-comments-o" aria-hidden="true"></i></span>
                                 <div class="mini-stat-info text-right">
-                                    收到了<span class="counter" th:text="${commentPageInfo.total}"></span>条留言
+                                    推荐了<span class="counter" th:text="${recommendCount}"></span>篇文章
                                 </div>
                             </div>
                         </div>
@@ -41,64 +51,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">最新文章</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="list-group">
-                                        <li class="list-group-item" th:each="article : ${articles}">
-                                        <span class="badge badge-primary" th:text="${article.getComments().size()}">
-                                        </span>
-                                        <a target="_blank" th:href="${commons.site_url('/article/')}+${article.id}"
-                                             th:text="${article.title}"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">最新留言</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <div th:if="${comments.size()}==0">
-                                        <div class="alert alert-warning">
-                                            还没有收到留言.
-                                        </div>
-                                    </div>
-                                    <ul class="list-group" th:unless="${comments}==null and ${comments.size()}==0">
-                                        <li class="list-group-item" th:each="comment : ${comments}">
-                                            <th:block th:text="${comment.author}"/>于 <th:block th:text="${commons.dateFormat(comment.created)}"/>：
-                                                <a href="#"
-                                                target="_blank" th:utext="${commons.article(comment.getC_content())}"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
 
-
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">最新上传附件</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="list-group">
-                                       <li class="list-group-item">
-                                           <span style="color: #3bb4f2">上传的附件已被隐藏，请移步到附件管理中查看！！！</span>
-                                       </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-
+                        <div id="main4" style="width: 760px;height: 300px;"></div>
 
                     </div>
+
+
+
+
+
 
                 </div>
                 <div th:replace="back/footer :: footer-content"></div>
@@ -109,6 +70,60 @@
 <div th:replace="back/footer :: footer"></div>
 </body>
 
-
+<script th:inline="javascript">
+    //4.
+    var myChart4 = echarts.init(document.getElementById('main4'));
+    myChart4.setOption({
+        title: {
+            text: '近7天的访客量'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        tooltip: {
+            // trigger: 'axis',
+            // formatter: '{c}个'
+            trigger: 'item'
+        },
+        xAxis: {
+            type: 'category',
+            data: [
+                [[${days.get(0)}]], [[${days.get(1)}]],
+                [[${days.get(2)}]], [[${days.get(3)}]],
+                [[${days.get(4)}]], [[${days.get(5)}]],
+                [[${days.get(6)}]]
+            ]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [
+                [[${counts.get(0)}]], [[${counts.get(1)}]],
+                [[${counts.get(2)}]], [[${counts.get(3)}]],
+                [[${counts.get(4)}]], [[${counts.get(5)}]],
+                [[${counts.get(6)}]]
+            ],
+            type: 'line'
+        }]
+    });
+</script>
 
 </html>

@@ -77,7 +77,6 @@ public class chartController {
 
         //从缓存中查有没有近7天的缓存
 
-
         Object var1 =redisTemplate.opsForValue().get(ECHARTS_DAYS);
         Object var2 =redisTemplate.opsForValue().get(ECHARTS_COUNTS);
 

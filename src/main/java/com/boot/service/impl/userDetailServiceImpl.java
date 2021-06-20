@@ -21,4 +21,9 @@ public class userDetailServiceImpl implements userDetailService {
     public void updateUserDetail(userDetail userDetail) {
         userDetailMapper.updateUserDetail(userDetail);
     }
+
+    @Override
+    public void addUserDetail(userDetail userDetail) {
+        userDetailMapper.addUserDetail(userDetail);
+    }
 }

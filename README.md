@@ -1,4 +1,13 @@
 # yblog
+
+<p align=center>
+  <a href="#">
+    <img src="https://gitee.com/youzhengjie/springBootBlog/raw/master/image/bloglogo.jpg" alt="yblog" style="width:200px;height:200px">
+  </a>
+</p>
+<p align=center>
+   yblog,一个简单、功能齐全的SpringBoot博客系统
+</p>
 &emsp;&emsp;基于SpringBoot架构开发的博客：**博文管理**、**统计图表**、**访问记录**、**附件管理**、**用户管理**、**友链管理**、**监控管理**、**抓取博文**，以及**第三方登录**等功能，且一直会对本项目进行加强，请各位大佬多多指点，一起共同进步。
 文章无需自己写，可以使用作者自己编写的全自动爬虫工具即可，只需轻轻一点，万千文章到手。
 ### 目标

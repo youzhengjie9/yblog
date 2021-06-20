@@ -21,6 +21,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 
@@ -80,6 +81,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                         String ipAddr = ipUtils.getIpAddr(request);
                         System.out.println("=====================");
                         System.out.println("登录成功：访问者ip地址：" + ipAddr);
+
 
                         //登入成功之后要把登入验证码的缓存标记给删除掉
                         redisTemplate.delete(ipAddr + "_lg");

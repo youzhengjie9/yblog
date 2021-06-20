@@ -41,9 +41,8 @@ public class HttpUtil {
         stringBuilder.append("&client_secret=");
         stringBuilder.append(params.get("client_secret"));
 
+//        System.out.println("stringBuilder.toString():"+stringBuilder.toString());
 
-
-        System.out.println("stringBuilder.toString():"+stringBuilder.toString());
         HttpPost httpPost = new HttpPost(stringBuilder.toString());
         httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36)");
         //发送请求返回响应的信息
@@ -62,7 +61,7 @@ public class HttpUtil {
         //第一个参数
         stringBuilder.append("?access_token=");
         stringBuilder.append(access_token);
-        System.out.println("stringBuilder.toString():"+stringBuilder.toString());
+//        System.out.println("stringBuilder.toString():"+stringBuilder.toString());
         HttpGet httpGet = new HttpGet(stringBuilder.toString());
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36)");
         //发送请求返回响应的信息
