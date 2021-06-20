@@ -188,6 +188,11 @@ public class articleServiceImpl implements articleService {
         articleMapper.updateRecommendTo_1(id);
     }
 
+    @Override
+    public List<Article> selectArticleByRecommend() {
+        return articleMapper.selectArticleByRecommend();
+    }
+
 
     @Override
     public List<Article> selectAllArticle() {

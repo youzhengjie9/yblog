@@ -65,4 +65,7 @@ public interface articleService {
     void updateRecommendTo_0(int id);
 
     void updateRecommendTo_1(int id);
+
+    //查询推荐的文章
+    List<Article> selectArticleByRecommend();
 }

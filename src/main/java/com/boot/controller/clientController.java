@@ -144,7 +144,7 @@ public class clientController {
         }
 
 
-        PageHelper.startPage(1, 5);
+        PageHelper.startPage(1, 8);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
 
@@ -166,6 +166,11 @@ public class clientController {
         //友链
         List<link> links = linkService.selectAllLink();
         modelAndView.addObject("links", links);
+
+        //推荐文章
+        PageHelper.startPage(1,5);
+        List<Article> recommends = articleService.selectArticleByRecommend();
+        modelAndView.addObject("recommends",recommends);
 
         modelAndView.addObject("articles", list);
         modelAndView.addObject("commons", Commons.getInstance());
@@ -195,7 +200,7 @@ public class clientController {
 
         }
 
-        PageHelper.startPage(pageNum, 5);
+        PageHelper.startPage(pageNum, 8);
         List<Article> list = articleService.selectAllArticle();
         PageInfo pageInfo = new PageInfo(list);
 

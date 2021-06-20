@@ -62,4 +62,7 @@ public interface articleMapper {
 
     void updateRecommendTo_1(@Param("id") int id);
 
+    //查询推荐的文章
+    List<Article> selectArticleByRecommend();
+
 }

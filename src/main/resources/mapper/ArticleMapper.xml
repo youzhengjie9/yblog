@@ -371,4 +371,24 @@
         update t_article set recommend =1 where id=#{id}
     </update>
 
+
+    <resultMap id="recommend" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="recommend" property="recommend"/>
+
+    </resultMap>
+
+    <select id="selectArticleByRecommend" resultMap="recommend">
+    SELECT
+	id,
+	title,
+	recommend
+    FROM
+	t_article
+    WHERE
+	recommend =1
+    </select>
+
+
 </mapper>
