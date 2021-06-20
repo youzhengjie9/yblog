@@ -20,6 +20,8 @@
     <!-- 移动设备优先 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_z9f09hex6q.css">
 
     <script th:src="@{/assets/js/amazeui.min.js}"></script>
     <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
@@ -181,6 +183,8 @@
                     <input type="submit" th:value="#{login.sub}"
                            class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
                 </div>
+                <a th:href="@{/gitee/auth}" class="link" title="Gitee登录"><i class="iconfont icon-gitee-fill-round"></i></a>
+                <a href="https://gitee.com/oauth/authorize?client_id=e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755&redirect_uri=http://localhost:8080/gitee/callback&response_type=code">gitee登录</a> 
             </form>
 
 

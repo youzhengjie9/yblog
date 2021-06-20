@@ -18,10 +18,12 @@
     </properties>
     <dependencies>
 
+
+        <!-- 网络请求 -->
         <dependency>
-            <groupId>org.apache.directory.studio</groupId>
-            <artifactId>org.apache.commons.codec</artifactId>
-            <version>1.8</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
         </dependency>
 
         <!--        jsoup-->
