@@ -130,6 +130,7 @@ new Valine({
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
+* 后台管理账号:admin 密码:123456
 * Druid监控帐号：admin 密码： 123456
 * RabbitMQ帐号：guest 密码： guest
 
