@@ -2,7 +2,9 @@ package com.boot.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.boot.pojo.user;
+import com.boot.service.authorityService;
 import com.boot.service.registerService;
+import com.boot.service.userAuthorityService;
 import com.boot.service.userService;
 import com.boot.utils.HttpUtil;
 import io.swagger.annotations.Api;
@@ -49,9 +51,16 @@ public class giteeController {
     @Autowired
     private registerService registerService;
 
+    @Autowired
+    private userAuthorityService userAuthorityService;
+
+    @Autowired
+    private authorityService authorityService;
+
+
     @RequestMapping("/callback")
     @ResponseBody
-    public void callback(String code, Model model, HttpServletResponse response, HttpServletRequest request) throws Exception{
+    public void callback(String code, Model model, HttpServletResponse response, HttpServletRequest request) throws Exception {
 //        System.out.println("得到的code为：" + code);
         Map<String, String> params = new HashMap<>(5);
 
@@ -83,7 +92,13 @@ public class giteeController {
 
 
             String p = userService.selectPasswordByuserName(myid);
-            if(p!=null&&!p.equals("")){ //说明这是第二次第三方登录了，数据库已经有了记录
+            if (p != null && !p.equals("")) { //说明这是第二次第三方登录了，数据库已经有了记录
+
+                //如果不是第一次了，我们就要从数据库获取该用户的权限，并放入SpringSecurity的session中，否则将无法直接更改用户权限
+
+                int userid = userService.selectUseridByUserName(myid);
+                int authorityid = userAuthorityService.selectAuthorityID(userid);
+                String authority = authorityService.selectAuthorityByid(authorityid); //查询出来权限
 
                 /**
                  * 逆向破解SpringSecurity验证,进行直接放行，绕过springSecurity验证
@@ -91,15 +106,15 @@ public class giteeController {
                 HttpSession session = request.getSession();
                 SecurityContextImpl securityContext = new SecurityContextImpl();
                 String password = UUID.randomUUID().toString().replaceAll("-", ""); //密码，防止用户直接进行登录，而不走第三方
-                User user = new User(myid,password, AuthorityUtils.createAuthorityList("ROLE_common"));
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user,password,AuthorityUtils.createAuthorityList("ROLE_common"));
+                User user = new User(myid, password, AuthorityUtils.createAuthorityList(authority));
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, password, AuthorityUtils.createAuthorityList(authority));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
                 //存放authentication到SecurityContextHolder
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 securityContext.setAuthentication(usernamePasswordAuthenticationToken);
-                session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
-            }else { //如果是第一次的话，我们就给他注册一个帐号，这个帐号的名字是gitee的id，密码随机
+            } else { //如果是第一次的话，我们就给他注册一个帐号，这个帐号的名字是gitee的id，密码随机
                 user user = new user();
                 user.setUsername(myid);
                 String password = UUID.randomUUID().toString().replaceAll("-", "");
@@ -108,13 +123,13 @@ public class giteeController {
 
                 HttpSession session = request.getSession();
                 SecurityContextImpl securityContext = new SecurityContextImpl();
-                User u = new User(myid,password, AuthorityUtils.createAuthorityList("ROLE_common"));
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(u,password,AuthorityUtils.createAuthorityList("ROLE_common"));
+                User u = new User(myid, password, AuthorityUtils.createAuthorityList("ROLE_common"));
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(u, password, AuthorityUtils.createAuthorityList("ROLE_common"));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
                 //存放authentication到SecurityContextHolder
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 securityContext.setAuthentication(usernamePasswordAuthenticationToken);
-                session.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
             }
 
 
@@ -129,13 +144,11 @@ public class giteeController {
     }
 
 
-
     @RequestMapping("/login")
-    public String login() throws Exception{
+    public String login() throws Exception {
 
         return "/comm/login";
     }
-
 
 
 }

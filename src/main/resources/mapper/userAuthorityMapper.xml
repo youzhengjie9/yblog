@@ -9,5 +9,8 @@
         update t_user_authority set authority_id = #{authority_id} where user_id=#{user_id}
     </update>
 
+    <select id="selectAuthorityID" resultType="int">
+        select authority_id from t_user_authority where user_id=#{userid}
+    </select>
 
 </mapper>

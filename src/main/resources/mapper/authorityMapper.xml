@@ -8,4 +8,10 @@
     <select id="selectUserAuthority" resultType="com.boot.pojo.authority">
         select * from t_authority
     </select>
+
+
+    <select id="selectAuthorityByid" resultType="java.lang.String">
+        select authority from t_authority where id=#{id}
+    </select>
+    
 </mapper>

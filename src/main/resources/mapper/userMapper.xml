@@ -103,6 +103,12 @@
         update t_user set email=#{email} where id=#{id}
     </update>
 
+    <select id="selectUseridByUserName" resultType="int">
+        select id from t_user where username=#{username}
+    </select>
+
+
+
 </mapper>
 
 

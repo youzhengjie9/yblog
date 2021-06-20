@@ -16,4 +16,9 @@ public class userAuthorityServiceImpl implements userAuthorityService {
     public void changeUserAuthority(user_authority user_authority) {
         userAuthorityMapper.changeUserAuthority(user_authority);
     }
+
+    @Override
+    public int selectAuthorityID(int userid) {
+        return userAuthorityMapper.selectAuthorityID(userid);
+    }
 }

@@ -31,4 +31,6 @@ public interface userService {
 
     void updateUserForEmail(int id,
                     String email);
+
+    int selectUseridByUserName(String username);
 }

@@ -65,5 +65,10 @@ public class userServiceImpl implements userService {
      userMapper.updateUserForEmail(id, email);
     }
 
+    @Override
+    public int selectUseridByUserName(String username) {
+        return userMapper.selectUseridByUserName(username);
+    }
+
 
 }

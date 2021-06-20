@@ -18,4 +18,9 @@ public class authorityServiceImpl implements authorityService {
     public List<authority> selectUserAuthority() {
         return authorityMapper.selectUserAuthority();
     }
+
+    @Override
+    public String selectAuthorityByid(int id) {
+        return authorityMapper.selectAuthorityByid(id);
+    }
 }
