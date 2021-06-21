@@ -132,10 +132,6 @@
                         <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>
                     </li>
 
-
-                    <li class="nav-item">
-                        <a id="link" class="nav-link" href="#" data-toggle="modal" data-target="#myModal">友链</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/}">后台管理</a>
                     </li>
@@ -278,7 +274,7 @@
                     <div class="right-card-title">推荐文章</div>
                     <ul class="right-recommended-list">
                         <li th:each="recommend:${recommends}">
-                            <a href="#">
+                            <a th:href="${commons.permalink(recommend.id)}">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 <span th:text="${recommendStat.index+1}+'、'+${recommend.title}"></span>
                             </a>
@@ -311,33 +307,30 @@
                     <div class="right-card-title">热门标签</div>
                     <ul class="label">
                         <li th:each="tag:${tags}">
-                            <a href="#" th:text="${tag.getTagName()}"></a>
+                            <a href="#" th:text="${tag.getTagName()}+'('+${tag.getTagCount()}+')'"></a>
                         </li>
                     </ul>
                 </div>
             </div>
+
+            <div class="right-card">
+
+                <div class="right-card-main">
+                    <div class="right-card-title">友情链接</div>
+                    <ul class="label">
+                        <li th:each="link:${links}">
+                            <a th:href="${link.getLink()}" th:text="${link.getTitle()}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">友情链接</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <!--                    内容-->
-                    <p th:each="link:${links}" th:utext="'<a href='+${link.getLink()}+'>'+${link.getTitle()}+'</a>'">
-                    </p>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
 
 </div>
 
