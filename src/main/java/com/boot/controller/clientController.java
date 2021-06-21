@@ -133,6 +133,8 @@ public class clientController {
         //传setting给前端
         this.setting(session,modelAndView);
 
+        modelAndView.addObject("articleService",articleService);
+
 
         //跳转不同页面主题判断
         if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题

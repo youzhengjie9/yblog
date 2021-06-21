@@ -391,4 +391,13 @@
     </select>
 
 
+    <select id="selectLikeCount" resultType="int">
+        select likes from t_article where id=#{articleid}
+    </select>
+
+
+    <update id="likeCountAddOne">
+        update t_article set likes = likes+1 where id=#{articleid}
+    </update>
+
 </mapper>

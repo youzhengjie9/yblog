@@ -65,4 +65,10 @@ public interface articleMapper {
     //查询推荐的文章
     List<Article> selectArticleByRecommend();
 
+    //查询文章点赞数
+    int selectLikeCount(@Param("articleid") int articleid);
+
+    //点赞总数加1
+    void likeCountAddOne(@Param("articleid") int articleid);
+
 }

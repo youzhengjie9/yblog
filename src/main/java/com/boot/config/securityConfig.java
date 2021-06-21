@@ -122,7 +122,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
                         "/article/updateAllowComment",
                         "/link/**", "/visitor/**", "/chart/**", "/black/**").hasRole("admin")
-                .antMatchers("/myuser/**", "/img/**", "/catchArticle/**").hasAnyRole("admin", "common")
+                .antMatchers("/myuser/**", "/img/**", "/catchArticle/**","/like/**").hasAnyRole("admin", "common")
                 .antMatchers("/sliderCaptcha/**").permitAll()
                 .anyRequest().permitAll()
                 .and()

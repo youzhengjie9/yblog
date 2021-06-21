@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 @Service
 @Transactional //事务控制
 public class articleServiceImpl implements articleService {
@@ -191,6 +194,16 @@ public class articleServiceImpl implements articleService {
     @Override
     public List<Article> selectArticleByRecommend() {
         return articleMapper.selectArticleByRecommend();
+    }
+
+    @Override
+    public int selectLikeCount(int articleid) {
+        return articleMapper.selectLikeCount(articleid);
+    }
+
+    @Override
+    public void likeCountAddOne(int articleid) {
+        articleMapper.likeCountAddOne(articleid);
     }
 
 

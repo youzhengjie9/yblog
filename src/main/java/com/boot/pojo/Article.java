@@ -23,6 +23,8 @@ public class Article implements Serializable {
     private int recommend;        //是否为推荐文章
     private String thumbnail;     // 文章缩略图
 
+    private int likes;            //文章点赞数
+
 
     private Statistic statistic;
 
@@ -149,6 +151,14 @@ public class Article implements Serializable {
         return comments;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
@@ -162,6 +172,7 @@ public class Article implements Serializable {
                 ", allowComment=" + allowComment +
                 ", recommend=" + recommend +
                 ", thumbnail='" + thumbnail + '\'' +
+                ", likes=" + likes +
                 ", statistic=" + statistic +
                 ", comments=" + comments +
                 '}';

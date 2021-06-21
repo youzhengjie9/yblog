@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 public interface articleService {
 
     public List<Article> selectAllArticle();
@@ -68,4 +71,10 @@ public interface articleService {
 
     //查询推荐的文章
     List<Article> selectArticleByRecommend();
+
+    //查询文章点赞数
+    int selectLikeCount(int articleid);
+
+    //点赞总数加1
+    void likeCountAddOne(int articleid);
 }

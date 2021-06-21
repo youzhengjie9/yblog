@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title>yblog</title>
     <!--timeline-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -19,6 +23,9 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
     <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
+
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
 
     <style>
         /*body {*/
@@ -64,6 +71,17 @@
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.08);
         }
 
+        .cl-card-more {
+            width: 555px;
+            height: 25.8px;
+            float: left;
+        }
+
+        .like {
+            float: left;
+            width: 45.65px;
+            height: 24.8px;
+        }
     </style>
 </head>
 <body>
@@ -71,8 +89,10 @@
     <div class="header-content container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="#">
-                <img th:if="${setting} eq null or ${setting.logo} eq null or ${setting.logo} eq ''" th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
-                <img th:if="${setting} ne null and ${setting.logo} ne null and ${setting.logo} ne ''" th:src="@{${setting.logo}}" width="144" height="72" alt="">
+                <img th:if="${setting} eq null or ${setting.logo} eq null or ${setting.logo} eq ''"
+                     th:src="@{/user/img/bloglogo.jpg}" width="144" height="72" alt="">
+                <img th:if="${setting} ne null and ${setting.logo} ne null and ${setting.logo} ne ''"
+                     th:src="@{${setting.logo}}" width="144" height="72" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,10 +104,11 @@
 
                     <li class="nav-item">
                         <div id="searchbox" class="navbar-search" style="height: 40px;">
-                                                        <span class="icon-search" onclick="submitData()"></span>
+                            <span class="icon-search" onclick="submitData()"></span>
                             <form id="form" role="search" th:action="@{/search/1}">
                            <span class="search-box">
-                                <input style="height: 40px;" type="text" name="searchText" id="search-inp" class="input" placeholder="全站搜索..."
+                                <input style="height: 40px;" type="text" name="searchText" id="search-inp" class="input"
+                                       placeholder="全站搜索..."
                                        maxlength="30"
                                        autocomplete="off"/>
                           </span>
@@ -95,7 +116,6 @@
                             </form>
                         </div>
                     </li>
-
 
 
                     <li th:if="${indexAc} ne null" class="nav-item active">
@@ -158,9 +178,11 @@
                         </h3>
                         <p class="cl-card-main-info" th:utext="${commons.intro(article,75)}">
                         </p>
-                        <p class="cl-card-more"><a th:href="${commons.permalink(article.id)}">阅读更多...</a>
+                        <div class="cl-card-more"><a th:href="${commons.permalink(article.id)}">阅读更多...</a>
                             &nbsp;&nbsp;&nbsp;<span th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></span>
-                        </p>
+                        </div>
+<!--                        点赞-->
+                        <span class="like"><a th:id="'alike'+${article.id}"+ href="#" class="iconfont icon-dianzan" th:onclick="lk([[${article.id}]])"></a>&nbsp;<span th:id="'likecount'+${article.id}" th:text="${articleService.selectLikeCount(article.id)}"></span></span>
                     </div>
                 </div>
             </div>
@@ -249,22 +271,21 @@
             </div>
 
 
-<!--            推荐-->
+            <!--            推荐-->
             <div class="right-card">
 
                 <div class="right-card-main">
                     <div class="right-card-title">推荐文章</div>
                     <ul class="right-recommended-list">
-                       <li th:each="recommend:${recommends}">
-                           <a href="#">
-                               <i class="fa fa-angle-right" aria-hidden="true"></i>
-                               <span th:text="${recommendStat.index+1}+'、'+${recommend.title}"></span>
-                           </a>
-                       </li>
+                        <li th:each="recommend:${recommends}">
+                            <a href="#">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <span th:text="${recommendStat.index+1}+'、'+${recommend.title}"></span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
-
 
 
             <div class="right-card">
@@ -337,72 +358,114 @@
 
 
     /*单击出现爱心特效*/
-    (function(window,document,undefined){
+    (function (window, document, undefined) {
         var hearts = [];
-        window.requestAnimationFrame = (function(){
+        window.requestAnimationFrame = (function () {
             return window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 window.oRequestAnimationFrame ||
                 window.msRequestAnimationFrame ||
-                function (callback){
-                    setTimeout(callback,1000/60);
+                function (callback) {
+                    setTimeout(callback, 1000 / 60);
                 }
         })();
         init();
-        function init(){
+
+        function init() {
             css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
             attachEvent();
             gameloop();
         }
-        function gameloop(){
-            for(var i=0;i<hearts.length;i++){
-                if(hearts[i].alpha <=0){
+
+        function gameloop() {
+            for (var i = 0; i < hearts.length; i++) {
+                if (hearts[i].alpha <= 0) {
                     document.body.removeChild(hearts[i].el);
-                    hearts.splice(i,1);
+                    hearts.splice(i, 1);
                     continue;
                 }
                 hearts[i].y--;
                 hearts[i].scale += 0.004;
                 hearts[i].alpha -= 0.013;
-                hearts[i].el.style.cssText = "left:"+hearts[i].x+"px;top:"+hearts[i].y+"px;opacity:"+hearts[i].alpha+";transform:scale("+hearts[i].scale+","+hearts[i].scale+") rotate(45deg);background:"+hearts[i].color;
+                hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
             }
             requestAnimationFrame(gameloop);
         }
-        function attachEvent(){
-            var old = typeof window.onclick==="function" && window.onclick;
-            window.onclick = function(event){
+
+        function attachEvent() {
+            var old = typeof window.onclick === "function" && window.onclick;
+            window.onclick = function (event) {
                 old && old();
                 createHeart(event);
             }
         }
-        function createHeart(event){
+
+        function createHeart(event) {
             var d = document.createElement("div");
             d.className = "heart";
             hearts.push({
-                el : d,
-                x : event.clientX - 5,
-                y : event.clientY - 5,
-                scale : 1,
-                alpha : 1,
-                color : randomColor()
+                el: d,
+                x: event.clientX - 5,
+                y: event.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: randomColor()
             });
             document.body.appendChild(d);
         }
-        function css(css){
+
+        function css(css) {
             var style = document.createElement("style");
-            style.type="text/css";
-            try{
+            style.type = "text/css";
+            try {
                 style.appendChild(document.createTextNode(css));
-            }catch(ex){
+            } catch (ex) {
                 style.styleSheet.cssText = css;
             }
             document.getElementsByTagName('head')[0].appendChild(style);
         }
-        function randomColor(){
-            return "rgb("+(~~(Math.random()*255))+","+(~~(Math.random()*255))+","+(~~(Math.random()*255))+")";
+
+        function randomColor() {
+            return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
         }
-    })(window,document);
+    })(window, document);
+
+
+    //点赞
+    function lk(id) {
+        let header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
+        $.ajax({
+            url: "/like/art",
+            data: {
+                "article_id": id
+            },
+            type: "POST",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (data) {
+                if(data.length>6000){ //data是被SpringSecurity拦截的页面，大小肯定大于6000，我们便可以手动跳转页面
+                    window.location.href="/loginPage";
+                    return;
+                }
+                var json = JSON.parse(data);
+                if (json.result == 200) {
+                    $('#alike'+id).css('color','red'); //修改点赞颜色
+
+                    $('#likecount'+id).text(json.data)
+                    $('#')
+                    // alert('点赞成功');
+                } else {
+                    alert('点赞失败');
+                }
+
+            }
+
+        });
+
+    }
 
 
     // /*背景雪花飘落特效*/
