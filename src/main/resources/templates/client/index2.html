@@ -177,8 +177,19 @@
                         <div class="cl-card-more"><a th:href="${commons.permalink(article.id)}">阅读更多...</a>
                             &nbsp;&nbsp;&nbsp;<span th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></span>
                         </div>
-<!--                        点赞-->
-                        <span class="like"><a th:id="'alike'+${article.id}"+ href="#" class="iconfont icon-dianzan" th:onclick="lk([[${article.id}]])"></a>&nbsp;<span th:id="'likecount'+${article.id}" th:text="${articleService.selectLikeCount(article.id)}"></span></span>
+                        <!--                        点赞-->
+<!--                        说明没有点赞，或者没登入帐号-->
+                        <span th:if="${likeService.selectLikeExsit(user,article.id)} eq null" class="like"><a th:id="'alike'+${article.id}" + href="#" class="iconfont icon-dianzan"
+                                              th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
+                                th:id="'likecount'+${article.id}"
+                                th:text="${articleService.selectLikeCount(article.id)}"></span></span>
+
+<!--                        说明已经点赞，把点赞图标变红-->
+                        <span th:if="${likeService.selectLikeExsit(user,article.id)} ne null" class="like"><a th:id="'alike'+${article.id}" + href="#" style="color: red" class="iconfont icon-dianzan"
+                                              th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
+                                th:id="'likecount'+${article.id}"
+                                th:text="${articleService.selectLikeCount(article.id)}"></span></span>
+
                     </div>
                 </div>
             </div>
@@ -326,10 +337,8 @@
             </div>
 
 
-
         </div>
     </div>
-
 
 
 </div>
@@ -439,15 +448,15 @@
                 xhr.setRequestHeader(header, token);
             },
             success: function (data) {
-                if(data.length>6000){ //data是被SpringSecurity拦截的页面，大小肯定大于6000，我们便可以手动跳转页面
-                    window.location.href="/loginPage";
+                if (data.length > 6000) { //data是被SpringSecurity拦截的页面，大小肯定大于6000，我们便可以手动跳转页面
+                    window.location.href = "/loginPage";
                     return;
                 }
                 var json = JSON.parse(data);
                 if (json.result == 200) {
-                    $('#alike'+id).css('color','red'); //修改点赞颜色
+                    $('#alike' + id).css('color', 'red'); //修改点赞颜色
 
-                    $('#likecount'+id).text(json.data)
+                    $('#likecount' + id).text(json.data)
                     $('#')
                     // alert('点赞成功');
                 } else {

@@ -83,6 +83,12 @@ public class clientController {
     @Autowired
     private settingService settingService;
 
+    @Autowired
+    private likeService likeService;
+
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
+
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -125,16 +131,22 @@ public class clientController {
     public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
 
-        System.out.println("SPRING_SECURITY_CONTEXT:"+session.getAttribute("SPRING_SECURITY_CONTEXT"));
-
-
 //        System.out.println("测试负载均衡==当前端口是："+port);
 
         //传setting给前端
         this.setting(session,modelAndView);
 
         modelAndView.addObject("articleService",articleService);
-
+        modelAndView.addObject("likeService",likeService);
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            if (name != null && !name.equals("")) {
+                modelAndView.addObject("user",name);
+            }
+        } else {
+            modelAndView.addObject("user",null);
+        }
 
         //跳转不同页面主题判断
         if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
@@ -192,6 +204,18 @@ public class clientController {
 
         //传setting给前端
         this.setting(session,modelAndView);
+
+        modelAndView.addObject("articleService",articleService);
+        modelAndView.addObject("likeService",likeService);
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContext != null) {
+            String name = securityUtil.currentUser(session);
+            if (name != null && !name.equals("")) {
+                modelAndView.addObject("user",name);
+            }
+        } else {
+            modelAndView.addObject("user",null);
+        }
 
         //跳转不同页面主题判断
         if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题

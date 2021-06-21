@@ -52,4 +52,12 @@ public class likeServiceImpl implements likeService {
         }
 
     }
+
+    @Override
+    public String selectLikeExsit(String username,int articleid) {
+        like like = new like();
+        like.setUsername(username);
+        like.setArticle_id(articleid);
+        return likeMapper.selectLikeExsit(like);
+    }
 }
