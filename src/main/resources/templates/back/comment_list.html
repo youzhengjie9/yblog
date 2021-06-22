@@ -59,7 +59,7 @@
                                     </td>
                                     <td>
 <!--                                        <button v-if="item.authorId != ${login_user.uid}" class="btn btn-primary btn-sm waves-effect waves-light m-b-5" @click="reply(item.coid)"><i class="fa fa-reply"></i> 回复</button>-->
-                                        <a th:href="@{/admin/toCommentList(id=${comment.getId()})}" th:if="${comment.getStatus()} eq 'no_audit'" class="btn btn-primary btn-sm waves-effect waves-light m-b-5">
+                                        <a th:href="@{pear_admin}" th:if="${comment.getStatus()} eq 'no_audit'" class="btn btn-primary btn-sm waves-effect waves-light m-b-5">
                                             <i class="fa fa-check-circle"></i> 确认通过</span>
                                         </a>
                                         <button th:if="${comment.getStatus()} eq 'approved'" class="btn btn-success btn-sm waves-effect waves-light m-b-5" @click="audit(item.coid, 'approved')">

@@ -75,7 +75,7 @@
                             <div class="col-md-12">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <form id="cform" class="form-inline" method="post" th:action="@{/admin/addCategory}">
+                                        <form id="cform" class="form-inline" method="post" th:action="@{pear_admin}">
                                             <div class="form-group form-group">
                                                 <input type="text" class="form-control" name="categoryName" placeholder="请输入分类名称">
                                             </div>
@@ -107,7 +107,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel1">修改分类</h4>
             </div>
-            <form method="post" th:action="@{/admin/updateCategory}">
+            <form method="post" th:action="@{pear_admin}">
                 <div class="modal-body">
                     <input id="oldCategory" type="hidden" name="oldName">
                     <br/>

@@ -117,7 +117,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
                 //这句代码一定要加，为了防止spring过滤静态资源
-                .antMatchers("/user/**", "/email/**", "/plugins/**", "/user_img/**", "/article_img/**", "/assets/**", "/back/**", "/user/**")
+                .antMatchers("/user/**", "/email/**", "/plugins/**", "/user_img/**", "/article_img/**", "/assets/**", "/back/**",
+                        "/user/**","/pear-admin/**","/component/**"
+                ,"/config/**")
                 .permitAll()
                 .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
                         "/article/updateAllowComment",

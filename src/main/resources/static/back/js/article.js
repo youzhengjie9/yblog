@@ -96,7 +96,7 @@ function subArticle(status) {
                     text:'文章保存成功',
                     then: function () {
                         setTimeout(function () {
-                            window.location.href = '/admin/toArticleList';
+                            window.location.href = '../../pear_admin/toArticleList';
                         }, 500);
                     }
                 });

@@ -74,11 +74,11 @@
             onFinishing: function (event, currentIndex) {
                 $form_container.validate().settings.ignore = ":disabled";
                 var isValid = $form_container.valid();
-                window.location.href = "/admin/login";
+                window.location.href = "../../pear_admin/login";
                 return isValid;
             },
             onFinished: function (event, currentIndex) {
-                window.location.href = "/admin/login";
+                window.location.href = "../../pear_admin/login";
             }
         });
         return $form_container;

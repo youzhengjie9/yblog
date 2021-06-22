@@ -51,7 +51,7 @@
         <div class="topbar-left">
             <div class="text-center p-t-10" style="margin: 0 auto;">
                 <div class="pull-left" style="padding-left: 10px;">
-                    <a th:href="@{/admin/index}">
+                    <a th:href="@{pear_admin}">
                         <img th:src="@{/user/img/bloglogo.jpg}" width="50" height="50"/>
                     </a>
                 </div>
@@ -100,7 +100,7 @@
 
                 <ul>
                     <li th:class="${active}=='home'?'active':''">
-                        <a th:href="@{/admin/}"
+                        <a th:href="@{pear_admin}"
                            th:class="${active}=='home'?'waves-effect active':'waves-effect'"><i
                                 class="fa fa-dashboard" aria-hidden="true"></i><span> 仪表盘 </span></a>
                     </li>
@@ -115,19 +115,19 @@
                         <ul class="dropdown-menu">
                             <li th:class="${active}=='publish'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
-                                <a th:href="@{/admin/toPublishArticle}"
+                                <a th:href="@{pear_admin}"
                                    th:class="${active}=='publish'?'waves-effect active':'waves-effect'"><i
                                         class="fa fa-pencil-square-o" aria-hidden="true"></i><span> 发布文章 </span></a>
                             </li>
                             <li th:class="${active}=='article'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
-                                <a th:href="@{/admin/toArticleList/}"
+                                <a th:href="@{pear_admin}"
                                    th:class="${active}=='article'?'waves-effect active':'waves-effect'"><i
                                         class="fa fa-list" aria-hidden="true"></i><span> 文章管理 </span></a>
                             </li>
                             <li th:class="${active}=='category'?'active':''"
                                 style=" width: 240px;height: 49.3667px;background-color: #272c35;">
-                                <a th:href="@{/admin/toTagList/}"
+                                <a th:href="@{pear_admin}"
                                    th:class="${active}=='category'?'waves-effect active':'waves-effect'">
                                     <i class="iconfont icon-icon04" aria-hidden="true"></i><span> 分类/标签 </span></a>
                             </li>
@@ -255,7 +255,7 @@
                     <!--                待实现-->
 
                     <li th:class="${active}=='setting'?'active':''">
-                        <a th:href="@{/admin/toSetting/}"
+                        <a th:href="@{pear_admin}"
                            th:class="${active}=='setting'?'waves-effect active':'waves-effect'">
                             <i class="fa fa-gear" aria-hidden="true"></i><span> 系统设置 </span></a>
                     </li>

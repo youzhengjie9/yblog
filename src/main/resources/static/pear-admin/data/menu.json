@@ -1,0 +1,225 @@
+[{
+		"id": 1,
+		"title": "工作空间",
+		"type": 0,
+		"icon": "layui-icon layui-icon-console",
+		"href": "",
+		"children": [{
+			"id": 10,
+			"title": "控制后台",
+			"icon": "layui-icon layui-icon-console",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "view/console/console1.html"
+		}, {
+			"id": 14,
+			"title": "百度一下",
+			"icon": "layui-icon layui-icon-console",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "http://www.baidu.com"
+		}, {
+			"id": 15,
+			"title": "主题预览",
+			"icon": "layui-icon layui-icon-console",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "view/system/theme.html"
+		}]
+	},
+	{
+		"id": "component",
+		"title": "文章管理",
+		"icon": "layui-icon layui-icon-component",
+		"type": 0,
+		"href": "",
+		"children": [
+			{
+					"id": 203,
+					"title": "发布文章",
+					"icon": "layui-icon layui-icon-console",
+					"type": 1,
+					"openType": "_iframe",
+					"href": "view/console/console1.html"
+			}
+		,
+			{
+				"id": 205,
+				"title": "文章管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/console/console1.html"
+			},
+			{
+				"id": 207,
+				"title": "分类管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/console/console1.html"
+			},
+			{
+				"id": 208,
+				"title": "标签管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/console/console1.html"
+			}
+		]
+	},
+	{
+		"id": "result",
+		"title": "常用工具",
+		"icon": "layui-icon layui-icon-auz",
+		"type": 0,
+		"href": "",
+		"children": [{
+				"id": "success",
+				"title": "附件管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/result/success.html"
+			},
+			{
+				"id": "failure",
+				"title": "爬取数据",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/result/error.html"
+			}
+		]
+	},
+	{
+		"id": "error",
+		"title": "用户管理",
+		"icon": "layui-icon layui-icon-face-cry",
+		"type": 0,
+		"href": "",
+		"children": [{
+				"id": 403,
+				"title": "用户管理",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/error/403.html"
+			},
+			{
+				"id": 404,
+				"title": "友链管理",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/error/404.html"
+			},
+
+			{
+				"id": 500,
+				"title": "个人资料",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/error/500.html"
+			}
+
+		]
+	},
+	{
+		"id": "system",
+		"title": "访客管理",
+		"icon": "layui-icon layui-icon-set-fill",
+		"type": 0,
+		"href": "",
+		"children": [{
+				"id": 601,
+				"title": "访客记录",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/system/user.html"
+			},
+			{
+				"id": 602,
+				"title": "黑名单",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/system/role.html"
+			},
+
+			{
+				"id": 603,
+				"title": "IP查询",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/system/power.html"
+			},
+
+			{
+				"id": 604,
+				"title": "拦截记录",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/system/deptment.html"
+			},
+			{
+				"id": 605,
+				"title": "行为日志",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "view/system/log.html"
+			}
+
+		]
+	},
+	{
+		"id": "common",
+		"title": "监控管理",
+		"icon": "layui-icon layui-icon-template-1",
+		"type": 0,
+		"href": "",
+		"children": [{
+			"id": 701,
+			"title": "数据监控",
+			"icon": "layui-icon layui-icon-face-smile",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "login.html"
+		}]
+	}, {
+		"id": "echarts",
+		"title": "数据图表",
+		"icon": "layui-icon layui-icon-chart",
+		"type": 0,
+		"href": "",
+		"children": [{
+			"id": 12121,
+			"title": "数据图表",
+			"icon": "layui-icon layui-icon-face-smile",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "view/echarts/line.html"
+		}]
+	},
+	{
+		"id": "code",
+		"title": "系统设置",
+		"icon": "layui-icon layui-icon-util",
+		"type": 0,
+		"href": "",
+		"children": [{
+			"id": 801,
+			"title": "系统设置",
+			"icon": "layui-icon layui-icon-util",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "component/code/index.html"
+		}]
+	}
+]

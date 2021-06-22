@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link href="../../component/pear/css/pear.css" rel="stylesheet" />
+		<style>
+			.wrap {
+				display: none;
+			}
+		</style>
+	</head>
+	<body class="pear-container">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">开发环境</div>
+					<div class="layui-card-body">
+						Drawer 在 弹出层 UI 上带来不一样的体验.
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">显示代码</h2>
+						<div class="layui-colla-content">
+							<pre class="layui-code" lay-encode="true">
+								<script src="component/layui/layui.js"></script>
+								 并
+								<script src="component/pear/pear.js"></script>
+							</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">抽屉</div>
+					<div class="layui-card-body">
+						<button class="drawer-top pear-btn pear-btn-primary">上</button>
+						<button class="drawer-bottom pear-btn pear-btn-success">下</button>
+						<button class="drawer-left pear-btn pear-btn-warming">左</button>
+						<button class="drawer-right pear-btn pear-btn-danger">右</button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">显示代码</h2>
+						<div class="layui-colla-content">
+							<pre class="layui-code" lay-encode="true">
+								layui.use(['drawer'], function() {
+									var drawer = layui.drawer;
+								
+								    drawer.open({
+								        direction: "right",
+								        dom: ".layer-top",
+								        distance: "30%"
+								    });
+								})
+							</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">进阶</div>
+					<div class="layui-card-body">
+						<button class="drawer-close-mask pear-btn pear-btn-primary">手动关闭</button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">显示代码</h2>
+						<div class="layui-colla-content">
+							<pre class="layui-code" lay-encode="true">
+								var dom;
+								
+								$(".drawer-close-mask").click(function() {
+								    dom = drawer.open({
+								        direction: "right",
+								        dom: ".layer-close-mask",
+								        distance: "30%",
+								        maskClose: false
+								    });
+								})
+								
+								$("#btnClose").click(function() {
+								    dom.close();
+								})
+								
+							</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">扩展</div>
+					<div class="layui-card-body">
+						<button class="drawer-auto-close pear-btn pear-btn-success">自动关闭</button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">显示代码</h2>
+						<div class="layui-colla-content">
+							<pre class="layui-code" lay-encode="true">
+								layui.use(['drawer'], function() {
+									var drawer = layui.drawer;
+								
+								    $(".drawer-auto-close").click(function() {
+								        dom = drawer.open({
+								            direction: "right",
+								            dom: ".layer-auto-close",
+								            distance: "30%",
+								            maskClose: false,
+								            time: 1000
+								        });
+								    })
+								})
+							</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">扩展</div>
+					<div class="layui-card-body">
+						<button class="drawer-call-back pear-btn pear-btn-success">回调函数</button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md12">
+				<div class="layui-collapse">
+					<div class="layui-colla-item">
+						<h2 class="layui-colla-title">显示代码</h2>
+						<div class="layui-colla-content">
+							<pre class="layui-code" lay-encode="true">
+								layui.use(['drawer'], function() {
+									var drawer = layui.drawer;
+								
+								    $(".drawer-auto-close").click(function() {
+								        dom = drawer.open({
+								            direction: "right",
+								            dom: ".layer-auto-close",
+								            distance: "30%",
+								            success:function(){
+								                layer.msg("触发回调函数")； 
+								            }
+								        });
+								    })
+								})
+							</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="layer-left">
+				<br />
+				<h3>左侧弹层内容...</h3>
+			</div>
+			<div class="layer-right">
+				<br />
+				<h3>右侧弹层内容...</h3>
+			</div>
+			<div class="layer-top">
+				<br />
+				<h3>上侧弹层内容...</h3>
+			</div>
+			<div class="layer-bottom">
+				<br />
+				<h3>下侧弹层内容...</h3>
+			</div>
+
+			<div class="layer-open-mask">
+				<br />
+				<h3>点击右侧灰色区域</h3>
+			</div>
+			<div class="layer-close-mask">
+				<button id="btnClose" class="pear-btn pear-btn-primary" style="position: absolute; bottom: 10px;left: 10px;">关闭抽屉</button>
+			</div>
+			<div class="layer-auto-close">
+				<br />
+				<h3>打开 2秒 后自动关闭...</h3>
+			</div>
+		</div>
+
+	</body>
+	<script src="../../component/layui/layui.js"></script>
+	<script src="../../component/pear/pear.js"></script>
+	<script>
+		layui.use(['element', 'jquery', 'drawer', 'layer', 'code'], function() {
+			var element = layui.element;
+			var $ = layui.jquery;
+			var drawer = layui.drawer;
+			var layer = layui.layer;
+
+			layui.code();
+
+			$(".drawer-right").click(function() {
+				drawer.open({
+					direction: "right",
+					dom: ".layer-right",
+					distance: "30%"
+				});
+			})
+
+			$(".drawer-left").click(function() {
+
+				drawer.open({
+					direction: "left",
+					dom: ".layer-left",
+					distance: "30%"
+				});
+
+			})
+
+			$(".drawer-top").click(function() {
+				drawer.open({
+					direction: "top",
+					dom: ".layer-top",
+					distance: "30%"
+				});
+			})
+
+			$(".drawer-bottom").click(function() {
+				drawer.open({
+					direction: "bottom",
+					dom: ".layer-bottom",
+					distance: "30%"
+				});
+			})
+
+			$(".drawer-open-mask").click(function() {
+				drawer.open({
+					direction: "right",
+					dom: ".layer-open-mask",
+					distance: "30%",
+					maskClose: true
+				});
+			})
+
+			var dom;
+
+			$(".drawer-close-mask").click(function() {
+				dom = drawer.open({
+					direction: "right",
+					dom: ".layer-close-mask",
+					distance: "30%",
+					maskClose: false
+				});
+			})
+
+			$("#btnClose").click(function() {
+				dom.close();
+			})
+
+			$(".drawer-auto-close").click(function() {
+				dom = drawer.open({
+					direction: "right",
+					dom: ".layer-auto-close",
+					distance: "30%",
+					maskClose: false,
+					time: 1000
+				});
+			})
+
+			$(".drawer-call-back").click(function() {
+				dom = drawer.open({
+					direction: "right",
+					dom: ".layer-right",
+					distance: "30%",
+					success: function() {
+						layer.msg("触发回调函数", {
+							icon: 1,
+							time: 1000
+						});
+					}
+				});
+			})
+
+		})
+	</script>
+</html>
