@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>数据图表</title>
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+    <link rel="stylesheet" th:href="@{/pear-admin/css/other/result.css}" />
+</head>
+<body class="pear-container">
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line1" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line2" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line3" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line4" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script th:src="@{/component/script/line1.js}"></script>
+<script th:src="@{/component/script/line2.js}"></script>
+<script th:src="@{/component/script/line3.js}"></script>
+<script th:src="@{/component/script/line4.js}"></script>
+</body>
+</html>

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
-		<title>部门管理</title>
-		<link rel="stylesheet" href="../../component/pear/css/pear.css" />
-		<link rel="stylesheet" href="../../admin/css/other/department.css"/>
+		<title>文章列表</title>
+		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 	</head>
 	<body class="pear-container">
 		<div class="layui-card">
@@ -43,50 +42,60 @@
 				</form>
 			</div>
 		</div>
-		<div class="layui-row layui-col-space15">
-			<div class="layui-col-md3">
-				<div class="layui-card">
-					<div class="layui-card-body">
-						<div id="organizationTreeContent" style="overflow: auto">
-							<ul id="organizationTree" class="dtree organizationTree" data-id="9527"></ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="layui-col-md9">
-				<div class="layui-card">
-					<div class="layui-card-body">
-						<table id="organization-table" lay-filter="organization-table"></table>
-					</div>
-				</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="user-table" lay-filter="user-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="organization-toolbar">
+		<script type="text/html" id="user-toolbar">
 			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
-			<i class="layui-icon layui-icon-add-1"></i>
-			新增
-		</button>
-		<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
-			<i class="layui-icon layui-icon-delete"></i>
-			删除
-		</button>
-	</script>
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        新增
+		    </button>
+		    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+		        <i class="layui-icon layui-icon-delete"></i>
+		        删除
+		    </button>
+		</script>
 
-		<script type="text/html" id="organization-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i
-				class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i
-				class="layui-icon layui-icon-delete"></i></button>
-	    </script>
-		<script src="../../component/layui/layui.js"></script>
-		<script src="../../component/pear/pear.js"></script>
+		<script type="text/html" id="user-bar">
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+		</script>
+
+		<script type="text/html" id="user-enable">
+			<input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.enable == 0 ? 'true' : 'false' }}">
+		</script>
+
+		<script type="text/html" id="user-sex">
+			{{#if (d.sex == 1) { }}
+		    <span>男</span>
+		    {{# }else if(d.sex == 2){ }}
+		    <span>女</span>
+		    {{# } }}
+		</script>
+
+		<script type="text/html" id="user-login">
+			{{#if (d.login == 0) { }}
+		    <span>在线</span>
+		    {{# }else if(d.sex == 1){ }}
+		    <span>离线</span>
+		    {{# } }}
+		</script>
+
+		<script type="text/html" id="user-createTime">
+			{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd')}}
+		</script>
+
+		<script th:src="@{/component/layui/layui.js}"></script>
+		<script th:src="@{/component/pear/pear.js}"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery', 'dtree'], function() {
+			layui.use(['table', 'form', 'jquery','common'], function() {
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
-				let dtree = layui.dtree;
+				let common = layui.common;
 
 				let MODULE_PATH = "operate/";
 
@@ -95,53 +104,62 @@
 							type: 'checkbox'
 						},
 						{
-							title: '名称',
-							field: 'name',
+							title: '账号',
+							field: 'username',
+							align: 'center',
+							width: 100
+						},
+						{
+							title: '姓名',
+							field: 'realName',
 							align: 'center'
 						},
 						{
-							title: '人数',
-							field: 'userCount',
+							title: '性别',
+							field: 'sex',
+							align: 'center',
+							width: 80,
+							templet: '#user-sex'
+						},
+						{
+							title: '电话',
+							field: 'phone',
 							align: 'center'
 						},
 						{
-							title: '位置',
-							field: 'location',
-							align: 'center'
+							title: '启用',
+							field: 'enable',
+							align: 'center',
+							templet: '#user-enable'
 						},
 						{
-							title: '负责人',
-							field: 'leader',
-							align: 'center'
+							title: '登录',
+							field: 'login',
+							align: 'center',
+							templet: '#user-login'
+						},
+						{
+							title: '注册',
+							field: 'createTime',
+							align: 'center',
+							templet: '#user-createTime'
 						},
 						{
 							title: '操作',
-							toolbar: '#organization-bar',
+							toolbar: '#user-bar',
 							align: 'center',
 							width: 130
 						}
 					]
 				]
 
-				var DTree = dtree.render({
-					elem: "#organizationTree",
-					//data: data,
-					initLevel: "2", //默认展开层级为1
-					line: true, // 有线树
-					ficon: ["1", "-1"], // 设定一级图标样式。0表示方形加减图标，8表示小圆点图标
-					icon: ["0", "2"], // 设定二级图标样式。0表示文件夹图标，5表示叶子图标
-					method: 'get',
-					url: "../../admin/data/organizationtree.json"
-				});
-
 				table.render({
-					elem: '#organization-table',
-					url: '../../admin/data/organization.json',
-					height: 'full-150',
+					elem: '#user-table',
+					url: '../../admin/data/user.json',
 					page: true,
 					cols: cols,
 					skin: 'line',
-					toolbar: '#organization-toolbar',
+					toolbar: '#user-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -149,18 +167,7 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				// 绑定节点点击事件
-				dtree.on("node(organizationTree)", function(obj) {
-					if (!obj.param.leaf) {
-						var $div = obj.dom;
-						DTree.clickSpread($div); //调用内置函数展开节点
-					} else {
-						layer.msg("叶子节点就不展开了,刷新右侧列表");
-						table.reload("organization-table");
-					}
-				});
-
-				table.on('tool(organization-table)', function(obj) {
+				table.on('tool(user-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -168,7 +175,7 @@
 					}
 				});
 
-				table.on('toolbar(organization-table)', function(obj) {
+				table.on('toolbar(user-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -178,11 +185,15 @@
 					}
 				});
 
-				form.on('submit(organization-query)', function(data) {
-					table.reload('organization-table', {
+				form.on('submit(user-query)', function(data) {
+					table.reload('user-table', {
 						where: data.field
 					})
 					return false;
+				});
+
+				form.on('switch(user-enable)', function(obj) {
+					layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
 				});
 
 				window.add = function() {
@@ -190,7 +201,7 @@
 						type: 2,
 						title: '新增',
 						shade: 0.1,
-						area: ['500px', '400px'],
+						area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
 						content: MODULE_PATH + 'add.html'
 					});
 				}
@@ -213,7 +224,7 @@
 						layer.close(index);
 						let loading = layer.load();
 						$.ajax({
-							url: MODULE_PATH + "remove/" + obj.data['organizationId'],
+							url: MODULE_PATH + "remove/" + obj.data['userId'],
 							dataType: 'json',
 							type: 'delete',
 							success: function(result) {
@@ -237,19 +248,17 @@
 				}
 
 				window.batchRemove = function(obj) {
-					let data = table.checkStatus(obj.config.id).data;
-					if (data.length === 0) {
+					
+					var checkIds = common.checkField(obj,'userId');
+					
+					if (checkIds === "") {
 						layer.msg("未选中数据", {
 							icon: 3,
 							time: 1000
 						});
 						return false;
 					}
-					let ids = "";
-					for (let i = 0; i < data.length; i++) {
-						ids += data[i].organizationId + ",";
-					}
-					ids = ids.substr(0, ids.length - 1);
+					
 					layer.confirm('确定要删除这些用户', {
 						icon: 3,
 						title: '提示'
@@ -267,7 +276,7 @@
 										icon: 1,
 										time: 1000
 									}, function() {
-										table.reload('organization-table');
+										table.reload('user-table');
 									});
 								} else {
 									layer.msg(result.msg, {
@@ -281,7 +290,7 @@
 				}
 
 				window.refresh = function(param) {
-					table.reload('organization-table');
+					table.reload('user-table');
 				}
 			})
 		</script>

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<title> Pear Admin Layui </title>
+		<title>yblog</title>
 		<!-- 依 赖 样 式 -->
 		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 		<!-- 加 载 样 式-->
@@ -34,7 +34,7 @@
 						</a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="/pear/toperson" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
+							<dd><a user-menu-url="#" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -82,33 +82,33 @@
 				var $ = layui.jquery;
 				var convert = layui.convert;
 				var popup = layui.popup;
-		
+
 				// 初始化顶部用户信息
 				admin.setAvatar("/pear-admin/images/avatar.jpg","就眠仪式");
-				
+
 				// 根目录下 pear.config.yml 文件为初始化配置
 				// 你可以通过 admin.setConfigPath 方法修改配置文件位置
 				// 你可以通过 admin.setConfigType 方法修改配置文件类型
 				admin.setConfigType("yml");
 				admin.setConfigPath("/config/pear.config.yml");
 				admin.render();
-				
-				// 登出逻辑 
+
+				// 登出逻辑
 				admin.logout(function(){
-				
+
 					popup.success("注销成功",function(){
 						location.href = "/pear/login";
 					})
 					// 注销逻辑 返回 true / false
 					return true;
 				})
-				
+
 				// 初始化消息回调
 				admin.message();
-				
+
 				// 重写消息回调 [消息列表点击事件]
 				// admin.message(function(id, title, context, form) {});
-				
+
 			})
 		</script>
 	</body>
