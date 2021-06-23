@@ -2,7 +2,7 @@
 ## 网站配置
 logo: 
   ## 网站名称
-  title: "Pear Admin"
+  title: "yblog Admin"
   ## 网站图标
   image: "/pear-admin/images/logo.png"
 ## 菜单配置

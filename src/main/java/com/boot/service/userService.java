@@ -33,4 +33,6 @@ public interface userService {
                     String email);
 
     int selectUseridByUserName(String username);
+
+    int userCount();
 }

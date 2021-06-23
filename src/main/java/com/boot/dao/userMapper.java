@@ -39,5 +39,6 @@ public interface userMapper {
     int selectUseridByUserName(@Param("username") String username);
 
 
+    int userCount();
 
 }

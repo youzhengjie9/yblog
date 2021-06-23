@@ -92,6 +92,10 @@ public class adminController {
 
     private final String ECHARTS_COUNTS = "echarts_counts";//redis存储对应的访问量的key
 
+    private final String PEAR_THEME="pear";
+
+    private final String curTheme="pear";
+
     static {
 
         themes.add("default");
@@ -159,9 +163,16 @@ public class adminController {
     @Visitor(desc = "进入后台界面")
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
-    public String toAdmin(Model model, HttpSession session, HttpServletRequest request) {
-        String username = springSecurityUtil.currentUser(session);
+    public String toAdmin(Model model,HttpSession session, HttpServletRequest request) {
 
+        String username = springSecurityUtil.currentUser(session);
+        if(curTheme.equals(PEAR_THEME)){ //如果是新主题
+
+
+            return "back/newback/index";
+        }
+
+        System.out.println("admin//");
 
         setting setting = settingService.selectUserSetting(username);
         model.addAttribute("setting",setting); //传入系统设置

@@ -70,5 +70,10 @@ public class userServiceImpl implements userService {
         return userMapper.selectUseridByUserName(username);
     }
 
+    @Override
+    public int userCount() {
+        return userMapper.userCount();
+    }
+
 
 }

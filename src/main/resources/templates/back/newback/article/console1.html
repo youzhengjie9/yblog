@@ -16,7 +16,7 @@
     <div class="layui-row layui-col-space10">
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">今日访问</div>
+                <div class="layui-card-header">发表文章</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value1">
@@ -57,7 +57,7 @@
         </div>
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">提交次数</div>
+                <div class="layui-card-header">推荐文章</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value2">
@@ -97,7 +97,7 @@
         </div>
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">下载数量</div>
+                <div class="layui-card-header">上传附件</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value3">
@@ -131,7 +131,7 @@
         </div>
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">流量统计</div>
+                <div class="layui-card-header">用户总数</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value4">
@@ -174,60 +174,11 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-card">
-                <div class="layui-card-header">动态</div>
-                <div class="layui-card-body">
-                    <dl class="layuiadmin-card-status">
-                        <dd>
-                            <div class="layui-status-img"><a href="javascript:;"><img
-                                    style="width: 32px;height: 32px;border-radius: 50px;"
-                                    th:src="@{/pear-admin/images/avatar.jpg}"></a></div>
-                            <div>
-                                <p>七彩枫叶 在 <a class="pear-text" lay-href="https://gitee.com/Jmysy/Pear-Admin-Layui">Pear
-                                    Admin 专区</a> 回答问题</p>
-                                <span>几秒前</span>
-                            </div>
-                        </dd>
-                        <dd>
-                            <div class="layui-status-img"><a href="javascript:;"><img
-                                    style="width: 32px;height: 32px;border-radius: 50px;"
-                                    th:src="@{/pear-admin/images/avatar.jpg}"></a></div>
-                            <div>
-                                <p>简 在 <a class="pear-text" lay-href="https://gitee.com/Jmysy/Pear-Admin-Layui">Pear
-                                    Admin 专区</a> 进行了 <a class="pear-text"
-                                                        lay-href="http://fly.layui.com/vipclub/list/layuiadmin/column/quiz/">提问</a>
-                                </p>
-                                <span>2天前</span>
-                            </div>
-                        </dd>
-                        <dd>
-                            <div class="layui-status-img"><a href="javascript:;"><img
-                                    style="width: 32px;height: 32px;border-radius: 50px;"
-									th:src="@{/pear-admin/images/avatar.jpg}"></a></div>
-                            <div>
-                                <p>恒宇少年 将 <a class="pear-text" lay-href="https://gitee.com/Jmysy/Pear-Admin-Layui">Pear
-                                    Admin </a> 更新至 2.3.0 版本</p>
-                                <span>7天前</span>
-                            </div>
-                        </dd>
-                        <dd>
-                            <div class="layui-status-img"><a href="javascript:;"><img
-                                    style="width: 32px;height: 32px;border-radius: 50px;"
-									th:src="@{/pear-admin/images/avatar.jpg}"></a></div>
-                            <div>
-                                <p>如花 在 <a class="pear-text" lay-href="https://gitee.com/Jmysy/Pear-Admin-Layui">Pear
-                                    Admin 社区</a> 发布了 <a class="pear-text"
-                                                        lay-href="http://fly.layui.com/column/suggest/">建议</a></p>
-                                <span>7天前</span>
-                            </div>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
+
         </div>
         <div class="layui-col-md3">
             <div class="layui-card">
-                <div class="layui-card-header">最近更新</div>
+                <div class="layui-card-header">最新日志</div>
                 <div class="layui-card-body">
                     <ul class="list">
                         <li class="list-item"><span class="title">优化代码格式</span><span
@@ -249,31 +200,14 @@
                     </ul>
                 </div>
             </div>
-            <div class="layui-card">
-                <div class="layui-card-header">
-                    链接
-                </div>
-                <div class="layui-card-body">
-                    <a target="_blank" href="http://www.pearadmin.com"
-                       class="pear-btn pear-btn-primary  layui-btn-fluid"
-                       style="margin-top: 8px;height: 50px;line-height: 50px;">官 网</a>
-                    <br/>
-                    <a target="_blank" href="https://gitee.com/pear-admin/Pear-Admin-Layui"
-                       class="pear-btn pear-btn-warming  layui-btn-fluid"
-                       style="margin-top: 8px;height: 50px;line-height: 50px;">下 载</a>
-                    <br/>
-                    <a target="_blank" href="https://gitee.com/pear-admin/Pear-Admin-Boot"
-                       class="pear-btn pear-btn-danger  layui-btn-fluid"
-                       style="margin-top: 8px;height: 50px;line-height: 50px;">后 端</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 <!--</div>-->
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
-<script>
+<script th:inline="javascript">
+
     layui.use(['layer', 'echarts', 'element', 'count'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
@@ -283,29 +217,29 @@
 
         count.up("value1", {
             time: 4000,
-            num: 440.34,
-            bit: 2,
+            num: [[${articleCount}]],
+            bit: 0,
             regulator: 50
         })
 
         count.up("value2", {
             time: 4000,
-            num: 236.30,
-            bit: 2,
+            num: [[${recommendCount}]],
+            bit: 0,
             regulator: 50
         })
 
         count.up("value3", {
             time: 4000,
-            num: 634.43,
-            bit: 2,
+            num: [[${imgcount}]],
+            bit: 0,
             regulator: 50
         })
 
         count.up("value4", {
             time: 4000,
-            bit: 2,
-            num: 373.23,
+            bit: 0,
+            num: [[${usercount}]],
             regulator: 50
         })
 
@@ -317,7 +251,15 @@
             },
             xAxis: [{
                 type: 'category',
-                data: ['2019-01', '2019-02', '2019-03', '2019-04', '2019-05', '2019-06'],
+                data:
+                    [
+                        [[${days.get(0)}]], [[${days.get(1)}]],
+                        [[${days.get(2)}]], [[${days.get(3)}]],
+                        [[${days.get(4)}]], [[${days.get(5)}]],
+                        [[${days.get(6)}]]
+                    ]
+
+                ,
                 axisLine: {
                     lineStyle: {
                         color: "#999"
@@ -347,9 +289,14 @@
                 }
             }],
             series: [{
-                name: '课时',
+                name: '访问量',
                 type: 'line',
-                data: [23, 60, 20, 36, 23, 85],
+                data: [
+                    [[${counts.get(0)}]], [[${counts.get(1)}]],
+                    [[${counts.get(2)}]], [[${counts.get(3)}]],
+                    [[${counts.get(4)}]], [[${counts.get(5)}]],
+                    [[${counts.get(6)}]]
+                ],
                 lineStyle: {
                     normal: {
                         width: 8,

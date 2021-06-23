@@ -108,6 +108,10 @@
     </select>
 
 
+    <select id="userCount" resultType="int">
+        SELECT COUNT(*) FROM t_user
+    </select>
+
 
 </mapper>
 
