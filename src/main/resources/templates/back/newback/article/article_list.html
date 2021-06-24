@@ -93,9 +93,9 @@
 
 <script type="text/html" id="allow-enable">
 	{{#  if(d.allowComment == 0){ }}
-	<input type="checkbox" name="allowComment" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
 	{{#  } else { }}
-	<input type="checkbox" name="allowComment" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
 	{{#  } }}
 
 </script>
@@ -225,10 +225,62 @@
 			return false;
 		});
 
-		form.on('switch(user-enable)', function(obj) {
-			layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+		form.on('switch(allow-enable)', function (obj) {
+			let operate;
+			let v=obj.elem.value;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/'+operate+'Comment',
+				//data不能加[]，不然传值不了
+				data: {
+						"articleid": v
+				      }
+				,
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						popup.success(result.msg);
+					} else {
+						popup.failure(result.msg);
+					}
+				}
+			})
 		});
 
+		form.on('switch(recommend-enable)', function (obj) {
+			let operate;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/' + operate+'Recommend',
+				data:{
+					'articleid':obj.elem.value
+				},
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						popup.success(result.msg);
+					} else {
+						popup.failure(result.msg);
+					}
+				}
+			})
+		});
 
 
 		window.remove = function(obj) {

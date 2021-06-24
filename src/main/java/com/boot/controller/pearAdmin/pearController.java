@@ -18,6 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -291,6 +292,72 @@ public class pearController {
 
         return JSON.toJSONString(layuiArticleJSON);
     }
+
+    /**
+     * 开启评论
+     * @param articleid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/enableComment")
+    public String enableComment(Integer articleid){
+        System.out.println("articleid:"+articleid+"==enableComment");
+
+        layuiArticleJSON json=new layuiArticleJSON();
+        json.setSuccess(true);
+        json.setMsg("开启评论成功");
+        return JSON.toJSONString(json);
+    }
+
+    /**
+     * 关闭评论
+     * @param articleid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/disableComment")
+    public String disableComment(Integer articleid){
+        System.out.println("articleid:"+articleid+"==disableComment");
+
+        layuiArticleJSON json=new layuiArticleJSON();
+        json.setSuccess(true);
+        json.setMsg("关闭评论成功");
+        return JSON.toJSONString(json);
+    }
+
+
+    /**
+     * 开启推荐
+     * @param articleid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/enableRecommend")
+    public String enableRecommend(Integer articleid){
+        System.out.println("articleid:"+articleid+"==enableRecommend");
+
+        layuiArticleJSON json=new layuiArticleJSON();
+        json.setSuccess(true);
+        json.setMsg("开启推荐成功");
+        return JSON.toJSONString(json);
+    }
+
+    /**
+     * 取消推荐
+     * @param articleid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(path = "/disableRecommend")
+    public String disableRecommend(Integer articleid){
+        System.out.println("articleid:"+articleid+"==disableRecommend");
+
+        layuiArticleJSON json=new layuiArticleJSON();
+        json.setSuccess(true);
+        json.setMsg("取消推荐成功");
+        return JSON.toJSONString(json);
+    }
+
 
 
     @ResponseBody
