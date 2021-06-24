@@ -3,12 +3,9 @@ package com.boot.controller.pearAdmin;
 import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Visitor;
 import com.boot.controller.adminController;
-import com.boot.data.ResponseData.layuiArticleData;
 import com.boot.data.ResponseData.layuiArticleJSON;
-import com.boot.pojo.Article;
-import com.boot.pojo.setting;
-import com.boot.pojo.tag;
-import com.boot.pojo.userDetail;
+import com.boot.data.ResponseData.layuiData;
+import com.boot.pojo.*;
 import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
@@ -89,6 +86,12 @@ public class pearController {
 
     @Autowired
     private userService userService;
+
+    @Autowired
+    private userAuthorityService userAuthorityService;
+
+    @Autowired
+    private authorityService authorityService;
 
     static {
         themes.add("default");
@@ -268,7 +271,7 @@ public class pearController {
             article.setContent(null);
         }
         System.out.println(articles);
-        layuiArticleData layuiArticleData = new layuiArticleData();
+        layuiData<Article> layuiArticleData = new layuiData<Article>();
         layuiArticleData.setCode(0);
         layuiArticleData.setMsg("");
         layuiArticleData.setCount(total); //“”总共“”的记录数
@@ -414,6 +417,37 @@ public class pearController {
 
         return "back/newback/article/userManager";
     }
+
+    @ResponseBody
+    @RequestMapping(path = "/userManagerData")
+    public String userManagerData(@RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "limit", defaultValue = "6") int limit,
+                                  HttpSession session){
+
+        layuiData<user> json=new layuiData<user>();
+
+        PageHelper.startPage(page,limit);
+        List<user> users = userService.selectAllUser();
+        String name = springSecurityUtil.currentUser(session);
+
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        logger.debug(time + "   用户名：" + name + "进入后台用户管理页面");
+
+        int total = userService.userCount();
+
+        json.setCode(0);
+        json.setCount(total); //总数
+        json.setMsg("");
+        json.setData(users); //分页数据
+
+        return JSON.toJSONString(json);
+    }
+
+
+
+
 
     //友链管理
     @RequestMapping(path = "/toLink")

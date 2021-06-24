@@ -4,12 +4,12 @@ import com.boot.pojo.Article;
 
 import java.util.List;
 
-public class layuiArticleData {
+public class layuiData<T> {
 
     private int code;
     private String msg;
     private int count; //“”总共“”的记录数
-    private List<Article> data; //“”分页“”后的数据
+    private List<T> data; //“”分页“”后的数据
 
     public int getCode() {
         return code;
@@ -35,17 +35,17 @@ public class layuiArticleData {
         this.count = count;
     }
 
-    public List<Article> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<Article> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "layuiArticleData{" +
+        return "layuiData{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", count=" + count +

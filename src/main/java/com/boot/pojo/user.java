@@ -38,6 +38,11 @@ public class user implements Serializable {
         return user_authority;
     }
 
+//    新增加的get方法
+    public int getAuthority_id() {
+        return user_authority.getAuthority_id();
+    }
+
     public void setUser_authority(com.boot.pojo.user_authority user_authority) {
         this.user_authority = user_authority;
     }
