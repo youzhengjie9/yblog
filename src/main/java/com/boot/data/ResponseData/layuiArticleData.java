@@ -8,8 +8,8 @@ public class layuiArticleData {
 
     private int code;
     private String msg;
-    private int count;
-    private List<Article> data;
+    private int count; //“”总共“”的记录数
+    private List<Article> data; //“”分页“”后的数据
 
     public int getCode() {
         return code;

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Visitor;
 import com.boot.controller.adminController;
 import com.boot.data.ResponseData.layuiArticleData;
+import com.boot.data.ResponseData.layuiArticleJSON;
 import com.boot.pojo.Article;
 import com.boot.pojo.setting;
 import com.boot.pojo.tag;
@@ -22,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Api("新版后台系统控制器")
 @Controller
 @RequestMapping(path = "/pear")
+@CrossOrigin
 public class pearController {
 
     private final String DEFAULT_CATEGORY = "默认分类";
@@ -106,13 +106,12 @@ public class pearController {
     }
 
 
-
-    private void charts(Model model){
+    private void charts(Model model) {
         //从缓存中查有没有近7天的缓存
 
 
-        Object var1 =redisTemplate.opsForValue().get(ECHARTS_DAYS);
-        Object var2 =redisTemplate.opsForValue().get(ECHARTS_COUNTS);
+        Object var1 = redisTemplate.opsForValue().get(ECHARTS_DAYS);
+        Object var2 = redisTemplate.opsForValue().get(ECHARTS_COUNTS);
 
         List<String> ds = JSON.parseArray((String) var1, String.class);
         List<Integer> cs = JSON.parseArray((String) var2, Integer.class);
@@ -138,7 +137,7 @@ public class pearController {
             //这个时候我们只需要更新一下最后一天（也就是今天）的数据即可
             String s = ds.get(6); //获取今天的日期
             int i = visitorService.selectOneDayVisitor(s);
-            cs.set(6,i);
+            cs.set(6, i);
             String list = JSON.toJSONString(cs); ////记得转换成json
             model.addAttribute("days", ds);
             model.addAttribute("counts", cs);
@@ -150,23 +149,23 @@ public class pearController {
     }
 
 
-
     @RequestMapping(path = "/welcome")
-    public String towelcome(){
+    public String towelcome() {
 
         return "back/newback/article/welcome";
     }
+
     //控制后台，非常重要，访问后台时，会内嵌这个url
     @RequestMapping(path = "/toconsole")
-    public String toconsole(Model model, HttpSession session, HttpServletRequest request){
+    public String toconsole(Model model, HttpSession session, HttpServletRequest request) {
 
 
         int usercount = userService.userCount(); //用户总数
-        model.addAttribute("usercount",usercount);
+        model.addAttribute("usercount", usercount);
 
         String username = springSecurityUtil.currentUser(session);
         setting setting = settingService.selectUserSetting(username);
-        model.addAttribute("setting",setting); //传入系统设置
+        model.addAttribute("setting", setting); //传入系统设置
 
         String ipAddr = ipUtils.getIpAddr(request);
         logger.debug("ip:" + ipAddr + "访问了后台管理界面");
@@ -182,8 +181,7 @@ public class pearController {
         model.addAttribute("articlePageInfo", articlePageInfo);
 
         List<Article> articles1 = articleService.selectArticleByRecommend();
-        model.addAttribute("recommendCount",articles1.size());
-
+        model.addAttribute("recommendCount", articles1.size());
 
 
         //统计图表
@@ -203,7 +201,7 @@ public class pearController {
 
     //登录
     @RequestMapping(path = "/login")
-    public String tologin(){
+    public String tologin() {
 
 
         return "back/newback/login";
@@ -212,7 +210,19 @@ public class pearController {
     //文章
     //发布文章
     @RequestMapping(path = "/topublish")
-    public String toPublishArticle(){
+    public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request) {
+
+        String username = springSecurityUtil.currentUser(session);
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "进入后台发布页面：ip为" + ipAddr);
+        model.addAttribute("commons", Commons.getInstance());
+
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail", userDetail);
+
 
         return "back/newback/article/article_edit";
     }
@@ -221,7 +231,7 @@ public class pearController {
     @Visitor(desc = "进入文章列表界面")
     @RequestMapping(path = "/toArticleManager")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面，分页默认是第一页")
-    public String toArticleManager1(Model model, HttpSession session, HttpServletRequest request){
+    public String toArticleManager1(Model model, HttpSession session, HttpServletRequest request) {
 
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -246,10 +256,12 @@ public class pearController {
 
     @ResponseBody
     @RequestMapping("/articledata")
-    public String articleData(@RequestParam(value = "page",defaultValue = "1") int page,
-                              @RequestParam(value = "limit",defaultValue = "6") int limit){
-        System.out.println("page:"+page+",limit:"+limit);
+    public String articleData(@RequestParam(value = "page", defaultValue = "1") int page,
+                              @RequestParam(value = "limit", defaultValue = "6") int limit) {
+        System.out.println("page:" + page + ",limit:" + limit);
         System.out.println("============");
+
+        int total = articleService.selectArticleCount();
 
         PageHelper.startPage(page, limit);
         List<Article> articles = articleService.selectAllArticleByCreated();
@@ -260,19 +272,47 @@ public class pearController {
         layuiArticleData layuiArticleData = new layuiArticleData();
         layuiArticleData.setCode(0);
         layuiArticleData.setMsg("");
-        layuiArticleData.setCount(limit);
-        layuiArticleData.setData(articles);
+        layuiArticleData.setCount(total); //“”总共“”的记录数
+        layuiArticleData.setData(articles); //“”分页“”后的数据
         return JSON.toJSONString(layuiArticleData);
     }
 
+    @ResponseBody
+    @RequestMapping(path = "/deleteArticle/{articleid}")
+    public String deleteArticle(@PathVariable("articleid") int articleid) {
+
+        System.out.println("deleteArticle:" + articleid);
+        layuiArticleJSON layuiArticleJSON = new layuiArticleJSON();
+        if (articleid == 37) {
+            layuiArticleJSON.setSuccess(true);
+        } else {
+            layuiArticleJSON.setSuccess(false);
+        }
+
+        layuiArticleJSON.setMsg("hello");
+
+        return JSON.toJSONString(layuiArticleJSON);
+    }
 
 
+    @ResponseBody
+    @RequestMapping(path = "/batchRemove/{checkIds}")
+    public String batchRemoveArticle(@PathVariable("checkIds") String checkIds) {
 
+        System.out.println("batchRemoveArticle:" + checkIds);
+        layuiArticleJSON layuiArticleJSON = new layuiArticleJSON();
+
+        layuiArticleJSON.setSuccess(true);
+
+        layuiArticleJSON.setMsg("batch");
+
+        return JSON.toJSONString(layuiArticleJSON);
+    }
 
 
     //分类管理
     @RequestMapping(path = "/toCategory")
-    public String toCategory(){
+    public String toCategory() {
 
 
         return "back/newback/article/categories";
@@ -280,7 +320,7 @@ public class pearController {
 
     //标签管理
     @RequestMapping(path = "/toTag")
-    public String toTag(){
+    public String toTag() {
 
 
         return "back/newback/article/tag_list";
@@ -288,7 +328,7 @@ public class pearController {
 
     //附件管理
     @RequestMapping(path = "/toFileUpload")
-    public String toFileUpload(){
+    public String toFileUpload() {
 
 
         return "back/newback/article/img_list";
@@ -296,14 +336,15 @@ public class pearController {
 
     //爬取数据
     @RequestMapping(path = "/toCatchData")
-    public String toCatchData(){
+    public String toCatchData() {
 
 
         return "back/newback/article/catch_list";
     }
+
     //用户管理
     @RequestMapping(path = "/toUserManager")
-    public String toUserManager(){
+    public String toUserManager() {
 
 
         return "back/newback/article/userManager";
@@ -311,14 +352,15 @@ public class pearController {
 
     //友链管理
     @RequestMapping(path = "/toLink")
-    public String toLink(){
+    public String toLink() {
 
 
         return "back/newback/article/link_list";
     }
+
     //个人资料
     @RequestMapping(path = "/touser")
-    public String touser(){
+    public String touser() {
 
 
         return "back/newback/article/user_list";
@@ -326,19 +368,21 @@ public class pearController {
 
     //访客记录
     @RequestMapping(path = "/toVisitor")
-    public String toVisitor(){
+    public String toVisitor() {
 
 
         return "back/newback/article/visitor_list";
     }
+
     //黑名单
     @RequestMapping(path = "/toBlack")
-    public String toBlack(){
+    public String toBlack() {
 
 
         return "back/newback/article/black_list";
     }
-//    //ip查询
+
+    //    //ip查询
 //    @RequestMapping(path = "/toIpsearch")
 //    public String toIpsearch(){
 //
@@ -347,14 +391,15 @@ public class pearController {
 //    }
     //拦截记录
     @RequestMapping(path = "/toInterceptorLog")
-    public String toInterceptorLog(){
+    public String toInterceptorLog() {
 
 
         return "back/newback/article/interceptor_list";
     }
+
     //行为日志
     @RequestMapping(path = "/toLog")
-    public String toLog(){
+    public String toLog() {
 
 
         return "back/newback/article/log_list";
@@ -362,28 +407,27 @@ public class pearController {
 
     //数据监控
     @RequestMapping(path = "/toMonitor")
-    public String toMonitor(){
+    public String toMonitor() {
 
 
         return "back/newback/article/monitor";
     }
+
     //数据图表
     @RequestMapping(path = "/toEcharts")
-    public String toEcharts(){
+    public String toEcharts() {
 
 
         return "back/newback/article/statistic_charts";
     }
+
     //系统设置
     @RequestMapping(path = "/toSetting")
-    public String toSetting(){
+    public String toSetting() {
 
 
         return "back/newback/article/setting";
     }
-
-
-
 
 
 }
