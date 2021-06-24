@@ -255,7 +255,7 @@
         <result column="allow_comment" property="allowComment"/>
         <result column="recommend" property="recommend"/>
         <result column="thumbnail" property="thumbnail"/>
-
+        <result column="likes" property="likes"/>
         <association property="statistic" javaType="com.boot.pojo.Statistic">
             <result property="articleId" column="article_id"/>
             <result property="hits" column="hits"/>
@@ -277,6 +277,7 @@
 	t_article.allow_comment,
 	t_article.recommend,
 	t_article.thumbnail,
+	t_article.likes,
 	t_statistic.hits,
 	t_statistic.comments_num
     FROM

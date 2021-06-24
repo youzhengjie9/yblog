@@ -44,9 +44,8 @@
 </div>
 <div class="layui-card">
 	<div class="layui-card-body">
+<!--		表格-->
 		<table id="user-table" lay-filter="user-table"></table>
-<!--		分页-->
-<!--		<div id="test1"></div>-->
 	</div>
 </div>
 
@@ -91,24 +90,35 @@
 	<div>{{}}</div>
 	{{#  } }}
 </script>
+
 <script type="text/html" id="allow-enable">
-	<input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.allowComment == 0 ? 'true' : 'false' }}">
+	{{#  if(d.allowComment == 0){ }}
+	<input type="checkbox" name="allowComment" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+	{{#  } else { }}
+	<input type="checkbox" name="allowComment" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+	{{#  } }}
+
 </script>
+
+
 <script type="text/html" id="recommend-enable">
-	<input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.recommend == 0 ? 'true' : 'false' }}">
+	{{#  if(d.recommend == 0){ }}
+	<input type="checkbox" name="recommend" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="recommend-enable">
+	{{#  } else { }}
+	<input type="checkbox" name="recommend" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="recommend-enable" checked = "checked">
+	{{#  } }}
+
 </script>
 
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script>
-	layui.use(['laypage','table', 'form', 'jquery','common'], function() {
+	layui.use(['table', 'form', 'jquery','common'], function() {
 		let table = layui.table;
 		let form = layui.form;
 		let $ = layui.jquery;
 		let common = layui.common;
-		let laypage = layui.laypage;
 
-		let MODULE_PATH = "operate/";
 
 		let cols = [
 			[{
@@ -173,19 +183,6 @@
 				}
 			]
 		]
-		// //执行一个laypage实例
-		// laypage.render({
-		// 	elem: 'test1', //注意，这里的 test1 是 ID，不用加 # 号
-		// 	curr: 1
-		// 	,count: 50 //数据总数，从服务端得到
-		// 	, layout: ['count','prev', 'page', 'next', 'skip']
-		// 	, jump: function (obj, first) {
-		// 		if (!first)
-		// 			pageIndex = obj.curr;
-		// 		GetSubjectsList(obj.curr);//obj.curr输入的要跳转的页码
-		// 	}
-		//
-		// })
 
 		table.render({
 			elem: '#user-table',

@@ -34,13 +34,7 @@ public class Article implements Serializable {
     public Article() {
     }
 
-    public Article(Integer id, String title,
-                   String content, Date created,
-                   Date modified, String categories,
-                   String tags, Boolean allowComment,
-                   String thumbnail, Statistic statistic,
-                   int recommend,
-                   List<Comment> comments) {
+    public Article(Integer id, String title, String content, Date created, Date modified, String categories, String tags, Boolean allowComment, int recommend, String thumbnail, int likes, Statistic statistic, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -49,11 +43,13 @@ public class Article implements Serializable {
         this.categories = categories;
         this.tags = tags;
         this.allowComment = allowComment;
-        this.recommend=recommend;
+        this.recommend = recommend;
         this.thumbnail = thumbnail;
+        this.likes = likes;
         this.statistic = statistic;
         this.comments = comments;
     }
+
 
     public int getRecommend() {
         return recommend;

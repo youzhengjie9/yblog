@@ -258,8 +258,6 @@ public class pearController {
     @RequestMapping("/articledata")
     public String articleData(@RequestParam(value = "page", defaultValue = "1") int page,
                               @RequestParam(value = "limit", defaultValue = "6") int limit) {
-        System.out.println("page:" + page + ",limit:" + limit);
-        System.out.println("============");
 
         int total = articleService.selectArticleCount();
 
@@ -268,7 +266,7 @@ public class pearController {
         for (Article article : articles) {
             article.setContent(null);
         }
-
+        System.out.println(articles);
         layuiArticleData layuiArticleData = new layuiArticleData();
         layuiArticleData.setCode(0);
         layuiArticleData.setMsg("");
