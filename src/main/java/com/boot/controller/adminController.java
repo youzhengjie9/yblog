@@ -172,8 +172,6 @@ public class adminController {
             return "back/newback/index";
         }
 
-        System.out.println("admin//");
-
         setting setting = settingService.selectUserSetting(username);
         model.addAttribute("setting",setting); //传入系统设置
 
@@ -213,7 +211,6 @@ public class adminController {
     @RequestMapping(path = "/toPublishArticle")
     @ApiOperation(value = "进入发布文章界面", notes = "进入发布文章界面")
     public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request) {
-
 
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();

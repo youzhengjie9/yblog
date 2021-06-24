@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -163,35 +164,40 @@ public class visitorInterceptor implements HandlerInterceptor {
 //        listFiles(scanPackage, p);
 
 
-        //获取控制器的名字（全类名）
-        String controllerName = ((HandlerMethod) o).getBean().getClass().getName();
-        //获取方法名
-        String methodName = ((HandlerMethod) o).getMethod().getName();
+
+//获取控制器的名字（全类名）
+            String controllerName = ((HandlerMethod) o).getBean().getClass().getName();
+            //获取方法名
+            String methodName = ((HandlerMethod) o).getMethod().getName();
 
 //        System.out.println(methodName);
 
-        Class<?> aClass = Class.forName(controllerName);
+            Class<?> aClass = Class.forName(controllerName);
 
-        Method[] methods = aClass.getMethods();
+            Method[] methods = aClass.getMethods();
 
 
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) { //指定方法名
+            for (Method method : methods) {
+                if (method.getName().equals(methodName)) { //指定方法名
 
-                Visitor visitor = method.getAnnotation(Visitor.class);
+                    Visitor visitor = method.getAnnotation(Visitor.class);
 
-                if (visitor != null) { //如果有这个注解
+                    if (visitor != null) { //如果有这个注解
 
-                    String desc = visitor.desc(); //获取注解值
+                        String desc = visitor.desc(); //获取注解值
 
-                    this.addVisitor(request, desc);
+                        this.addVisitor(request, desc);
+
+                    }
 
                 }
 
-            }
+
+
 
 
         }
+
 
     }
 

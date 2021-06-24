@@ -1,7 +1,9 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Visitor;
 import com.boot.controller.adminController;
+import com.boot.data.ResponseData.layuiArticleData;
 import com.boot.pojo.Article;
 import com.boot.pojo.setting;
 import com.boot.pojo.tag;
@@ -14,12 +16,15 @@ import com.boot.utils.timeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -30,10 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Api("调试接入新的后台管理系统控制器_仅仅是调试专用")
+@Api("新版后台系统控制器")
 @Controller
 @RequestMapping(path = "/pear")
-public class testController {
+public class pearController {
 
     private final String DEFAULT_CATEGORY = "默认分类";
 
@@ -85,7 +90,6 @@ public class testController {
     private userService userService;
 
     static {
-
         themes.add("default");
         themes.add("calmlog");
     }
@@ -196,14 +200,7 @@ public class testController {
 
         return "back/newback/article/console1";
     }
-    //控制后台
-    @RequestMapping(path = "/admin")
-    public String toAdmin(){
 
-
-
-        return "back/newback/index";
-    }
     //登录
     @RequestMapping(path = "/login")
     public String tologin(){
@@ -217,17 +214,61 @@ public class testController {
     @RequestMapping(path = "/topublish")
     public String toPublishArticle(){
 
-
         return "back/newback/article/article_edit";
     }
 
     //文章管理
+    @Visitor(desc = "进入文章列表界面")
     @RequestMapping(path = "/toArticleManager")
-    public String toArticleManager(){
+    @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面，分页默认是第一页")
+    public String toArticleManager1(Model model, HttpSession session, HttpServletRequest request){
+
+        String username = springSecurityUtil.currentUser(session);
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        String ipAddr = ipUtils.getIpAddr(request);
+        logger.debug(time + "   用户名：" + username + "查看文章列表,ip为：" + ipAddr);
+        model.addAttribute("commons", Commons.getInstance());
+
+
+        PageHelper.startPage(1, 6);
+        List<Article> articles = articleService.selectAllArticleByCreated();
+        PageInfo pageInfo = new PageInfo(articles);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("articles", articles);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail", userDetail);
 
 
         return "back/newback/article/article_list";
     }
+
+    @ResponseBody
+    @RequestMapping("/articledata")
+    public String articleData(@RequestParam(value = "page",defaultValue = "1") int page,
+                              @RequestParam(value = "limit",defaultValue = "6") int limit){
+        System.out.println("page:"+page+",limit:"+limit);
+        System.out.println("============");
+
+        PageHelper.startPage(page, limit);
+        List<Article> articles = articleService.selectAllArticleByCreated();
+        for (Article article : articles) {
+            article.setContent(null);
+        }
+
+        layuiArticleData layuiArticleData = new layuiArticleData();
+        layuiArticleData.setCode(0);
+        layuiArticleData.setMsg("");
+        layuiArticleData.setCount(limit);
+        layuiArticleData.setData(articles);
+        return JSON.toJSONString(layuiArticleData);
+    }
+
+
+
+
+
 
     //分类管理
     @RequestMapping(path = "/toCategory")
