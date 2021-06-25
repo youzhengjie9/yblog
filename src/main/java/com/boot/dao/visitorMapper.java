@@ -4,6 +4,7 @@ import com.boot.pojo.onedayVisitor;
 import com.boot.pojo.visitor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public interface visitorMapper {
     //echarts ,查询一天的访问量
     int selectOneDayVisitor(@Param("day") String day);
 
-
-
+    @Select("select count(*) from t_visitor")
+    int selectVistorCount();
 
 }

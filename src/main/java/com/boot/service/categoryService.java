@@ -34,4 +34,7 @@ public interface categoryService {
 
     //echarts
     List<category> selectCategories_echarts();
+
+    //查询分类数量
+    int selectCategoryCount();
 }

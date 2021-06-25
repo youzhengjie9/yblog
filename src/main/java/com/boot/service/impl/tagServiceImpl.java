@@ -48,4 +48,9 @@ public class tagServiceImpl implements tagService {
     public List<tag> selectTags_limit8() {
         return tagMapper.selectTags_limit8();
     }
+
+    @Override
+    public int selectTagCount() {
+        return tagMapper.selectTagCount();
+    }
 }

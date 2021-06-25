@@ -44,15 +44,16 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
+        <!--		表格-->
         <table id="user-table" lay-filter="user-table"></table>
     </div>
 </div>
 
 <script type="text/html" id="user-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+    <a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
-    </button>
+    </a>
     <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
@@ -64,29 +65,7 @@
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
 
-<script type="text/html" id="user-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.enable == 0 ? 'true' : 'false' }}">
-</script>
 
-<script type="text/html" id="user-sex">
-    {{#if (d.sex == 1) { }}
-    <span>男</span>
-    {{# }else if(d.sex == 2){ }}
-    <span>女</span>
-    {{# } }}
-</script>
-
-<script type="text/html" id="user-login">
-    {{#if (d.login == 0) { }}
-    <span>在线</span>
-    {{# }else if(d.sex == 1){ }}
-    <span>离线</span>
-    {{# } }}
-</script>
-
-<script type="text/html" id="user-createTime">
-    {{layui.util.toDateString(d.createTime, 'yyyy-MM-dd')}}
-</script>
 
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
@@ -97,52 +76,26 @@
         let $ = layui.jquery;
         let common = layui.common;
 
-        let MODULE_PATH = "operate/";
 
         let cols = [
             [{
                 type: 'checkbox'
             },
                 {
-                    title: '账号',
-                    field: 'username',
+                    title: 'id',
+                    field: 'id',
                     align: 'center',
                     width: 100
                 },
                 {
-                    title: '姓名',
-                    field: 'realName',
+                    title: '分类名称',
+                    field: 'categoryName',
                     align: 'center'
                 },
                 {
-                    title: '性别',
-                    field: 'sex',
-                    align: 'center',
-                    width: 80,
-                    templet: '#user-sex'
-                },
-                {
-                    title: '电话',
-                    field: 'phone',
+                    title: '数量',
+                    field: 'categoryCount',
                     align: 'center'
-                },
-                {
-                    title: '启用',
-                    field: 'enable',
-                    align: 'center',
-                    templet: '#user-enable'
-                },
-                {
-                    title: '登录',
-                    field: 'login',
-                    align: 'center',
-                    templet: '#user-login'
-                },
-                {
-                    title: '注册',
-                    field: 'createTime',
-                    align: 'center',
-                    templet: '#user-createTime'
                 },
                 {
                     title: '操作',
@@ -155,17 +108,19 @@
 
         table.render({
             elem: '#user-table',
-            url: '../../admin/data/user.json',
+            url: '/pear/categoryData',
             page: true,
             cols: cols,
             skin: 'line',
             toolbar: '#user-toolbar',
+            text: {none: '暂无分类信息'},
             defaultToolbar: [{
                 title: '刷新',
                 layEvent: 'refresh',
                 icon: 'layui-icon-refresh',
             }, 'filter', 'print', 'exports']
         });
+
 
         table.on('tool(user-table)', function(obj) {
             if (obj.event === 'remove') {
@@ -192,41 +147,75 @@
             return false;
         });
 
-        form.on('switch(user-enable)', function(obj) {
-            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+        form.on('switch(allow-enable)', function (obj) {
+            let operate;
+            let v=obj.elem.value;
+            if (obj.elem.checked) {
+                operate = "enable";
+            } else {
+                operate = "disable";
+            }
+            let loading = layer.load();
+            $.ajax({
+                url: '/pear/'+operate+'Comment',
+                //data不能加[]，不然传值不了
+                data: {
+                    "articleid": v
+                }
+                ,
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'get',
+                success: function (result) {
+                    layer.close(loading);
+                    if (result.success) {
+                        popup.success(result.msg);
+                    } else {
+                        popup.failure(result.msg);
+                    }
+                }
+            })
         });
 
-        window.add = function() {
-            layer.open({
-                type: 2,
-                title: '新增',
-                shade: 0.1,
-                area: [common.isModile()?'100%':'500px', common.isModile()?'100%':'400px'],
-                content: MODULE_PATH + 'add.html'
-            });
-        }
+        form.on('switch(recommend-enable)', function (obj) {
+            let operate;
+            if (obj.elem.checked) {
+                operate = "enable";
+            } else {
+                operate = "disable";
+            }
+            let loading = layer.load();
+            $.ajax({
+                url: '/pear/' + operate+'Recommend',
+                data:{
+                    'articleid':obj.elem.value
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'get',
+                success: function (result) {
+                    layer.close(loading);
+                    if (result.success) {
+                        popup.success(result.msg);
+                    } else {
+                        popup.failure(result.msg);
+                    }
+                }
+            })
+        });
 
-        window.edit = function(obj) {
-            layer.open({
-                type: 2,
-                title: '修改',
-                shade: 0.1,
-                area: ['500px', '400px'],
-                content: MODULE_PATH + 'edit.html'
-            });
-        }
 
         window.remove = function(obj) {
-            layer.confirm('确定要删除该用户', {
+            layer.confirm('确定要删除该分类', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: MODULE_PATH + "remove/" + obj.data['userId'],
+                    url: "/pear/deleteArticle/"+obj.data['id'],
                     dataType: 'json',
-                    type: 'delete',
+                    type: 'GET',
                     success: function(result) {
                         layer.close(loading);
                         if (result.success) {
@@ -249,7 +238,7 @@
 
         window.batchRemove = function(obj) {
 
-            var checkIds = common.checkField(obj,'userId');
+            var checkIds = common.checkField(obj,'id');
 
             if (checkIds === "") {
                 layer.msg("未选中数据", {
@@ -259,16 +248,16 @@
                 return false;
             }
 
-            layer.confirm('确定要删除这些用户', {
+            layer.confirm('确定要删除这些分类', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: MODULE_PATH + "batchRemove/" + ids,
+                    url: "/pear/batchRemove/"+checkIds,
                     dataType: 'json',
-                    type: 'delete',
+                    type: 'get',
                     success: function(result) {
                         layer.close(loading);
                         if (result.success) {

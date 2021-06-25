@@ -5,15 +5,19 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "标签实体类",description = "封装标签名称和使用的数量")
 public class tag {
 
+    private int id;
     private String tagName;
     private int tagCount;
 
     public tag() {
     }
 
-    public tag(String tagName, int tagCount) {
-        this.tagName = tagName;
-        this.tagCount = tagCount;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTagName() {
@@ -35,7 +39,8 @@ public class tag {
     @Override
     public String toString() {
         return "tag{" +
-                "tagName='" + tagName + '\'' +
+                "id=" + id +
+                ", tagName='" + tagName + '\'' +
                 ", tagCount=" + tagCount +
                 '}';
     }

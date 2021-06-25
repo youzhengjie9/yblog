@@ -65,6 +65,11 @@ public class categoryServiceImpl implements categoryService {
         return categoryMapper.selectCategories_echarts();
     }
 
+    @Override
+    public int selectCategoryCount() {
+        return categoryMapper.selectCategoryCount();
+    }
+
 
     @Override
     public List<category> selectCategories() {

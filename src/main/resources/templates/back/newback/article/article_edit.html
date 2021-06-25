@@ -13,9 +13,13 @@
 				color: #5FB878;
 			}
 			.layui-card-body{
-				height: 68px;
+				height: 150px;
 			}
-
+			#btns{
+				width: 360px;
+				height: 38px;
+				margin-left: 900px;
+			}
 		</style>
 	</head>
 	<body class="pear-container">
@@ -23,10 +27,12 @@
 		<div class="layui-col-md12">
 			<div class="layui-card">
 				<div class="layui-card-body">
-					<span style="color: green;font-size: 22px;float: left">发布/编辑文章</span>
+					<span style="color: green;font-size: 22px">发布/编辑文章</span>
 					<br/>
-					<input type="text" style="width: 30%;float: left">
-					<input type="text" id="tags" style="width: 30%;float: left">
+					标题：<br/>
+					<input class="layui-input" type="text" style="width: 40%" required>
+					标签：<br/>
+					<input class="layui-input" type="text" id="tags" style="width: 40%" required>
 				</div>
 			</div>
 		</div>
@@ -35,9 +41,20 @@
 				<div class="layui-card-header"><span style="color: green;font-size: 15px;">文章编辑器</span></div>
 				<div class="layui-card-body">
 					<textarea name="" id="edit" cols="30" rows="10"></textarea>
-					<div class="layui-btn-group" style="margin-top: 10px">
-						<button class="layui-btn">发布文章</button>
+					<div id="btns">
+
+						<div class="layui-btn-group layui-btn-primary" style="margin-top: 10px">
+							<a href="#" class="layui-btn layui-btn-radius" target="_blank">返回列表</a>
+						</div>
+						<div class="layui-btn-group" style="margin-top: 10px">
+							<a href="#" class="layui-btn layui-btn-warm layui-btn-radius" target="_blank">放入草稿</a>
+						</div>
+						<div class="layui-btn-group" style="margin-top: 10px">
+							<a href="#" class="layui-btn layui-btn-radius" target="_blank">发布文章</a>
+						</div>
+
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -63,10 +80,14 @@
 
 		// Tags Input
 		$('#tags').tagsInput({
-			width: '40%',
+			width: '39%',
 			height: '35px',
 			defaultText: '请输入文章标签'
 		});
+
+		$('#tags_tag').css('width','90.4px');
+
+
 	</script>
 	</body>
 

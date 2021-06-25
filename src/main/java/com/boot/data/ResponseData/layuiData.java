@@ -1,13 +1,11 @@
 package com.boot.data.ResponseData;
 
-import com.boot.pojo.Article;
-
 import java.util.List;
 
 public class layuiData<T> {
 
-    private int code;
-    private String msg;
+    private int code;  //要写成0
+    private String msg; //要写成""
     private int count; //“”总共“”的记录数
     private List<T> data; //“”分页“”后的数据
 

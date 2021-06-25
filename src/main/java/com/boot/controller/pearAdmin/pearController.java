@@ -93,6 +93,10 @@ public class pearController {
     @Autowired
     private authorityService authorityService;
 
+    @Autowired
+    private linkService linkService;
+
+
     static {
         themes.add("default");
         themes.add("calmlog");
@@ -386,6 +390,26 @@ public class pearController {
         return "back/newback/article/categories";
     }
 
+    @ResponseBody
+    @RequestMapping(path = "/categoryData")
+    public String categoryData(@RequestParam(value = "page", defaultValue = "1") int page,
+                               @RequestParam(value = "limit", defaultValue = "3") int limit){
+
+        PageHelper.startPage(page,limit);
+        List<category> categories = categoryService.selectCategories();
+
+        int count=categoryService.selectCategoryCount();
+        layuiData<category> layuiData=new layuiData<>();
+        layuiData.setCode(0);
+        layuiData.setMsg("");
+        layuiData.setCount(count);
+        layuiData.setData(categories);
+
+        return JSON.toJSONString(layuiData);
+
+    }
+
+
     //标签管理
     @RequestMapping(path = "/toTag")
     public String toTag() {
@@ -393,6 +417,28 @@ public class pearController {
 
         return "back/newback/article/tag_list";
     }
+
+    @RequestMapping(path = "/tagsData")
+    @ResponseBody
+    public String tagsData(@RequestParam(value = "page", defaultValue = "1") int page,
+                           @RequestParam(value = "limit", defaultValue = "3") int limit) {
+
+
+        layuiData<tag> taglayuiData = new layuiData<>();
+
+        PageHelper.startPage(page,limit);
+        List<tag> tags = tagService.selectAllTag();
+
+        int count = tagService.selectTagCount();
+        taglayuiData.setCode(0);
+        taglayuiData.setMsg("");
+        taglayuiData.setData(tags);
+        taglayuiData.setCount(count);
+
+        return JSON.toJSONString(taglayuiData);
+    }
+
+
 
     //附件管理
     @RequestMapping(path = "/toFileUpload")
@@ -424,7 +470,7 @@ public class pearController {
                                   @RequestParam(value = "limit", defaultValue = "6") int limit,
                                   HttpSession session){
 
-        layuiData<user> json=new layuiData<user>();
+        layuiData<user> json=new layuiData<>();
 
         PageHelper.startPage(page,limit);
         List<user> users = userService.selectAllUser();
@@ -446,9 +492,6 @@ public class pearController {
     }
 
 
-
-
-
     //友链管理
     @RequestMapping(path = "/toLink")
     public String toLink() {
@@ -456,6 +499,34 @@ public class pearController {
 
         return "back/newback/article/link_list";
     }
+
+    /**
+     *
+     * @param page layui分页默认会传page和limit的值，所以要进行接收
+     * @param limit
+     * @return json
+     */
+    @ResponseBody
+    @RequestMapping(path = "/linkData")
+    public String linkData(@RequestParam(value = "page", defaultValue = "1") int page,
+                           @RequestParam(value = "limit", defaultValue = "6") int limit){
+
+
+        layuiData<link> linklayuiData = new layuiData<>();
+        PageHelper.startPage(page,limit);
+        List<link> links = linkService.selectAllLink();
+        int count = linkService.linkCount();
+        linklayuiData.setCode(0);
+        linklayuiData.setMsg("");
+        linklayuiData.setCount(count);
+        linklayuiData.setData(links);
+
+
+        return JSON.toJSONString(linklayuiData);
+    }
+
+
+
 
     //个人资料
     @RequestMapping(path = "/touser")
@@ -472,6 +543,28 @@ public class pearController {
 
         return "back/newback/article/visitor_list";
     }
+
+    @ResponseBody
+    @RequestMapping(path = "/visitorData")
+    public String visitorData(@RequestParam(value = "page", defaultValue = "1") int page,
+                              @RequestParam(value = "limit", defaultValue = "10") int limit){
+
+
+        layuiData<visitor> visitorlayuiData = new layuiData<>();
+
+        PageHelper.startPage(page,limit);
+        List<visitor> visitors = visitorService.selectVisitor();
+
+        int count = visitorService.selectVistorCount();
+        visitorlayuiData.setCode(0);
+        visitorlayuiData.setCount(count);
+        visitorlayuiData.setMsg("");
+        visitorlayuiData.setData(visitors);
+
+        return JSON.toJSONString(visitorlayuiData);
+    }
+
+
 
     //黑名单
     @RequestMapping(path = "/toBlack")

@@ -24,4 +24,6 @@ public interface tagService {
 
     //首页标签
     List<tag> selectTags_limit8();
+
+    int selectTagCount();
 }

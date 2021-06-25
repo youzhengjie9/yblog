@@ -19,6 +19,7 @@ public interface visitorService {
     //echarts ,查询一天的访问量
     int selectOneDayVisitor(String day);
 
+    int selectVistorCount();
 
 
 }

@@ -32,4 +32,8 @@ public interface tagMapper {
     @Select("select * from t_tag  order by tagCount desc limit 8")
     List<tag> selectTags_limit8();
 
+    @Select("select count(*) from t_tag")
+    int selectTagCount();
+
+
 }

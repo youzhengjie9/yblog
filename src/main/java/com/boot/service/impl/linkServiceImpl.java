@@ -33,4 +33,9 @@ public class linkServiceImpl implements linkService {
     public void deleteLink(int id) {
         linkMapper.deleteLink(id);
     }
+
+    @Override
+    public int linkCount() {
+        return linkMapper.linkCount();
+    }
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 @ApiModel(value = "分类实体类",description = "封装分类信息")
 public class category implements Serializable {
 
+    private int id;
     private String categoryName;
     private int categoryCount;
 
@@ -16,6 +17,14 @@ public class category implements Serializable {
     public category(String categoryName, int categoryCount) {
         this.categoryName = categoryName;
         this.categoryCount = categoryCount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCategoryName() {
@@ -37,7 +46,8 @@ public class category implements Serializable {
     @Override
     public String toString() {
         return "category{" +
-                "categoryName='" + categoryName + '\'' +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
                 ", categoryCount=" + categoryCount +
                 '}';
     }

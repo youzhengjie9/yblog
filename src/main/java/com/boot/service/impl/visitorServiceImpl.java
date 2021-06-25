@@ -35,5 +35,10 @@ public class visitorServiceImpl implements visitorService {
         return visitorMapper.selectOneDayVisitor(day);
     }
 
+    @Override
+    public int selectVistorCount() {
+        return visitorMapper.selectVistorCount();
+    }
+
 
 }
