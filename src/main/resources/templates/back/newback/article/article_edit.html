@@ -4,24 +4,73 @@
 		<meta charset="utf-8">
 		<title></title>
 		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
+
+<!--		jquery 标签输入框插件-->
+		<link th:href="@{/back/plugins/tagsinput/jquery.tagsinput.css}" rel="stylesheet"/>
 		<style>
 			h1{
 				margin-top: 200px;
 				color: #5FB878;
 			}
 			.layui-card-body{
-				text-align: center;height: 500px;
+				height: 68px;
 			}
+
 		</style>
 	</head>
 	<body class="pear-container">
-		<div class="layui-card">
-			<div class="layui-card-header"></div>
-			<div class="layui-card-body">
-				<h1><b>edit article</b></h1>
+	<div class="layui-row layui-col-space10">
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<span style="color: green;font-size: 22px;float: left">发布/编辑文章</span>
+					<br/>
+					<input type="text" style="width: 30%;float: left">
+					<input type="text" id="tags" style="width: 30%;float: left">
+				</div>
 			</div>
 		</div>
-	</body>
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header"><span style="color: green;font-size: 15px;">文章编辑器</span></div>
+				<div class="layui-card-body">
+					<textarea name="" id="edit" cols="30" rows="10"></textarea>
+					<div class="layui-btn-group" style="margin-top: 10px">
+						<button class="layui-btn">发布文章</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script th:src="@{/assets/js/jquery.min.js}"></script>
+	<script th:src="@{/back/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
 	<script th:src="@{/component/layui/layui.js}"></script>
 	<script th:src="@{/component/pear/pear.js}"></script>
+	<script>
+		layui.use(['tinymce', 'util', 'layer','code','element'], function() {
+			var tinymce = layui.tinymce
+			var util = layui.util;
+
+			layui.code();
+
+			var edit = tinymce.render({
+				elem: "#edit",
+				height: 400
+			});
+
+		});
+
+		// Tags Input
+		$('#tags').tagsInput({
+			width: '40%',
+			height: '35px',
+			defaultText: '请输入文章标签'
+		});
+	</script>
+	</body>
+
+
+
+
 </html>
