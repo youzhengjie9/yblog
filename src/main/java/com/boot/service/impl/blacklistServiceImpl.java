@@ -40,4 +40,9 @@ public class blacklistServiceImpl implements blacklistService {
         }
 
     }
+
+    @Override
+    public int selectBlackCount() {
+        return blacklistMapper.selectBlackCount();
+    }
 }

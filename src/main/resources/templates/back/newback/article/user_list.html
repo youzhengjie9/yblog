@@ -1,27 +1,297 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>个人资料</title>
-    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
-    <style>
-        h1{
-            margin-top: 200px;
-            color: #5FB878;
-        }
-        .layui-card-body{
-            text-align: center;height: 500px;
-        }
-    </style>
+
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+
+    <!-- 如果你想在上传之前修改图片大小需要加入canvas-to-blob.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.js"></script>
+
+    <!-- 如果你想在最初的预览中排序/重新排列需要引入sortable.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+
+    <!-- 如果你想在HTML文件预览中净化HTML内容则要引入purify.min.js is  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/dompurify/1.0.10/purify.min.js"></script>
+
+    <!-- 主要的 fileinput 插件库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+
+    <!-- 如果你想在放大的模态页面中查看文件详细信息需要引入bootstrap.js -->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- 可选，如果你需要像font awesome 这样的主题，就像下面的代码一样引入它 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/fa.min.js"></script>
+
+    <!-- 可选，如果你需要转换语言或翻译，就包含这个库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/zh.min.js"></script>
+
+
+
 </head>
+
 <body class="pear-container">
 <div class="layui-card">
-    <div class="layui-card-header"></div>
     <div class="layui-card-body">
-        <h1><b>个人资料</b></h1>
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本资料</li>
+                <li>修改密码</li>
+            </ul>
+            <div class="layui-tab-content">
+<!--                基本资料-->
+                <div class="layui-tab-item layui-show">
+<!--                  form-->
+                    <form method="post" class="layui-form" th:action="@{/pear/userInfo}" enctype="multipart/form-data" role="form" id="global-form">
+                        <input th:value="${curName}" name="name" type="hidden" class="form-control" required
+                               aria-required="true"/>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱：</label>
+                            <div class="layui-input-block"
+                                 th:if="${user.getEmail()} ne null and ${user.getEmail()} ne ''">
+                                <input id="email1" th:value="${user.getEmail()}" name="email" type="email"
+                                       class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                            </div>
+                            <div class="layui-input-block"
+                                 th:if="${user.getEmail()} eq null or ${user.getEmail()} eq ''">
+                                <input id="email1" name="email" type="email" class="layui-input"
+                                       placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                            </div>
+                        </div>
+
+                            <label class="layui-form-label">头像：</label>
+                            <div th:if="${user.getUserDetail().getIcon()} eq null or ${user.getUserDetail().getIcon()} eq ''"
+                                 class="layui-input-block">
+
+                                <input id="uploadPicture" name="file" type="file" multiple=true
+                                       class="file-loading">
+
+                            </div>
+
+                            <div th:if="${user.getUserDetail().getIcon()} ne null and ${user.getUserDetail().getIcon()} ne ''"
+                                 class="layui-input-block">
+                                <input id="uploadPicture" th:utext="'图片地址:'+${user.getUserDetail().getIcon()}"
+                                       th:value="${user.getUserDetail().getIcon()}" name="file" type="file"
+                                       multiple=true class="file-loading">
+                            </div>
+
+                        <div class="layui-form-item">
+                                <label class="layui-form-label">博客名称：</label>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getBlogName()} ne null and ${user.getUserDetail().getBlogName()} ne ''">
+                                    <input type="text" th:value="${user.getUserDetail().getBlogName()}"
+                                           name="blogName"  class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getBlogName()} eq null or ${user.getUserDetail().getBlogName()} eq ''">
+                                    <input type="text" name="blogName"  class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                        </div>
+                        <div class="layui-form-item">
+                                <label class="layui-form-label">职位：</label>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getJob()} ne null and ${user.getUserDetail().getJob()} ne ''">
+                                    <input type="text" th:value="${user.getUserDetail().getJob()}" name="job"
+                                           class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getJob()} eq null or ${user.getUserDetail().getJob()} eq ''">
+                                    <input type="text" name="job" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                        </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">个人说明：</label>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getDetail()} ne null and ${user.getUserDetail().getDetail()} ne ''">
+                                    <input type="text" th:value="${user.getUserDetail().getDetail()}"
+                                           name="detail" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getDetail()} eq null or ${user.getUserDetail().getDetail()} eq ''">
+                                    <input type="text" name="detail" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">GitHub：</label>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getGithub()} ne null and ${user.getUserDetail().getGithub()} ne ''">
+                                    <input type="text" th:value="${user.getUserDetail().getGithub()}"
+                                           name="github" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getGithub()} eq null or ${user.getUserDetail().getGithub()} eq ''">
+                                    <input type="text" name="github" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">微博：</label>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getWeibo()} ne null and ${user.getUserDetail().getWeibo()} ne ''">
+                                    <input type="text" th:value="${user.getUserDetail().getWeibo()}"
+                                           name="weibo" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                                <div class="layui-input-block"
+                                     th:if="${user.getUserDetail().getWeibo()} eq null or ${user.getUserDetail().getWeibo()} eq ''">
+                                    <input type="text" name="weibo" class="layui-input" placeholder="请输入输入框内容" required lay-verify="required" autocomplete="off"/>
+                                </div>
+                            </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="submit01">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+
+<!--                    form -->
+
+
+                </div>
+                <div class="layui-tab-item" id="ch">
+
+                    <!-- 修改密码-->
+                    <div class="col-md-12">
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 </body>
+
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
+<script>
+
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    layui.use(['table','form','jquery','element'],function () {
+        let table = layui.table;
+        let form = layui.form;
+        let element = layui.element;
+
+
+
+        form.on('submit(dict-type-query)', function(data){
+            table.reload('dict-type-table',{where:data.field})
+            return false;
+        });
+
+        //提交基本信息表单
+        form.on('submit(submit01)', function(data){
+            layer.confirm('您确定修改吗?', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/pear/userInfo",
+                    data: $('#global-form').serialize(),  //ajax提交表单
+                    dataType: 'json',
+                    type: 'POST',
+                    headers:headers,
+                    // 告诉jQuery不要去处理发送的数据，用于对data参数进行序列化处理 这里必须false
+                    processData : false,
+                    contentType : false,
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+
+
+            return false;
+        });
+
+
+
+        window.error = function(obj){
+            layer.open({
+                type: 1,
+                title: '异常信息',
+                shade: 0,
+                area: ['450px', '350px'],
+                content: '<div class="pear-container"><div class="layui-card"><div class="layui-card-body">'+obj.data['error']+'</div></div></div>'
+            });
+        }
+
+
+        $('#ch').css('height','500px');
+
+    })
+
+    //头像上传
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "http://localhost:8080/pear/userInfo",
+            previewFileType: "image",
+            uploadAsync: true,
+            showCaption: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
+            enctype: 'multipart/form-data',
+            //隐藏上传按钮
+            showUpload: false,
+            //最大上传文件数量
+            maxFileCount: 1,
+            maxFileSize: 3072,
+            showBrowse: true,
+            dropZoneTitle: '拖拽头像图片到这里...',
+            browseLabel: "选择图片",
+            uploadClass: "btn btn-info",
+            uploadLabel: "上传",
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！'
+        }).on('fileerror', function (event, data, msg) {
+            alert('图片上传失败！' + msg);
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.response.name);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            alert("图片被清除啦！");
+        });
+
+    });
+
+
+
+
+
+</script>
 </html>

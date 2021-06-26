@@ -14,4 +14,6 @@ public interface blacklistService {
     void addBlackList(blacklist blacklist);
 
     boolean checkIpHasBlack(String ip); //检查ip是否在黑名单
+
+    int selectBlackCount();
 }

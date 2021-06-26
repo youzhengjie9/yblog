@@ -1,6 +1,6 @@
 package com.boot.data.ResponseData;
 
-public class layuiArticleJSON {
+public class layuiJSON {
 
 
     private boolean success;

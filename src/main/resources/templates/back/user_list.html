@@ -74,7 +74,7 @@
                                     <div th:if="${user.getUserDetail().getIcon()} eq null or ${user.getUserDetail().getIcon()} eq ''"
                                          class="row" style="height: 400px;width: 400px;margin-left: 130px">
 
-                                        <input id="uploadPicture" name="file" type="file" multiple=true
+                                        <input id="uploadPicture" name="file" type="file"
                                                class="file-loading">
 
                                     </div>
@@ -83,7 +83,7 @@
                                          class="row" style="height: 400px;width: 400px;margin-left: 130px">
                                         <input id="uploadPicture" th:utext="'图片地址:'+${user.getUserDetail().getIcon()}"
                                                th:value="${user.getUserDetail().getIcon()}" name="file" type="file"
-                                               multiple=true class="file-loading">
+                                                class="file-loading">
                                     </div>
 
 

@@ -1,16 +1,14 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.boot.annotation.Visitor;
 import com.boot.controller.adminController;
-import com.boot.data.ResponseData.layuiArticleJSON;
 import com.boot.data.ResponseData.layuiData;
+import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.*;
 import com.boot.service.*;
-import com.boot.utils.Commons;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.ipUtils;
-import com.boot.utils.timeUtil;
+import com.boot.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -22,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Api("新版后台系统控制器")
@@ -95,6 +95,9 @@ public class pearController {
 
     @Autowired
     private linkService linkService;
+
+    @Autowired
+    private blacklistService blacklistService;
 
 
     static {
@@ -288,7 +291,7 @@ public class pearController {
     public String deleteArticle(@PathVariable("articleid") int articleid) {
 
         System.out.println("deleteArticle:" + articleid);
-        layuiArticleJSON layuiArticleJSON = new layuiArticleJSON();
+        layuiJSON layuiArticleJSON = new layuiJSON();
         if (articleid == 37) {
             layuiArticleJSON.setSuccess(true);
         } else {
@@ -310,7 +313,7 @@ public class pearController {
     public String enableComment(Integer articleid){
         System.out.println("articleid:"+articleid+"==enableComment");
 
-        layuiArticleJSON json=new layuiArticleJSON();
+        layuiJSON json=new layuiJSON();
         json.setSuccess(true);
         json.setMsg("开启评论成功");
         return JSON.toJSONString(json);
@@ -326,7 +329,7 @@ public class pearController {
     public String disableComment(Integer articleid){
         System.out.println("articleid:"+articleid+"==disableComment");
 
-        layuiArticleJSON json=new layuiArticleJSON();
+        layuiJSON json=new layuiJSON();
         json.setSuccess(true);
         json.setMsg("关闭评论成功");
         return JSON.toJSONString(json);
@@ -343,7 +346,7 @@ public class pearController {
     public String enableRecommend(Integer articleid){
         System.out.println("articleid:"+articleid+"==enableRecommend");
 
-        layuiArticleJSON json=new layuiArticleJSON();
+        layuiJSON json=new layuiJSON();
         json.setSuccess(true);
         json.setMsg("开启推荐成功");
         return JSON.toJSONString(json);
@@ -359,7 +362,7 @@ public class pearController {
     public String disableRecommend(Integer articleid){
         System.out.println("articleid:"+articleid+"==disableRecommend");
 
-        layuiArticleJSON json=new layuiArticleJSON();
+        layuiJSON json=new layuiJSON();
         json.setSuccess(true);
         json.setMsg("取消推荐成功");
         return JSON.toJSONString(json);
@@ -372,7 +375,7 @@ public class pearController {
     public String batchRemoveArticle(@PathVariable("checkIds") String checkIds) {
 
         System.out.println("batchRemoveArticle:" + checkIds);
-        layuiArticleJSON layuiArticleJSON = new layuiArticleJSON();
+        layuiJSON layuiArticleJSON = new layuiJSON();
 
         layuiArticleJSON.setSuccess(true);
 
@@ -383,6 +386,7 @@ public class pearController {
 
 
     //分类管理
+    @Visitor(desc = "分类管理")
     @RequestMapping(path = "/toCategory")
     public String toCategory() {
 
@@ -411,6 +415,7 @@ public class pearController {
 
 
     //标签管理
+    @Visitor(desc = "标签管理")
     @RequestMapping(path = "/toTag")
     public String toTag() {
 
@@ -441,6 +446,7 @@ public class pearController {
 
 
     //附件管理
+    @Visitor(desc = "附件管理")
     @RequestMapping(path = "/toFileUpload")
     public String toFileUpload(Model model) {
 
@@ -453,6 +459,7 @@ public class pearController {
     }
 
     //爬取数据
+    @Visitor(desc = "爬取数据")
     @RequestMapping(path = "/toCatchData")
     public String toCatchData() {
 
@@ -461,6 +468,7 @@ public class pearController {
     }
 
     //用户管理
+    @Visitor(desc = "用户管理")
     @RequestMapping(path = "/toUserManager")
     public String toUserManager() {
 
@@ -497,6 +505,7 @@ public class pearController {
 
 
     //友链管理
+    @Visitor(desc = "友链管理")
     @RequestMapping(path = "/toLink")
     public String toLink() {
 
@@ -533,14 +542,42 @@ public class pearController {
 
 
     //个人资料
+    @Visitor(desc = "个人资料")
     @RequestMapping(path = "/touser")
-    public String touser() {
+    public String touser(HttpSession session,Model model) {
 
+        String name = springSecurityUtil.currentUser(session);
+
+        user user = userService.selectUserInfoByuserName(name);
+
+
+        model.addAttribute("user",user);
+        model.addAttribute("curName",name);
+        model.addAttribute("commons", Commons.getInstance());
+        model.addAttribute("bootstrap",new bootstrap());
+
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+        model.addAttribute("userDetail",userDetail);
 
         return "back/newback/article/user_list";
     }
 
+    @ResponseBody
+    @RequestMapping(path = "/userInfo")
+    public String userInfo(userDetail userDetail,String email, MultipartFile file){
+        System.out.println("============="+userDetail.toString()+email+"==file"+file);
+        layuiJSON layuiJSON = new layuiJSON();
+        layuiJSON.setMsg("666");
+//        Map map = JSONObject.parseObject(jsonData, Map.class); //把前端传来的json转换成Map
+//        System.out.println(map);
+        layuiJSON.setSuccess(true);
+
+        return JSON.toJSONString(layuiJSON);
+    }
+
+
     //访客记录
+    @Visitor(desc = "访客记录")
     @RequestMapping(path = "/toVisitor")
     public String toVisitor() {
 
@@ -571,12 +608,35 @@ public class pearController {
 
 
     //黑名单
+    @Visitor(desc = "黑名单")
     @RequestMapping(path = "/toBlack")
     public String toBlack() {
 
 
         return "back/newback/article/black_list";
     }
+
+    @ResponseBody
+    @RequestMapping(path = "/blackData")
+    public String blackData(@RequestParam(value = "page", defaultValue = "1") int page,
+                            @RequestParam(value = "limit", defaultValue = "10")int limit){
+
+        layuiData<blacklist> blacklistlayuiData = new layuiData<>();
+
+        PageHelper.startPage(page,limit);
+        List<blacklist> blacklists = blacklistService.selectBlackList();
+
+        int count = blacklistService.selectBlackCount();
+
+        blacklistlayuiData.setCode(0);
+        blacklistlayuiData.setMsg("");
+        blacklistlayuiData.setData(blacklists);
+        blacklistlayuiData.setCount(count);
+
+        return JSON.toJSONString(blacklistlayuiData);
+    }
+
+
 
     //    //ip查询
 //    @RequestMapping(path = "/toIpsearch")

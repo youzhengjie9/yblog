@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.blacklist;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +19,8 @@ public interface blacklistMapper {
     void addBlackList(blacklist blacklist);
 
     String selectBlackListByIp(@Param("ip") String ip);
+
+    @Select("select count(*) from t_blacklist")
+    int selectBlackCount();
 
 }
