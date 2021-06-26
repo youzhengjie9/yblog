@@ -10,7 +10,7 @@
     </insert>
 
     <select id="selectVisitor" resultType="com.boot.pojo.visitor">
-        select id,visit_ip,visit_address,browser,os,visit_time from t_visitor order by visit_time desc
+        select id,visit_ip,visit_address,browser,os,visit_time,visit_describe from t_visitor order by visit_time desc
     </select>
 
     <select id="selectDaysBy7" resultType="java.lang.String">
