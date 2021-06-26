@@ -442,7 +442,11 @@ public class pearController {
 
     //附件管理
     @RequestMapping(path = "/toFileUpload")
-    public String toFileUpload() {
+    public String toFileUpload(Model model) {
+
+        List<img> imgs = imgService.selectAllImg();
+        model.addAttribute("imgs",imgs);
+
 
 
         return "back/newback/article/img_list";
