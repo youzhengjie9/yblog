@@ -96,6 +96,8 @@ public class adminController {
 
     private final String curTheme="pear";
 
+
+
     static {
 
         themes.add("default");

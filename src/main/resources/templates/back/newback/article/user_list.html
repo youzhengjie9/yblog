@@ -149,7 +149,7 @@
 
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="submit01">立即提交</button>
+                                <button class="layui-btn" id="submit01" lay-submit lay-filter="submit01">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -189,7 +189,6 @@
         let element = layui.element;
 
 
-
         form.on('submit(dict-type-query)', function(data){
             table.reload('dict-type-table',{where:data.field})
             return false;
@@ -202,16 +201,16 @@
                 title: '提示'
             }, function(index) {
                 layer.close(index);
+                var formdata = new FormData($('#global-form')[0]);
                 let loading = layer.load();
                 $.ajax({
                     url: "/pear/userInfo",
-                    data: $('#global-form').serialize(),  //ajax提交表单
+                    data: formdata,  //ajax提交表单
                     dataType: 'json',
                     type: 'POST',
                     headers:headers,
-                    // 告诉jQuery不要去处理发送的数据，用于对data参数进行序列化处理 这里必须false
-                    processData : false,
-                    contentType : false,
+                    processData: false,
+                    contentType: false,
                     success: function(result) {
                         layer.close(loading);
                         if (result.success) {
@@ -227,7 +226,8 @@
                         }
                     }
                 })
-            });
+            }
+            );
 
 
             return false;
@@ -250,6 +250,9 @@
 
     })
 
+
+
+
     //头像上传
     $(function () {
         $("#uploadPicture").fileinput({
@@ -260,7 +263,7 @@
             allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
             enctype: 'multipart/form-data',
             //隐藏上传按钮
-            showUpload: false,
+            showUpload: true,
             //最大上传文件数量
             maxFileCount: 1,
             maxFileSize: 3072,
