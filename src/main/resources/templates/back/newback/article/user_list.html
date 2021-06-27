@@ -160,12 +160,36 @@
 
                 </div>
                 <div class="layui-tab-item" id="ch">
-
                     <!-- 修改密码-->
-                    <div class="col-md-12">
+
+                    <form class="layui-form" action="" method="post" id="cp" autocomplete="off">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">原密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="oldPassword" required  lay-verify="required" placeholder="原密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="newPassword" required  lay-verify="required" placeholder="你的新密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认新密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="checkPassword" required  lay-verify="required" placeholder="请再一次输入新密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="changePassword">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
 
 
-                    </div>
 
                 </div>
             </div>
@@ -234,6 +258,47 @@
         });
 
 
+        //修改密码表单
+        layui.use('form', function(){
+            var form = layui.form;
+
+
+            form.on('submit(changePassword)', function(data){
+
+                layer.confirm('您确定修改吗?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: "/pear/updatePassword",
+                        data: $('#cp').serialize(),  //ajax提交表单
+                        dataType: 'json',
+                        type: 'POST',
+                        headers:headers,
+                        success: function(result) {
+                            layer.close(loading);
+                            if (result.success) {
+                                layer.msg(result.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                });
+                            } else {
+                                layer.msg(result.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                })
+                return false;
+            });
+        });
+
+
+
 
         window.error = function(obj){
             layer.open({
@@ -263,7 +328,7 @@
             allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
             enctype: 'multipart/form-data',
             //隐藏上传按钮
-            showUpload: true,
+            showUpload: false,
             //最大上传文件数量
             maxFileCount: 1,
             maxFileSize: 3072,

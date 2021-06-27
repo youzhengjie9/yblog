@@ -5,6 +5,17 @@
     <title>数据图表</title>
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
     <link rel="stylesheet" th:href="@{/pear-admin/css/other/result.css}" />
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.2/jquery.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <!--    引入echarts-->
+    <script th:src="@{/assets/js/echarts.js}"></script>
 </head>
 <body class="pear-container">
 <div class="layui-row layui-col-space10">
@@ -25,23 +36,261 @@
     <div class="layui-col-md6">
         <div class="layui-card">
             <div class="layui-card-body">
-                <div id="line3" style="min-height:400px;"></div>
+                <div id="line4" style="min-height:400px;"></div>
             </div>
         </div>
     </div>
     <div class="layui-col-md6">
         <div class="layui-card">
             <div class="layui-card-body">
-                <div id="line4" style="min-height:400px;"></div>
+                <div id="line3" style="min-height:400px;"></div>
             </div>
         </div>
     </div>
 </div>
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
-<script th:src="@{/component/script/line1.js}"></script>
-<script th:src="@{/component/script/line2.js}"></script>
-<script th:src="@{/component/script/line3.js}"></script>
-<script th:src="@{/component/script/line4.js}"></script>
+
+
+
+<!-- 一定要使用 th:inline="javascript"，不然js不能获取model传来的集合-->
+<script th:inline="javascript">
+    //1.
+    // 基于准备好的dom，初始化echarts实例
+    var myChart1 = echarts.init(document.getElementById('line1'));
+
+
+    // 指定图表的配置项和数据
+    var option1 = {
+        title: {
+            text: '文章阅读量top7'
+        },
+
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        tooltip: {},
+        legend: {
+            data: ['阅读量']
+        },
+        xAxis: {
+            data: ["top1", "top2", "top3", "top4", "top5", "top6", "top7"]
+        },
+        yAxis: {},
+        series: [{
+
+            name: '阅读量',
+            type: 'bar',
+            data: [
+                [[${articles.get(0).getStatistic().getHits()}]],
+                [[${articles.get(1).getStatistic().getHits()}]],
+                [[${articles.get(2).getStatistic().getHits()}]],
+                [[${articles.get(3).getStatistic().getHits()}]],
+                [[${articles.get(4).getStatistic().getHits()}]],
+                [[${articles.get(5).getStatistic().getHits()}]],
+                [[${articles.get(6).getStatistic().getHits()}]]
+            ]
+
+
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option1);
+
+
+    //2.
+    var myChart2 = echarts.init(document.getElementById('line2'));
+    myChart2.setOption({
+        title: {
+            text: '分类统计top4'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                }
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '分类统计',
+                type: 'pie',
+                radius: '55%',
+                label: {
+                    position: 'outside',
+                    formatter: '{b}\n共{c}个 (占比:{d}%)'
+                },
+                data: [
+                    {
+                        value: [[${categories.get(0).getCategoryCount()}]],
+                        name: [[${categories.get(0).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(1).getCategoryCount()}]],
+                        name: [[${categories.get(1).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(2).getCategoryCount()}]],
+                        name: [[${categories.get(2).getCategoryName()}]]
+                    },
+                    {
+                        value: [[${categories.get(3).getCategoryCount()}]],
+                        name: [[${categories.get(3).getCategoryName()}]]
+                    }
+                ]
+            }
+        ]
+
+    })
+
+    //3.
+    var myChart3 = echarts.init(document.getElementById('line3'));
+    myChart3.setOption({
+        title: {
+            text: '标签统计top4'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                }
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '标签统计',
+                type: 'pie',
+                radius: '55%',
+                label: {
+                    position: 'outside',
+                    formatter: '{b}\n共{c}个 (占比:{d}%)'
+                },
+                data: [
+                    {
+                        value: [[${tags.get(0).getTagCount()}]],
+                        name: [[${tags.get(0).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(1).getTagCount()}]],
+                        name: [[${tags.get(1).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(2).getTagCount()}]],
+                        name: [[${tags.get(2).getTagName()}]]
+                    },
+                    {
+                        value: [[${tags.get(3).getTagCount()}]],
+                        name: [[${tags.get(3).getTagName()}]]
+                    }
+                ]
+            }
+        ]
+
+    })
+
+    //4.
+    var myChart4 = echarts.init(document.getElementById('line4'));
+    myChart4.setOption({
+        title: {
+            text: '近7天的访客量'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        tooltip: {
+            // trigger: 'axis',
+            // formatter: '{c}个'
+            trigger: 'item'
+        },
+        xAxis: {
+            type: 'category',
+            data: [
+                [[${days.get(0)}]], [[${days.get(1)}]],
+                [[${days.get(2)}]], [[${days.get(3)}]],
+                [[${days.get(4)}]], [[${days.get(5)}]],
+                [[${days.get(6)}]]
+            ]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [
+                [[${counts.get(0)}]], [[${counts.get(1)}]],
+                [[${counts.get(2)}]], [[${counts.get(3)}]],
+                [[${counts.get(4)}]], [[${counts.get(5)}]],
+                [[${counts.get(6)}]]
+            ],
+            type: 'line'
+        }]
+    });
+
+
+</script>
+
+
+
 </body>
 </html>
