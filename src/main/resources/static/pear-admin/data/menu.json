@@ -144,16 +144,6 @@
 				"openType": "_iframe",
 				"href": "/pear/toBlack"
 			},
-
-			{
-				"id": 603,
-				"title": "IP查询",
-				"icon": "layui-icon layui-icon-face-cry",
-				"type": 1,
-				"openType": "_iframe",
-				"href": "/pear/toIpsearch"
-			},
-
 			{
 				"id": 604,
 				"title": "拦截记录",

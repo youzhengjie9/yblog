@@ -654,15 +654,6 @@ public class pearController {
         return JSON.toJSONString(blacklistlayuiData);
     }
 
-
-
-    //    //ip查询
-//    @RequestMapping(path = "/toIpsearch")
-//    public String toIpsearch(){
-//
-//
-//        return "back/newback/system/user";
-//    }
     //拦截记录
     @RequestMapping(path = "/toInterceptorLog")
     public String toInterceptorLog() {
