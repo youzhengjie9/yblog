@@ -171,6 +171,7 @@ new Valine({
 ![21.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/21.PNG)
 ![22.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/22.PNG)
 ![23.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/23.PNG)
+![24.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/24.PNG)
 
 
 

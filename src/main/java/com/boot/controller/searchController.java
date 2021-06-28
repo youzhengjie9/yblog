@@ -4,10 +4,7 @@ import com.boot.constant.themeConstant;
 import com.boot.pojo.Article;
 import com.boot.pojo.link;
 import com.boot.pojo.tag;
-import com.boot.service.articleService;
-import com.boot.service.elasticSearchService;
-import com.boot.service.linkService;
-import com.boot.service.tagService;
+import com.boot.service.*;
 import com.boot.utils.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -47,6 +44,9 @@ public class searchController {
     @Autowired
     private elasticSearchService elasticSearchService;
 
+    @Autowired
+    private likeService likeService;
+
 
     @Autowired
     private tagService tagService;
@@ -65,7 +65,8 @@ public class searchController {
     public ModelAndView search_article(@PathVariable("page") int page, String searchText) throws IOException {
 
         ModelAndView modelAndView = new ModelAndView();
-
+        modelAndView.addObject("articleService",articleService);
+        modelAndView.addObject("likeService",likeService);
         //跳转不同页面主题判断
         if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)){ //calm主题
             modelAndView.setViewName("client/index2"); //跳转页面
