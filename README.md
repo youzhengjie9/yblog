@@ -152,6 +152,7 @@ new Valine({
 * RabbitMQ帐号：guest 密码： guest
 
 ### 图片演示
+后台管理(第二套界面)👇
 ![01.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/01.PNG)
 ![02.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/02.PNG)
 ![03.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/03.PNG)
@@ -166,15 +167,10 @@ new Valine({
 ![12.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/12.PNG)
 ![13.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/13.PNG)
 ![14.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/14.PNG)
-![15.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/15.PNG)
-![16.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/16.PNG)
-![17.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/17.PNG)
-![19.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/19.PNG)
-![20.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/20.PNG)
-
-第二套主题👇
-
+前台界面(第二套界面)👇
 ![21.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/21.PNG)
+![22.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/22.PNG)
+![23.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/23.PNG)
 
 
 
