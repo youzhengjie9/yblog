@@ -5,7 +5,12 @@
 <mapper namespace="com.boot.dao.interceptMapper">
 
     <insert id="insertIntercept" parameterType="com.boot.pojo.intercept">
-        insert into t_intercept (intercept_ip,intercept_address,intercept_browser,intercept_os,intercept_time,desc)
+        INSERT INTO t_intercept (
+        intercept_ip,
+        intercept_address,
+        intercept_browser,
+        intercept_os,
+        intercept_time,`desc`)
         values (
         #{intercept_ip},
         <if test="intercept_address == null">

@@ -27,7 +27,7 @@ public class filterConfig {
          */
         filterRegistrationBean.setFilter(ipFilter); //添加自定义过滤器类
         filterRegistrationBean.addUrlPatterns("/*"); //过滤路径
-        filterRegistrationBean.addInitParameter("excludedUris","/err/black,/assets/**,/user/**,/back/**");//需要排除的uri
+        filterRegistrationBean.addInitParameter("excludedUris","/err/black,/assets/**,/user/**,/back/**,/static/**");//需要排除的uri
         return filterRegistrationBean;
     }
 

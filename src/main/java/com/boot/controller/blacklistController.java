@@ -55,6 +55,8 @@ public class blacklistController {
     @Autowired
     private visitorService visitorService;
 
+    private final String key="intercept_ip_"; //拦截ip的key前缀
+
     @Visitor(desc = "进入黑名单管理")
     @GetMapping(path = "/list")
     public String toBlackList(Model model, HttpSession session, HttpServletRequest request) {
@@ -72,7 +74,7 @@ public class blacklistController {
     public String deleteBlackList(String ip, Model model, HttpSession session, HttpServletRequest request) {
 //        System.out.println(ip);
         blacklistService.deleteBlackListByIp(ip);
-
+        redisTemplate.delete(key+ip); //从缓存中删除这个key
 
         List<blacklist> blacklists = blacklistService.selectBlackList();
         model.addAttribute("blacklists", blacklists);
