@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -99,6 +101,9 @@ public class pearController {
     @Autowired
     private blacklistService blacklistService;
 
+    @Autowired
+    private interceptService interceptService;
+
 
     static {
         themes.add("default");
@@ -160,16 +165,30 @@ public class pearController {
     }
 
 
-    @RequestMapping(path = "/welcome")
-    public String towelcome() {
+    @ResponseBody
+    @RequestMapping(path = "/userInfoData")
+    public String userInfoData(HttpSession session){
+        layuiJSON json=new layuiJSON();
+        HashMap<String, String> hashMap = new HashMap<>();
+        String username = springSecurityUtil.currentUser(session);
+        user user = userService.selectUserInfoByuserName(username);
+        String icon = user.getUserDetail().getIcon();
+        if (StringUtils.isEmpty(icon)){
+            hashMap.put("icon","/pear-admin/images/avatar.jpg");
+        }else {
+            hashMap.put("icon",icon);
+        }
+        hashMap.put("username",username);
 
-        return "back/newback/article/welcome";
+        json.setMsg(JSON.toJSONString(hashMap));
+
+        return JSON.toJSONString(json);
     }
+
 
     //控制后台，非常重要，访问后台时，会内嵌这个url
     @RequestMapping(path = "/toconsole")
     public String toconsole(Model model, HttpSession session, HttpServletRequest request) {
-
 
         int usercount = userService.userCount(); //用户总数
         model.addAttribute("usercount", usercount);
@@ -661,6 +680,27 @@ public class pearController {
 
         return "back/newback/article/interceptor_list";
     }
+
+    //拦截记录数据
+    @ResponseBody
+    @RequestMapping(path = "/interceptData")
+    public String interceptData(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "limit", defaultValue = "6")int limit){
+
+        PageHelper.startPage(page,limit);
+        List<intercept> intercepts = interceptService.selectIntercepts();
+
+        int count = interceptService.selectInterceptCount();
+
+        layuiData<intercept> interceptlayuiData = new layuiData<>();
+        interceptlayuiData.setCode(0);
+        interceptlayuiData.setMsg("");
+        interceptlayuiData.setData(intercepts);
+        interceptlayuiData.setCount(count);
+
+        return JSON.toJSONString(interceptlayuiData);
+    }
+
 
     //行为日志
     @RequestMapping(path = "/toLog")

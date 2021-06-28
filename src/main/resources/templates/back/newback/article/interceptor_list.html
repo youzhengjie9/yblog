@@ -10,15 +10,11 @@
     <div class="layui-card-body">
         <div class="layui-tab layui-tab-card">
             <ul class="layui-tab-title">
-                <li class="layui-this">登录日志</li>
-                <li>操作日志</li>
+                <li class="layui-this">拦截记录</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <table style="margin-top: 10px;" id="log-login-table" lay-filter="user-table"></table>
-                </div>
-                <div class="layui-tab-item">
-                    <table style="margin-top: 10px;" id="log-operate-table" lay-filter="user-table"></table>
                 </div>
             </div>
         </div>
@@ -26,18 +22,10 @@
 </div>
 </body>
 
-<script type="text/html" id="log-bar">
-    {{#if (d.success == true) { }}
-    <button class="pear-btn pear-btn-sm pear-btn-success" lay-event="edit"><i class="layui-icon layui-icon-ok"></i>
-        成功</button>
-    {{# }else if(d.success == false){ }}
-    <button class="pear-btn pear-btn-sm pear-btn-danger" lay-event="error"><i class="layui-icon layui-icon-help"></i>
-        异常</button>
-    {{# } }}
-</script>
+
 
 <script type="text/html" id="log-createTime">
-    {{layui.util.toDateString(d.createTime,  "yyyy-MM-dd HH:mm:ss")}}
+    {{layui.util.toDateString(d.intercept_time,  "yyyy-MM-dd HH:mm:ss")}}
 </script>
 
 
@@ -53,30 +41,20 @@
 
         let cols = [
             [
-                {title: '模块', field: 'title', align:'center'},
-                {title: '请求方式', field: 'requestMethod', align:'center'},
-                {title: '接口', field: 'method', align:'center'},
-                {title: '浏览器', field: 'browser', align:'center'},
-                {title: '操作地址', field: 'operateAddress',align:'center'},
-                {title: '操作系统', field: 'systemOs', align:'center'},
-                {title: '访问时间', field: 'createTime',templet:'#log-createTime', align:'center'},
-                {title: '操作人', field: 'operateName', align:'center'},
-                {title: '访问状态', toolbar: '#log-bar', align:'center', width:150}
+                {title: 'id', field: 'id', align:'center'},
+                {title: '拦截ip', field: 'intercept_ip', align:'center'},
+                {title: '所在地', field: 'intercept_address', align:'center'},
+                {title: '浏览器', field: 'intercept_browser', align:'center'},
+                {title: '操作系统', field: 'intercept_os', align:'center'},
+                {title: '拦截时间', field: 'intercept_time',templet:'#log-createTime', align:'center'},
+                {title: '描述', field: 'desc', align:'center'},
             ]
         ]
 
-        table.render({
-            elem: '#log-operate-table',
-            url: '../../admin/data/operateLog.json',
-            page: true ,
-            cols: cols ,
-            skin: 'line',
-            toolbar: false
-        });
 
         table.render({
             elem: '#log-login-table',
-            url: '../../admin/data/loginLog.json',
+            url: '/pear/interceptData',
             page: true ,
             cols: cols ,
             skin: 'line',

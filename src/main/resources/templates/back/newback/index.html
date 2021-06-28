@@ -34,7 +34,6 @@
 						</a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="#" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -76,15 +75,30 @@
 		<script th:src="@{/component/layui/layui.js}"></script>
 		<script th:src="@{/component/pear/pear.js}"></script>
 		<!-- 框 架 初 始 化 -->
-		<script>
+		<script th:inline="javascript">
 			layui.use(['admin','jquery','convert','popup'], function() {
 				var admin = layui.admin;
 				var $ = layui.jquery;
 				var convert = layui.convert;
 				var popup = layui.popup;
+				var username=''; //存储ajax获取的用户名
+				var icon='';  //存储ajax获取的头像
+
+				//ajax获取后端数据
+				$.ajax({
+					type: "GET",
+					url: "/pear/userInfoData",
+					dataType: 'json',
+					async: false, //这里一定要同步，不然后面接收不到数据
+					success: function(data){
+						let js = JSON.parse(data.msg);
+						username=js.username;
+						icon=js.icon;
+					}
+				});
 
 				// 初始化顶部用户信息
-				admin.setAvatar("/pear-admin/images/avatar.jpg","就眠仪式");
+				admin.setAvatar(icon+'',username+'');
 
 				// 根目录下 pear.config.yml 文件为初始化配置
 				// 你可以通过 admin.setConfigPath 方法修改配置文件位置

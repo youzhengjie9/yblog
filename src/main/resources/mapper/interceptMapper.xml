@@ -43,4 +43,14 @@
     </insert>
 
 
+    <select id="selectIntercepts" resultType="com.boot.pojo.intercept">
+        select * from t_intercept
+    </select>
+
+
+    <select id="selectInterceptCount" resultType="int">
+        select count(*) from t_intercept
+    </select>
+
+
 </mapper>
