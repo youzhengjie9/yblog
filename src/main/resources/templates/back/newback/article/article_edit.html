@@ -31,6 +31,7 @@
 		<div class="layui-col-md12">
 			<div class="layui-card">
 				<div class="layui-card-body">
+					<input type="hidden" name="editArticleId" id="editArticleId">
 					<span style="color: green;font-size: 22px" th:text="${ps}"></span>
 					<br/>
 					标题：<br/>
@@ -69,7 +70,7 @@
 	<script th:src="@{/component/layui/layui.js}"></script>
 	<script th:src="@{/component/pear/pear.js}"></script>
 	<script th:inline="javascript">
-		var myedit;
+		var myedit=null;
 		layui.use(['tinymce'], function() {
 			var tinymce = layui.tinymce
 			var edit = tinymce.render({
@@ -98,7 +99,7 @@
 					if (result.success) {
 						myedit.setContent(''); //成功之后置空
 						$('#title').val(''); //标题置空
-						// $('#tags').val(''); //标签置空
+						$('#tags').tagsinput('removeAll'); //标签置空
 						// popup.success(result.msg);
 						layer.msg(result.msg, {
 							icon: 1,
@@ -123,21 +124,25 @@
 		$('#tags').tagsInput({
 			width: '39%',
 			height: '35px',
-			defaultText: '请输入文章标签'
+			defaultText: '请输入文章标签',
+			interactive:true,
+			removeWithBackspace : true
 		});
 
 		$('#tags_tag').css('width','90.4px');
 
 
-		//编辑文章的数据填充
-		var articleContent=[[${contents}]];
-		if(articleContent!=null){
-			console.log(articleContent.id);
-			console.log(articleContent.title);
-			console.log(articleContent.content);
-			console.log(articleContent.tags);
-		}
 
+		setTimeout(() => {
+			//编辑文章的数据填充
+			var articleContent=[[${contents}]];
+			if(articleContent!=null){
+				$('#editArticleId').val(articleContent.id)
+				$('#title').val(articleContent.title);
+				$('#tags').importTags(articleContent.tags);
+				tinymce.activeEditor.setContent(articleContent.content);
+			}
+		}, 850);
 
 
 	</script>

@@ -43,7 +43,7 @@
 | Bootstrap       | 前端框架   | https://v3.bootcss.com/                                |
 | echarts         | 可视化图表库       | https://echarts.apache.org/zh/index.html        |                        |                             |
 | Thymeleaf                  | 模板引擎                | https://www.thymeleaf.org/      |
-| Markdown        |  富文本编辑器         |  http://markdown.p2hp.com/  |
+| TinyMCE        |  富文本编辑器         |  http://tinymce.ax-z.cn/  |
 | alertJs          |弹框插件          |  https://gitee.com/ydq/alertjs
 
 #### 安装教程
