@@ -18,6 +18,13 @@
     </properties>
     <dependencies>
 
+<!--        谷歌的guava项目，实现令牌桶算法-->
+         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+
 
         <!-- 网络请求 -->
         <dependency>

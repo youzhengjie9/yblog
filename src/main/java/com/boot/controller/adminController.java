@@ -10,6 +10,7 @@ import com.boot.service.*;
 import com.boot.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.util.concurrent.RateLimiter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -96,8 +97,6 @@ public class adminController {
 
     private final String curTheme="pear";
 
-
-
     static {
 
         themes.add("default");
@@ -169,7 +168,6 @@ public class adminController {
 
         String username = springSecurityUtil.currentUser(session);
         if(curTheme.equals(PEAR_THEME)){ //如果是新主题
-
 
             return "back/newback/index";
         }

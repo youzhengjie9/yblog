@@ -189,6 +189,7 @@ public class articleServiceImpl implements articleService {
     @Override
     public void updateRecommendTo_1(int id) {
         articleMapper.updateRecommendTo_1(id);
+
     }
 
     @Override

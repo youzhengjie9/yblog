@@ -31,7 +31,7 @@
 		<div class="layui-col-md12">
 			<div class="layui-card">
 				<div class="layui-card-body">
-					<span style="color: green;font-size: 22px">发布/编辑文章</span>
+					<span style="color: green;font-size: 22px" th:text="${ps}"></span>
 					<br/>
 					标题：<br/>
 					<input id="title" class="layui-input" type="text" style="width: 40%" required>
@@ -68,7 +68,7 @@
 	<script th:src="@{/back/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
 	<script th:src="@{/component/layui/layui.js}"></script>
 	<script th:src="@{/component/pear/pear.js}"></script>
-	<script>
+	<script th:inline="javascript">
 		var myedit;
 		layui.use(['tinymce'], function() {
 			var tinymce = layui.tinymce
@@ -127,6 +127,17 @@
 		});
 
 		$('#tags_tag').css('width','90.4px');
+
+
+		//编辑文章的数据填充
+		var articleContent=[[${contents}]];
+		if(articleContent!=null){
+			console.log(articleContent.id);
+			console.log(articleContent.title);
+			console.log(articleContent.content);
+			console.log(articleContent.tags);
+		}
+
 
 
 	</script>

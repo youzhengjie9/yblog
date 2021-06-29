@@ -52,7 +52,7 @@
 <script type="text/html" id="user-toolbar">
 	<a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">
 		<i class="layui-icon layui-icon-add-1"></i>
-		新增
+		发布
 	</a>
 	<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
 		<i class="layui-icon layui-icon-delete"></i>
@@ -61,7 +61,7 @@
 </script>
 
 <script type="text/html" id="user-bar">
-	<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+	<a href="/pear/toChangeArticle?article_id={{d.id}}" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
 	<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
 
@@ -114,6 +114,9 @@
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script>
+
+
+
 	layui.use(['table', 'form', 'jquery','common'], function() {
 		let table = layui.table;
 		let form = layui.form;

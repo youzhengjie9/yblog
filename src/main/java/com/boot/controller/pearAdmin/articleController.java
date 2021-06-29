@@ -21,6 +21,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,9 @@ public class articleController {
     @Autowired
     private tagService tagService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //文章
     //发布文章
     @RequestMapping(path = "/topublish")
@@ -63,11 +67,10 @@ public class articleController {
         String time = simpleDateFormat.format(date);
         String ipAddr = ipUtils.getIpAddr(request);
         logger.debug(time + "   用户名：" + username + "进入后台发布页面：ip为" + ipAddr);
-        model.addAttribute("commons", Commons.getInstance());
 
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail", userDetail);
-
+        model.addAttribute("ps","发布文章");
 
         return "back/newback/article/article_edit";
     }
@@ -107,6 +110,23 @@ public class articleController {
         return JSON.toJSONString(json);
     }
 
+
+    //修改文章
+    @RequestMapping(path = "/toChangeArticle")
+    public String toChangeArticle(int article_id,Model model, HttpSession session, HttpServletRequest request) {
+        System.out.println(article_id);
+        String username = springSecurityUtil.currentUser(session);
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = simpleDateFormat.format(date);
+        logger.debug(time + "   用户名：" + username + "进入文章编辑页面");
+        Article article = articleService.selectArticleByArticleIdNoComment(article_id);
+        model.addAttribute("contents", article);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        model.addAttribute("userDetail", userDetail);
+        model.addAttribute("ps","修改文章");
+        return "back/newback/article/article_edit";
+    }
 
     //文章管理
     @Visitor(desc = "进入文章列表界面")
@@ -158,17 +178,41 @@ public class articleController {
 
     @ResponseBody
     @RequestMapping(path = "/deleteArticle/{articleid}")
-    public String deleteArticle(@PathVariable("articleid") int articleid) {
+    public String deleteArticle(@PathVariable("articleid") int articleid,HttpSession session
+                                ,HttpServletRequest request) {
 
-        System.out.println("deleteArticle:" + articleid);
         layuiJSON layuiArticleJSON = new layuiJSON();
-        if (articleid == 37) {
+
+
+        try {
+            //删除文章
+            articleService.deleteArticle_service(articleid);
+
+            String username = springSecurityUtil.currentUser(session);
+            java.util.Date date = new java.util.Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = simpleDateFormat.format(date);
+            String ipAddr = ipUtils.getIpAddr(request);
+            logger.debug(time + "   用户名：" + username + "删除文章成功，删除的文章id为：" + articleid + ",ip为：" + ipAddr);
+//            redisTemplate.delete("articleList");
+            layuiArticleJSON.setMsg("删除文章成功");
             layuiArticleJSON.setSuccess(true);
-        } else {
+        } catch (Exception e) {
+            /**
+             * deleteArticle_service方法for (String s : split) {}
+             * 当循环次数大于1次时，如果发生了错误，一定会操作数据库和redis数据不一致的情况
+             * 因为redis不会进行回滚，但是redis却把已有标签数-1，所以我们还是用同一套解决方法
+             * 把数据库的tag标签表再一次导入到redis中
+             */
+            List<tag> tags = tagService.selectAllTag();
+
+            for (tag tag : tags) {
+                redisTemplate.opsForValue().set("tag_" + tag.getTagName(), tag.getTagCount());
+            }
+            e.printStackTrace();
+            layuiArticleJSON.setMsg("删除文章失败");
             layuiArticleJSON.setSuccess(false);
         }
-
-        layuiArticleJSON.setMsg("hello");
 
         return JSON.toJSONString(layuiArticleJSON);
     }
@@ -216,11 +260,18 @@ public class articleController {
     @ResponseBody
     @RequestMapping(path = "/enableRecommend")
     public String enableRecommend(Integer articleid) {
-        System.out.println("articleid:" + articleid + "==enableRecommend");
-
         layuiJSON json = new layuiJSON();
-        json.setSuccess(true);
-        json.setMsg("开启推荐成功");
+        try {
+            articleService.updateRecommendTo_1(articleid);
+
+            json.setMsg("开启推荐成功");
+            json.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setMsg("开启推荐失败");
+            json.setSuccess(false);
+        }
+
         return JSON.toJSONString(json);
     }
 
@@ -233,11 +284,20 @@ public class articleController {
     @ResponseBody
     @RequestMapping(path = "/disableRecommend")
     public String disableRecommend(Integer articleid) {
-        System.out.println("articleid:" + articleid + "==disableRecommend");
+
 
         layuiJSON json = new layuiJSON();
-        json.setSuccess(true);
-        json.setMsg("取消推荐成功");
+
+        try {
+            articleService.updateRecommendTo_0(articleid);
+            json.setSuccess(true);
+            json.setMsg("取消推荐成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("取消推荐失败");
+        }
+
         return JSON.toJSONString(json);
     }
 
@@ -245,12 +305,21 @@ public class articleController {
     @RequestMapping(path = "/batchRemove/{checkIds}")
     public String batchRemoveArticle(@PathVariable("checkIds") String checkIds) {
 
-        System.out.println("batchRemoveArticle:" + checkIds);
         layuiJSON layuiArticleJSON = new layuiJSON();
 
-        layuiArticleJSON.setSuccess(true);
+        try {
 
-        layuiArticleJSON.setMsg("batch");
+            String[] var = checkIds.split(",");
+            for (String v : var) {
+                articleService.deleteArticle_service(Integer.parseInt(v));
+            }
+            layuiArticleJSON.setSuccess(true);
+            layuiArticleJSON.setMsg("批量删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            layuiArticleJSON.setSuccess(false);
+            layuiArticleJSON.setMsg("批量删除失败");
+        }
 
         return JSON.toJSONString(layuiArticleJSON);
     }

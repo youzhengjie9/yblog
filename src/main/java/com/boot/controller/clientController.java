@@ -10,6 +10,7 @@ import com.boot.utils.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.util.concurrent.RateLimiter;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -89,6 +90,9 @@ public class clientController {
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
 
+    private static RateLimiter rateLimiter=RateLimiter.create(20); //令牌桶实现，提升系统吞吐量
+
+
 
     //前10排行
     private static final List<Article> ArticleOrder_10(List<Article> articleList) {
@@ -129,7 +133,14 @@ public class clientController {
     @Visitor(desc = "访问首页")
     @RequestMapping(path = {"/"})
     public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
+
         ModelAndView modelAndView = new ModelAndView();
+
+        if(!rateLimiter.tryAcquire()){
+            System.out.println("当前系统访问人数较多，请稍后访问");
+             modelAndView.setViewName("back/newback/article/limit");
+             return modelAndView;
+        }
 
 //        System.out.println("测试负载均衡==当前端口是："+port);
 
