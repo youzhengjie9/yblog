@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<meta th:name="_csrf" th:content="${_csrf.token}"/>
+		<!-- 默认的header name是X-CSRF-TOKEN -->
+		<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 		<meta charset="utf-8">
 		<title></title>
+		<script th:src="@{/assets/js/jquery.min.js}"></script>
 		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
 
 <!--		jquery 标签输入框插件-->
@@ -30,7 +34,7 @@
 					<span style="color: green;font-size: 22px">发布/编辑文章</span>
 					<br/>
 					标题：<br/>
-					<input class="layui-input" type="text" style="width: 40%" required>
+					<input id="title" class="layui-input" type="text" style="width: 40%" required>
 					标签：<br/>
 					<input class="layui-input" type="text" id="tags" style="width: 40%" required>
 				</div>
@@ -50,7 +54,7 @@
 							<a href="#" class="layui-btn layui-btn-warm layui-btn-radius" target="_blank">放入草稿</a>
 						</div>
 						<div class="layui-btn-group" style="margin-top: 10px">
-							<a href="#" class="layui-btn layui-btn-radius" target="_blank">发布文章</a>
+							<button onclick="publish()" class="layui-btn layui-btn-radius" target="_blank">发布文章</button>
 						</div>
 
 					</div>
@@ -60,23 +64,60 @@
 		</div>
 
 	</div>
-	<script th:src="@{/assets/js/jquery.min.js}"></script>
+	<script th:src="@{/component/pear/module/tinymce/tinymce.js}"></script>
 	<script th:src="@{/back/plugins/tagsinput/jquery.tagsinput.min.js}"></script>
 	<script th:src="@{/component/layui/layui.js}"></script>
 	<script th:src="@{/component/pear/pear.js}"></script>
 	<script>
-		layui.use(['tinymce', 'util', 'layer','code','element'], function() {
+		var myedit;
+		layui.use(['tinymce'], function() {
 			var tinymce = layui.tinymce
-			var util = layui.util;
-
-			layui.code();
-
 			var edit = tinymce.render({
 				elem: "#edit",
 				height: 400
 			});
-
+			myedit=edit;
 		});
+
+		//发布文章
+		function publish(){
+			let content = myedit.getContent(); //获取tinymce编译器内容
+			var titleVal=$('#title').val();
+			var tagsVal=$('#tags').val();
+			$.ajax({
+				url: '/pear/article/publish',
+				data:{
+					'content':content,
+					'title':titleVal,
+					'tags':tagsVal
+				},
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					if (result.success) {
+						myedit.setContent(''); //成功之后置空
+						$('#title').val(''); //标题置空
+						// $('#tags').val(''); //标签置空
+						// popup.success(result.msg);
+						layer.msg(result.msg, {
+							icon: 1,
+							time: 1000
+						});
+					} else {
+						// popup.failure(result.msg);
+						layer.msg(result.msg, {
+							icon: 2,
+							time: 1000
+						});
+					}
+				}
+			})
+
+
+		}
+
+
 
 		// Tags Input
 		$('#tags').tagsInput({

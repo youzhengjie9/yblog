@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Controller
+@Controller("pearChartsController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
 public class chartsController {

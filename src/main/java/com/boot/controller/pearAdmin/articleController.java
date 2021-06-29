@@ -2,6 +2,7 @@ package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Visitor;
+import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.data.ResponseData.layuiData;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.Article;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-@Controller
+@Controller(value = "pearArticleController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
 public class articleController {
@@ -37,7 +38,7 @@ public class articleController {
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
 
-    private Logger logger=Logger.getLogger(articleController.class);
+    private Logger logger = Logger.getLogger(articleController.class);
 
     @Autowired
     private userDetailService userDetailService;
@@ -70,6 +71,42 @@ public class articleController {
 
         return "back/newback/article/article_edit";
     }
+
+
+    @RequestMapping(path = "/article/publish")
+    @ResponseBody
+    @ApiOperation("发布文章")
+    public String publish(Article article, HttpSession session, HttpServletRequest request) {
+
+        layuiJSON json = new layuiJSON(); //封装json数据传入前台
+
+        try {
+            //发布操作代码
+            articleService.publishArticle_service(article);
+
+            //打印日志操作
+            String username = springSecurityUtil.currentUser(session);
+            java.util.Date date2 = new java.util.Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = simpleDateFormat.format(date2);
+            String ipAddr = ipUtils.getIpAddr(request);
+            logger.debug(time + "   用户名：" + username + "发布成功,ip为：" + ipAddr);
+            json.setSuccess(true);
+            json.setMsg("发布成功");
+        } catch (Exception e) {
+            /**
+             * 在publishArticle_service方法中，因为操作数据库的代码都在操作redis的上面
+             * 所以当操作数据库的代码报错，会立刻进行回滚，所以我们大可不用担心数据库的错误
+             * redis的语句如果报错则也会触发数据库的回滚，并且redis也执行不成功
+             * 所以我们不用在controller层进行数据的恢复。
+             */
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("发布失败");
+        }
+        return JSON.toJSONString(json);
+    }
+
 
     //文章管理
     @Visitor(desc = "进入文章列表界面")
@@ -138,15 +175,16 @@ public class articleController {
 
     /**
      * 开启评论
+     *
      * @param articleid
      * @return
      */
     @ResponseBody
     @RequestMapping(path = "/enableComment")
-    public String enableComment(Integer articleid){
-        System.out.println("articleid:"+articleid+"==enableComment");
+    public String enableComment(Integer articleid) {
+        System.out.println("articleid:" + articleid + "==enableComment");
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
         json.setSuccess(true);
         json.setMsg("开启评论成功");
         return JSON.toJSONString(json);
@@ -154,30 +192,33 @@ public class articleController {
 
     /**
      * 关闭评论
+     *
      * @param articleid
      * @return
      */
     @ResponseBody
     @RequestMapping(path = "/disableComment")
-    public String disableComment(Integer articleid){
-        System.out.println("articleid:"+articleid+"==disableComment");
+    public String disableComment(Integer articleid) {
+        System.out.println("articleid:" + articleid + "==disableComment");
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
         json.setSuccess(true);
         json.setMsg("关闭评论成功");
         return JSON.toJSONString(json);
     }
+
     /**
      * 开启推荐
+     *
      * @param articleid
      * @return
      */
     @ResponseBody
     @RequestMapping(path = "/enableRecommend")
-    public String enableRecommend(Integer articleid){
-        System.out.println("articleid:"+articleid+"==enableRecommend");
+    public String enableRecommend(Integer articleid) {
+        System.out.println("articleid:" + articleid + "==enableRecommend");
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
         json.setSuccess(true);
         json.setMsg("开启推荐成功");
         return JSON.toJSONString(json);
@@ -185,15 +226,16 @@ public class articleController {
 
     /**
      * 取消推荐
+     *
      * @param articleid
      * @return
      */
     @ResponseBody
     @RequestMapping(path = "/disableRecommend")
-    public String disableRecommend(Integer articleid){
-        System.out.println("articleid:"+articleid+"==disableRecommend");
+    public String disableRecommend(Integer articleid) {
+        System.out.println("articleid:" + articleid + "==disableRecommend");
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
         json.setSuccess(true);
         json.setMsg("取消推荐成功");
         return JSON.toJSONString(json);
@@ -212,16 +254,17 @@ public class articleController {
 
         return JSON.toJSONString(layuiArticleJSON);
     }
+
     @ResponseBody
     @RequestMapping(path = "/categoryData")
     public String categoryData(@RequestParam(value = "page", defaultValue = "1") int page,
-                               @RequestParam(value = "limit", defaultValue = "3") int limit){
+                               @RequestParam(value = "limit", defaultValue = "3") int limit) {
 
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         List<category> categories = categoryService.selectCategories();
 
-        int count=categoryService.selectCategoryCount();
-        layuiData<category> layuiData=new layuiData<>();
+        int count = categoryService.selectCategoryCount();
+        layuiData<category> layuiData = new layuiData<>();
         layuiData.setCode(0);
         layuiData.setMsg("");
         layuiData.setCount(count);
@@ -230,6 +273,7 @@ public class articleController {
         return JSON.toJSONString(layuiData);
 
     }
+
     @RequestMapping(path = "/tagsData")
     @ResponseBody
     public String tagsData(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -238,7 +282,7 @@ public class articleController {
 
         layuiData<tag> taglayuiData = new layuiData<>();
 
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         List<tag> tags = tagService.selectAllTag();
 
         int count = tagService.selectTagCount();

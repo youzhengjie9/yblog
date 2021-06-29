@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Controller
+@Controller("pearFileController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
 public class fileController {

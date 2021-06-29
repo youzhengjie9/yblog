@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-@Controller
+
+@Controller(value = "pearBlackListController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
 public class blackListController {
