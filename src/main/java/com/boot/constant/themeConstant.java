@@ -1,6 +1,9 @@
 package com.boot.constant;
 
-
+/**
+ * @author 游政杰
+ *
+ */
 public  class themeConstant {
 
     /**
@@ -12,10 +15,6 @@ public  class themeConstant {
 
     public static String curTheme=CALM_THEME; //当前主题，默认一个主题
 
-
-    /**
-     * 白天主题、夜间主题（待实现）
-     */
 
 
 

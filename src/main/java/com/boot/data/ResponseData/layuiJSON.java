@@ -1,5 +1,7 @@
 package com.boot.data.ResponseData;
-
+/**
+ * @author 游政杰
+ */
 public class layuiJSON {
 
 

@@ -3,7 +3,9 @@ package com.boot.data.ResponseData;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
-
+/**
+ * @author 游政杰
+ */
 @ApiModel("响应JSON，向前端传入数据封装到此类中")
 public class ResponseJSON implements Serializable {
 

@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * @author 游政杰
+ *
+ */
 @Controller("pearVisitorController")
 @RequestMapping(path = "/pear")
 @CrossOrigin

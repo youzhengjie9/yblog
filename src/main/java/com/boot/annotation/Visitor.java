@@ -5,7 +5,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
+/**
+ * @author 游政杰
+ */
 @Target({ElementType.METHOD}) //只允许加到方法上
 @Retention(RetentionPolicy.RUNTIME) //运行时有效
 public @interface Visitor {

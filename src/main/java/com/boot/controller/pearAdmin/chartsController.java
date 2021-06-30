@@ -20,7 +20,10 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author 游政杰
+ * @Date 2021/6/30
+ */
 @Controller("pearChartsController")
 @RequestMapping(path = "/pear")
 @CrossOrigin

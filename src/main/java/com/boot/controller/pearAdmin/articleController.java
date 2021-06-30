@@ -32,7 +32,10 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * @author 游政杰
+ * @Date 2021/6/30
+ */
 @Controller(value = "pearArticleController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
@@ -523,4 +526,11 @@ public class articleController {
 
         return JSON.toJSONString(taglayuiData);
     }
+
+
+
+    
+
+
+
 }

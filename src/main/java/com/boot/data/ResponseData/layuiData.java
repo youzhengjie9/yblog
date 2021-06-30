@@ -1,7 +1,9 @@
 package com.boot.data.ResponseData;
 
 import java.util.List;
-
+/**
+ * @author 游政杰
+ */
 public class layuiData<T> {
 
     private int code;  //要写成0

@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.List;
+/**
+ * @author 游政杰
+ *
+ */
 @Controller("pearUserManagerController")
 @RequestMapping(path = "/pear")
 @CrossOrigin

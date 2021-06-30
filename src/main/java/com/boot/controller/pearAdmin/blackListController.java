@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * @author 游政杰
+ * @Date 2021/6/30
+ */
 @Controller(value = "pearBlackListController")
 @RequestMapping(path = "/pear")
 @CrossOrigin

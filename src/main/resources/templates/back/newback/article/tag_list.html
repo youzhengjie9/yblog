@@ -6,42 +6,42 @@
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 </head>
 <body class="pear-container">
-<div class="layui-card">
-    <div class="layui-card-body">
-        <form class="layui-form" action="">
-            <div class="layui-form-item">
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">用户名</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="realName" placeholder="" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">性别</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="realName" placeholder="" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">邮箱</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="realName" placeholder="" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
-                        <i class="layui-icon layui-icon-search"></i>
-                        查询
-                    </button>
-                    <button type="reset" class="pear-btn pear-btn-md">
-                        <i class="layui-icon layui-icon-refresh"></i>
-                        重置
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+<!--<div class="layui-card">-->
+<!--    <div class="layui-card-body">-->
+<!--        <form class="layui-form" action="">-->
+<!--            <div class="layui-form-item">-->
+<!--                <div class="layui-form-item layui-inline">-->
+<!--                    <label class="layui-form-label">用户名</label>-->
+<!--                    <div class="layui-input-inline">-->
+<!--                        <input type="text" name="realName" placeholder="" class="layui-input">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="layui-form-item layui-inline">-->
+<!--                    <label class="layui-form-label">性别</label>-->
+<!--                    <div class="layui-input-inline">-->
+<!--                        <input type="text" name="realName" placeholder="" class="layui-input">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="layui-form-item layui-inline">-->
+<!--                    <label class="layui-form-label">邮箱</label>-->
+<!--                    <div class="layui-input-inline">-->
+<!--                        <input type="text" name="realName" placeholder="" class="layui-input">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="layui-form-item layui-inline">-->
+<!--                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">-->
+<!--                        <i class="layui-icon layui-icon-search"></i>-->
+<!--                        查询-->
+<!--                    </button>-->
+<!--                    <button type="reset" class="pear-btn pear-btn-md">-->
+<!--                        <i class="layui-icon layui-icon-refresh"></i>-->
+<!--                        重置-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
 <div class="layui-card">
     <div class="layui-card-body">
         <!--		表格-->
@@ -49,16 +49,16 @@
     </div>
 </div>
 
-<script type="text/html" id="user-toolbar">
-    <a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">
-        <i class="layui-icon layui-icon-add-1"></i>
-        新增
-    </a>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除
-    </button>
-</script>
+<!--<script type="text/html" id="user-toolbar">-->
+<!--    <a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">-->
+<!--        <i class="layui-icon layui-icon-add-1"></i>-->
+<!--        新增-->
+<!--    </a>-->
+<!--    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">-->
+<!--        <i class="layui-icon layui-icon-delete"></i>-->
+<!--        删除-->
+<!--    </button>-->
+<!--</script>-->
 
 <script type="text/html" id="user-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
@@ -96,12 +96,6 @@
                     title: '数量',
                     field: 'tagCount',
                     align: 'center'
-                },
-                {
-                    title: '操作',
-                    toolbar: '#user-bar',
-                    align: 'center',
-                    width: 130
                 }
             ]
         ]
@@ -112,7 +106,7 @@
             page: true,
             cols: cols,
             skin: 'line',
-            toolbar: '#user-toolbar',
+            // toolbar: '#user-toolbar',
             text: {none: '暂无标签信息'},
             defaultToolbar: [{
                 title: '刷新',
@@ -147,136 +141,6 @@
             return false;
         });
 
-        form.on('switch(allow-enable)', function (obj) {
-            let operate;
-            let v=obj.elem.value;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/pear/'+operate+'Comment',
-                //data不能加[]，不然传值不了
-                data: {
-                    "articleid": v
-                }
-                ,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
-
-        form.on('switch(recommend-enable)', function (obj) {
-            let operate;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/pear/' + operate+'Recommend',
-                data:{
-                    'articleid':obj.elem.value
-                },
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
-
-
-        window.remove = function(obj) {
-            layer.confirm('确定要删除该标签', {
-                icon: 3,
-                title: '提示'
-            }, function(index) {
-                layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: "/pear/deleteArticle/"+obj.data['id'],
-                    dataType: 'json',
-                    type: 'GET',
-                    success: function(result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {
-                                icon: 1,
-                                time: 1000
-                            }, function() {
-                                obj.del();
-                            });
-                        } else {
-                            layer.msg(result.msg, {
-                                icon: 2,
-                                time: 1000
-                            });
-                        }
-                    }
-                })
-            });
-        }
-
-        window.batchRemove = function(obj) {
-
-            var checkIds = common.checkField(obj,'id');
-
-            if (checkIds === "") {
-                layer.msg("未选中数据", {
-                    icon: 3,
-                    time: 1000
-                });
-                return false;
-            }
-
-            layer.confirm('确定要删除这些标签', {
-                icon: 3,
-                title: '提示'
-            }, function(index) {
-                layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: "/pear/batchRemove/"+checkIds,
-                    dataType: 'json',
-                    type: 'get',
-                    success: function(result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {
-                                icon: 1,
-                                time: 1000
-                            }, function() {
-                                table.reload('user-table');
-                            });
-                        } else {
-                            layer.msg(result.msg, {
-                                icon: 2,
-                                time: 1000
-                            });
-                        }
-                    }
-                })
-            });
-        }
 
         window.refresh = function(param) {
             table.reload('user-table');

@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>附件管理</title>
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 
@@ -118,15 +121,16 @@
                             </a>
 
                             <div class="clearfix">
-                                <a type="button" th:href="@{'/img/dowmloadImg?f='+${img.getId()}}"
+                                <a type="button" th:href="@{'/pear/file/download?f='+${img.getId()}}"
                                    class="btn btn-warning btn-sm waves-effect waves-light m-t-5 copy">
                                     <i class="fa fa-copy"></i>
                                     <span>下载</span>
                                 </a>
-                                <a type="button" href="" class="btn btn-danger btn-sm waves-effect waves-light m-t-5">
+                                <button class="btn btn-danger btn-sm waves-effect waves-light m-t-5" th:onclick="'delfile('+${img.getId()}+')'">
                                     <i class="fa fa-trash-o"></i>
                                     <span>删除</span>
-                                </a>
+                                </button>
+
                             </div>
 
                         </div>
@@ -142,17 +146,15 @@
                     <div id="up" class="col-md-12">
 
 
-                        <form method="post" th:action="@{/img/imgupload}" class="form-horizontal" role="form"
+                        <form method="post" th:action="@{/pear/file/upload}" class="form-horizontal" role="form"
                               id="global-form" enctype="multipart/form-data">
 
                             <input id="uploadPicture" name="files" type="file" multiple=true class="file-loading">
 
 
                             <div class="clearfix pull-right">
-                                <button id="btn1" type="submit"
-                                        class="btn btn-primary waves-effect waves-light">
-                                    开始上传
-                                </button>
+                                <button class="layui-btn" id="submit01" lay-submit lay-filter="submit01">立即上传</button>
+
                             </div>
 
                         </form>
@@ -175,6 +177,10 @@
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script>
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
     layui.use(['table','form','jquery','element'],function () {
         let table = layui.table;
         let form = layui.form;
@@ -187,6 +193,46 @@
             return false;
         });
 
+
+        //上传附件
+        form.on('submit(submit01)', function(data){
+            layer.confirm('您确定上传吗?', {
+                    icon: 3,
+                    title: '提示'
+                }, function(index) {
+                    layer.close(index);
+                    var formdata = new FormData($('#global-form')[0]);
+                    let loading = layer.load();
+                    $.ajax({
+                        url: "/pear/file/upload",
+                        data: formdata,  //ajax提交表单
+                        dataType: 'json',
+                        type: 'POST',
+                        headers:headers,
+                        processData: false,
+                        contentType: false,
+                        success: function(result) {
+                            layer.close(loading);
+                            if (result.success) {
+                                layer.msg(result.msg, {
+                                    icon: 1,
+                                    time: 1000
+                                });
+                                setTimeout('window.location.reload()',500);
+                            } else {
+                                layer.msg(result.msg, {
+                                    icon: 2,
+                                    time: 1000
+                                });
+                            }
+                        }
+                    })
+                }
+            );
+
+
+            return false;
+        });
 
 
         window.error = function(obj){
@@ -202,7 +248,7 @@
 
         $(function () {
             $("#uploadPicture").fileinput({
-                uploadUrl: "http://localhost:8080/img/imgupload",
+                uploadUrl: "/pear/file/upload",
                 previewFileType: "image",
                 uploadAsync: true,
                 showCaption: false,
@@ -241,5 +287,42 @@
         $('#upl').css('height','500px');
 
     })
+
+
+
+    function delfile(id){
+        //ajax异步请求
+        layer.confirm('确定要删除该附件', {
+            icon: 3,
+            title: '提示'
+        }, function(index) {
+            layer.close(index);
+            let loading = layer.load();
+            $.ajax({
+                url: "/pear/file/delete?id="+id,
+                dataType: 'json',
+                type: 'GET',
+                success: function(result) {
+                    layer.close(loading);
+                    if (result.success) {
+                        layer.msg(result.msg, {
+                            icon: 1,
+                            time: 1000
+                        }, function() {
+                            obj.del();
+                        });
+                    } else {
+                        layer.msg(result.msg, {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+        });
+
+    }
+
+
 </script>
 </html>
