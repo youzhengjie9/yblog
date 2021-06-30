@@ -50,10 +50,10 @@
 </div>
 
 <script type="text/html" id="user-toolbar">
-    <a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">
+    <button  class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
-    </a>
+    </button>
     <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
@@ -147,63 +147,26 @@
             return false;
         });
 
-        form.on('switch(allow-enable)', function (obj) {
-            let operate;
-            let v=obj.elem.value;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/pear/'+operate+'Comment',
-                //data不能加[]，不然传值不了
-                data: {
-                    "articleid": v
-                }
-                ,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
 
-        form.on('switch(recommend-enable)', function (obj) {
-            let operate;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/pear/' + operate+'Recommend',
-                data:{
-                    'articleid':obj.elem.value
-                },
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
+        window.add = function() {
+            layer.open({
+                type: 2,
+                title: '新增',
+                shade: 0.1,
+                area: ['500px', '400px'],
+                content: '/pear/addCategoryPage'
+            });
+        }
 
+        window.edit = function(obj) {
+            layer.open({
+                type: 2,
+                title: '修改',
+                shade: 0.1,
+                area: ['500px', '400px'],
+                content: '/pear/modifyCategoryPage?oldName='+obj.data.categoryName
+            });
+        }
 
         window.remove = function(obj) {
             layer.confirm('确定要删除该分类', {
@@ -213,7 +176,7 @@
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/pear/deleteArticle/"+obj.data['id'],
+                    url: "/pear/delete/Category?n="+obj.data['categoryName'],
                     dataType: 'json',
                     type: 'GET',
                     success: function(result) {
@@ -238,7 +201,7 @@
 
         window.batchRemove = function(obj) {
 
-            var checkIds = common.checkField(obj,'id');
+            var checkIds = common.checkField(obj,'categoryName');
 
             if (checkIds === "") {
                 layer.msg("未选中数据", {
@@ -255,7 +218,7 @@
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/pear/batchRemove/"+checkIds,
+                    url: "/pear/batchRemove/Category?checkIds="+checkIds,
                     dataType: 'json',
                     type: 'get',
                     success: function(result) {

@@ -87,45 +87,6 @@
 			myedit=edit;
 		});
 
-		//发布文章
-		function publish(){
-			let content = myedit.getContent(); //获取tinymce编译器内容
-			var titleVal=$('#title').val();
-			var tagsVal=$('#tags').val();
-			$.ajax({
-				url: '/pear/article/publish',
-				data:{
-					'content':content,
-					'title':titleVal,
-					'tags':tagsVal
-				},
-				dataType: 'json',
-				contentType: 'application/json',
-				type: 'get',
-				success: function (result) {
-					if (result.success) {
-						myedit.setContent(''); //成功之后置空
-						$('#title').val(''); //标题置空
-						$('#tags').tagsinput('removeAll'); //标签置空
-						// popup.success(result.msg);
-						layer.msg(result.msg, {
-							icon: 1,
-							time: 1000
-						});
-					} else {
-						// popup.failure(result.msg);
-						layer.msg(result.msg, {
-							icon: 2,
-							time: 1000
-						});
-					}
-				}
-			})
-
-
-		}
-
-
 
 		// Tags Input
 		$('#tags').tagsInput({

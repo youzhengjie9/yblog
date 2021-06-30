@@ -15,6 +15,7 @@ import com.boot.service.tagService;
 import com.boot.service.userDetailService;
 import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.bootstrap;
 import com.boot.utils.ipUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,12 +30,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller(value = "pearArticleController")
 @RequestMapping(path = "/pear")
 @CrossOrigin
 public class articleController {
+
+    private final String DEFAULT_CATEGORY = "默认分类";
 
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
@@ -391,6 +395,114 @@ public class articleController {
         return JSON.toJSONString(layuiData);
 
     }
+
+    @RequestMapping(path = "/addCategoryPage")
+    public String addCategoryPage(){
+
+        return "back/newback/article/module/addCategory";
+    }
+
+
+    @PostMapping(path = "/add/Category")
+    @ResponseBody
+    @ApiOperation("添加分类")
+    public String addCategory(category category, HttpSession session, Model model) {
+        layuiJSON json=new layuiJSON();
+
+        try {
+            categoryService.addCategory(category);
+            json.setSuccess(true);
+            json.setMsg("添加分类成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("添加分类失败");
+        }
+        return JSON.toJSONString(json);
+
+    }
+
+    @RequestMapping(path = "/modifyCategoryPage")
+    public String modifyCategoryPage(Model model,String oldName){
+        model.addAttribute("oldName",oldName);
+        return "back/newback/article/module/modifyCategory";
+    }
+
+    //修改分类
+    @PostMapping(path = "/modify/Category")
+    @ResponseBody
+    @ApiOperation("修改分类")
+    public String modifyCategory(String oldName,String newName,HttpSession session, Model model) {
+        layuiJSON json=new layuiJSON();
+
+        try {
+            categoryService.updateCategory(oldName, newName);
+            json.setSuccess(true);
+            json.setMsg("修改分类成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("修改分类失败");
+        }
+        return JSON.toJSONString(json);
+    }
+
+
+    @RequestMapping(path = "/delete/Category")
+    @ResponseBody
+    @ApiOperation("删除分类")
+    public String deleteCategory(@RequestParam(value = "n", defaultValue = "") String n, HttpSession session, Model model) {
+
+        layuiJSON json=new layuiJSON();
+
+        if (n != null && !n.equals("")) {
+            try {
+                categoryService.deleteCategory_service(n, DEFAULT_CATEGORY);
+                json.setMsg("删除分类成功");
+                json.setSuccess(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.setMsg("删除分类失败");
+                json.setSuccess(false);
+            }
+
+        }else {
+            json.setMsg("删除分类失败");
+            json.setSuccess(false);
+        }
+
+        return JSON.toJSONString(json);
+    }
+
+
+
+    @RequestMapping(path = "/batchRemove/Category")
+    @ResponseBody
+    @ApiOperation("批量删除分类")
+    /**
+     * @Param checkIds: 分类名的集合
+     */
+    public String batchRemoveCategory(@RequestParam(value = "checkIds", defaultValue = "") String checkIds, HttpSession session, Model model) {
+
+        layuiJSON json=new layuiJSON();
+
+        try {
+            String[] split = checkIds.split(",");
+            for (String s : split) {
+                categoryService.deleteCategory_service(s, DEFAULT_CATEGORY);
+            }
+            json.setMsg("批量删除分类成功");
+            json.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            json.setMsg("批量删除分类失败");
+            json.setSuccess(false);
+        }
+
+        return JSON.toJSONString(json);
+    }
+
+
 
     @RequestMapping(path = "/tagsData")
     @ResponseBody
