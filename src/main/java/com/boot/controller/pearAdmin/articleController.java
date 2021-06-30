@@ -71,14 +71,13 @@ public class articleController {
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("ps","发布文章");
-
+        model.addAttribute("url","/article/publish");
         return "back/newback/article/article_edit";
     }
 
 
     @RequestMapping(path = "/article/publish")
     @ResponseBody
-    @ApiOperation("发布文章")
     public String publish(Article article, HttpSession session, HttpServletRequest request) {
 
         layuiJSON json = new layuiJSON(); //封装json数据传入前台
@@ -125,8 +124,58 @@ public class articleController {
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail", userDetail);
         model.addAttribute("ps","修改文章");
+        model.addAttribute("url","/modifyArticle");
         return "back/newback/article/article_edit";
     }
+
+
+
+    @RequestMapping(path = "/modifyArticle")
+    @ResponseBody //要加
+    @ApiOperation(value = "修改文章")
+    public String modify(String content,@RequestParam(value = "editArticleId",defaultValue = "-99") int editArticleId,
+                                      Article article, HttpSession session,
+                                      HttpServletRequest request) {
+        layuiJSON json=new layuiJSON();
+
+         if(editArticleId==-99){ //=-99说明不能修改
+             json.setSuccess(false);
+             json.setMsg("修改失败");
+             return JSON.toJSONString(json);
+         }else { //可修改
+             try {
+                 article.setId(editArticleId);
+                 articleService.changeArticle_service(article);//进行修改文章
+                 //打印修改成功日志
+                 String username = springSecurityUtil.currentUser(session);
+                 java.util.Date date2 = new java.util.Date();
+                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                 String time2 = simpleDateFormat.format(date2);
+                 String ipAddr = ipUtils.getIpAddr(request);
+                 logger.debug(time2 + "   用户名：" + username + "修改文章信息成功,ip为：" + ipAddr);
+                 json.setSuccess(true);
+                 json.setMsg("修改成功");
+                 return JSON.toJSONString(json);
+             } catch (Exception e) {
+                 /**
+                  * 解决方案：为了解决因为spring事务只会对mysql进行回滚而不会对redis操作进行回滚
+                  * 所以我们可以把redis数据进行重新导入
+                  */
+                 List<tag> tags = tagService.selectAllTag();
+
+                 for (tag tag : tags) {
+                     redisTemplate.opsForValue().set("tag_" + tag.getTagName(), tag.getTagCount());
+                 }
+                 e.printStackTrace();
+                 json.setSuccess(false);
+                 json.setMsg("修改失败");
+                 return JSON.toJSONString(json);
+             }
+
+         }
+
+    }
+
 
     //文章管理
     @Visitor(desc = "进入文章列表界面")

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<meta charset="utf-8">
 		<meta th:name="_csrf" th:content="${_csrf.token}"/>
 		<!-- 默认的header name是X-CSRF-TOKEN -->
 		<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-		<meta charset="utf-8">
 		<title></title>
 		<script th:src="@{/assets/js/jquery.min.js}"></script>
 		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
@@ -28,16 +28,18 @@
 	</head>
 	<body class="pear-container">
 	<div class="layui-row layui-col-space10">
+		<form method="post" th:action="@{${url}}" id="global-form">
 		<div class="layui-col-md12">
+
 			<div class="layui-card">
 				<div class="layui-card-body">
 					<input type="hidden" name="editArticleId" id="editArticleId">
 					<span style="color: green;font-size: 22px" th:text="${ps}"></span>
 					<br/>
 					标题：<br/>
-					<input id="title" class="layui-input" type="text" style="width: 40%" required>
+					<input id="title" name="title" class="layui-input" type="text" style="width: 40%" required>
 					标签：<br/>
-					<input class="layui-input" type="text" id="tags" style="width: 40%" required>
+					<input class="layui-input" name="tags" type="text" id="tags" style="width: 40%" required>
 				</div>
 			</div>
 		</div>
@@ -45,7 +47,7 @@
 			<div class="layui-card">
 				<div class="layui-card-header"><span style="color: green;font-size: 15px;">文章编辑器</span></div>
 				<div class="layui-card-body">
-					<textarea name="" id="edit" cols="30" rows="10"></textarea>
+					<textarea name="ct" id="edit" cols="30" rows="10" required></textarea>
 					<div id="btns">
 
 						<div class="layui-btn-group layui-btn-primary" style="margin-top: 10px">
@@ -55,14 +57,14 @@
 							<a href="#" class="layui-btn layui-btn-warm layui-btn-radius" target="_blank">放入草稿</a>
 						</div>
 						<div class="layui-btn-group" style="margin-top: 10px">
-							<button onclick="publish()" class="layui-btn layui-btn-radius" target="_blank">发布文章</button>
+							<button  lay-submit lay-filter="submit01" class="layui-btn layui-btn-radius" target="_blank" th:text="${ps}"></button>
 						</div>
-
 					</div>
 
 				</div>
 			</div>
 		</div>
+		</form>
 
 	</div>
 	<script th:src="@{/component/pear/module/tinymce/tinymce.js}"></script>
@@ -71,6 +73,11 @@
 	<script th:src="@{/component/pear/pear.js}"></script>
 	<script th:inline="javascript">
 		var myedit=null;
+		// 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var headers = {"X-CSRF-TOKEN": token}
+
 		layui.use(['tinymce'], function() {
 			var tinymce = layui.tinymce
 			var edit = tinymce.render({
@@ -137,12 +144,109 @@
 			//编辑文章的数据填充
 			var articleContent=[[${contents}]];
 			if(articleContent!=null){
-				$('#editArticleId').val(articleContent.id)
+				$('#editArticleId').val(articleContent.id);
 				$('#title').val(articleContent.title);
 				$('#tags').importTags(articleContent.tags);
 				tinymce.activeEditor.setContent(articleContent.content);
 			}
 		}, 850);
+
+
+		setTimeout(() => {
+
+
+			layui.use('form', function(){
+				var form = layui.form;
+
+				if($('#editArticleId').val().length==0) {
+					form.on('submit(submit01)', function (data) {
+						layer.confirm('您确定要发布吗?', {
+							icon: 3,
+							title: '提示'
+						}, function (index) {
+							layer.close(index);
+							let loading = layer.load();
+							var data = $.param({
+								"content" : myedit.getContent()
+							}) + "&" +$('#global-form').serialize();
+							$.ajax({
+								url: "/pear/article/publish",
+								data: data,  //ajax提交表单
+								dataType: 'json',
+								type: 'POST',
+								headers: headers,
+								async:false,
+								success: function (result) {
+									layer.close(loading);
+									if (result.success) {
+										layer.msg(result.msg, {
+											icon: 1,
+											time: 1000
+										});
+									} else {
+										layer.msg(result.msg, {
+											icon: 2,
+											time: 1000
+										});
+									}
+								}
+							})
+						})
+						return false;
+					});
+
+				}else {
+					form.on('submit(submit01)', function (data) {
+						layer.confirm('您确定要修改吗?', {
+							icon: 3,
+							title: '提示'
+						}, function (index) {
+							layer.close(index);
+							var data = $.param({
+								"content" : myedit.getContent()
+							}) + "&" +$('#global-form').serialize();
+
+							let loading = layer.load();
+							$.ajax({
+								url: "/pear/modifyArticle",
+								data: data,  //ajax提交表单
+								dataType: 'json',
+								type: 'POST',
+								headers: headers,
+								async:false,
+								success: function (result) {
+									layer.close(loading);
+									if (result.success) {
+										layer.msg(result.msg, {
+											icon: 1,
+											time: 1000
+										});
+									} else {
+										layer.msg(result.msg, {
+											icon: 2,
+											time: 1000
+										});
+									}
+								}
+							})
+						})
+						return false;
+					});
+
+
+
+				}
+
+
+			});
+
+
+		}, 900);
+
+
+
+
+
 
 
 	</script>
