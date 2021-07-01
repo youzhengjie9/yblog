@@ -85,10 +85,10 @@ public class pearController {
     private settingService settingService;
 
     private static List<String> themes = new ArrayList<>();
-
-    private final String ECHARTS_DAYS = "echarts_days"; //redis存储日期的key
-
-    private final String ECHARTS_COUNTS = "echarts_counts";//redis存储对应的访问量的key
+    //redis存储日期的key
+    private final String ECHARTS_DAYS = "echarts_days";
+    //redis存储对应的访问量的key
+    private final String ECHARTS_COUNTS = "echarts_counts";
 
     @Autowired
     private userService userService;
@@ -366,8 +366,20 @@ public class pearController {
 
     //系统设置
     @RequestMapping(path = "/toSetting")
-    public String toSetting() {
+    public String toSetting(HttpSession session,Model model) {
 
+
+        String username = springSecurityUtil.currentUser(session);
+        setting setting = settingService.selectUserSetting(username);
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+
+
+        model.addAttribute("userDetail", userDetail);
+        model.addAttribute("themes", themes);
+        model.addAttribute("setting", setting);
+        model.addAttribute("commons", Commons.getInstance());
+        model.addAttribute("bootstrap", new bootstrap());
+        model.addAttribute("curName", username);
 
         return "back/newback/article/setting";
     }

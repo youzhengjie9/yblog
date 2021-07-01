@@ -48,9 +48,60 @@
             </ul>
             <div class="layui-tab-content">
                 <!--                系统设置form-->
+                <div class="layui-tab-item layui-show">
+                <form method="post" th:action="@{/pear/update/Setting}"  class="layui-form"
+                      role="form" id="global-form" enctype="multipart/form-data">
+                    <input th:value="${curName}" name="name" type="hidden" class="form-control" required
+                           aria-required="true"/>
+
+                    <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 110px">博客logo</label>
+                    <div th:if="${setting.getLogo()} eq null or ${setting.getLogo()} eq ''"
+                         class="layui-input-block">
+
+                        <input id="uploadPicture" name="logo" type="file" multiple=true
+                               class="file-loading">
+
+                    </div>
+                    <div th:if="${setting.getLogo()} ne null and ${setting.getLogo()} ne ''"
+                         class="layui-input-block">
+                        <input id="uploadPicture" th:utext="'logo地址:'+${setting.getLogo()}"
+                               th:value="${setting.getLogo()}" name="logo" type="file"
+                               multiple=true class="file-loading">
+                    </div>
+                    </div>
 
 
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 110px">博客页尾</label>
+                        <div class="layui-input-block">
+                            <input type="text" th:value="${setting.getFoot()}"
+                                   name="foot" class="layui-input" placeholder="博客页尾"
+                                   aria-required="true" th:if="${setting.getFoot()} ne null and ${setting.getFoot()} ne ''"/>
+                            <input type="text" name="foot" class="layui-input" placeholder="博客页尾"
+                                   aria-required="true" th:if="${setting.getFoot()} eq null or ${setting.getFoot()} eq ''"/>
+                        </div>
 
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 110px">博客主题</label>
+                        <div class="layui-input-inline">
+                            <select name="theme" required>
+                                <option th:each="theme:${themes}" th:text="${theme}" th:value="${theme}"></option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                        <button class="layui-btn" id="submit01" lay-submit lay-filter="submit01">立即设置</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
                     <!--                    form -->
 
 
@@ -84,7 +135,7 @@
 
         //提交基本信息表单
         form.on('submit(submit01)', function(data){
-            layer.confirm('您确定修改吗?', {
+            layer.confirm('您确定设置吗?', {
                     icon: 3,
                     title: '提示'
                 }, function(index) {
@@ -92,7 +143,7 @@
                     var formdata = new FormData($('#global-form')[0]);
                     let loading = layer.load();
                     $.ajax({
-                        url: "/pear/userInfo",
+                        url: "/pear/update/Setting",
                         data: formdata,  //ajax提交表单
                         dataType: 'json',
                         type: 'POST',
@@ -143,7 +194,7 @@
     //logo上传
     $(function () {
         $("#uploadPicture").fileinput({
-            uploadUrl: "http://localhost:8080/pear/userInfo",
+            uploadUrl: "http://localhost:8080/pear/update/Setting",
             previewFileType: "image",
             uploadAsync: true,
             showCaption: false,

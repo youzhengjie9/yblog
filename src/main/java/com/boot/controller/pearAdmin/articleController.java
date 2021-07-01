@@ -282,12 +282,20 @@ public class articleController {
     @ResponseBody
     @RequestMapping(path = "/enableComment")
     public String enableComment(Integer articleid) {
-        System.out.println("articleid:" + articleid + "==enableComment");
-
         layuiJSON json = new layuiJSON();
-        json.setSuccess(true);
-        json.setMsg("开启评论成功");
-        return JSON.toJSONString(json);
+        try {
+            articleService.updateAllowCommentTo_1(articleid);
+
+            json.setSuccess(true);
+            json.setMsg("开启评论成功");
+            return JSON.toJSONString(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("开启评论失败");
+            return JSON.toJSONString(json);
+        }
+
     }
 
     /**
@@ -299,12 +307,19 @@ public class articleController {
     @ResponseBody
     @RequestMapping(path = "/disableComment")
     public String disableComment(Integer articleid) {
-        System.out.println("articleid:" + articleid + "==disableComment");
-
         layuiJSON json = new layuiJSON();
-        json.setSuccess(true);
-        json.setMsg("关闭评论成功");
-        return JSON.toJSONString(json);
+        try {
+            articleService.updateAllowCommentTo_0(articleid);
+
+            json.setSuccess(true);
+            json.setMsg("关闭评论成功");
+            return JSON.toJSONString(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.setSuccess(false);
+            json.setMsg("关闭评论失败");
+            return JSON.toJSONString(json);
+        }
     }
 
     /**

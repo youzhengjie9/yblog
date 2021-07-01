@@ -12,8 +12,8 @@ public  class themeConstant {
     public static final String DEFAULT_THEME="default";
 
     public static final String CALM_THEME="calmlog";
-
-    public static String curTheme=CALM_THEME; //当前主题，默认一个主题
+    //当前主题，默认一个主题
+    public static String curTheme=CALM_THEME;
 
 
 

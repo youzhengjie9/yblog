@@ -33,11 +33,16 @@ public class swaggerConfig {  //配置swagger2
                 //本API负责人的联系信息
                 .contact(new Contact("游政杰", "baidu.com", "1550324080@qq.com"))
                 .build();
-        return new Docket(DocumentationType.SWAGGER_2)//文档类型（swagger2）
-                .apiInfo(apiInfo)//设置包含在json ResourceListing响应中的api元信息
-                .select()//启动用于api选择的构建器
-                .apis(RequestHandlerSelectors.basePackage("com.boot.controller"))//扫描接口的包
-                .paths(PathSelectors.any())//路径过滤器（扫描所有路径）
+        //文档类型（swagger2）
+        return new Docket(DocumentationType.SWAGGER_2)
+                //设置包含在json ResourceListing响应中的api元信息
+                .apiInfo(apiInfo)
+                //启动用于api选择的构建器
+                .select()
+                //扫描接口的包
+                .apis(RequestHandlerSelectors.basePackage("com.boot.controller"))
+                //路径过滤器（扫描所有路径）
+                .paths(PathSelectors.any())
                 .build();
     }
 

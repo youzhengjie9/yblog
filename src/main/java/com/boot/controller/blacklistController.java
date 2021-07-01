@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Visitor;
 import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
+import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.blacklist;
 import com.boot.pojo.link;
 import com.boot.pojo.userDetail;
@@ -20,10 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -111,8 +109,6 @@ public class blacklistController {
         model.addAttribute("commons", Commons.getInstance());
         return "back/black_list";
     }
-
-
 
 
 }

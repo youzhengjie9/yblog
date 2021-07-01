@@ -10,16 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class rabbitTemplateConfig {
 
 
-    /**
-     * @Bean
-     * @ConditionalOnSingleCandidate(ConnectionFactory.class)
-     * @ConditionalOnMissingBean({RabbitOperations.class}) public RabbitTemplate rabbitTemplate(RabbitTemplateConfigurer configurer, ConnectionFactory connectionFactory) {
-     * RabbitTemplate template = new RabbitTemplate();
-     * configurer.configure(template, connectionFactory);
-     * return template;
-     * }
-     */
-
     @Bean
     public RabbitTemplate rabbitTemplate(@Qualifier("rabbitConnectionFactory") CachingConnectionFactory cachingConnectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
