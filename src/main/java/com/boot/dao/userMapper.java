@@ -4,6 +4,7 @@ import com.boot.pojo.user;
 import com.boot.pojo.user_authority;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface userMapper {
 
     void addUserAuthority(user_authority user_authority);
 
+    @Update("update t_user set email = #{email} where username=#{username}")
     void updateEmail(@Param("email") String email, @Param("username") String username);
 
     user selectUserInfoByuserName(@Param("username") String username);

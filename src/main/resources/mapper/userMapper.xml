@@ -13,11 +13,6 @@
         insert into t_user_authority (user_id,authority_id) values (#{user_id},#{authority_id});
     </insert>
 
-    <update id="updateEmail">
-        update t_user set email = #{email} where username=#{username}
-    </update>
-
-
     <resultMap id="res1" type="com.boot.pojo.user">
         <result property="email" column="email"/>
         <association property="userDetail" javaType="com.boot.pojo.userDetail">

@@ -127,14 +127,10 @@ public class userController {
         model.addAttribute("userDetail",userDetail1);
 
         if(email!=null && !email.equals("")){
-            userService.updateEmail(userDetail.getName(),email);
+            userService.updateEmail(email,userDetail.getName());
         }
 
-
-
         user user = userService.selectUserInfoByuserName(name);
-
-
 
         model.addAttribute("user",user);
         model.addAttribute("curName",name);
