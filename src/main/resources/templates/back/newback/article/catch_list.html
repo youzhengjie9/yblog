@@ -1,27 +1,206 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>爬取数据</title>
-    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
-    <style>
-        h1{
-            margin-top: 200px;
-            color: #5FB878;
-        }
-        .layui-card-body{
-            text-align: center;height: 500px;
-        }
-    </style>
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
 </head>
 <body class="pear-container">
 <div class="layui-card">
-    <div class="layui-card-header"></div>
     <div class="layui-card-body">
-        <h1><b>爬取数据</b></h1>
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">CSDN模块</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+
+
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <form method="post" class="layui-form" action="" role="form" id="f1">
+                                    <b>单篇文章抓取</b>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">url</label>
+                                        <div class="layui-input-block">
+                                            <input type="text"
+                                                   name="url" class="layui-input" placeholder="请输入URL" required
+                                                   lay-verify="required" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <label class="layui-form-label">验证码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text"
+                                                   name="code" class="layui-input" placeholder="请输入验证码" required
+                                                   lay-verify="required" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <img th:src="@{/pear/captcha}" width="130px" height="48px"/>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" id="submit01" lay-submit lay-filter="submit01">
+                                                立即修改
+                                            </button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <form method="post" class="layui-form" action="" role="form" id="f2">
+                                    <b>模块抓取</b>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">url</label>
+                                        <div class="layui-input-block">
+                                            <input type="text"
+                                                   name="url" class="layui-input" placeholder="请输入URL" required
+                                                   lay-verify="required" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <label class="layui-form-label">验证码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text"
+                                                   name="code" class="layui-input" placeholder="请输入验证码" required
+                                                   lay-verify="required" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <img th:src="@{/pear/captcha}" width="130px" height="48px"/>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" id="submit02" lay-submit lay-filter="submit02">
+                                                立即修改
+                                            </button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
+
+
+<script type="text/html" id="log-createTime">
+    {{layui.util.toDateString(d.intercept_time,  "yyyy-MM-dd HH:mm:ss")}}
+</script>
+
+
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
+<script>
+
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    layui.use(['table','form','jquery','element'],function () {
+        let table = layui.table;
+        let form = layui.form;
+        let element = layui.element;
+
+        form.on('submit(submit01)', function(data){
+
+            layer.confirm('您确定修改吗?', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/pear/catch/Article",
+                    data: $('#f1').serialize(),  //ajax提交表单
+                    dataType: 'json',
+                    type: 'POST',
+                    headers:headers,
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            })
+            return false;
+        });
+
+        form.on('submit(submit02)', function(data){
+
+            layer.confirm('您确定修改吗?', {
+                icon: 3,
+                title: '提示'
+            }, function(index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/pear/catch/ModelArticle",
+                    data: $('#f2').serialize(),  //ajax提交表单
+                    dataType: 'json',
+                    type: 'POST',
+                    headers:headers,
+                    success: function(result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1000
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            })
+            return false;
+        });
+
+
+    });
+
+
+
+
+
+        window.error = function(obj){
+            layer.open({
+                type: 1,
+                title: '异常信息',
+                shade: 0,
+                area: ['450px', '350px'],
+                content: '<div class="pear-container"><div class="layui-card"><div class="layui-card-body">'+obj.data['error']+'</div></div></div>'
+            });
+        }
+
+</script>
 </html>
