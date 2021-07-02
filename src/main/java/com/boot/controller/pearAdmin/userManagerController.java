@@ -2,6 +2,7 @@ package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.data.ResponseData.layuiData;
+import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.user;
 import com.boot.service.userService;
 import com.boot.utils.SpringSecurityUtil;
@@ -9,10 +10,7 @@ import com.github.pagehelper.PageHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -59,6 +57,51 @@ public class userManagerController {
         json.setCount(total); //总数
         json.setMsg("");
         json.setData(users); //分页数据
+
+        return JSON.toJSONString(json);
+    }
+
+
+    @GetMapping(path = "/enable/Vaild")
+    @ResponseBody
+    public String updateVaildEnable(String name,
+                              HttpSession session){
+
+
+        layuiJSON json=new layuiJSON();
+
+        try {
+
+            userService.updateValidTo_1(name);
+            json.setMsg("66");
+            json.setSuccess(true);
+        }catch (Exception e){
+
+            e.printStackTrace();
+            json.setMsg("66");
+            json.setSuccess(false);
+        }
+
+        return JSON.toJSONString(json);
+    }
+
+    @GetMapping(path = "/disable/Vaild")
+    @ResponseBody
+    public String updateVaildDisable(String name,
+                                    HttpSession session){
+        layuiJSON json=new layuiJSON();
+
+        try {
+
+            userService.updateValidTo_0(name);
+            json.setMsg("77");
+            json.setSuccess(true);
+        }catch (Exception e){
+
+            e.printStackTrace();
+            json.setMsg("77");
+            json.setSuccess(false);
+        }
 
         return JSON.toJSONString(json);
     }

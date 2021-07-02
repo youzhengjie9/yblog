@@ -5,20 +5,26 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title>修改分类</title>
+    <title>新增友链</title>
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 </head>
+
 <body>
-<form class="layui-form" th:action="@{/pear/modify/Category}" method="post" id="fm">
+<form id="cform" class="form-inline" method="post" href="#">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
-                <input type="hidden" name="oldName" th:value="${oldName}">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">分类名</label>
+                    <label class="layui-form-label">友链标题</label>
                     <div class="layui-input-block">
-                        <input type="text" th:value="${oldName}" name="newName" lay-verify="title" autocomplete="off" placeholder="请输入分类名" class="layui-input">
+                        <input type="text" name="title" autocomplete="off" placeholder="请输入友链标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">友链地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="link" autocomplete="off" placeholder="请输入友链地址" class="layui-input">
                     </div>
                 </div>
 
@@ -54,8 +60,8 @@
         form.on('submit(user-save)', function(data){
 
             $.ajax({
-                url:'/pear/modify/Category',
-                data: jq('#fm').serialize(),
+                url:'/pear/add/link',
+                data: jq('#cform').serialize(),
                 dataType:'json',
                 //一定不能写contentType: xxx json ,不然响应结果就会输出到页面上，success回调函数就接收不到
                 type:'post',
@@ -74,8 +80,8 @@
             return false;
         });
     })
-</script>
-<script>
+
+
 </script>
 </body>
 </html>

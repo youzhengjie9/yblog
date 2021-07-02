@@ -84,14 +84,15 @@
 </script>
 
 
-<script type="text/html" id="allow-enable">
-    {{#  if(d.allowComment == 0){ }}
-    <input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+<script type="text/html" id="valid-enable">
+    {{#  if(d.valid == 0){ }}
+    <input type="checkbox" name="allow" value="{{d.username}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="valid-enable"/>
     {{#  } else { }}
-    <input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+    <input type="checkbox" name="allow" value="{{d.username}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="valid-enable" checked="checked"/>
     {{#  } }}
 
 </script>
+
 
 
 <script th:src="@{/component/layui/layui.js}"></script>
@@ -134,7 +135,8 @@
                 {
                     title: '是否有效',
                     field: 'valid',
-                    align: 'center'
+                    align: 'center',
+                    templet: '#valid-enable'
                 },
                 {
                     title: '拥有权限',
@@ -191,7 +193,7 @@
             return false;
         });
 
-        form.on('switch(allow-enable)', function (obj) {
+        form.on('switch(valid-enable)', function (obj) {
             let operate;
             let v=obj.elem.value;
             if (obj.elem.checked) {
@@ -201,38 +203,10 @@
             }
             let loading = layer.load();
             $.ajax({
-                url: '/pear/'+operate+'Comment',
+                url: '/pear/'+operate+'/Vaild',
                 //data不能加[]，不然传值不了
                 data: {
-                    "articleid": v
-                }
-                ,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'get',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
-
-        form.on('switch(recommend-enable)', function (obj) {
-            let operate;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/pear/' + operate+'Recommend',
-                data:{
-                    'articleid':obj.elem.value
+                    "name": v
                 },
                 dataType: 'json',
                 contentType: 'application/json',
@@ -247,6 +221,7 @@
                 }
             })
         });
+
 
 
         window.remove = function(obj) {
