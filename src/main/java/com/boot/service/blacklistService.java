@@ -16,4 +16,6 @@ public interface blacklistService {
     boolean checkIpHasBlack(String ip); //检查ip是否在黑名单
 
     int selectBlackCount();
+
+    void updateBlackIp(String oldIp,String newIp);
 }

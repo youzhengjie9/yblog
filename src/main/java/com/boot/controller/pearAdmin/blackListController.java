@@ -158,5 +158,28 @@ public class blackListController {
 
     }
 
+    //待实现（编辑黑名单）
+    @ResponseBody
+    @RequestMapping(path = "/update/blacklist")
+    public String updateBlacklist(String oldIp,String newIp){
+
+        layuiJSON json=new layuiJSON();
+        try {
+
+            blacklistService.updateBlackIp(oldIp, newIp);
+
+            json.setSuccess(true);
+            json.setMsg("修改成功");
+            return JSON.toJSONString(json);
+        }catch (Exception e){
+            e.printStackTrace();
+            json.setMsg("修改失败");
+            json.setSuccess(false);
+            return JSON.toJSONString(json);
+        }
+
+    }
+
+
 
 }

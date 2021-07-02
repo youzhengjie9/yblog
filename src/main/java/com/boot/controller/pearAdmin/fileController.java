@@ -149,7 +149,7 @@ public class fileController {
     }
 
     /**
-     * 附件删除
+     * 附件删除(待实现）
      */
     @ResponseBody
     @RequestMapping(path = "/file/delete")

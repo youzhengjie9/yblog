@@ -45,4 +45,9 @@ public class blacklistServiceImpl implements blacklistService {
     public int selectBlackCount() {
         return blacklistMapper.selectBlackCount();
     }
+
+    @Override
+    public void updateBlackIp(String oldIp, String newIp) {
+        blacklistMapper.updateBlackIp(oldIp, newIp);
+    }
 }

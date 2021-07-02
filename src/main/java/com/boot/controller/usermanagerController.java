@@ -119,10 +119,10 @@ public class usermanagerController {
             userService.updateUserForEmail(id, email); //修改email
         }
 
-        user_authority user_authority = new user_authority();
-        user_authority.setUser_id(id);
-        user_authority.setAuthority_id(authorityid);
-        userAuthorityService.changeUserAuthority(user_authority);
+        user_authority userAuthority = new user_authority();
+        userAuthority.setUser_id(id);
+        userAuthority.setAuthority_id(authorityid);
+        userAuthorityService.changeUserAuthority(userAuthority);
 
 
         List<authority> authorities = authorityService.selectUserAuthority();

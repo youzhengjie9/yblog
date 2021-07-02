@@ -8,8 +8,10 @@ import java.io.Serializable;
 public class blacklist implements Serializable {
 
     private int id;
-    private String black_ip; //黑名单Ip
-    private String black_address; //黑名单Ip对应的地址
+    //黑名单Ip
+    private String black_ip;
+    //黑名单Ip对应的地址
+    private String black_address;
 
     public blacklist() {
     }

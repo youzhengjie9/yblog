@@ -5,6 +5,7 @@ spring:
     port: 6379
     password:
     host: localhost
+    database: 8
   #    timeout: 50000
   #    connect-timeout: 50000
   thymeleaf:
