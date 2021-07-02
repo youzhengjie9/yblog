@@ -42,7 +42,7 @@
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
-                <input type="hidden" name="oldIP" th:value="${oldIP}">
+                <input id="oldIp" type="hidden" name="oldIp" th:value="${oldIP}">
                 <div class="layui-form-item">
                     <label class="layui-form-label">新黑名单IP</label>
                     <div class="layui-input-block">
@@ -101,8 +101,14 @@
         form.on('submit(user-save)', function(data){
 
             $.ajax({
-                url:'/pear/modify/Category',
-                data: jq('#cform').serialize(),
+                url:'/pear/update/blacklist',
+                data: {
+                    "oldIp":$('#oldIp').val(),
+                    "ip1":$('#s1').val(),
+                    "ip2":$('#s2').val(),
+                    "ip3":$('#s3').val(),
+                    "ip4":$('#s4').val()
+                },
                 dataType:'json',
                 //一定不能写contentType: xxx json ,不然响应结果就会输出到页面上，success回调函数就接收不到
                 type:'post',

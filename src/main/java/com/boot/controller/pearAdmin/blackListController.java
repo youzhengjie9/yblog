@@ -161,17 +161,23 @@ public class blackListController {
     //待实现（编辑黑名单）
     @ResponseBody
     @RequestMapping(path = "/update/blacklist")
-    public String updateBlacklist(String oldIp,String newIp){
+    public String updateBlacklist(String oldIp, String ip1, String ip2, String ip3, String ip4) {
 
-        layuiJSON json=new layuiJSON();
+        String newIp = ip1 + "." + ip2 + "." + ip3 + "." + ip4;
+
+
+        System.out.println(oldIp+"===>"+newIp);
+
+        layuiJSON json = new layuiJSON();
         try {
 
             blacklistService.updateBlackIp(oldIp, newIp);
+            redisTemplate.delete(key + oldIp);
 
             json.setSuccess(true);
             json.setMsg("修改成功");
             return JSON.toJSONString(json);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             json.setMsg("修改失败");
             json.setSuccess(false);
@@ -179,7 +185,6 @@ public class blackListController {
         }
 
     }
-
 
 
 }
