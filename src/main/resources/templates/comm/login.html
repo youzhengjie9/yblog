@@ -2,355 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>登录博客后台</title>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
-
-    <!-- 新 Bootstrap4 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
-    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Login Page</title>
+<!--    jquery-->
     <script th:src="@{/assets/js/jquery.min.js}"></script>
-    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
-    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <!-- 移动设备优先 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!--    引入alibaba iconfont-->
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
-
-    <script th:src="@{/assets/js/amazeui.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
-    <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
-    <link th:href="@{/assets/lib/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <link th:href="@{/assets/disk/slidercaptcha.min.css}" rel="stylesheet"/>
-
+    <!-- 样 式 文 件 -->
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+    <link rel="stylesheet" th:href="@{/pear-admin/css/other/login.css}" />
 </head>
-
-<style type="text/css">
-
-    .modal-dialog{
-        margin: 15rem auto;
-    }
-
-    /*让model变透明*/
-    .modal-content{
-        background-color: rgba(0,0,0,0);
-    }
-    /*去除边框  */
-    .modal-content{
-        border: 0px;
-    }
-     
-
-    .slidercaptcha {
-        margin: 0 auto;
-        width: 314px;
-        height: 286px;
-        border-radius: 4px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.125);
-        margin-top: 40px;
-    }
-
-    .slidercaptcha .card-body {
-        padding: 1rem;
-    }
-
-    .slidercaptcha canvas:first-child {
-        border-radius: 4px;
-        border: 1px solid #e6e8eb;
-    }
-
-    .slidercaptcha.card .card-header {
-        background-image: none;
-        background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .refreshIcon {
-        top: -54px;
-    }
-
-
-    /*.middle {*/
-    /*    margin-top: 110px;*/
-    /*    margin-bottom: 110px;*/
-    /*    padding: 100px 50px 50px 50px;*/
-    /*    background-color: white;*/
-    /*    border-radius: 15px;*/
-    /*    box-shadow: 10px 10px 5px rgb(0, 0, 0, 0.1);*/
-
-    /*}*/
-
-    /*.login {*/
-    /*    margin-left: 20px;*/
-    /*}*/
-
-    /*.font2 {*/
-    /*    font-size: 0.6em;*/
-    /*}*/
-
-    /*.btn {*/
-    /*    border-radius: 28px;*/
-    /*}*/
-
-    .am-u-lg-3 {
-        width: 28%;
-    }
-
-
-</style>
-
-
-<body>
-
-
-<div class="log">
-
-    <div class="am-g">
-        <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content"
-             style=" border:3px solid #e3e197; border-radius: 20px;box-shadow: 10px 10px 5px rgb(0,0,0,0.1);">
-            <h1 class="log-title am-animation-slide-top" style="color: black;" th:text="#{login.welcomeTitle}">
-                ~欢迎登录博客~</h1>
-            <br>
-
-
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div id="t" class="container-fluid">
-                                <div class="form-row">
-                                    <div class="col-12">
-                                        <div class="slidercaptcha card">
-                                            <div class="card-header">
-                                                <span>请完成安全验证!</span>
-                                            </div>
-                                            <div class="card-body">
-                                                <div id="captcha"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="chid" class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">验证成功</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
-
-
-            <div th:if="${error==1}" class="am-input-group am-animation-slide-left log-animation-delay">
-                <i style="color: red">登录失败，请检查帐号或者密码是否正确！</i>
-            </div>
-            <div th:if="${registerSuccess==1}" class="am-input-group am-animation-slide-left log-animation-delay">
-                <i style="color: red">注册成功,请登录</i>
-            </div>
-            <form class="am-form" id="loginForm" th:action="@{/login}" method="post" autocomplete="off">
-                <div>
-                    <input type="hidden" name="url" th:value="${url}">
-                </div>
-                <div class="am-input-group am-radius am-animation-slide-left">
-                    <input id="un" onblur="f()" type="text" class="am-radius" th:placeholder="#{login.username}"
-                           name="username" required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-user am-icon-sm am-icon-fw"></i>
-                    </span>
-                    <span id="context"></span>
-                </div>
-                <br>
-                <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input" th:placeholder="#{login.password}"
-                           name="password" required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
-                    </span>
-                </div>
-
-
-                <div style="padding-top: 10px;">
-                    <input id="c" type="button" th:value="#{login.check}" data-toggle="modal"
-                           data-target="#myModal"
-                           class="am-btn am-btn-warning am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
-                </div>
-                <div id="sb" style="padding-top: 10px;">
-                    <input type="submit" th:value="#{login.sub}"
-                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
-                </div>
-                 <a href="https://gitee.com/oauth/authorize?client_id=e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755&redirect_uri=http://localhost:8080/gitee/callback&response_type=code">
-                    <img style="width: 23.7px;height: 23.7px;" th:src="@{/user/img/auth/gitee.png}">
-                </a> 
-
-
-            </form>
-
-
-        </div>
+<!-- 代 码 结 构 -->
+<body background="/pear-admin/images/background.svg" style="background-size: cover;">
+<form id="fm" class="layui-form" th:action="@{/login}" autocomplete="off" method="post">
+    <div class="layui-form-item">
+        <img class="logo" th:src="@{/pear-admin/images/logo2.png}" />
+        <div class="title">yblog Admin</div>
     </div>
-    <footer style="text-align: center;">
-        <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/loginPage(l='zh_CN')}">中文</a>/<a
-                style="color: black" th:href="@{/loginPage(l='en_US')}">english</a></p>
-        <p style="margin: 30px; color: #2E2D3C">
-            <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;
-            Powered By <a style="color: #0e90d2" rel="nofollow">游政杰</a></p>
-    </footer>
+    <div class="layui-form-item">
+        <input name="username" placeholder="帐号" lay-verify="required" hover class="layui-input"  />
+    </div>
+    <div class="layui-form-item">
+        <input name="password" placeholder="密码" type="password" lay-verify="required" hover class="layui-input"  />
+    </div>
+    <div class="layui-form-item">
+        <input name="captcha" placeholder="验证码"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
+        <img id="cap" onclick="refreshCaptcha()" th:src="@{/pear/captcha}" class="codeImage" />
+    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <input type="checkbox" name="rememberme" title="记住密码" lay-skin="primary" checked>-->
+<!--    </div>-->
+    <div class="layui-form-item">
+        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="login">
+            登 入
+        </button>
+
+<!--        <button type="submit" class="pear-btn pear-btn-success login">-->
+<!--            登 入-->
+<!--        </button>-->
+    </div>
+</form>
+<!-- 资 源 引 入 -->
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script>
 
 
-</div>
-</body>
-<script th:src="@{/assets/disk/longbow.slidercaptcha.min.js}"></script>
-<script th:inline="javascript">
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    layui.use(['form','jquery','layer','button','popup'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let layer = layui.layer;
+        let button = layui.button;
+        let popup = layui.popup;
 
 
-    $('#sb').hide();
-
-    var ch = [[${ch}]];
-    //进行是否校验过的判断
-    if (ch != null) {
-        $('#c').val('success');
-        $('#c').attr('disabled', true);
-        $('#sb').show();
-    }
-
-    // 禁止使用开发者工具和F12的代码开始
-    // function fuckyou() {
-    //
-    //     alert('不允许用开发者工具')
-    //     window.close();
-    //
-    //     window.location = "about:blank";
-    //
-    // }
-    //
-    // function ck() {
-    //
-    //     console.profile();
-    //
-    //     console.profileEnd();
-    //
-    //     if (console.clear) {
-    //         console.clear()
-    //     }
-    //     ;
-    //
-    //     if (typeof console.profiles == "object") {
-    //
-    //         return console.profiles.length > 0;
-    //     }
-    //
-    // }
-    //
-    // function hehe() {
-    //
-    //     if ((window.console && (console.firebug || console.table && /firebug/i.test(console.table()))) || (typeof opera == 'object' && typeof opera.postError == 'function' && console.profile.length > 0)) {
-    //
-    //         fuckyou();
-    //     }
-    //     if (typeof console.profiles == "object" && console.profiles.length > 0) {
-    //
-    //         fuckyou();
-    //
-    //     }
-    // }
-    //
-    // hehe();
-    //
-    // window.onresize = function () {
-    //
-    //     if ((window.outerHeight - window.innerHeight) > 200)
-    //
-    //         fuckyou();
-    //
-    // }
-    //禁用F12结束
-
-
-    $('#chid').hide();
-
-    function f() {
-        $.ajax({
-            url: "/check",
-            data: {
-                "username": $("#un").val()
-            },
-            success: function (data) {
-                var json = JSON.parse(data);
-                if (json.result == 200) {
-                    $("#context").html("<span style='color: #01AAED'>用户合法</span>")
-                } else {
-                    $("#context").html("<span style='color: #01AAED'>用户不存在</span>")
-                }
-
-            }
-
-        })
-
-    }
-
-
-    var captcha = sliderCaptcha({
-        id: 'captcha',
-        repeatIcon: 'fa fa-redo',
-        setSrc: function () {
-            return 'http://imgs.blazor.zone/images/Pic' + Math.round(Math.random() * 136) + '.jpg';
-        },
-        onSuccess: function () {  //成功事件
-            $('#chid').show();
-            $('#c').val('success');
-            $('#c').attr('disabled', true);
-            $('#sb').show();
-
-            //验证成功，发送AJAX到后台
+        form.on('submit(login)', function (data) {
+            let loader = layer.load();
+            let btn = button.load({elem: '.login'});
             $.ajax({
-                url: "/sliderCaptcha/checkSuccess",
-                data: {
-                    "username": $("#un").val()
-                },
-                success: function (data) {
-                    var json = JSON.parse(data);
-                    if (json.result == 200) {
-                        $("#context").html("<span style='color: #01AAED'>用户合法</span>")
-                    } else {
-                        $("#context").html("<span style='color: #01AAED'>用户不存在</span>")
-                    }
-
-                }
-
-            })
-        },
-
-        verify: function (arr, url) {
-            var ret = false;
-            $.ajax({
-                url: '/sliderCaptcha/checkSuccess',
-                data: {
-                    "datas": arr
-                },
-                async: false,
-                cache: false,
-                traditional: true,
+                url: '/login',
+                data: $('#fm').serialize(),
+                type: "post",
+                dataType: 'json',
+                headers:headers,
+                contentType:false,
                 success: function (result) {
-                    var json = JSON.parse(result);
-                    result = json.dt;
-                    ret = result;
+                    alert(result.msg);
+                    layer.close(loader);
+                    btn.stop(function () {
+                        if (result.success) {
+                            popup.success(result.msg, function () {
+                                location.href = "/";
+                            })
+                        } else {
+                            popup.failure(result.msg, function () {
+                                document.getElementById("cap").src = '/pear/captcha?r=' + Math.random();
+                            });
+                        }
+                    })
                 }
             });
-            return ret;
-        },
-        remoteUrl: "/sliderCaptcha/checkSuccess"
+            return false;
+        });
+    })
 
-    });
+    function refreshCaptcha() {
+        document.getElementById('cap').src = '/pear/captcha?r=' + Math.random();
+    }
 
 
 </script>
-
-
+</body>
 </html>
-
-

@@ -1,6 +1,7 @@
 package com.boot.config;
 
 import com.boot.constant.themeConstant;
+import com.boot.filter.VerifyCodeFilter;
 import com.boot.pojo.setting;
 import com.boot.service.settingService;
 import com.boot.utils.SpringSecurityUtil;
@@ -11,11 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.ServletException;
@@ -26,6 +30,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,6 +44,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private settingService settingService;
+
+    @Autowired
+    private VerifyCodeFilter verifyCodeFilter;
 
     /**
      * private String usersByUsernameQuery = "select username,password,enabled from users where username = ?";
@@ -53,6 +62,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 //        String sql="select username,authority_id from t_user,t_user_authority where username = ? and t_user.id=t_user_authority.id";
@@ -68,6 +78,9 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //配置过滤器
+        http.addFilterBefore(verifyCodeFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")

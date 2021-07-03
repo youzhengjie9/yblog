@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.boot.constant.Constant;
 import com.boot.dao.articleMapper;
 import com.boot.data.ResponseData.ResponseJSON;
+import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.Article;
 import com.boot.pojo.userDetail;
 import com.boot.service.userDetailService;
@@ -43,24 +44,39 @@ public class loginController {
     @RequestMapping(path = "/loginPage")
     public String toLoginPage(Model model,HttpServletRequest request) {
 
-        String ipAddr = ipUtils.getIpAddr(request);
-        Object o = redisTemplate.opsForValue().get(ipAddr + "_lg");
-        model.addAttribute("ch",o);
+//        String ipAddr = ipUtils.getIpAddr(request);
+//        Object o = redisTemplate.opsForValue().get(ipAddr + "_lg");
+//        model.addAttribute("ch",o);
         return "comm/login";
     }
 
     @RequestMapping(path = "/LoginfailPage")
     public String failPage(Model model) {
-        model.addAttribute("error", 1);
+//        model.addAttribute("error", 1);
         return "comm/login";
     }
 
 
     @RequestMapping(path = "/login")
-    public void login(String username, String password, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void login(String username, String password,String code, HttpServletResponse response, HttpServletRequest request) throws IOException {
+
 
         response.sendRedirect("/");
     }
+
+
+//    @RequestMapping(path = "/login")
+//    @ResponseBody
+//    public String login(String username, String password,String code, HttpServletResponse response, HttpServletRequest request) throws IOException {
+//
+//        System.out.println(username+"==>"+password+"===>"+code);
+//
+//        layuiJSON json=new layuiJSON();
+//        json.setSuccess(true);
+//        json.setMsg("66");
+//        return JSON.toJSONString(json);
+//    }
+
 
     @RequestMapping(path = "/check")
     @ResponseBody
