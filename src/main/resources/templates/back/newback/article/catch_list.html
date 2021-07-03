@@ -42,12 +42,14 @@
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <img th:src="@{/pear/captcha}" width="130px" height="48px"/>
+                                        <a href="javascript:refreshCaptcha();" rel="external nofollow" title="点击更换验证码">
+                                        <img id="cap1" src="/pear/captcha" width="130px" height="48px"/>
+                                        </a>
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button class="layui-btn" id="submit01" lay-submit lay-filter="submit01">
-                                                立即修改
+                                                立即抓取
                                             </button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                         </div>
@@ -77,12 +79,14 @@
                                         </div>
                                     </div>
                                     <div class="layui-inline">
-                                        <img th:src="@{/pear/captcha}" width="130px" height="48px"/>
+                                        <a href="javascript:refreshCaptcha();" rel="external nofollow" title="点击更换验证码">
+                                        <img id="cap2" src="/pear/captcha" width="130px" height="48px"/>
+                                        </a>
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button class="layui-btn" id="submit02" lay-submit lay-filter="submit02">
-                                                立即修改
+                                                立即抓取
                                             </button>
                                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                         </div>
@@ -121,7 +125,7 @@
 
         form.on('submit(submit01)', function(data){
 
-            layer.confirm('您确定修改吗?', {
+            layer.confirm('您确定开始抓取数据吗?', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
@@ -133,17 +137,24 @@
                     dataType: 'json',
                     type: 'POST',
                     headers:headers,
+                    async:false,
                     success: function(result) {
+                        layer.close(layer.index);
                         layer.close(loading);
                         if (result.success) {
                             layer.msg(result.msg, {
                                 icon: 1,
                                 time: 1000
+                            }, function () {
+                                window.location.reload();
                             });
+
                         } else {
                             layer.msg(result.msg, {
                                 icon: 2,
                                 time: 1000
+                            }, function () {
+                                window.location.reload();
                             });
                         }
                     }
@@ -154,7 +165,7 @@
 
         form.on('submit(submit02)', function(data){
 
-            layer.confirm('您确定修改吗?', {
+            layer.confirm('您确定开始抓取数据吗?', {
                 icon: 3,
                 title: '提示'
             }, function(index) {
@@ -167,16 +178,21 @@
                     type: 'POST',
                     headers:headers,
                     success: function(result) {
+                        layer.close(layer.index);
                         layer.close(loading);
                         if (result.success) {
                             layer.msg(result.msg, {
                                 icon: 1,
                                 time: 1000
+                            }, function () {
+                                window.location.reload();
                             });
                         } else {
                             layer.msg(result.msg, {
                                 icon: 2,
                                 time: 1000
+                            }, function () {
+                                window.location.reload();
                             });
                         }
                     }
@@ -188,6 +204,14 @@
 
     });
 
+
+    //验证码刷新事件
+    function refreshCaptcha(){
+        let rand = Math.random();
+        document.getElementById('cap1').src='/pear/captcha?r='+rand;
+        document.getElementById('cap2').src='/pear/captcha?r='+rand;
+
+    }
 
 
 

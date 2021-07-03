@@ -6,12 +6,15 @@ import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.service.catchDataService;
+import com.wf.captcha.utils.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 游政杰
@@ -37,24 +40,34 @@ public class catchDataController {
      */
     @RequestMapping(path = "/catch/Article")
     @ResponseBody
-    public String catchArticle(String url,String code, Model model) {
+    public String catchArticle(String url, String code, HttpServletRequest request, Model model) {
 
         layuiJSON json = new layuiJSON();
 
-
-
-        try {
-            catchDataService.catchData_csdn(url);
-
-            json.setMsg("抓取CSDN文章数据成功");
-            json.setSuccess(true);
-            return JSON.toJSONString(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.setMsg("抓取CSDN文章数据失败");
+        //验证码不正确
+        if (!CaptchaUtil.ver(code, request)) {
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            json.setMsg("验证码不正确");
             json.setSuccess(false);
             return JSON.toJSONString(json);
+        } else { //验证码正确
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            try {
+                //抓取数据
+                catchDataService.catchData_csdn(url);
+                json.setMsg("抓取CSDN文章数据成功");
+                json.setSuccess(true);
+                return JSON.toJSONString(json);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.setMsg("抓取CSDN文章数据失败");
+                json.setSuccess(false);
+                return JSON.toJSONString(json);
+            }
         }
+
 
     }
 
@@ -63,21 +76,34 @@ public class catchDataController {
      */
     @RequestMapping(path = "/catch/ModelArticle")
     @ResponseBody
-    public String catchModelArticle(String url,String code, Model model) {
+    public String catchModelArticle(String url, String code, HttpServletRequest request, Model model) {
 
         layuiJSON json = new layuiJSON();
 
-        try {
-            catchDataService.batchCatchArticleByModel_csdn(url);
-            json.setMsg("抓取CSDN模块数据成功");
-            json.setSuccess(true);
-            return JSON.toJSONString(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.setMsg("抓取CSDN模块数据失败");
+        if (!CaptchaUtil.ver(code, request)) {
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            json.setMsg("验证码不正确");
             json.setSuccess(false);
             return JSON.toJSONString(json);
+        } else {
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            try {
+                //抓取数据
+                catchDataService.batchCatchArticleByModel_csdn(url);
+                json.setMsg("抓取CSDN模块数据成功");
+                json.setSuccess(true);
+                return JSON.toJSONString(json);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.setMsg("抓取CSDN模块数据失败");
+                json.setSuccess(false);
+                return JSON.toJSONString(json);
+            }
         }
+
+
 
     }
 
