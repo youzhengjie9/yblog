@@ -13,6 +13,9 @@ import com.boot.utils.ipUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,6 +98,16 @@ public class loginController {
             return json;
         }
 
+    }
+
+    //判断当前用户是否是通过rememberme登录,对于敏感操作就需要再次确认
+    public boolean isRemembermeUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication==null){
+            return false;
+        }
+        //判断当前用户是否是通过rememberme登录，是返回true,否返回false
+        return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
     }
 
 

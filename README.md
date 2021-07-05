@@ -137,6 +137,11 @@ new Valine({
 ````
 ，弄好了之后评论功能就能运行了。
 
+* 第三点注意：关于记住我功能,我们需要把com.boot.config.SecurityConfig的persistentTokenRepository方法中的
+语句：jdbcTokenRepository.setCreateTableOnStartup(true);解除注释，后运行项目，然后再把他们注释掉，
+因为这个代码是自动生成SpringSecurity记住我专用表的代码，只需执行一次即可。
+
+
 ##### 第三方登录（暂时只支持gitee）
 ###### gitee
 * 接入gitee第三方授权配置,先在gitee的第三方应用上对网站进行授权，获得Client ID和Client Secret，并且要设置回调地址

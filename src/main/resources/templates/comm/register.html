@@ -2,132 +2,159 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>注册账号</title>
-
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="shortcut icon" th:href="@{/user/img/bloglogo.jpg}"/>
-
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Login Page</title>
+    <!--    jquery-->
     <script th:src="@{/assets/js/jquery.min.js}"></script>
-    <script th:src="@{/assets/js/amazeui.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
-    <link rel="stylesheet" th:href="@{/assets/css/app.css}"/>
+    <!-- 样 式 文 件 -->
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
+    <link rel="stylesheet" th:href="@{/pear-admin/css/other/login.css}"/>
+
+    <!--    邮件自动补全插件-->
+    <!--    GitHub地址：https://github.com/shuzheng/autoMail-->
+    <script type="text/javascript" th:src="@{email/autoMail.1.0.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#email').autoMail({
+                emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn','gmail.com','hotmail.com','live.cn']
+                // emails:['qq.com']
+            });
+        });
+    </script>
+
 </head>
-
-<style>
-    .log-content{
-        margin-top: 10%;
-    }
-</style>
-<body>
-
-<div class="log">
-    <div class="am-g">
-        <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
-            <h2 style="color: black;" th:text="#{register.welcomeTitle}">~注册账号~</h2>
-            <h5 th:if="${register_error==1}" style="color: red" th:text="#{register.error}">注册失败,请检查输入的信息</h5>
-            <form class="am-form" id="loginForm" th:action="@{/register}" method="post">
-                <div>
-                    <input type="hidden" name="url" th:value="${url}">
-                </div>
-                <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="text" class="am-radius" th:placeholder="#{register.username}" name="username"
-                           required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-user am-icon-sm am-icon-fw"></i>
-                    </span>
-                </div>
-                <br>
-                <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="password" class="am-form-field am-radius log-input"
-                           th:placeholder="#{register.password}" name="password" required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
-                    </span>
-                </div>
-                <br/>
-                <!--                qq邮箱-->
-                <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.email}"
-                           name="email" required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
-                    </span>
-                </div>
-                <br/>
-                <!--                验证码-->
-                <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="text" class="am-form-field am-radius log-input" th:placeholder="#{register.code}"
-                           name="code" required/>
-                    <span class="am-input-group-label log-icon am-radius">
-                        <i class="am-icon-lock am-icon-sm am-icon-fw"></i>
-                        <!--                        <button id="btn" style="color: blue" th:text="发送验证码" onclick="setTime(this)"></button>-->
-                    </span>
-                </div>
-                <br/>
-
-                <div style="padding-top: 10px;">
-                    <input type="submit" th:value="#{register.sub}"
-                           class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay"/>
-                </div>
-            </form>
-
-
-        </div>
+<!-- 代 码 结 构 -->
+<body background="/pear-admin/images/background.svg" style="background-size: cover;">
+<form id="fm" class="layui-form" th:action="@{/register}" autocomplete="off" method="post">
+    <div class="layui-form-item">
+        <img class="logo" th:src="@{/pear-admin/images/logo2.png}"/>
+        <div class="title">yblog Register</div>
+    </div>
+    <div class="layui-form-item">
+        <input id="username" name="username" placeholder="帐号" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+        <input id="password" name="password" placeholder="密码" type="password" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+    <input id="email" name="email" placeholder="邮箱" type="email" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+        <input id="code" name="code" placeholder="邮箱验证码" type="text" lay-verify="required" hover class="layui-input layui-input-inline"/>
+        <input type="button" style="height:32px;width:120px;" value="点击发送邮箱验证码" onclick="sendCode(this)" />
     </div>
 
-    <footer class="log-footer">
-        <p style="margin: 30px; color: #2E2D3C"><a style="color: black" th:href="@{/toregister(l='zh_CN')}">中文</a>/<a
-                style="color: black" th:href="@{/toregister(l='en_US')}">english</a></p>
-        <p style="margin: 30px; color: #2E2D3C">
-            <time class="comment-time" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy')}"></time> &copy;
-            Powered By <a style="color: #0e90d2" rel="nofollow">CrazyStone</a></p>
-    </footer>
-</div>
+    <div class="layui-form-item">
+        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="register">
+            注 册
+        </button>
+    </div>
+
+</form>
+<!-- 资 源 引 入 -->
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script th:inline="javascript">
 
 
-<script src="/assets/js/jquery.min.js"></script>
-<script>
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    layui.use(['form','jquery','layer','button','popup'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let layer = layui.layer;
+        let button = layui.button;
+        let popup = layui.popup;
 
-    //获取手机验证码
-    var countdown = 60;
-    var flag = true;
 
-    function setTime(obj) {
-
-        var data = {};
-        if (flag) {
+        form.on('submit(register)', function (data) {
+            let loader = layer.load();
+            var formdata = new FormData($('#fm')[0]);
+            let btn = button.load({elem: '.login'});
             $.ajax({
-                url: "/sendCode",
-                type: 'POST',
-                success: function (data) {
-                    console.log(data)
+                url: '/register',
+                data: formdata,
+                type: "post",
+                dataType: 'json',
+                headers:headers,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    layer.close(loader);
+                    btn.stop(function () {
+                        if (result.success) {
+                            popup.success(result.msg, function () {
+                                location.href = "/loginPage";
+                            })
+                        } else {
+                            popup.failure(result.msg, function () {
+
+                            });
+                        }
+                    })
                 }
-            })
-            flag = false;
+            });
+            return false;
+        });
+    })
+
+
+
+    //验证码按钮
+    var clock = '';
+    var nums=[[${expire}]]==-2?60:[[${expire}]];
+
+    var btn;
+    function sendCode(thisBtn)
+    {
+        let e = $('#email').val();
+        var mail_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        var tmpresult = mail_filter.test(e);
+        if(tmpresult==false){
+            alert('邮箱格式不符合');
+
+        }else {
+            $.ajax({
+                url: '/sendCode',
+                data: {
+                    'email':$('#email').val()
+                },
+                type: "get",
+                dataType: 'json',
+                contentType: false,
+                success: function (result) {
+
+                }
+            });
+
+            btn = thisBtn;
+            btn.disabled = true; //将按钮置为不可点击
+            btn.value = nums+'秒后可重新获取';
+            clock = setInterval(doLoop, 1000); //一秒执行一次
         }
 
-        if (countdown == 0) {
-            obj.removeAttribute("disabled");
-            obj.value = "免费获取验证码";
-            countdown = 60;
-            return;
-        } else {
-            obj.setAttribute("disabled", true);
-            obj.value = "重新发送(" + countdown + ")";
-            countdown--;
-        }
-        setTimeout(function () {
-                setTime(obj)
-            }
-            , 1000)
     }
+    function doLoop() {
+        nums--;
+        if (nums > 0) {
+            btn.value = nums + '秒后可重新获取';
+        } else {
+            clearInterval(clock); //清除js定时器
+            btn.disabled = false;
+            btn.value = '点击发送验证码';
+            nums = 60; //重置时间
+        }
+    }
+    //
+
+
 
 
 </script>
-
-
 </body>
 </html>
+

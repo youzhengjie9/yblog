@@ -257,6 +257,15 @@ public class test {
         System.out.println(cs);
     }
 
+
+    @Test
+    public void test4(){
+
+        userDetail userDetail = new userDetail();
+        userDetail.setName("99110");
+        userDetailService.addUserDetail(userDetail);
+
+    }
     
 
 

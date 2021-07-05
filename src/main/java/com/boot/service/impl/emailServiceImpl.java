@@ -60,7 +60,7 @@ public class emailServiceImpl implements emailService {
 
         mimeMessageHelper.setFrom(fromEmail);
         mimeMessageHelper.setTo(toEmail);
-        mimeMessageHelper.setSubject("blog验证码");
+        mimeMessageHelper.setSubject("yblog验证码");
         mimeMessageHelper.setText(process,true);
 
         mailSender.send(mimeMessage);

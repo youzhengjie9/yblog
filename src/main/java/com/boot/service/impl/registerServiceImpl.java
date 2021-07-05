@@ -40,17 +40,22 @@ public class registerServiceImpl implements registerService {
             user.setPassword(encode_password);
             user.setDate(date);
             user.setValid(1);
+
+
             userService.addUser(user);
-//        System.out.println("主键user："+user.getId());
+
+
             user_authority user_authority = new user_authority();
             user_authority.setUser_id(user.getId());
             user_authority.setAuthority_id(2);
             userService.addUserAuthority(user_authority);
 
+
             //设置userDetail
             userDetail userDetail = new userDetail();
             userDetail.setName(user.getUsername());
             userDetailService.addUserDetail(userDetail);
+
             //添加用户默认设置
             setting setting = new setting();
             setting.setName(user.getUsername());
@@ -58,6 +63,8 @@ public class registerServiceImpl implements registerService {
             setting.setFoot("----2021----");
             setting.setLogo("/user/img/bloglogo.jpg");
             settingService.addSettingByUser(setting);
+
+
         } catch (Exception e) {
             throw new RuntimeException();
         }

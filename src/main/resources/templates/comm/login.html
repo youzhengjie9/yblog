@@ -11,6 +11,7 @@
     <!-- 样 式 文 件 -->
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
     <link rel="stylesheet" th:href="@{/pear-admin/css/other/login.css}" />
+
 </head>
 <!-- 代 码 结 构 -->
 <body background="/pear-admin/images/background.svg" style="background-size: cover;">
@@ -29,17 +30,26 @@
         <input name="captcha" placeholder="验证码"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
         <img id="cap" onclick="refreshCaptcha()" th:src="@{/pear/captcha}" class="codeImage" />
     </div>
-<!--    <div class="layui-form-item">-->
-<!--        <input type="checkbox" name="rememberme" title="记住密码" lay-skin="primary" checked>-->
-<!--    </div>-->
     <div class="layui-form-item">
-        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="login">
-            登 入
-        </button>
-
-<!--        <button type="submit" class="pear-btn pear-btn-success login">-->
-<!--            登 入-->
+        <input type="checkbox" name="remember-me" title="记住密码" lay-skin="primary" checked>
+    </div>
+    <div class="layui-form-item">
+<!--        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="login">-->
+<!--            登 录-->
 <!--        </button>-->
+        <button type="submit" class="pear-btn pear-btn-success login">
+            登 录
+        </button>
+    </div>
+
+    <div class="layui-form-item" style="text-align:center;color: DarkGray;">
+        <span>其他方式登录</span>
+
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+        <a href="https://gitee.com/oauth/authorize?client_id=e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755&redirect_uri=http://localhost:8080/gitee/callback&response_type=code">
+            <img style="width: 23.7px;height: 23.7px;" th:src="@{/user/img/auth/gitee.png}">
+        </a> 
     </div>
 </form>
 <!-- 资 源 引 入 -->
@@ -48,47 +58,47 @@
 <script>
 
 
-    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    var headers = {"X-CSRF-TOKEN": token}
-    layui.use(['form','jquery','layer','button','popup'], function() {
-        let form = layui.form;
-        let $ = layui.jquery;
-        let layer = layui.layer;
-        let button = layui.button;
-        let popup = layui.popup;
-
-
-        form.on('submit(login)', function (data) {
-            let loader = layer.load();
-            let btn = button.load({elem: '.login'});
-            $.ajax({
-                url: '/login',
-                data: $('#fm').serialize(),
-                type: "post",
-                dataType: 'json',
-                headers:headers,
-                contentType:false,
-                success: function (result) {
-                    alert(result.msg);
-                    layer.close(loader);
-                    btn.stop(function () {
-                        if (result.success) {
-                            popup.success(result.msg, function () {
-                                location.href = "/";
-                            })
-                        } else {
-                            popup.failure(result.msg, function () {
-                                document.getElementById("cap").src = '/pear/captcha?r=' + Math.random();
-                            });
-                        }
-                    })
-                }
-            });
-            return false;
-        });
-    })
+    // // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    // var token = $("meta[name='_csrf']").attr("content");
+    // var header = $("meta[name='_csrf_header']").attr("content");
+    // var headers = {"X-CSRF-TOKEN": token}
+    // layui.use(['form','jquery','layer','button','popup'], function() {
+    //     let form = layui.form;
+    //     let $ = layui.jquery;
+    //     let layer = layui.layer;
+    //     let button = layui.button;
+    //     let popup = layui.popup;
+    //
+    //
+    //     form.on('submit(login)', function (data) {
+    //         let loader = layer.load();
+    //         let btn = button.load({elem: '.login'});
+    //         $.ajax({
+    //             url: '/login',
+    //             data: $('#fm').serialize(),
+    //             type: "post",
+    //             dataType: 'json',
+    //             headers:headers,
+    //             contentType:false,
+    //             success: function (result) {
+    //                 alert(result.msg);
+    //                 layer.close(loader);
+    //                 btn.stop(function () {
+    //                     if (result.success) {
+    //                         popup.success(result.msg, function () {
+    //                             location.href = "/";
+    //                         })
+    //                     } else {
+    //                         popup.failure(result.msg, function () {
+    //                             document.getElementById("cap").src = '/pear/captcha?r=' + Math.random();
+    //                         });
+    //                     }
+    //                 })
+    //             }
+    //         });
+    //         return false;
+    //     });
+    // })
 
     function refreshCaptcha() {
         document.getElementById('cap').src = '/pear/captcha?r=' + Math.random();
