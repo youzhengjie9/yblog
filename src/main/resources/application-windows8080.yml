@@ -39,7 +39,7 @@ spring:
     username: 1550324080@qq.com
     host: smtp.qq.com
     default-encoding: UTF-8
-    password: xwgqtehnpxicfdhi
+    password: xxx
   #  rabbitmq
   rabbitmq:
     username: guest
