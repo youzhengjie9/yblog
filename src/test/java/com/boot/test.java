@@ -1,28 +1,29 @@
 package com.boot;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.config.scanClassProperties;
+import com.boot.data.ResponseData.RememberJSON;
+import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.*;
 import com.boot.service.*;
-import com.boot.utils.IpToAddressUtil;
+import com.boot.utils.AesUtil;
+import com.boot.utils.JwtUtil;
 import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.timeUtil;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
-import javax.swing.*;
-import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
+
+import static com.boot.utils.AesUtil.aesDecrypt;
+import static com.boot.utils.AesUtil.aesEncrypt;
+import static com.boot.utils.JwtUtil.*;
 
 @SpringBootTest
 public class test {
@@ -266,8 +267,53 @@ public class test {
         userDetailService.addUserDetail(userDetail);
 
     }
-    
+    //jwt
+    @Test
+    public void test5() throws Exception {
 
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("userId", "test122");
+//        String token = generate(map);
+//        System.out.println(token);
+//
+//        Claims claim = getClaim(token);
+//        System.out.println(claim);
+//
+//        boolean verify = verify(token);
+
+    }
+
+    @Test
+    public void test6() throws Exception {
+
+//        RememberJSON json = new RememberJSON();
+//        json.setUsername("admin666");
+//        json.setPassword("$2a$10$5ooQI8dir8jv0/gCa1Six.GpzAdIPf6pMqdminZ/3ijYzivCyPlfK");
+//        String content = JSON.toJSONString(json);
+//        String key = "@%&remember-yblog"; //密钥
+//        System.out.println("加密密钥和解密密钥：" + key);
+//        String encrypt = aesEncrypt(content, key);
+//        System.out.println("加密后：" +encrypt);
+//        String decrypt = aesDecrypt(encrypt, key);
+//        System.out.println("解密后：" + decrypt);
+
+//        RememberJSON json = new RememberJSON();
+//        json.setUsername("admin666");
+//        json.setPassword("$2a$10$5ooQI8dir8jv0/gCa1Six.GpzAdIPf6pMqdminZ/3ijYzivCyPlfK");
+//
+//        String s = JSON.toJSONString(json);
+//
+//        System.out.println(s);
+//
+//        JSONObject object = JSONArray.parseObject(s);
+//        System.out.println(object);
+//        Object username = object.get("username");
+//        System.out.println(username);
+//        Object password = object.get("password");
+//        System.out.println(password);
+
+
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boot.annotation.Visitor;
 import com.boot.constant.themeConstant;
 import com.boot.dao.articleMapper;
@@ -20,18 +21,26 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.boot.utils.browserOS.*;
@@ -92,6 +101,18 @@ public class clientController {
 
     private static RateLimiter rateLimiter=RateLimiter.create(20); //令牌桶实现，提升系统吞吐量
 
+    private final String key="@%&^=*remember-yblog=@#&%"; //密钥，切勿泄露出去
+
+    private final String REMEMBER_KEY = "REMEMBER_"; //记住我的Redis key前缀
+
+    @Autowired
+    private userService userService;
+
+    @Autowired
+    private userAuthorityService userAuthorityService;
+
+    @Autowired
+    private authorityService authorityService;
 
 
     //前10排行
@@ -132,12 +153,18 @@ public class clientController {
 
     @Visitor(desc = "访问首页")
     @RequestMapping(path = {"/"})
-    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request) {
+    public ModelAndView toIndex1(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+
+
+
+        //记住我验证自动登录
+        autoLoginByRemember(session,request);
+
 
         ModelAndView modelAndView = new ModelAndView();
 
         if(!rateLimiter.tryAcquire()){
-            System.out.println("当前系统访问人数较多，请稍后访问");
+             System.out.println("当前系统访问人数较多，请稍后访问");
              modelAndView.setViewName("back/newback/article/limit");
              return modelAndView;
         }
@@ -205,6 +232,55 @@ public class clientController {
         modelAndView.addObject("pageInfo", pageInfo);
 
         return modelAndView;
+    }
+
+    private void autoLoginByRemember(HttpSession session,HttpServletRequest request) {
+
+        try { //判断当前ip的用户是否登录
+            String s = springSecurityUtil.currentUser(session);
+
+        }catch (Exception e){
+            //异常了就是没有登录，没有登录就要检查redis中有没有该ip的记住我记录
+//            System.out.println("没有登录");
+
+            Object token = (String) redisTemplate.opsForValue().get(REMEMBER_KEY + ipUtils.getIpAddr(request));
+
+            //解析token
+            if(token==null||token.equals("")){//被删除了或者过期了
+                System.out.println("请重新认证");
+            }else {
+                String json = AesUtil.aesDecrypt((String) token, key);
+                JSONObject jsonObject = JSONObject.parseObject(json);
+                String username = (String) jsonObject.get("username");
+                String password = (String) jsonObject.get("password");
+
+                if (userService.selectPasswordByuserName(username).equals(password)) { //验证成功
+
+                    /**
+                     * 逆向破解SpringSecurity验证,进行直接放行，绕过springSecurity验证
+                     */
+                    int userid = userService.selectUseridByUserName(username);
+                    int authorityid = userAuthorityService.selectAuthorityID(userid);
+                    String authority = authorityService.selectAuthorityByid(authorityid); //查询出来权限
+
+                    SecurityContextImpl securityContext = new SecurityContextImpl();
+                    User user = new User(username, password, AuthorityUtils.createAuthorityList(authority));
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, password, AuthorityUtils.createAuthorityList(authority));
+                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
+                    //存放authentication到SecurityContextHolder
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    securityContext.setAuthentication(usernamePasswordAuthenticationToken);
+                    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+                }else {
+                    System.out.println("请重新认证");
+                }
+            }
+
+
+        }
+
+
     }
 
 

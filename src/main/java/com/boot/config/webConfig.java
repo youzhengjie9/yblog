@@ -12,6 +12,8 @@ public class webConfig implements WebMvcConfigurer {
     @Autowired
     private visitorInterceptor visitorInterceptor;
 
+
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
@@ -21,5 +23,7 @@ public class webConfig implements WebMvcConfigurer {
                 .addPathPatterns("/article/**","/visitor/list","/myuser/list")
                 .excludePathPatterns("/admin/modify","/admin/publish","/admin/deleteArticle"
                         ,"/admin/updateCategory","/admin/deleteCategory","/admin/addCategory");
+
+
     }
 }

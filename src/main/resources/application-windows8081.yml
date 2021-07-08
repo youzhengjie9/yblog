@@ -11,7 +11,7 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/blog_system?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/blog_system?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     username: root
     password: 18420163207
     driver-class-name: com.mysql.jdbc.Driver

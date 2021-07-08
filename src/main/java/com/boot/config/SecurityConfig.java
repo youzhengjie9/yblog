@@ -1,10 +1,14 @@
 package com.boot.config;
 
+import com.alibaba.fastjson.JSON;
 import com.boot.constant.themeConstant;
+import com.boot.data.ResponseData.RememberJSON;
 import com.boot.filter.VerifyCodeFilter;
 import com.boot.pojo.setting;
 import com.boot.service.settingService;
 import com.boot.service.userDetailService;
+import com.boot.service.userService;
+import com.boot.utils.AesUtil;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.ipUtils;
 import org.apache.log4j.Logger;
@@ -23,6 +27,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -34,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -59,27 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private VerifyCodeFilter verifyCodeFilter;
 
+    private final String key="@%&^=*remember-yblog=@#&%"; //密钥，切勿泄露出去
+
+    private final String REMEMBER_KEY = "REMEMBER_"; //记住我的Redis key前缀
+
     @Autowired
-    private UserDetailsService userDetailsService;
-
-//    private final String REMEMBER_KEY = "REMEMBER_"; //记住我的key前缀
-
-
-    /**
-     * ===========第一次使用把下面的代码解除注释，使用完之后再注释回去
-     * @return
-     */
-    //自动生成记住我需要的表
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        // 配置数据源
-        jdbcTokenRepository.setDataSource(dataSource);
-        // 第一次启动的时候自动建表（可以不用这句话，自己手动建表，源码中有语句的）
-        // jdbcTokenRepository.setCreateTableOnStartup(true);
-        return jdbcTokenRepository;
-    }
-
+    private userService userService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -101,7 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //配置过滤器
         http.addFilterBefore(verifyCodeFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin()
+        http.
+                formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
 //                .loginPage("/login")
@@ -111,6 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                        String val = "";
+
                         String ipAddr = ipUtils.getIpAddr(request);
                         System.out.println("=====================");
                         System.out.println("登录成功：访问者ip地址：" + ipAddr);
@@ -122,18 +116,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                         String name = s.getName(); //获取登录用户名
 
+                        //查询数据库密码
+                        String psd = userService.selectPasswordByuserName(name);
+
                         themeConstant.curTheme = settingService.selectUserSetting(name).getTheme(); //查询用户主题
 
                         logger.debug("ip地址：" + ipAddr + "登录成功");
 
 //                        //使用cookie+Redis实现记住我功能
-//                        String rememberme = request.getParameter("remember-me");
-//                        if (rememberme != null && rememberme.equals("on")) { //此时激活记住我
-//
-//                            setRememberme(name, request, httpServletResponse); //记住我实现
-//
-//
-//                        }
+                        String rememberme = request.getParameter("remember-me");
+                        if (rememberme != null && rememberme.equals("on")) { //此时激活记住我
+
+                            try {
+                                setRememberme(name,psd, request, httpServletResponse); //记住我实现
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
 
 
                         //这里不要用转发，不然会有一些bug
@@ -143,17 +143,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .failureForwardUrl("/LoginfailPage")
                 .and()
-                .rememberMe()   //对记住我进行设置
-                .tokenRepository(persistentTokenRepository())   // 设置TokenRepository
-                .tokenValiditySeconds((int) System.currentTimeMillis()+60*10*1000)  //设置Token的有效时间
-                .userDetailsService(userDetailsService)    //使用userDetailsService用Token从数据库中获取用户自动登录
-                .and()
                 //不写这段代码，druid监控sql将失效（原因未明）
                 .csrf().ignoringAntMatchers("/druid/**")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/page/1")
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                        System.out.println("退出成功");
+
+                    }
+                })
                 .and()
                 .authorizeRequests()
                 .antMatchers("/page/**").permitAll()
@@ -180,17 +182,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable();
     }
 
-//    private void setRememberme(String name, HttpServletRequest request, HttpServletResponse response) {
-//
-//        //通过redis和cookie的token和name的一致性去判断
-//        String token = UUID.randomUUID().toString().replace("-", "");
-//
-//        Cookie cookie = new Cookie(REMEMBER_KEY + name, token);
-//        cookie.setMaxAge(60 * 15); //15分钟记住我
-//
-//        redisTemplate.opsForValue().set(REMEMBER_KEY + name, token, 60 * 15, TimeUnit.SECONDS);
-//
-//        response.addCookie(cookie);
-//
-//    }
+
+    //因为SpringSecurity记住我失效问题没有解决，暂且用手动实现记住我
+    private void setRememberme(String name,String psd, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+
+        RememberJSON rememberJSON = new RememberJSON();
+        rememberJSON.setUsername(name);
+        rememberJSON.setPassword(psd);
+        String jsonStr = JSON.toJSONString(rememberJSON);
+        String token = AesUtil.aesEncrypt(jsonStr, key); //对字符串进行加密
+
+        String ipAddr = ipUtils.getIpAddr(request);
+
+        //暂且用ip作为key
+        redisTemplate.opsForValue().set(REMEMBER_KEY+ipAddr,token,60*1,TimeUnit.SECONDS);
+
+
+
+    }
+
+
 }
