@@ -154,6 +154,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         System.out.println("退出成功");
 
+                        //退出从Redis删除记住我记录
+                        redisTemplate.delete(REMEMBER_KEY+ipUtils.getIpAddr(httpServletRequest));
+                        httpServletResponse.sendRedirect("/page/1");
                     }
                 })
                 .and()
@@ -196,7 +199,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String ipAddr = ipUtils.getIpAddr(request);
 
         //暂且用ip作为key
-        redisTemplate.opsForValue().set(REMEMBER_KEY+ipAddr,token,60*1,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(REMEMBER_KEY+ipAddr,token,60*15,TimeUnit.SECONDS);
 
 
 

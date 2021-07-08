@@ -14,7 +14,7 @@ public class logoutController {
 
     @RequestMapping(path = "/logout")
     public void logout() {
-        System.out.println("用户退出了");
+
     }
 
 

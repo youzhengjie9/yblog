@@ -1,5 +1,6 @@
 package com.boot.config;
 
+import com.boot.interceptor.RememberInterceptor;
 import com.boot.interceptor.visitorInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,8 @@ public class webConfig implements WebMvcConfigurer {
     @Autowired
     private visitorInterceptor visitorInterceptor;
 
-
+    @Autowired
+    private RememberInterceptor rememberInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -24,6 +26,8 @@ public class webConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/admin/modify","/admin/publish","/admin/deleteArticle"
                         ,"/admin/updateCategory","/admin/deleteCategory","/admin/addCategory");
 
+        registry.addInterceptor(rememberInterceptor)
+                .addPathPatterns("/","/article/**","/archive/list","/search/**","/page/**");
 
     }
 }
