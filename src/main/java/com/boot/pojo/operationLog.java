@@ -1,8 +1,11 @@
 package com.boot.pojo;
 
 
+import io.swagger.annotations.ApiModel;
+
 import java.io.Serializable;
 
+@ApiModel("封装操作日志")
 public class operationLog implements Serializable {
 
     private int id;
