@@ -1,12 +1,13 @@
 package com.boot.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.boot.constant.loginType;
+import com.boot.pojo.loginLog;
+import com.boot.service.LoginLogService;
 import com.boot.service.authorityService;
 import com.boot.service.userAuthorityService;
 import com.boot.service.userService;
-import com.boot.utils.AesUtil;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.ipUtils;
+import com.boot.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Component
 public class RememberInterceptor implements HandlerInterceptor {
@@ -44,6 +47,9 @@ public class RememberInterceptor implements HandlerInterceptor {
 
     @Autowired
     private com.boot.service.authorityService authorityService;
+
+    @Autowired
+    private LoginLogService loginLogService;
 
     /**
      * 记住我拦截器类
@@ -90,6 +96,22 @@ public class RememberInterceptor implements HandlerInterceptor {
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                         securityContext.setAuthentication(usernamePasswordAuthenticationToken);
                         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+                        //登录日志，走拦截器的登录类型都是记住我类型
+                        String ipAddr = ipUtils.getIpAddr(request);
+                        loginLog loginLog = new loginLog();
+                        loginLog.setIp(ipAddr);
+                        loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+                        loginLog.setBrowser(browserOS.getBrowserName(request));
+                        loginLog.setOs(browserOS.getOsName(request));
+                        loginLog.setUsername(username);
+                        Date d = new Date();
+                        java.sql.Date date=new java.sql.Date(d.getTime());
+                        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String t = fm.format(date);
+                        loginLog.setTime(t);
+                        loginLog.setType(loginType.REMEMBER_LOGIN); //登录类型为2
+                        loginLogService.insertLoginLog(loginLog);
 
                     } else {
                         System.out.println("请重新认证");

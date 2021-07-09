@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.boot.dao.loginLogMapper">
+
+    <insert id="insertLoginLog" parameterType="com.boot.pojo.loginLog">
+        insert into t_loginlog (lg_username,lg_ip,lg_address,lg_browser,lg_os,lg_time,lg_type)
+        values (
+        #{username},#{ip},
+        <if test="address == null">
+            '暂未检测到地址',
+        </if>
+        <if test="address != null">
+            #{address},
+        </if>
+        <if test="browser == null">
+            '暂未检测到浏览器',
+        </if>
+        <if test="browser != null">
+            #{browser},
+        </if>
+        <if test="os == null">
+            '暂未检测到操作系统',
+        </if>
+        <if test="os != null">
+            #{os},
+        </if>
+        #{time},#{type}
+        )
+    </insert>
+
+
+
+    <select id="selectLoginLogAll" resultType="com.boot.pojo.loginLog">
+        select * from t_loginlog
+    </select>
+
+
+
+
+</mapper>

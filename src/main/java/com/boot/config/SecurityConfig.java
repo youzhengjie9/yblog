@@ -1,16 +1,17 @@
 package com.boot.config;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.constant.loginType;
 import com.boot.constant.themeConstant;
 import com.boot.data.ResponseData.RememberJSON;
 import com.boot.filter.VerifyCodeFilter;
+import com.boot.pojo.loginLog;
 import com.boot.pojo.setting;
+import com.boot.service.LoginLogService;
 import com.boot.service.settingService;
 import com.boot.service.userDetailService;
 import com.boot.service.userService;
-import com.boot.utils.AesUtil;
-import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.ipUtils;
+import com.boot.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +40,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -71,6 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private userService userService;
+
+    @Autowired
+    private LoginLogService loginLogService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -122,6 +128,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         themeConstant.curTheme = settingService.selectUserSetting(name).getTheme(); //查询用户主题
 
                         logger.debug("ip地址：" + ipAddr + "登录成功");
+
+
+                        //封装登录日志信息放到数据库
+
+                        loginLog loginLog = new loginLog();
+                        loginLog.setIp(ipAddr);
+                        loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+                        loginLog.setBrowser(browserOS.getBrowserName(request));
+                        loginLog.setOs(browserOS.getOsName(request));
+                        loginLog.setUsername(name);
+                        Date d = new Date();
+                        java.sql.Date date=new java.sql.Date(d.getTime());
+                        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String t = fm.format(date);
+                        loginLog.setTime(t);
+                        loginLog.setType(loginType.NORMAL_LOGIN); //走SecurityConfig类的登录都是正常的登录
+                        loginLogService.insertLoginLog(loginLog);
+
 
 //                        //使用cookie+Redis实现记住我功能
                         String rememberme = request.getParameter("remember-me");
