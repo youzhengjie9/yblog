@@ -315,5 +315,16 @@ public class test {
 
     }
 
+//    @Autowired
+//    private LoginLogService loginLogService;
+//
+//    @Test
+//    public void test7(){
+//    loginLogService.selectLoginLogAll().forEach(System.out::println);
+//
+//    }
+
+
+
 
 }

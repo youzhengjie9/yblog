@@ -24,4 +24,9 @@ public class LoginLogServiceImpl implements LoginLogService {
     public List<loginLog> selectLoginLogAll() {
         return loginLogMapper.selectLoginLogAll();
     }
+
+    @Override
+    public int loginLogCount() {
+        return loginLogMapper.loginLogCount();
+    }
 }

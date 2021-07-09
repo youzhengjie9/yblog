@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
-
-
 <mapper namespace="com.boot.dao.loginLogMapper">
 
     <insert id="insertLoginLog" parameterType="com.boot.pojo.loginLog">
@@ -33,12 +30,26 @@
     </insert>
 
 
+<!--    如果实体类字段和数据库字段名不一致，要用resultMap，不然会查空-->
 
-    <select id="selectLoginLogAll" resultType="com.boot.pojo.loginLog">
+    <resultMap id="lg1" type="com.boot.pojo.loginLog">
+        <result property="id" column="id"/>
+        <result property="username" column="lg_username"/>
+        <result property="ip" column="lg_ip"/>
+        <result property="address" column="lg_address"/>
+        <result property="browser" column="lg_browser"/>
+        <result property="os" column="lg_os"/>
+        <result property="time" column="lg_time"/>
+        <result property="type" column="lg_type"/>
+    </resultMap>
+    <select id="selectLoginLogAll" resultMap="lg1">
         select * from t_loginlog
     </select>
+    
 
-
+    <select id="loginLogCount" resultType="int">
+        select count(*) from t_loginlog
+    </select>
 
 
 </mapper>

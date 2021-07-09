@@ -26,20 +26,18 @@
 </div>
 </body>
 
-<script type="text/html" id="log-bar">
-    {{#if (d.success == true) { }}
-    <button class="pear-btn pear-btn-sm pear-btn-success" lay-event="edit"><i class="layui-icon layui-icon-ok"></i>
-        成功</button>
-    {{# }else if(d.success == false){ }}
-    <button class="pear-btn pear-btn-sm pear-btn-danger" lay-event="error"><i class="layui-icon layui-icon-help"></i>
-        异常</button>
+
+<script type="text/html" id="log-loginTime">
+    {{layui.util.toDateString(d.time,  "yyyy-MM-dd HH:mm:ss")}}
+</script>
+
+<script type="text/html" id="log-loginType">
+    {{#if (d.type == 1) { }}
+    <span>正常登录</span>
+    {{# }else if(d.type == 2){ }}
+    <span>记住我自动登录</span>
     {{# } }}
 </script>
-
-<script type="text/html" id="log-createTime">
-    {{layui.util.toDateString(d.createTime,  "yyyy-MM-dd HH:mm:ss")}}
-</script>
-
 
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
@@ -51,7 +49,21 @@
 
         let MODULE_PATH = "/system/logging/";
 
-        let cols = [
+        let loginCols = [
+            [
+                {title: 'id', field: 'id', align:'center'},
+                {title: '用户名', field: 'username', align:'center'},
+                {title: 'ip', field: 'ip', align:'center'},
+                {title: '所在地', field: 'address', align:'center'},
+                {title: '浏览器', field: 'browser',align:'center'},
+                {title: '操作系统', field: 'os', align:'center'},
+                {title: '登录时间', field: 'time',templet:'#log-loginTime', align:'center'},
+                {title: '登录类型', field: 'type', align: 'center', templet: '#log-loginType', width: 130},
+            ]
+        ]
+
+
+        let operationCols = [
             [
                 {title: '模块', field: 'title', align:'center'},
                 {title: '请求方式', field: 'requestMethod', align:'center'},
@@ -64,24 +76,25 @@
                 {title: '访问状态', toolbar: '#log-bar', align:'center', width:150}
             ]
         ]
+        table.render({
+            elem: '#log-login-table',
+            url: '/pear/log/loginlog',
+            page: true ,
+            cols: loginCols ,
+            skin: 'line',
+            toolbar: false
+        });
 
         table.render({
             elem: '#log-operate-table',
             url: '../../admin/data/operateLog.json',
             page: true ,
-            cols: cols ,
+            cols: operationCols ,
             skin: 'line',
             toolbar: false
         });
 
-        table.render({
-            elem: '#log-login-table',
-            url: '../../admin/data/loginLog.json',
-            page: true ,
-            cols: cols ,
-            skin: 'line',
-            toolbar: false
-        });
+
 
         form.on('submit(dict-type-query)', function(data){
             table.reload('dict-type-table',{where:data.field})

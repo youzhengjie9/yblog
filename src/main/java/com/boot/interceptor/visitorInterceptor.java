@@ -165,12 +165,12 @@ public class visitorInterceptor implements HandlerInterceptor {
 
 
 
-//获取控制器的名字（全类名）
+        //获取控制器的名字（全类名）
             String controllerName = ((HandlerMethod) o).getBean().getClass().getName();
             //获取方法名
             String methodName = ((HandlerMethod) o).getMethod().getName();
 
-//        System.out.println(methodName);
+        //        System.out.println(methodName);
 
             Class<?> aClass = Class.forName(controllerName);
 

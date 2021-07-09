@@ -14,4 +14,5 @@ public interface LoginLogService {
 
     List<loginLog> selectLoginLogAll();
 
+    int loginLogCount();
 }

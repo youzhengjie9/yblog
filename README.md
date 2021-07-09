@@ -17,6 +17,7 @@ GitHub: https://github.com/youzhengjie9/yblog <br/>
 Gitee: https://gitee.com/youzhengjie/springBootBlog
 
 ### 目标
+> **虽说博客系统已不是新鲜玩意，但是我觉得把一个普通的项目做的更完善、功能更多的话你就不普通，我也会秉承着这个理念一直把项目完善下去**<br/>
 > **本人是大二的菜鸟，项目中如有不足，请大佬赐教，一起共同进步吧！！！**
 
 ### 技术栈
