@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.constant.themeConstant;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.setting;
@@ -41,6 +42,7 @@ public class settingController {
         themes.add("calmlog");
     }
 
+    @Operation("修改系统设置")
     @PostMapping(path = "/update/Setting")
     @ApiOperation("修改系统设置")
     @ResponseBody

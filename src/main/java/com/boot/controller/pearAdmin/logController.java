@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.data.ResponseData.layuiData;
 import com.boot.pojo.loginLog;
 import com.boot.service.LoginLogService;
@@ -25,6 +26,7 @@ public class logController {
     @Autowired
     private LoginLogService loginLogService;
 
+    @Operation("进入登录日志界面")
     @ResponseBody
     @RequestMapping(path = "/log/loginlog")
     public String loginLogData(@RequestParam(value = "page", defaultValue = "1") int page,

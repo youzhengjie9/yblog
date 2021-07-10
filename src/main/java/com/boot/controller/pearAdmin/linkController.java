@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.data.ResponseData.layuiData;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.link;
@@ -50,12 +51,14 @@ public class linkController {
         return JSON.toJSONString(linklayuiData);
     }
 
+//    ====
     @RequestMapping(path = "/tolink")
     public String toaddLink(){
 
         return "back/newback/article/module/addLink";
     }
 
+    @Operation("新增友链")
     @RequestMapping(path = "/add/link")
     @ResponseBody
     public String addLink(link link){
@@ -89,6 +92,7 @@ public class linkController {
         return "back/newback/article/module/modifyLink";
     }
 
+    @Operation("修改友链信息")
     @RequestMapping(path = "/modify/link")
     @ResponseBody
     public String modifyLink(link link){
@@ -111,6 +115,7 @@ public class linkController {
 
 
     //删除友链
+    @Operation("删除友链")
     @RequestMapping(path = "/delete/link/{id}")
     @ResponseBody
     public String deleteLink(@PathVariable("id") int id){
@@ -131,7 +136,7 @@ public class linkController {
 
 
     //批量删除友链
-
+    @Operation("批量删除友链")
     @RequestMapping(path = "/batchRemove/link/{ids}")
     @ResponseBody
     public String batchRemoveLink(@PathVariable("ids") String ids){

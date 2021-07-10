@@ -47,6 +47,7 @@ public class fileController {
     private userDetailService userDetailService;
 
     //附件管理
+    @Operation("进入附件管理页面")
     @Visitor(desc = "附件管理")
     @RequestMapping(path = "/toFileUpload")
     public String toFileUpload(Model model) {

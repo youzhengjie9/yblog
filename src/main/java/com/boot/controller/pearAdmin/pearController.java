@@ -2,6 +2,7 @@ package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
 import com.boot.controller.adminController;
 import com.boot.data.ResponseData.layuiData;
@@ -191,6 +192,7 @@ public class pearController {
 
 
     //控制后台，非常重要，访问后台时，会内嵌这个url
+    @Operation("进入控制后台界面")
     @RequestMapping(path = "/toconsole")
     public String toconsole(Model model, HttpSession session, HttpServletRequest request) {
 
@@ -243,6 +245,7 @@ public class pearController {
 
 
     //分类管理
+    @Operation("进入分类管理界面")
     @Visitor(desc = "分类管理")
     @RequestMapping(path = "/toCategory")
     public String toCategory() {
@@ -252,6 +255,7 @@ public class pearController {
     }
 
     //标签管理
+    @Operation("进入标签管理界面")
     @Visitor(desc = "标签管理")
     @RequestMapping(path = "/toTag")
     public String toTag() {
@@ -262,6 +266,7 @@ public class pearController {
 
 
     //用户管理
+    @Operation("进入用户管理界面")
     @Visitor(desc = "用户管理")
     @RequestMapping(path = "/toUserManager")
     public String toUserManager() {
@@ -272,6 +277,7 @@ public class pearController {
 
 
     //友链管理
+    @Operation("进入友链管理界面")
     @Visitor(desc = "友链管理")
     @RequestMapping(path = "/toLink")
     public String toLink() {
@@ -281,6 +287,7 @@ public class pearController {
     }
 
     //个人资料
+    @Operation("进入个人资料界面")
     @Visitor(desc = "个人资料")
     @RequestMapping(path = "/touser")
     public String touser(HttpSession session,Model model) {
@@ -302,6 +309,7 @@ public class pearController {
     }
 
     //访客记录
+    @Operation("进入访客记录界面")
     @Visitor(desc = "访客记录")
     @RequestMapping(path = "/toVisitor")
     public String toVisitor() {
@@ -311,6 +319,7 @@ public class pearController {
     }
 
     //黑名单
+    @Operation("进入黑名单界面")
     @Visitor(desc = "黑名单")
     @RequestMapping(path = "/toBlack")
     public String toBlack() {
@@ -320,6 +329,7 @@ public class pearController {
     }
 
     //拦截记录
+    @Operation("进入拦截记录界面")
     @RequestMapping(path = "/toInterceptorLog")
     public String toInterceptorLog() {
 
@@ -349,6 +359,7 @@ public class pearController {
 
 
     //行为日志
+    @Operation("进入行为日志界面")
     @RequestMapping(path = "/toLog")
     public String toLog() {
 
@@ -357,6 +368,7 @@ public class pearController {
     }
 
     //数据监控
+    @Operation("进入数据监控界面")
     @RequestMapping(path = "/toMonitor")
     public String toMonitor() {
 
@@ -365,6 +377,7 @@ public class pearController {
     }
 
     //系统设置
+    @Operation("进入系统设置界面")
     @RequestMapping(path = "/toSetting")
     public String toSetting(HttpSession session,Model model) {
 
