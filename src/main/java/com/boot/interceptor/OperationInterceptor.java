@@ -1,6 +1,13 @@
 package com.boot.interceptor;
 
 import com.boot.annotation.Operation;
+import com.boot.pojo.operationLog;
+import com.boot.service.OperationService;
+import com.boot.utils.IpToAddressUtil;
+import com.boot.utils.SpringSecurityUtil;
+import com.boot.utils.browserOS;
+import com.boot.utils.ipUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -9,7 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 /**
@@ -18,6 +28,14 @@ import java.util.Arrays;
 @Component
 public class OperationInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private OperationService operationService;
+
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private HttpSession session;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -36,10 +54,25 @@ public class OperationInterceptor implements HandlerInterceptor {
         //获取注解
 
         Method method = aClass.getMethod(name, parameterType);
-        String value = method.getAnnotation(Operation.class).value(); //获取注解值
-
-
-
+//        String desc = method.getAnnotation(Operation.class).value(); //获取注解值
+        Operation annotation = method.getAnnotation(Operation.class);
+        if(annotation!=null){ //防止方法上没有注解而报空指针异常
+            String ipAddr = ipUtils.getIpAddr(request);
+            operationLog operationLog = new operationLog();
+            operationLog.setUsername(springSecurityUtil.currentUser(session));
+            operationLog.setIp(ipAddr);
+            operationLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+            operationLog.setBrowser(browserOS.getBrowserName(request));
+            operationLog.setOs(browserOS.getOsName(request));
+            operationLog.setUri(requestURI);
+            operationLog.setType(annotation.value());
+            java.util.Date d=new java.util.Date();
+            java.sql.Date date=new Date(d.getTime());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateTime = simpleDateFormat.format(date);
+            operationLog.setTime(dateTime);
+            operationService.insertOperationLog(operationLog);
+        }
 
         return true;
     }
