@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,10 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 
 @Controller("pearFileController")
@@ -157,13 +155,41 @@ public class fileController {
     @Operation("附件删除")
     @ResponseBody
     @RequestMapping(path = "/file/delete")
-    public String fileDelete(int id){
-
-        System.out.println(id);
+    public String fileDelete(int id) throws FileNotFoundException {
         layuiJSON json=new layuiJSON();
 
-        json.setMsg("删除附件成功");
-        json.setSuccess(true);
+
+        try {
+            img img = imgService.selectImgByid(id);
+            String big_img = img.getBig_img();
+            String small_img = img.getSmall_img();
+
+            String p = ResourceUtils.getURL("classpath:static").getPath();
+            String path=p.substring(1,p.length());
+            String big=path+big_img;
+            String small=path+small_img;
+
+            File bigFile = new File(big);
+            File smallFile = new File(small);
+
+            //删除服务器中的大图和缩略图文件
+            if(bigFile.exists()){
+                bigFile.delete();
+            }
+            if(smallFile.exists()){
+                smallFile.delete();
+            }
+
+            //删除对应数据库记录
+            imgService.deleteImgByid(id);
+            json.setMsg("删除附件成功");
+            json.setSuccess(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            json.setMsg("删除附件失败");
+            json.setSuccess(false);
+        }
+
 
         return JSON.toJSONString(json);
     }

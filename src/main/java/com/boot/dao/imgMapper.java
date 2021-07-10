@@ -20,4 +20,5 @@ public interface imgMapper {
 
     int selectImgCount();
 
+    void deleteImgByid(@Param("id") int id);
 }

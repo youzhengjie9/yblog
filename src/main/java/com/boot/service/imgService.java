@@ -16,4 +16,6 @@ public interface imgService {
     img selectImgByid(int id);
 
     int selectImgCount();
+
+    void deleteImgByid(int id);
 }

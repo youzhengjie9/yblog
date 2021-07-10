@@ -21,4 +21,9 @@
         select count(*) from t_img
     </select>
 
+    <delete id="deleteImgByid">
+        delete from t_img where id=#{id}
+    </delete>
+
+
 </mapper>
