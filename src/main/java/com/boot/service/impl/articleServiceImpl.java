@@ -207,6 +207,16 @@ public class articleServiceImpl implements articleService {
         articleMapper.likeCountAddOne(articleid);
     }
 
+    @Override
+    public List<Article> queryArticleByTitle(String title) {
+        return articleMapper.queryArticleByTitle(title);
+    }
+
+    @Override
+    public int queryArticleByTitleCount(String title) {
+        return articleMapper.queryArticleByTitleCount(title);
+    }
+
 
     @Override
     public List<Article> selectAllArticle() {

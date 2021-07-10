@@ -401,4 +401,56 @@
         update t_article set likes = likes+1 where id=#{articleid}
     </update>
 
+
+
+    <resultMap id="query1" type="com.boot.pojo.Article">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="created" property="created"/>
+        <result column="modified" property="modified"/>
+        <result column="categories" property="categories"/>
+        <result column="tags" property="tags"/>
+        <result column="allow_comment" property="allowComment"/>
+        <result column="recommend" property="recommend"/>
+        <result column="thumbnail" property="thumbnail"/>
+        <result column="likes" property="likes"/>
+        <association property="statistic" javaType="com.boot.pojo.Statistic">
+            <result property="articleId" column="article_id"/>
+            <result property="hits" column="hits"/>
+            <result property="commentsNum" column="comments_num"/>
+        </association>
+
+
+    </resultMap>
+
+    <select id="queryArticleByTitle" resultMap="query1">
+
+     SELECT
+	t_article.id,
+	t_article.title,
+	t_article.created,
+	t_article.modified,
+	t_article.categories,
+	t_article.tags,
+	t_article.allow_comment,
+	t_article.recommend,
+	t_article.thumbnail,
+	t_article.likes,
+	t_statistic.hits,
+	t_statistic.comments_num
+    FROM
+    t_article,
+	t_statistic
+    WHERE
+	t_article.id = t_statistic.article_id
+	and
+    t_article.title=#{title}
+	order by created desc
+    </select>
+
+
+    <select id="queryArticleByTitleCount" resultType="int">
+        SELECT COUNT(*) FROM t_article WHERE title=#{title}
+    </select>
+
 </mapper>

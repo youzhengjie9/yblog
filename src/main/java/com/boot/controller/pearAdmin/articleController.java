@@ -139,7 +139,6 @@ public class articleController {
     }
 
 
-
     @Operation("修改文章")
     @RequestMapping(path = "/modifyArticle")
     @ResponseBody //要加
@@ -219,22 +218,43 @@ public class articleController {
     @ResponseBody
     @RequestMapping("/articledata")
     public String articleData(@RequestParam(value = "page", defaultValue = "1") int page,
-                              @RequestParam(value = "limit", defaultValue = "6") int limit) {
+                              @RequestParam(value = "limit", defaultValue = "6") int limit
+                                ,String title) {
+        /**
+         * 两种情况：1：当我们不是点击查询按钮时，则展示全部
+         * 2.点击查询按钮则展示查到的数据
+         */
+        if(title!=null&&!title.equals("")){ //查询
 
-        int total = articleService.selectArticleCount();
+            int total=articleService.queryArticleByTitleCount(title);
 
-        PageHelper.startPage(page, limit);
-        List<Article> articles = articleService.selectAllArticleByCreated();
-        for (Article article : articles) {
-            article.setContent(null);
+            PageHelper.startPage(page,limit);
+            List<Article> articles = articleService.queryArticleByTitle(title);
+
+            layuiData<Article> articlelayuiData = new layuiData<>();
+            articlelayuiData.setMsg("");
+            articlelayuiData.setCode(0);
+            articlelayuiData.setCount(total);
+            articlelayuiData.setData(articles);
+            return JSON.toJSONString(articlelayuiData);
+        }else { //展示
+
+            int total = articleService.selectArticleCount();
+
+            PageHelper.startPage(page, limit);
+            List<Article> articles = articleService.selectAllArticleByCreated();
+            for (Article article : articles) {
+                article.setContent(null);
+            }
+            layuiData<Article> layuiArticleData = new layuiData<Article>();
+            layuiArticleData.setCode(0);
+            layuiArticleData.setMsg("");
+            layuiArticleData.setCount(total); //“”总共“”的记录数
+            layuiArticleData.setData(articles); //“”分页“”后的数据
+            return JSON.toJSONString(layuiArticleData);
+
         }
-        System.out.println(articles);
-        layuiData<Article> layuiArticleData = new layuiData<Article>();
-        layuiArticleData.setCode(0);
-        layuiArticleData.setMsg("");
-        layuiArticleData.setCount(total); //“”总共“”的记录数
-        layuiArticleData.setData(articles); //“”分页“”后的数据
-        return JSON.toJSONString(layuiArticleData);
+
     }
 
     @Operation("删除文章")
@@ -244,7 +264,6 @@ public class articleController {
                                 ,HttpServletRequest request) {
 
         layuiJSON layuiArticleJSON = new layuiJSON();
-
 
         try {
             //删除文章

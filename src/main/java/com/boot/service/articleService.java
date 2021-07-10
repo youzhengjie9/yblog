@@ -77,4 +77,10 @@ public interface articleService {
 
     //点赞总数加1
     void likeCountAddOne(int articleid);
+
+    //按title查询文章
+    List<Article> queryArticleByTitle(String title);
+
+    //查询指定文章title有多少篇文章
+    int queryArticleByTitleCount(String title);
 }
