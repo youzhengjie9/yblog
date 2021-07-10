@@ -11,6 +11,7 @@ public class operationLog implements Serializable {
     private int id;
     private String username; //操作的用户名
     private String ip; //操作的ip
+    private String uri; //访问的uri
     private String address; //操作的ip对应的地址
     private String browser; //使用的浏览器
     private String os; //使用的操作系统
@@ -39,6 +40,14 @@ public class operationLog implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getAddress() {
@@ -87,6 +96,7 @@ public class operationLog implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", ip='" + ip + '\'' +
+                ", uri='" + uri + '\'' +
                 ", address='" + address + '\'' +
                 ", browser='" + browser + '\'' +
                 ", os='" + os + '\'' +

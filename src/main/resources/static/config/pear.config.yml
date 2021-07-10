@@ -27,8 +27,8 @@ tab:
   muiltTab: true
   ## 保持视图状态
   keepState: true
-  ## 开启选项卡记忆
-  session: true
+  ## 开启选项卡记忆  （如果不关闭则进入后台系统会记忆你曾经访问的模块，然后会自动把他们全部都访问一遍，有点耗性能）
+  session: false
   ## 最大可打开的选项卡数量
   tabMax: "30"
   ## 首页
