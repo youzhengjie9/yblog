@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
 import com.boot.data.ResponseData.ArticleResponseData;
 import com.boot.data.ResponseData.layuiData;
@@ -65,6 +66,7 @@ public class articleController {
 
     //文章
     //发布文章
+    @Operation("进入发布文章界面")
     @RequestMapping(path = "/topublish")
     public String toPublishArticle(Model model, HttpSession session, HttpServletRequest request) {
 
@@ -82,7 +84,7 @@ public class articleController {
         return "back/newback/article/article_edit";
     }
 
-
+    @Operation("发布文章")
     @RequestMapping(path = "/article/publish")
     @ResponseBody
     public String publish(Article article, HttpSession session, HttpServletRequest request) {
@@ -118,6 +120,7 @@ public class articleController {
 
 
     //修改文章
+    @Operation("进入编辑文章页面")
     @RequestMapping(path = "/toChangeArticle")
     public String toChangeArticle(int article_id,Model model, HttpSession session, HttpServletRequest request) {
         System.out.println(article_id);
@@ -137,6 +140,7 @@ public class articleController {
 
 
 
+    @Operation("修改文章")
     @RequestMapping(path = "/modifyArticle")
     @ResponseBody //要加
     @ApiOperation(value = "修改文章")
@@ -185,6 +189,7 @@ public class articleController {
 
 
     //文章管理
+    @Operation("进入文章列表界面")
     @Visitor(desc = "进入文章列表界面")
     @RequestMapping(path = "/toArticleManager")
     @ApiOperation(value = "进入文章列表界面", notes = "进入文章列表界面，分页默认是第一页")
@@ -232,6 +237,7 @@ public class articleController {
         return JSON.toJSONString(layuiArticleData);
     }
 
+    @Operation("删除文章")
     @ResponseBody
     @RequestMapping(path = "/deleteArticle/{articleid}")
     public String deleteArticle(@PathVariable("articleid") int articleid,HttpSession session
@@ -372,6 +378,7 @@ public class articleController {
         return JSON.toJSONString(json);
     }
 
+    @Operation("批量删除文章")
     @ResponseBody
     @RequestMapping(path = "/batchRemove/{checkIds}")
     public String batchRemoveArticle(@PathVariable("checkIds") String checkIds) {
@@ -421,6 +428,7 @@ public class articleController {
     }
 
 
+    @Operation("添加分类")
     @PostMapping(path = "/add/Category")
     @ResponseBody
     @ApiOperation("添加分类")
@@ -447,6 +455,7 @@ public class articleController {
     }
 
     //修改分类
+    @Operation("修改分类")
     @PostMapping(path = "/modify/Category")
     @ResponseBody
     @ApiOperation("修改分类")
@@ -466,6 +475,7 @@ public class articleController {
     }
 
 
+    @Operation("删除分类")
     @RequestMapping(path = "/delete/Category")
     @ResponseBody
     @ApiOperation("删除分类")
@@ -493,7 +503,7 @@ public class articleController {
     }
 
 
-
+    @Operation("批量删除分类")
     @RequestMapping(path = "/batchRemove/Category")
     @ResponseBody
     @ApiOperation("批量删除分类")

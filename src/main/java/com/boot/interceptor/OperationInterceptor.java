@@ -13,9 +13,12 @@ public class OperationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getRequestURI());
-//        System.out.println(request.getRequestURL());
-        System.out.println("OperationInterceptor拦截。。。");
+        String requestURI = request.getRequestURI();
+        System.out.println(requestURI);
+        //获取注解
+
+
+
 
         return true;
     }

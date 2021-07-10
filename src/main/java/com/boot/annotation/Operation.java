@@ -14,6 +14,6 @@ public @interface Operation {
     /**
      * 自定义注解：作用是标记指定的接口，当访问这个接口就会被拦截，然后把操作记录（也就是注解的值）放入数据库存储
      */
-    String value() default "";
+    String value();
 
 }

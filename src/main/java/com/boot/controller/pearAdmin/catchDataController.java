@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
 import com.boot.constant.Constant;
 import com.boot.data.ResponseData.ResponseJSON;
@@ -28,6 +29,7 @@ public class catchDataController {
     private catchDataService catchDataService;
 
     //爬取数据
+    @Operation("进入爬取数据页面")
     @Visitor(desc = "爬取数据")
     @RequestMapping(path = "/toCatchData")
     public String toCatchData() {
@@ -38,6 +40,7 @@ public class catchDataController {
     /**
      * 抓取文章接口
      */
+    @Operation("抓取文章数据")
     @RequestMapping(path = "/catch/Article")
     @ResponseBody
     public String catchArticle(String url, String code, HttpServletRequest request, Model model) {
@@ -74,6 +77,7 @@ public class catchDataController {
     /**
      * 抓取模块接口
      */
+    @Operation("抓取模块中的文章数据")
     @RequestMapping(path = "/catch/ModelArticle")
     @ResponseBody
     public String catchModelArticle(String url, String code, HttpServletRequest request, Model model) {

@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.data.ResponseData.layuiData;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.blacklist;
@@ -66,6 +67,7 @@ public class blackListController {
     }
 
 
+    @Operation("删除黑名单IP")
     @GetMapping(path = "/delete/BlackList")
     @ResponseBody
     public String deleteBlackList(String ip, HttpSession session, HttpServletRequest request) {
@@ -102,6 +104,7 @@ public class blackListController {
         return "back/newback/article/module/addBlack";
     }
 
+    @Operation("新增黑名单IP")
     @PostMapping(path = "/add/BlackList")
     @ResponseBody
     public String addBlackList(String ip1, String ip2, String ip3, String ip4,
@@ -132,6 +135,7 @@ public class blackListController {
     }
 
 
+    @Operation("批量删除黑名单IP")
     @ResponseBody
     @RequestMapping(path = "/batchRemove/blacklist/{ips}")
     public String batchRemoveBlackList(@PathVariable("ips") String ips) {
@@ -158,7 +162,7 @@ public class blackListController {
 
     }
 
-    //待实现（编辑黑名单）
+    @Operation("修改黑名单IP")
     @ResponseBody
     @RequestMapping(path = "/update/blacklist")
     public String updateBlacklist(String oldIp, String ip1, String ip2, String ip3, String ip4) {

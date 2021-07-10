@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
 import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.img;
@@ -58,6 +59,7 @@ public class fileController {
     }
 
 
+    @Operation("附件上传")
     @RequestMapping(path = "/file/upload")
     @ResponseBody
     public String fileupload(MultipartFile[] files, HttpSession session, Model model) throws IOException {
@@ -149,8 +151,9 @@ public class fileController {
     }
 
     /**
-     * 附件删除(待实现）
+     * 附件删除(待实现）=========================
      */
+    @Operation("附件删除")
     @ResponseBody
     @RequestMapping(path = "/file/delete")
     public String fileDelete(int id){

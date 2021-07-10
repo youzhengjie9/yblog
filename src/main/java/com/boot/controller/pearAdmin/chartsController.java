@@ -1,6 +1,7 @@
 package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.annotation.Operation;
 import com.boot.pojo.Article;
 import com.boot.pojo.category;
 import com.boot.pojo.tag;
@@ -54,6 +55,7 @@ public class chartsController {
     @Autowired
     private userDetailService userDetailService;
     //数据图表
+    @Operation("进入数据图表页面")
     @RequestMapping(path = "/toEcharts")
     public String toEcharts(Model model, HttpSession session) {
 
