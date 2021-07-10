@@ -22,7 +22,6 @@ public class OperationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
-        System.out.println(requestURI);
         HandlerMethod handlerMethod= (HandlerMethod)handler;
         String name = handlerMethod.getMethod().getName(); //获取方法名
         Class<?> aClass = handlerMethod.getBean().getClass(); //获取类
