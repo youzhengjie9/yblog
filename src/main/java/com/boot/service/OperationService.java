@@ -13,5 +13,5 @@ public interface OperationService {
 
     List<operationLog> selectAllOperationLog();
 
-
+    int selectOperationCount();
 }

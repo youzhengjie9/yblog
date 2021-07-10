@@ -31,6 +31,11 @@
     {{layui.util.toDateString(d.time,  "yyyy-MM-dd HH:mm:ss")}}
 </script>
 
+
+<script type="text/html" id="log-operationTime">
+    {{layui.util.toDateString(d.time,  "yyyy-MM-dd HH:mm:ss")}}
+</script>
+
 <script type="text/html" id="log-loginType">
     {{#if (d.type == 1) { }}
     <span>正常登录</span>
@@ -65,15 +70,15 @@
 
         let operationCols = [
             [
-                {title: '模块', field: 'title', align:'center'},
-                {title: '请求方式', field: 'requestMethod', align:'center'},
-                {title: '接口', field: 'method', align:'center'},
-                {title: '浏览器', field: 'browser', align:'center'},
-                {title: '操作地址', field: 'operateAddress',align:'center'},
-                {title: '操作系统', field: 'systemOs', align:'center'},
-                {title: '访问时间', field: 'createTime',templet:'#log-createTime', align:'center'},
-                {title: '操作人', field: 'operateName', align:'center'},
-                {title: '访问状态', toolbar: '#log-bar', align:'center', width:150}
+                {title: 'id', field: 'id', align:'center'},
+                {title: '用户名', field: 'username', align:'center'},
+                {title: 'ip', field: 'ip', align:'center'},
+                {title: '接口uri', field:'uri', align:'center'},
+                {title: '所在地', field: 'address', align:'center'},
+                {title: '浏览器', field: 'browser',align:'center'},
+                {title: '操作系统', field: 'os', align:'center'},
+                {title: '操作时间', field: 'time',templet:'#log-operationTime',align:'center'},
+                {title: '操作内容',field:'type',align:'center'}
             ]
         ]
         table.render({
@@ -87,7 +92,7 @@
 
         table.render({
             elem: '#log-operate-table',
-            url: '../../admin/data/operateLog.json',
+            url: '/pear/log/operationLog',
             page: true ,
             cols: operationCols ,
             skin: 'line',

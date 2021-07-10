@@ -26,4 +26,9 @@ public class OperationServiceImpl implements OperationService {
     public List<operationLog> selectAllOperationLog() {
         return operationMapper.selectAllOperationLog();
     }
+
+    @Override
+    public int selectOperationCount() {
+        return operationMapper.selectOperationCount();
+    }
 }

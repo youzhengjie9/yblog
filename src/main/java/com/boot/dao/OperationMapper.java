@@ -18,5 +18,7 @@ public interface OperationMapper {
 
     List<operationLog> selectAllOperationLog();
 
+    int selectOperationCount();
+
 
 }

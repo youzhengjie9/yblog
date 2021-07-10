@@ -34,7 +34,8 @@
 						</a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
+							<form name="logoutform" th:action="@{/logout}" method="post"></form>
+							<dd><a href="javascript:document.logoutform.submit();" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
 					<!-- 主 题 配 置 -->
