@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.OperationMapper">
+
+
+
+    <insert id="insertOperationLog" parameterType="com.boot.pojo.operationLog">
+        insert into t_operationlog(op_username,op_ip,op_uri,op_address,op_browser,op_os,op_time,op_type)
+        values(
+            #{username},#{ip},#{uri},
+        <if test="address == null">
+            '暂未检测到地址',
+        </if>
+        <if test="address != null">
+            #{address},
+        </if>
+        <if test="browser == null">
+            '暂未检测到浏览器',
+        </if>
+        <if test="browser != null">
+            #{browser},
+        </if>
+        <if test="os == null">
+            '暂未检测到操作系统',
+        </if>
+        <if test="os != null">
+            #{os},
+        </if>
+        #{time},#{type}
+        )
+    </insert>
+
+
+
+    <resultMap id="res1" type="com.boot.pojo.operationLog">
+        <result property="id" column="id"/>
+        <result property="username" column="op_username"/>
+        <result property="ip" column="op_ip"/>
+        <result property="uri" column="op_uri"/>
+        <result property="address" column="op_address"/>
+        <result property="browser" column="op_browser"/>
+        <result property="os" column="op_os"/>
+        <result property="time" column="op_time"/>
+        <result property="type" column="op_type"/>
+    </resultMap>
+
+    <select id="selectAllOperationLog" resultMap="res1">
+        select * from t_operationlog
+    </select>
+
+
+    <select id="selectOperationCount" resultType="int">
+        select COUNT(*) from t_operationlog
+    </select>
+
+
+    <resultMap id="res2" type="com.boot.pojo.operationLog">
+        <result property="username" column="op_username"/>
+        <result property="time" column="op_time"/>
+        <result property="type" column="op_type"/>
+    </resultMap>
+
+
+    <select id="selectOperationLogByLimit" resultMap="res2">
+    SELECT
+	op_username,
+	op_type,
+	op_time
+    FROM
+	t_operationlog
+    ORDER BY
+	op_time DESC
+	LIMIT 8
+    </select>
+
+
+</mapper>
