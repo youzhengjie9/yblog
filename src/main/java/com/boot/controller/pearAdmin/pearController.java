@@ -109,6 +109,9 @@ public class pearController {
     @Autowired
     private interceptService interceptService;
 
+    @Autowired
+    private OperationService operationService;
+
 
     static {
         themes.add("default");
@@ -195,6 +198,11 @@ public class pearController {
     @Operation("进入控制后台界面")
     @RequestMapping(path = "/toconsole")
     public String toconsole(Model model, HttpSession session, HttpServletRequest request) {
+
+
+        //最新日志
+        List<operationLog> operationLogs = operationService.selectOperationLogByLimit(8);
+        model.addAttribute("operationLogs",operationLogs);
 
         int usercount = userService.userCount(); //用户总数
         model.addAttribute("usercount", usercount);

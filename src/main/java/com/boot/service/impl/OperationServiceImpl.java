@@ -31,4 +31,9 @@ public class OperationServiceImpl implements OperationService {
     public int selectOperationCount() {
         return operationMapper.selectOperationCount();
     }
+
+    @Override
+    public List<operationLog> selectOperationLogByLimit(int limit) {
+        return operationMapper.selectOperationLogByLimit(limit);
+    }
 }

@@ -181,22 +181,12 @@
                 <div class="layui-card-header">最新日志</div>
                 <div class="layui-card-body">
                     <ul class="list">
-                        <li class="list-item"><span class="title">优化代码格式</span><span
-                                class="footer">2020-06-04 11:28</span></li>
-                        <li class="list-item"><span class="title">新增消息组件</span><span
-                                class="footer">2020-06-01 04:23</span></li>
-                        <li class="list-item"><span class="title">移动端兼容</span><span
-                                class="footer">2020-05-22 21:38</span></li>
-                        <li class="list-item"><span class="title">系统布局优化</span><span
-                                class="footer">2020-05-15 14:26</span></li>
-                        <li class="list-item"><span class="title">兼容多系统菜单模式</span><span
-                                class="footer">2020-05-13 16:32</span></li>
-                        <li class="list-item"><span class="title">兼容多标签页切换</span><span
-                                class="footer">2019-12-9 14:58</span></li>
-                        <li class="list-item"><span class="title">扩展下拉组件</span><span
-                                class="footer">2019-12-7 9:06</span></li>
-                        <li class="list-item"><span class="title">扩展卡片样式</span><span
-                                class="footer">2019-12-1 10:26</span></li>
+                        <li class="list-item" th:each="operationLog:${operationLogs}">
+                            <span class="title">[[${operationLog.username}]][[${operationLog.type}]]</span>
+                            <span class="footer">[[${operationLog.time}]]</span>
+                        </li>
+<!--                        <li class="list-item"><span class="title">优化代码格式</span><span-->
+<!--                                class="footer">2020-06-04 11:28</span></li>-->
                     </ul>
                 </div>
             </div>
