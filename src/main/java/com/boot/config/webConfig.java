@@ -2,6 +2,7 @@ package com.boot.config;
 
 import com.boot.interceptor.OperationInterceptor;
 import com.boot.interceptor.RememberInterceptor;
+import com.boot.interceptor.TimeCalcInterceptor;
 import com.boot.interceptor.visitorInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ public class webConfig implements WebMvcConfigurer {
 
     @Autowired
     private OperationInterceptor operationInterceptor;
+
+    @Autowired
+    private TimeCalcInterceptor timeCalcInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -44,5 +48,12 @@ public class webConfig implements WebMvcConfigurer {
                 ,"/pear/tagsData","/pear/captcha","/pear/userManagerData","/pear/linkData","/pear/visitorData"
                 ,"/pear/blackData","/pear/interceptData","/pear/log/loginlog");
 
+        registry.addInterceptor(timeCalcInterceptor)
+                //拦截所有接口
+                .addPathPatterns("/**")
+                //只需排除一下静态资源即可
+                .excludePathPatterns("/user/**","/assets/**","/user_img/**"
+                ,"/article_img/**","/back/**","/big_img/**","/component/**","/config/**"
+                ,"/diagram-viewer/**","/email/**","/pear-admin/**","/plugins/**","/small_img/**");
     }
 }
