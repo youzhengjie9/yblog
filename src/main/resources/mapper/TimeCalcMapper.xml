@@ -11,8 +11,12 @@
     </insert>
 
 
-    <select id="selectAllTimeCalc">
+    <select id="selectAllTimeCalc" resultType="com.boot.pojo.TimeCalc">
         select * from t_timecalc order by `time` desc
+    </select>
+
+    <select id="selectAllCount" resultType="int">
+        select count(*) from t_timecalc
     </select>
 
 </mapper>

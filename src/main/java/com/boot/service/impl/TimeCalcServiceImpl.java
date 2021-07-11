@@ -26,4 +26,9 @@ public class TimeCalcServiceImpl implements TimeCalcService {
     public List<TimeCalc> selectAllTimeCalc() {
         return timeCalcMapper.selectAllTimeCalc();
     }
+
+    @Override
+    public int selectAllCount() {
+        return timeCalcMapper.selectAllCount();
+    }
 }

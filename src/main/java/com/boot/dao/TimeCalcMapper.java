@@ -17,4 +17,6 @@ public interface TimeCalcMapper {
     List<TimeCalc> selectAllTimeCalc();
 
 
+    int selectAllCount();
+
 }

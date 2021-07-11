@@ -1,9 +1,19 @@
 package com.boot.controller.pearAdmin;
 
+import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Operation;
+import com.boot.data.ResponseData.layuiData;
+import com.boot.pojo.TimeCalc;
+import com.boot.service.TimeCalcService;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @author 游政杰
@@ -13,15 +23,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Api("监控控制器")
 public class monitorController {
 
+    @Autowired
+    private TimeCalcService timeCalcService;
 
     @Operation("进入接口监控界面")
     @RequestMapping(path = "/monitorInterface")
-    public String toMonitorInterface(){
+    public String toMonitorInterface() {
 
         return "back/newback/article/monitor_interface";
     }
 
+    @ResponseBody
+    @RequestMapping(path = "/data/monitorInterface")
+    public String monitorInterfaceData(@RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "limit", defaultValue = "10") int limit) {
 
+        layuiData<TimeCalc> timeCalclayuiData = new layuiData<>();
+        PageHelper.startPage(page, limit);
+        List<TimeCalc> timeCalcs = timeCalcService.selectAllTimeCalc();
+
+        int count = timeCalcService.selectAllCount();
+
+        timeCalclayuiData.setMsg("");
+        timeCalclayuiData.setCode(0);
+        timeCalclayuiData.setData(timeCalcs);
+        timeCalclayuiData.setCount(count);
+
+        return JSON.toJSONString(timeCalclayuiData);
+    }
 
 
 }

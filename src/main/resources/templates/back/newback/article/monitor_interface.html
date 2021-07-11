@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>接口监控</title>
-    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
 </head>
 <body class="pear-container">
 <div class="layui-card">
@@ -37,11 +37,19 @@
     </div>
 </div>
 
+<script type="text/html" id="user-Time">
+    {{#  if(d.time !=null){ }}
+    <div>{{layui.util.toDateString(d.time, 'yyyy-MM-dd HH:mm:ss')}}</div>
+    {{#  } else {}}
+    <div>{{}}</div>
+    {{#  } }}
+</script>
+
 
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script>
-    layui.use(['table', 'form', 'jquery','common'], function() {
+    layui.use(['table', 'form', 'jquery', 'common'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
@@ -59,26 +67,32 @@
                     width: 100
                 },
                 {
-                    title: '友链标题',
-                    field: 'title',
+                    title: '接口URI',
+                    field: 'uri',
                     align: 'center'
                 },
                 {
-                    title: '友链地址',
-                    field: 'link',
+                    title: '接口耗时',
+                    field: 'calc',
                     align: 'center'
+                },
+                {
+                    title: '访问接口时间',
+                    field: 'time',
+                    align: 'center',
+                    templet: '#user-Time'
                 }
             ]
         ]
 
         table.render({
             elem: '#user-table',
-            url: '/pear/linkData',
+            url: '/pear/data/monitorInterface',
             page: true,
             cols: cols,
             skin: 'line',
             toolbar: false,
-            text: {none: '暂无友链信息'},
+            text: {none: '暂无信息'},
             defaultToolbar: [{
                 title: '刷新',
                 layEvent: 'refresh',
@@ -87,9 +101,7 @@
         });
 
 
-
-
-        form.on('submit(user-query)', function(data) {
+        form.on('submit(user-query)', function (data) {
             table.reload('user-table', {
                 where: data.field
             })
@@ -97,7 +109,7 @@
         });
 
 
-        window.refresh = function(param) {
+        window.refresh = function (param) {
             table.reload('user-table');
         }
     })

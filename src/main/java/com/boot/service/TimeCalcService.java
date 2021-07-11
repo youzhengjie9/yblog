@@ -14,4 +14,6 @@ public interface TimeCalcService {
 
     List<TimeCalc> selectAllTimeCalc();
 
+    int selectAllCount();
+
 }
