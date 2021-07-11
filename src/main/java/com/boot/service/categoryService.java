@@ -39,4 +39,6 @@ public interface categoryService {
     int selectCategoryCount();
 
     category selectCategoryByName(String categoryName);
+
+    int selectCountByName(String categoryName);
 }

@@ -21,6 +21,7 @@ import com.boot.utils.ipUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -220,13 +221,13 @@ public class articleController {
     @ResponseBody
     @RequestMapping("/articledata")
     public String articleData(@RequestParam(value = "page", defaultValue = "1") int page,
-                              @RequestParam(value = "limit", defaultValue = "6") int limit
-            , String title) {
+                              @RequestParam(value = "limit", defaultValue = "6") int limit,
+                              @RequestParam(value = "title",defaultValue = "") String title) {
         /**
          * 两种情况：1：当我们不是点击查询按钮时，则展示全部
          * 2.点击查询按钮则展示查到的数据
          */
-        if (title != null && !title.equals("")) { //查询
+        if (StringUtils.isNotBlank(title)) { //查询
 
             int total = articleService.queryArticleByTitleCount(title);
 
@@ -429,19 +430,25 @@ public class articleController {
                                @RequestParam(value = "limit", defaultValue = "3") int limit,
                                @RequestParam(value = "categoryName",defaultValue = "") String categoryName) {
 
-        if (categoryName != null && !categoryName.equals("")) {
+        if (StringUtils.isNotBlank(categoryName)) {
             layuiData<category> layuiData = new layuiData<>();
-            //因为这个category是设置为唯一索引的，所以必定查出来是一个
+
             category category = categoryService.selectCategoryByName(categoryName);
 
             //因为layuiData需要集合去封装
-            List<category> categories=new ArrayList<>();
-            categories.add(category);
-
+            if(category==null){
+                layuiData.setData(null);
+            }else {
+                List<category> categories=new ArrayList<>();
+                categories.add(category);
+                layuiData.setData(categories);
+            }
             layuiData.setMsg("");
             layuiData.setCode(0);
-            layuiData.setData(categories);
-            layuiData.setCount(1);
+
+            int count = categoryService.selectCountByName(categoryName);
+
+            layuiData.setCount(count);
             return JSON.toJSONString(layuiData); //序列化成JSON
         } else {
             PageHelper.startPage(page, limit);

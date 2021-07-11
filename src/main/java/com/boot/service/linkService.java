@@ -16,4 +16,8 @@ public interface linkService {
     void deleteLink(int id); //删除友链
 
     int linkCount();
+
+    List<link> selectLinkByTitle(String title);
+
+    int selectCountByTitle(String title);
 }

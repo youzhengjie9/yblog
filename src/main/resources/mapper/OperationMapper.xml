@@ -47,7 +47,7 @@
     </resultMap>
 
     <select id="selectAllOperationLog" resultMap="res1">
-        select * from t_operationlog
+        select * from t_operationlog order by op_time DESC
     </select>
 
 

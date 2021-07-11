@@ -60,16 +60,11 @@ colors:
 links: 
 - icon: "layui-icon layui-icon-website"
   title: "官方网站"
-  href: "http://www.pearadmin.com"
-- icon: "layui-icon layui-icon-read"
-  title: "开发文档"
-  href: "http://www.pearadmin.com/doc/"
+  href: "/"
 - icon: "layui-icon layui-icon-fonts-code"
   title: "开源地址"
-  href: "https://gitee.com/pear-admin/Pear-Admin-Layui/"
-- icon: "layui-icon layui-icon-survey"
-  title: "问答社区"
-  href: "http://forum.pearadmin.com/"
+  href: "https://github.com/youzhengjie9/yblog"
+
 ## 其他配置
 other: 
   ## 主页动画时长

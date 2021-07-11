@@ -38,4 +38,14 @@ public class linkServiceImpl implements linkService {
     public int linkCount() {
         return linkMapper.linkCount();
     }
+
+    @Override
+    public List<link> selectLinkByTitle(String title) {
+        return linkMapper.selectLinkByTitle(title);
+    }
+
+    @Override
+    public int selectCountByTitle(String title) {
+        return linkMapper.selectCountByTitle(title);
+    }
 }

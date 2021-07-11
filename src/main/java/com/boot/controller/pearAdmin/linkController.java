@@ -7,6 +7,7 @@ import com.boot.data.ResponseData.layuiJSON;
 import com.boot.pojo.link;
 import com.boot.service.linkService;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,20 +36,35 @@ public class linkController {
     @ResponseBody
     @RequestMapping(path = "/linkData")
     public String linkData(@RequestParam(value = "page", defaultValue = "1") int page,
-                           @RequestParam(value = "limit", defaultValue = "6") int limit){
+                           @RequestParam(value = "limit", defaultValue = "6") int limit,
+                           @RequestParam(value = "title",defaultValue = "")String title){
 
+        if(StringUtils.isBlank(title)){
+            layuiData<link> linklayuiData = new layuiData<>();
+            PageHelper.startPage(page,limit);
+            List<link> links = linkService.selectAllLink();
+            int count = linkService.linkCount();
+            linklayuiData.setCode(0);
+            linklayuiData.setMsg("");
+            linklayuiData.setCount(count);
+            linklayuiData.setData(links);
+            return JSON.toJSONString(linklayuiData);
+        }else {
 
-        layuiData<link> linklayuiData = new layuiData<>();
-        PageHelper.startPage(page,limit);
-        List<link> links = linkService.selectAllLink();
-        int count = linkService.linkCount();
-        linklayuiData.setCode(0);
-        linklayuiData.setMsg("");
-        linklayuiData.setCount(count);
-        linklayuiData.setData(links);
+            layuiData<link> linklayuiData = new layuiData<>();
 
+            PageHelper.startPage(page, limit);
+            List<link> links = linkService.selectLinkByTitle(title);
 
-        return JSON.toJSONString(linklayuiData);
+            int count = linkService.selectCountByTitle(title);
+
+            linklayuiData.setMsg("");
+            linklayuiData.setCode(0);
+            linklayuiData.setData(links);
+            linklayuiData.setCount(count);
+            return JSON.toJSONString(linklayuiData);
+        }
+
     }
 
 //    ====

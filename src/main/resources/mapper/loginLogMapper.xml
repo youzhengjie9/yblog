@@ -43,7 +43,7 @@
         <result property="type" column="lg_type"/>
     </resultMap>
     <select id="selectLoginLogAll" resultMap="lg1">
-        select * from t_loginlog
+        select * from t_loginlog order by lg_time desc
     </select>
     
 

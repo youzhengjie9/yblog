@@ -10,4 +10,9 @@
         values (#{uri},#{calc},#{time})
     </insert>
 
+
+    <select id="selectAllTimeCalc">
+        select * from t_timecalc order by `time` desc
+    </select>
+
 </mapper>

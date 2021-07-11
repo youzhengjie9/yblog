@@ -107,6 +107,56 @@
         SELECT COUNT(*) FROM t_user
     </select>
 
+    <resultMap id="res3" type="com.boot.pojo.user">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="created" property="date"/>
+        <result column="valid" property="valid"/>
+
+        <association property="user_authority" javaType="com.boot.pojo.user_authority">
+            <result column="authority_id" property="authority_id"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectUserByUsernameAndEmail" resultMap="res3">
+       SELECT
+        t_user.id,
+	    t_user.username,
+    	t_user.email,
+	    t_user.created,
+    	t_user.valid,
+    	t_user_authority.authority_id
+       FROM
+    	t_user,
+    	t_user_authority
+       WHERE
+    	t_user.id = t_user_authority.user_id
+    	<if test="username != ''">
+            and t_user.username=#{username}
+        </if>
+
+        <if test="email != ''">
+            and t_user.email=#{email}
+        </if>
+    </select>
+
+    <select id="selectUserCountByUsernameAndEmail" resultType="int">
+        select count(*) from t_user
+        <if test="username == '' and email!=''">
+            where t_user.email=#{email}
+        </if>
+        <if test="username != '' and email==''">
+            where t_user.username=#{username}
+        </if>
+        <if test="username != '' and email !=''">
+            where t_user.username=#{username}
+            and t_user.email=#{email}
+        </if>
+
+    </select>
+
 
 </mapper>
 

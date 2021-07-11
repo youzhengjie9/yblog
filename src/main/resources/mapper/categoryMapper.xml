@@ -52,5 +52,9 @@
         select * from  t_categories where categoryName=#{categoryName}
     </select>
 
+    <select id="selectCountByName" resultType="int">
+        select COUNT(*) from t_categories where categoryName=#{categoryName}
+    </select>
+
 </mapper>
 

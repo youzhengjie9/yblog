@@ -19,5 +19,14 @@
     <delete id="deleteLink">
         delete from t_link where id=#{id}
     </delete>
-    
+
+    <select id="selectLinkByTitle" resultType="com.boot.pojo.link">
+        select * from t_link where title=#{title}
+    </select>
+
+    <select id="selectCountByTitle" resultType="int">
+        select count(*) from t_link where title=#{title}
+    </select>
+
+
 </mapper>

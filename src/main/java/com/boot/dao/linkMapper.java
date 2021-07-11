@@ -24,4 +24,10 @@ public interface linkMapper {
     @Select("select count(*) from t_link")
     int linkCount();
 
+
+    List<link> selectLinkByTitle(@Param("title") String title);
+
+    int selectCountByTitle(@Param("title") String title);
+
+
 }

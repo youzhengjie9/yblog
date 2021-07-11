@@ -39,4 +39,6 @@ public interface categoryMapper {
     category selectCategoryByName(@Param("categoryName") String categoryName);
 
 
+    int selectCountByName(@Param("categoryName") String categoryName);
+
 }

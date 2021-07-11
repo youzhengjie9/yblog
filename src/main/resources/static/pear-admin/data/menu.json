@@ -198,7 +198,16 @@
 					"href": "http://127.0.0.1:8080/druid/index.html"
 				}
 			]
-		}
+		},
+			{
+				"id": 2017,
+				"title": "接口监控",
+				"icon": "layui-icon layui-icon-face-smile",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/monitorInterface"
+
+			}
 		]
 	},
 

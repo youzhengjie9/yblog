@@ -43,4 +43,11 @@ public interface userMapper {
 
     int userCount();
 
+    //根据用户名和email去查询用户
+    List<user> selectUserByUsernameAndEmail(@Param("username") String username,@Param("email") String email);
+
+    //根据用户名和email去查询用户数量
+    int selectUserCountByUsernameAndEmail(@Param("username") String username,@Param("email") String email);
+
+
 }

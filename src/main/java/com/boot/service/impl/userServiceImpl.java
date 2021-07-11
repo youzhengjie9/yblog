@@ -75,5 +75,14 @@ public class userServiceImpl implements userService {
         return userMapper.userCount();
     }
 
+    @Override
+    public List<user> selectUserByUsernameAndEmail(String username, String email) {
+        return userMapper.selectUserByUsernameAndEmail(username,email);
+    }
+
+    @Override
+    public int selectUserCountByUsernameAndEmail(String username, String email) {
+        return userMapper.selectUserCountByUsernameAndEmail(username,email);
+    }
 
 }
