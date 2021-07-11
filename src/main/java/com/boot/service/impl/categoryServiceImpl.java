@@ -70,6 +70,11 @@ public class categoryServiceImpl implements categoryService {
         return categoryMapper.selectCategoryCount();
     }
 
+    @Override
+    public category selectCategoryByName(String categoryName) {
+        return categoryMapper.selectCategoryByName(categoryName);
+    }
+
 
     @Override
     public List<category> selectCategories() {

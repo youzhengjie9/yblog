@@ -31,8 +31,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 /**
  * @author 游政杰
  * @Date 2021/6/30
@@ -79,8 +81,8 @@ public class articleController {
 
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail", userDetail);
-        model.addAttribute("ps","发布文章");
-        model.addAttribute("url","/article/publish");
+        model.addAttribute("ps", "发布文章");
+        model.addAttribute("url", "/article/publish");
         return "back/newback/article/article_edit";
     }
 
@@ -122,7 +124,7 @@ public class articleController {
     //修改文章
     @Operation("进入编辑文章页面")
     @RequestMapping(path = "/toChangeArticle")
-    public String toChangeArticle(int article_id,Model model, HttpSession session, HttpServletRequest request) {
+    public String toChangeArticle(int article_id, Model model, HttpSession session, HttpServletRequest request) {
         System.out.println(article_id);
         String username = springSecurityUtil.currentUser(session);
         java.util.Date date = new java.util.Date();
@@ -133,8 +135,8 @@ public class articleController {
         model.addAttribute("contents", article);
         userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail", userDetail);
-        model.addAttribute("ps","修改文章");
-        model.addAttribute("url","/modifyArticle");
+        model.addAttribute("ps", "修改文章");
+        model.addAttribute("url", "/modifyArticle");
         return "back/newback/article/article_edit";
     }
 
@@ -143,46 +145,46 @@ public class articleController {
     @RequestMapping(path = "/modifyArticle")
     @ResponseBody //要加
     @ApiOperation(value = "修改文章")
-    public String modify(String content,@RequestParam(value = "editArticleId",defaultValue = "-99") int editArticleId,
-                                      Article article, HttpSession session,
-                                      HttpServletRequest request) {
-        layuiJSON json=new layuiJSON();
+    public String modify(String content, @RequestParam(value = "editArticleId", defaultValue = "-99") int editArticleId,
+                         Article article, HttpSession session,
+                         HttpServletRequest request) {
+        layuiJSON json = new layuiJSON();
 
-         if(editArticleId==-99){ //=-99说明不能修改
-             json.setSuccess(false);
-             json.setMsg("修改失败");
-             return JSON.toJSONString(json);
-         }else { //可修改
-             try {
-                 article.setId(editArticleId);
-                 articleService.changeArticle_service(article);//进行修改文章
-                 //打印修改成功日志
-                 String username = springSecurityUtil.currentUser(session);
-                 java.util.Date date2 = new java.util.Date();
-                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                 String time2 = simpleDateFormat.format(date2);
-                 String ipAddr = ipUtils.getIpAddr(request);
-                 logger.debug(time2 + "   用户名：" + username + "修改文章信息成功,ip为：" + ipAddr);
-                 json.setSuccess(true);
-                 json.setMsg("修改成功");
-                 return JSON.toJSONString(json);
-             } catch (Exception e) {
-                 /**
-                  * 解决方案：为了解决因为spring事务只会对mysql进行回滚而不会对redis操作进行回滚
-                  * 所以我们可以把redis数据进行重新导入
-                  */
-                 List<tag> tags = tagService.selectAllTag();
+        if (editArticleId == -99) { //=-99说明不能修改
+            json.setSuccess(false);
+            json.setMsg("修改失败");
+            return JSON.toJSONString(json);
+        } else { //可修改
+            try {
+                article.setId(editArticleId);
+                articleService.changeArticle_service(article);//进行修改文章
+                //打印修改成功日志
+                String username = springSecurityUtil.currentUser(session);
+                java.util.Date date2 = new java.util.Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String time2 = simpleDateFormat.format(date2);
+                String ipAddr = ipUtils.getIpAddr(request);
+                logger.debug(time2 + "   用户名：" + username + "修改文章信息成功,ip为：" + ipAddr);
+                json.setSuccess(true);
+                json.setMsg("修改成功");
+                return JSON.toJSONString(json);
+            } catch (Exception e) {
+                /**
+                 * 解决方案：为了解决因为spring事务只会对mysql进行回滚而不会对redis操作进行回滚
+                 * 所以我们可以把redis数据进行重新导入
+                 */
+                List<tag> tags = tagService.selectAllTag();
 
-                 for (tag tag : tags) {
-                     redisTemplate.opsForValue().set("tag_" + tag.getTagName(), tag.getTagCount());
-                 }
-                 e.printStackTrace();
-                 json.setSuccess(false);
-                 json.setMsg("修改失败");
-                 return JSON.toJSONString(json);
-             }
+                for (tag tag : tags) {
+                    redisTemplate.opsForValue().set("tag_" + tag.getTagName(), tag.getTagCount());
+                }
+                e.printStackTrace();
+                json.setSuccess(false);
+                json.setMsg("修改失败");
+                return JSON.toJSONString(json);
+            }
 
-         }
+        }
 
     }
 
@@ -219,16 +221,16 @@ public class articleController {
     @RequestMapping("/articledata")
     public String articleData(@RequestParam(value = "page", defaultValue = "1") int page,
                               @RequestParam(value = "limit", defaultValue = "6") int limit
-                                ,String title) {
+            , String title) {
         /**
          * 两种情况：1：当我们不是点击查询按钮时，则展示全部
          * 2.点击查询按钮则展示查到的数据
          */
-        if(title!=null&&!title.equals("")){ //查询
+        if (title != null && !title.equals("")) { //查询
 
-            int total=articleService.queryArticleByTitleCount(title);
+            int total = articleService.queryArticleByTitleCount(title);
 
-            PageHelper.startPage(page,limit);
+            PageHelper.startPage(page, limit);
             List<Article> articles = articleService.queryArticleByTitle(title);
 
             layuiData<Article> articlelayuiData = new layuiData<>();
@@ -237,7 +239,7 @@ public class articleController {
             articlelayuiData.setCount(total);
             articlelayuiData.setData(articles);
             return JSON.toJSONString(articlelayuiData);
-        }else { //展示
+        } else { //展示
 
             int total = articleService.selectArticleCount();
 
@@ -260,8 +262,8 @@ public class articleController {
     @Operation("删除文章")
     @ResponseBody
     @RequestMapping(path = "/deleteArticle/{articleid}")
-    public String deleteArticle(@PathVariable("articleid") int articleid,HttpSession session
-                                ,HttpServletRequest request) {
+    public String deleteArticle(@PathVariable("articleid") int articleid, HttpSession session
+            , HttpServletRequest request) {
 
         layuiJSON layuiArticleJSON = new layuiJSON();
 
@@ -424,24 +426,42 @@ public class articleController {
     @ResponseBody
     @RequestMapping(path = "/categoryData")
     public String categoryData(@RequestParam(value = "page", defaultValue = "1") int page,
-                               @RequestParam(value = "limit", defaultValue = "3") int limit) {
+                               @RequestParam(value = "limit", defaultValue = "3") int limit,
+                               @RequestParam(value = "categoryName",defaultValue = "") String categoryName) {
 
-        PageHelper.startPage(page, limit);
-        List<category> categories = categoryService.selectCategories();
+        if (categoryName != null && !categoryName.equals("")) {
+            layuiData<category> layuiData = new layuiData<>();
+            //因为这个category是设置为唯一索引的，所以必定查出来是一个
+            category category = categoryService.selectCategoryByName(categoryName);
 
-        int count = categoryService.selectCategoryCount();
-        layuiData<category> layuiData = new layuiData<>();
-        layuiData.setCode(0);
-        layuiData.setMsg("");
-        layuiData.setCount(count);
-        layuiData.setData(categories);
+            //因为layuiData需要集合去封装
+            List<category> categories=new ArrayList<>();
+            categories.add(category);
 
-        return JSON.toJSONString(layuiData);
+            layuiData.setMsg("");
+            layuiData.setCode(0);
+            layuiData.setData(categories);
+            layuiData.setCount(1);
+            return JSON.toJSONString(layuiData); //序列化成JSON
+        } else {
+            PageHelper.startPage(page, limit);
+            List<category> categories = categoryService.selectCategories();
+
+            int count = categoryService.selectCategoryCount();
+            layuiData<category> layuiData = new layuiData<>();
+            layuiData.setCode(0);
+            layuiData.setMsg("");
+            layuiData.setCount(count);
+            layuiData.setData(categories);
+
+            return JSON.toJSONString(layuiData);
+        }
+
 
     }
 
     @RequestMapping(path = "/addCategoryPage")
-    public String addCategoryPage(){
+    public String addCategoryPage() {
 
         return "back/newback/article/module/addCategory";
     }
@@ -452,7 +472,7 @@ public class articleController {
     @ResponseBody
     @ApiOperation("添加分类")
     public String addCategory(category category, HttpSession session, Model model) {
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
 
         try {
             categoryService.addCategory(category);
@@ -468,8 +488,8 @@ public class articleController {
     }
 
     @RequestMapping(path = "/modifyCategoryPage")
-    public String modifyCategoryPage(Model model,String oldName){
-        model.addAttribute("oldName",oldName);
+    public String modifyCategoryPage(Model model, String oldName) {
+        model.addAttribute("oldName", oldName);
         return "back/newback/article/module/modifyCategory";
     }
 
@@ -478,8 +498,8 @@ public class articleController {
     @PostMapping(path = "/modify/Category")
     @ResponseBody
     @ApiOperation("修改分类")
-    public String modifyCategory(String oldName,String newName,HttpSession session, Model model) {
-        layuiJSON json=new layuiJSON();
+    public String modifyCategory(String oldName, String newName, HttpSession session, Model model) {
+        layuiJSON json = new layuiJSON();
 
         try {
             categoryService.updateCategory(oldName, newName);
@@ -500,7 +520,7 @@ public class articleController {
     @ApiOperation("删除分类")
     public String deleteCategory(@RequestParam(value = "n", defaultValue = "") String n, HttpSession session, Model model) {
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
 
         if (n != null && !n.equals("")) {
             try {
@@ -513,7 +533,7 @@ public class articleController {
                 json.setSuccess(false);
             }
 
-        }else {
+        } else {
             json.setMsg("删除分类失败");
             json.setSuccess(false);
         }
@@ -531,7 +551,7 @@ public class articleController {
      */
     public String batchRemoveCategory(@RequestParam(value = "checkIds", defaultValue = "") String checkIds, HttpSession session, Model model) {
 
-        layuiJSON json=new layuiJSON();
+        layuiJSON json = new layuiJSON();
 
         try {
             String[] split = checkIds.split(",");
@@ -540,7 +560,7 @@ public class articleController {
             }
             json.setMsg("批量删除分类成功");
             json.setSuccess(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             json.setMsg("批量删除分类失败");
             json.setSuccess(false);
@@ -548,7 +568,6 @@ public class articleController {
 
         return JSON.toJSONString(json);
     }
-
 
 
     @RequestMapping(path = "/tagsData")
@@ -570,11 +589,6 @@ public class articleController {
 
         return JSON.toJSONString(taglayuiData);
     }
-
-
-
-    
-
 
 
 }

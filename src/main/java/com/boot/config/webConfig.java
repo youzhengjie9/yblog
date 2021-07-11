@@ -54,6 +54,7 @@ public class webConfig implements WebMvcConfigurer {
                 //只需排除一下静态资源即可
                 .excludePathPatterns("/user/**","/assets/**","/user_img/**"
                 ,"/article_img/**","/back/**","/big_img/**","/component/**","/config/**"
-                ,"/diagram-viewer/**","/email/**","/pear-admin/**","/plugins/**","/small_img/**");
+                ,"/diagram-viewer/**","/email/**","/pear-admin/**","/plugins/**","/small_img/**"
+                ,"/favicon.ico","/error");
     }
 }

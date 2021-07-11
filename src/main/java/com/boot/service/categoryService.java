@@ -37,4 +37,6 @@ public interface categoryService {
 
     //查询分类数量
     int selectCategoryCount();
+
+    category selectCategoryByName(String categoryName);
 }

@@ -48,5 +48,9 @@
     </select>
 
 
+    <select id="selectCategoryByName" resultType="com.boot.pojo.category">
+        select * from  t_categories where categoryName=#{categoryName}
+    </select>
+
 </mapper>
 
