@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
@@ -93,6 +94,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(sql);
 
     }
+
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -196,10 +200,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/**", "/pear-admin/**", "/component/**", "/static/**", "/pear/captcha"
                         , "/config/**", "/favicon.ico")
                 .permitAll()
-                .antMatchers("/admin/**", "/monitor/**", "/usermanager/**",
+                .antMatchers("/monitor/**", "/usermanager/**",
                         "/article/updateAllowComment",
                         "/link/**", "/visitor/**", "/chart/**", "/black/**").hasRole("admin")
-                .antMatchers("/myuser/**", "/img/**", "/catchArticle/**", "/like/**").hasAnyRole("admin", "common")
+                .antMatchers("/myuser/**", "/img/**", "/catchArticle/**", "/like/**","/admin/","/logout").hasAnyRole("admin", "common")
                 .antMatchers("/sliderCaptcha/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
@@ -223,11 +227,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String ipAddr = ipUtils.getIpAddr(request);
 
         //暂且用ip作为key
-        redisTemplate.opsForValue().set(REMEMBER_KEY+ipAddr,token,60*15,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(REMEMBER_KEY+ipAddr,token,60*60*3,TimeUnit.SECONDS);
 
 
 
     }
-
 
 }

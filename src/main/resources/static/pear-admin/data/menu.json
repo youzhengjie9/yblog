@@ -12,7 +12,7 @@
 			"type": 1,
 			"openType": "_iframe",
 			"href": "/pear/toconsole"
-		},
+	 		},
 			{
 			"id": 14,
 			"title": "百度一下",
@@ -20,7 +20,8 @@
 			"type": 1,
 			"openType": "_iframe",
 			"href": "http://www.baidu.com"
-		}]
+			}
+		]
 	},
 	{
 		"id": "component",

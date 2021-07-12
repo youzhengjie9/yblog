@@ -8,6 +8,7 @@ import com.boot.utils.Commons;
 import com.boot.utils.SpringSecurityUtil;
 import com.boot.utils.cssUtil;
 import com.boot.utils.visitorUtil;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -92,6 +93,9 @@ public class archiveController {
 
     }
 
+    /**
+     * ====需要进行优化，此处性能差
+     */
     @Visitor(desc = "去归档页面")
     @GetMapping(path = "/list")
     @ApiOperation(value = "去归档页面")
@@ -160,6 +164,11 @@ public class archiveController {
             modelAndView.addObject("userDetail", userDetail);
         }
 
+
+        //推荐文章
+        PageHelper.startPage(1,5);
+        List<Article> recommends = articleService.selectArticleByRecommend();
+        modelAndView.addObject("recommends",recommends);
 
         //友链
         List<link> links = linkService.selectAllLink();
