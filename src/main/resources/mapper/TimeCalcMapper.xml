@@ -19,4 +19,10 @@
         select count(*) from t_timecalc
     </select>
 
+
+
+    <select id="selectCountByUri" resultType="int">
+         select count(*) from t_timecalc where uri=#{uri}
+    </select>
+
 </mapper>

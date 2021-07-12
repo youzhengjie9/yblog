@@ -7,6 +7,7 @@ import com.boot.pojo.TimeCalc;
 import com.boot.service.TimeCalcService;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,20 +37,44 @@ public class monitorController {
     @ResponseBody
     @RequestMapping(path = "/data/monitorInterface")
     public String monitorInterfaceData(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "limit", defaultValue = "10") int limit) {
+                                       @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                       @RequestParam(value = "uri", defaultValue = "") String uri) {
 
-        layuiData<TimeCalc> timeCalclayuiData = new layuiData<>();
-        PageHelper.startPage(page, limit);
-        List<TimeCalc> timeCalcs = timeCalcService.selectAllTimeCalc();
+        if (StringUtils.isBlank(uri)) {
 
-        int count = timeCalcService.selectAllCount();
+            layuiData<TimeCalc> timeCalclayuiData = new layuiData<>();
+            PageHelper.startPage(page, limit);
+            List<TimeCalc> timeCalcs = timeCalcService.selectAllTimeCalc();
 
-        timeCalclayuiData.setMsg("");
-        timeCalclayuiData.setCode(0);
-        timeCalclayuiData.setData(timeCalcs);
-        timeCalclayuiData.setCount(count);
+            int count = timeCalcService.selectAllCount();
 
-        return JSON.toJSONString(timeCalclayuiData);
+            timeCalclayuiData.setMsg("");
+            timeCalclayuiData.setCode(0);
+            timeCalclayuiData.setData(timeCalcs);
+            timeCalclayuiData.setCount(count);
+
+            return JSON.toJSONString(timeCalclayuiData);
+
+        } else {
+
+
+            layuiData<TimeCalc> timeCalclayuiData = new layuiData<>();
+
+            PageHelper.startPage(page, limit);
+            List<TimeCalc> timeCalcs = timeCalcService.selectAllTimeCalcByUri(uri);
+            int count = timeCalcService.selectCountByUri(uri);
+
+            System.out.println(timeCalcs);
+            System.out.println(count);
+
+            timeCalclayuiData.setMsg("");
+            timeCalclayuiData.setCode(0);
+            timeCalclayuiData.setCount(count);
+            timeCalclayuiData.setData(timeCalcs);
+
+            return JSON.toJSONString(timeCalclayuiData);
+        }
+
     }
 
 

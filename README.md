@@ -9,7 +9,7 @@
    yblog,一个简单、功能齐全的SpringBoot博客系统
 </p>
 
-&emsp;&emsp;yblog是基于SpringBoot架构开发的博客：**博文管理**、**统计图表**、**访问记录**、**附件管理**、**用户管理**、**友链管理**、**监控管理**、**抓取博文**，以及**第三方登录**等功能，且一直会对本项目进行加强，请各位大佬多多指点，一起共同进步。
+&emsp;&emsp;yblog是基于SpringBoot架构开发的博客：**博文管理**、**统计图表**、**接口监控**、**访问记录**、**附件管理**、**用户管理**、**友链管理**、**监控管理**、**抓取博文**，以及**第三方登录**等功能，且一直会对本项目进行加强，请各位大佬多多指点，一起共同进步。
 文章无需自己写，可以使用作者自己编写的全自动爬虫工具即可，只需轻轻一点，万千文章到手。
 
 ### 仓库地址
@@ -47,10 +47,10 @@ Gitee: https://gitee.com/youzhengjie/springBootBlog
 | jQuery          | 函数库     | http://jquery.com/                                       |
 | Bootstrap       | 前端框架   | https://v3.bootcss.com/                                |
 | echarts         | 可视化图表库       | https://echarts.apache.org/zh/index.html        |                        |                             |
-| Thymeleaf                  | 模板引擎                | https://www.thymeleaf.org/      |
+| Thymeleaf     | 模板引擎                | https://www.thymeleaf.org/      |
 | TinyMCE        |  富文本编辑器         |  http://tinymce.ax-z.cn/  |
 | alertJs          |弹框插件          |  https://gitee.com/ydq/alertjs
-
+| layui           | 模块化前端UI框架        | https://www.layui.com/         |
 #### 安装教程
 ##### Windows部署
 * 1.找到sql包的sql文件并导入到自己的数据库中
@@ -172,14 +172,14 @@ new Valine({
 ![12.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/12.PNG)
 ![13.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/13.PNG)
 ![14.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/14.PNG)
+![25.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/25.PNG)
+![26.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/26.PNG)
+![27.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/27.PNG)
 前台界面(第二套界面)👇
 ![21.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/21.PNG)
 ![22.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/22.PNG)
 ![23.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/23.PNG)
 ![24.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/24.PNG)
-
-
-
 
 
 

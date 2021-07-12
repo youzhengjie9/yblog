@@ -31,4 +31,14 @@ public class TimeCalcServiceImpl implements TimeCalcService {
     public int selectAllCount() {
         return timeCalcMapper.selectAllCount();
     }
+
+    @Override
+    public List<TimeCalc> selectAllTimeCalcByUri(String uri) {
+        return timeCalcMapper.selectAllTimeCalcByUri(uri);
+    }
+
+    @Override
+    public int selectCountByUri(String uri) {
+        return timeCalcMapper.selectCountByUri(uri);
+    }
 }
