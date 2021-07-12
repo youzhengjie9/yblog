@@ -64,9 +64,6 @@ public class monitorController {
             List<TimeCalc> timeCalcs = timeCalcService.selectAllTimeCalcByUri(uri);
             int count = timeCalcService.selectCountByUri(uri);
 
-            System.out.println(timeCalcs);
-            System.out.println(count);
-
             timeCalclayuiData.setMsg("");
             timeCalclayuiData.setCode(0);
             timeCalclayuiData.setCount(count);
