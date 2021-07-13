@@ -70,7 +70,15 @@
                     </li>
                 </ul>
 
-                <ul class="pagination" th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+                <ul class="pagination" th:each="index:${#numbers.sequence(pageInfo.pageNum, pageInfo.pageNum+7)}" th:if="${pageInfo.getPages()>=7}">
+                    <li th:if="${pageInfo.pageNum==index} and ${index<=pageInfo.pages}" class="active"><a th:href="@{'/page/'+${index}}"
+                                                                             th:text="${index}"></a></li>
+                    <li th:if="${pageInfo.pageNum!=index} and ${index<=pageInfo.pages}"><a th:href="@{'/page/'+${index}}" th:text="${index}"></a>
+                    </li>
+
+                </ul>
+
+                <ul class="pagination" th:each="index:${#numbers.sequence(1, pageInfo.getPages())}" th:if="${pageInfo.getPages()<7}">
                     <li th:if="${pageInfo.pageNum==index}" class="active"><a th:href="@{'/page/'+${index}}"
                                                                              th:text="${index}"></a></li>
                     <li th:if="${pageInfo.pageNum!=index}"><a th:href="@{'/page/'+${index}}" th:text="${index}"></a>
@@ -90,6 +98,7 @@
                         </a>
                     </li>
                 </ul>
+
             </nav>
         </div>
 

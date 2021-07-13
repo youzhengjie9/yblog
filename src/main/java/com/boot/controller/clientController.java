@@ -99,7 +99,7 @@ public class clientController {
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
 
-    private static RateLimiter rateLimiter=RateLimiter.create(20); //令牌桶实现，提升系统吞吐量
+    private static RateLimiter rateLimiter=RateLimiter.create(15); //令牌桶实现，提升系统吞吐量
 
 
 

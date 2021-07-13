@@ -178,15 +178,18 @@
                             &nbsp;&nbsp;&nbsp;<span th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></span>
                         </div>
                         <!--                        点赞-->
-<!--                        说明没有点赞，或者没登入帐号-->
-                        <span th:if="${likeService.selectLikeExsit(user,article.id)} eq null" class="like"><a th:id="'alike'+${article.id}" + href="#" class="iconfont icon-dianzan"
-                                              th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
+                        <!--                        说明没有点赞，或者没登入帐号-->
+                        <span th:if="${likeService.selectLikeExsit(user,article.id)} eq null" class="like"><a
+                                th:id="'alike'+${article.id}" + href="#" class="iconfont icon-dianzan"
+                                th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
                                 th:id="'likecount'+${article.id}"
                                 th:text="${articleService.selectLikeCount(article.id)}"></span></span>
 
-<!--                        说明已经点赞，把点赞图标变红-->
-                        <span th:if="${likeService.selectLikeExsit(user,article.id)} ne null" class="like"><a th:id="'alike'+${article.id}" + href="#" style="color: red" class="iconfont icon-dianzan"
-                                              th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
+                        <!--                        说明已经点赞，把点赞图标变红-->
+                        <span th:if="${likeService.selectLikeExsit(user,article.id)} ne null" class="like"><a
+                                th:id="'alike'+${article.id}" + href="#" style="color: red"
+                                class="iconfont icon-dianzan"
+                                th:onclick="lk([[${article.id}]])"></a>&nbsp;<span
                                 th:id="'likecount'+${article.id}"
                                 th:text="${articleService.selectLikeCount(article.id)}"></span></span>
 
@@ -209,7 +212,18 @@
                         </a>
                     </li>
 
-                    <div th:each="index:${#numbers.sequence(1, pageInfo.getPages())}">
+
+                    <div th:each="index:${#numbers.sequence(pageInfo.pageNum, pageInfo.pageNum+7)}" th:if="${pageInfo.getPages()>=7}">
+                        <li th:if="${pageInfo.pageNum==index} and ${index<=pageInfo.pages}" class="page-item active">
+                            <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
+                        </li>
+                        <li th:if="${pageInfo.pageNum!=index} and ${index<=pageInfo.pages}" class="page-item">
+                            <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
+                        </li>
+                    </div>
+
+
+                    <div th:each="index:${#numbers.sequence(1, pageInfo.getPages())}" th:if="${pageInfo.getPages()<8}">
                         <li th:if="${pageInfo.pageNum==index}" class="page-item active">
                             <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
                         </li>
@@ -229,7 +243,13 @@
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
-
+                    <li>
+                        第<input id="t1" type="text" style="width: 40px;height: 30px;">页
+                        <input id="b1" type="button" onclick="toPage()" value="跳转">
+                    </li>
+                    <li>
+                        &nbsp;&nbsp;一共&nbsp;[[${pageInfo.getPages()}]]&nbsp;页
+                    </li>
                 </ul>
             </nav>
 
@@ -467,6 +487,11 @@
 
         });
 
+    }
+
+
+    function toPage() {
+        window.location.href='/page/'+$('#t1').val();
     }
 
 
