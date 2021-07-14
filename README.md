@@ -240,8 +240,8 @@ new Valine({
 ![23.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/23.PNG)
 ![24.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/24.PNG)
 登录界面👇
-![login.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/login.PNG)
+![login.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/login.png)
 注册界面👇
-![register.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/register.PNG)
+![register.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/register.png)
 
 
