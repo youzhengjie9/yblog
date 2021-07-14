@@ -1,0 +1,69 @@
+server:
+  port: 9090
+spring:
+  redis:
+    port: 6379
+    password:
+    host: 192.168.184.129
+    database: 8
+  #    timeout: 50000
+  #    connect-timeout: 50000
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://192.168.184.129:3306/blog_system?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    username: root
+    password: 18420163207
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat,wall
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录  慢查询：增删改查
+    druid:
+      connection-properties:
+        druid:
+          stat:
+            mergeSql: true
+      filter:
+        stat:
+          slow-sql-millis: 10
+      test-on-borrow: false
+      # 最长等待时间ms
+      max-wait: 60000
+      # 最小连接池数量
+      min-idle: 5
+      # 最大连接池数量
+      max-active: 30
+      # 初始化时建立物理连接的个数
+      initial-size: 5
+  mail:
+    username: 1550324080@qq.com
+    host: smtp.qq.com
+    default-encoding: UTF-8
+    password: xxx
+  #  rabbitmq
+  rabbitmq:
+    username: guest
+    virtual-host: /ems
+    password: guest
+    host: 192.168.184.129
+
+  messages:
+    basename: i18n.logo
+  application:
+    name: docker9090
+mybatis:
+  mapper-locations: classpath:/mapper/*
+
+#自定义扫描包
+scan:
+  packageName: com.boot.controller
+
+#gitee 第三方配置
+gitee:
+  oauth:
+    CLIENTID: e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755
+    CLIENTSECRET: 1f264ab539a3607c325c93e61c685cc492b9d29ccd31cab6c624225d05a91219
+    callback: http://localhost:8080/gitee/callback
+
+
+

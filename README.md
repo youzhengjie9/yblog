@@ -152,10 +152,57 @@ new Valine({
 
 
 
-##### Linux部署
-* 把8080、8081、8082端口的项目打成jar包，通过xftp发布到Linux服务器上,通过java -jar xxx.jar --spring.profiles.active=各自的配置文件名
-##### Docker容器化部署
-* 即将实现
+##### Linux+Docker容器化部署
+* 前提：你的Linux系统必须要安装了Docker。（然后按顺序执行下面的命令）
+* 首先要启动docker,因为docker默认是关闭的，需要自己去开启
+* ```shell script
+  systemctl start docker    #启动docker容器
+  systemctl start firewalld  #打开防火墙
+  firewall-cmd --list-port   #查看防火墙已经打开的端口
+  ######重要：记得打开端口
+  firewall-cmd --zone=public --add-port=8080/tcp --permanent  #打开8080端口
+  firewall-cmd --zone=public --add-port=5672/tcp --permanent  #打开5672端口
+  firewall-cmd --zone=public --add-port=15672/tcp --permanent #打开15672端口
+  firewall-cmd --zone=public --add-port=3306/tcp --permanent
+  firewall-cmd --zone=public --add-port=6379/tcp --permanent
+  firewall-cmd --zone=public --add-port=5601/tcp --permanent
+  firewall-cmd --zone=public --add-port=9100/tcp --permanent
+  firewall-cmd --zone=public --add-port=9200/tcp --permanent
+  
+  
+  ####重要：记得重新加载防火墙（不然上面的设置不会生效）
+  firewall-cmd --reload
+  
+  ```
+* =>  **1:Docker安装关系型数据库--MySQL 教程**  <=
+* ```shell script
+    docker pull mysql:5.7  #从从Docker仓库里面拉取mysql5.7
+    docker images          #查看从Docker镜像
+    docker run -itd --name yblog-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=18420163207 mysql:5.7   #执行从Docker镜像，生成从Docker的mysql容器，返回mysql的实例
+    docker ps              #查看从Docker容器实例
+    docker exec -it yblog-mysql /bin/bash  #执行mysql容器实例
+    mysql -u root -p       #紧接着执行这句命令，然后就输入你的密码就行了
+  ```
+* =>  **2:Docker安装非关系型数据库--Redis 教程**  <=
+* ```shell script
+    docker pull redis:latest   #从Docker仓库拉取最新的Redis镜像
+    docker run -itd --name yblog-redis -p 6379:6379 redis  #运行redis镜像，生成对应容器实例
+    docker exec -it yblog-redis /bin/bash  
+    redis-cli    #输入就能进入redis客户端
+  ```
+
+* =>  **3:Docker安装消息队列--RabbitMQ 教程**  <=
+* ```shell script
+    docker pull rabbitmq    #从Docker仓库拉取最新的RabbitMQ镜像
+    docker run -d --hostname my-rabbit --name yblog-rabbit -p 15672:15672 -p 5672:5672 rabbitmq  #运行RabbitMQ镜像
+    docker exec -it yblog-rabbit /bin/bash   #进入RabbitMQ容器
+    rabbitmq-plugins enable rabbitmq_management   #安装RabbitMQ的插件
+  ```
+
+* **4:用Navicat把yblog的项目的数据库导入到Docker的mysql中，即可！！！**
+
+* **5:把yblog打出来的Jar包传入到Linux系统，然后通过java -jar jar包名  的命令启动即可**
+
 
 #### 使用教程
 * 输入http://localhost:8080/swagger-ui.html,可进入swagger接口文档
