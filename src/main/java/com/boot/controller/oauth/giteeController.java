@@ -1,4 +1,4 @@
-package com.boot.controller;
+package com.boot.controller.oauth;
 
 import com.alibaba.fastjson.JSONObject;
 import com.boot.pojo.user;
@@ -56,6 +56,7 @@ public class giteeController {
 
     @Autowired
     private authorityService authorityService;
+
 
 
     @RequestMapping("/callback")
@@ -140,7 +141,7 @@ public class giteeController {
             e.printStackTrace();
         }
         // 否则返回到登陆页面
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:80/");
     }
 
 

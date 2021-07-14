@@ -63,7 +63,7 @@ gitee:
   oauth:
     CLIENTID: e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755
     CLIENTSECRET: 1f264ab539a3607c325c93e61c685cc492b9d29ccd31cab6c624225d05a91219
-    callback: http://localhost:8080/gitee/callback
+    callback: http://localhost:9090/gitee/callback
 
 
 

@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat;
 import static com.boot.utils.browserOS.getBrowserName;
 import static com.boot.utils.browserOS.getOsName;
 
+/**
+ * @author 游政杰
+ */
 @Component
 public final class visitorUtil {
 

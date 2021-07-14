@@ -18,6 +18,13 @@
     </properties>
     <dependencies>
 
+        <!-- 引入okHttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.1</version>
+        </dependency>
+
 <!--        jwt-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

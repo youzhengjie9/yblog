@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+/**
+ * @author 游政杰
+ */
 @Component
 public class cssUtil {
 

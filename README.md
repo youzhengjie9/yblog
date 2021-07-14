@@ -145,12 +145,15 @@ new Valine({
   INSERT INTO `t_menu` VALUES (2, 2, '[{\"id\":1,\"title\":\"工作空间\",\"type\":0,\"icon\":\"layui-icon layui-icon-console\",\"href\":\"\",\"children\":[{\"id\":10,\"title\":\"控制后台\",\"icon\":\"layui-icon layui-icon-console\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toconsole\"},{\"id\":14,\"title\":\"百度一下\",\"icon\":\"layui-icon layui-icon-console\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"http://www.baidu.com\"}]},{\"id\":\"component\",\"title\":\"文章管理\",\"icon\":\"layui-icon layui-icon-component\",\"type\":0,\"href\":\"\",\"children\":[{\"id\":203,\"title\":\"发布文章\",\"icon\":\"layui-icon layui-icon-console\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/topublish\"},{\"id\":208,\"title\":\"标签管理\",\"icon\":\"layui-icon layui-icon-console\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toTag\"}]},{\"id\":\"result\",\"title\":\"常用工具\",\"icon\":\"layui-icon layui-icon-auz\",\"type\":0,\"href\":\"\",\"children\":[{\"id\":\"success\",\"title\":\"附件管理\",\"icon\":\"layui-icon layui-icon-face-smile\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toFileUpload\"},{\"id\":\"failure\",\"title\":\"爬取数据\",\"icon\":\"layui-icon layui-icon-face-cry\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toCatchData\"}]},{\"id\":\"error\",\"title\":\"用户管理\",\"icon\":\"layui-icon layui-icon-face-cry\",\"type\":0,\"href\":\"\",\"children\":[{\"id\":500,\"title\":\"个人资料\",\"icon\":\"layui-icon layui-icon-face-cry\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/touser\"}]},{\"id\":\"echarts\",\"title\":\"数据图表\",\"icon\":\"layui-icon layui-icon-chart\",\"type\":0,\"href\":\"\",\"children\":[{\"id\":12121,\"title\":\"数据图表\",\"icon\":\"layui-icon layui-icon-face-smile\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toEcharts\"}]},{\"id\":\"code\",\"title\":\"系统设置\",\"icon\":\"layui-icon layui-icon-util\",\"type\":0,\"href\":\"\",\"children\":[{\"id\":801,\"title\":\"系统设置\",\"icon\":\"layui-icon layui-icon-util\",\"type\":1,\"openType\":\"_iframe\",\"href\":\"/pear/toSetting\"}]}]');
   ```
 
-##### 第三方登录（暂时只支持gitee）
+##### 第三方登录
 ###### gitee
 * 接入gitee第三方授权配置,先在gitee的第三方应用上对网站进行授权，获得Client ID和Client Secret，并且要设置回调地址
 * 然后把springBoot配置文件的gitee.oauth.callback的端口改成项目的端口
 
-
+###### GitHub （需要用nginx 80端口）
+* GitHub第三方配置有点复杂，也弄了一两天，主要还是GitHub中国地区登录很慢
+* 我们只需要把com.boot.GitHubConstant的CLIENT_ID和CLIENT_SECRET换成自己的
+* 然后在login.html的GitHub第三方登录超链接中client_id=xxx换成自己的id，即可
 
 ##### Linux+Docker容器化部署
 * 前提：你的Linux系统必须要安装了Docker。（然后按顺序执行下面的命令）
@@ -161,6 +164,7 @@ new Valine({
   firewall-cmd --list-port   #查看防火墙已经打开的端口
   ######重要：记得打开端口
   firewall-cmd --zone=public --add-port=8080/tcp --permanent  #打开8080端口
+  firewall-cmd --zone=public --add-port=9090/tcp --permanent  #打开9090端口
   firewall-cmd --zone=public --add-port=5672/tcp --permanent  #打开5672端口
   firewall-cmd --zone=public --add-port=15672/tcp --permanent #打开15672端口
   firewall-cmd --zone=public --add-port=3306/tcp --permanent
@@ -198,10 +202,11 @@ new Valine({
     docker exec -it yblog-rabbit /bin/bash   #进入RabbitMQ容器
     rabbitmq-plugins enable rabbitmq_management   #安装RabbitMQ的插件
   ```
+* **注意：要打开RabbitMQ的可视化界面，创建一个虚拟主机为：/ems**
 
 * **4:用Navicat把yblog的项目的数据库导入到Docker的mysql中，即可！！！**
 
-* **5:把yblog打出来的Jar包传入到Linux系统，然后通过java -jar jar包名  的命令启动即可**
+* **5:修改配置文件的IP为你的Linux系统的IP然后打成jar包，并且把yblog打出来的Jar包传入到Linux系统，然后通过java -jar jar包名  的命令启动即可**
 
 
 #### 使用教程
@@ -234,6 +239,9 @@ new Valine({
 ![22.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/22.PNG)
 ![23.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/23.PNG)
 ![24.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/24.PNG)
-
+登录界面👇
+![login.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/login.PNG)
+注册界面👇
+![register.png](https://gitee.com/youzhengjie/springBootBlog/raw/master/image/register.PNG)
 
 
