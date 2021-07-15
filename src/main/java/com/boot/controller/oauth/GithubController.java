@@ -8,6 +8,7 @@ import com.boot.service.registerService;
 import com.boot.service.userAuthorityService;
 import com.boot.service.userService;
 import com.boot.utils.HttpClientUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -28,9 +29,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author 游政杰
+ */
 @Controller
 @RequestMapping(path = "/github")
-public class githubController {
+@Api("GitHub第三方登录接口")
+public class GithubController {
 
   private String clientId;
 

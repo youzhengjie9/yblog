@@ -148,7 +148,7 @@ new Valine({
 ##### 第三方登录
 ###### gitee
 * 接入gitee第三方授权配置,先在gitee的第三方应用上对网站进行授权，获得Client ID和Client Secret，并且要设置回调地址
-* 然后把springBoot配置文件的gitee.oauth.callback的端口改成项目的端口
+* 然后**开启Nginx反向代理**到80端口即可。
 
 ###### GitHub （需要用nginx 80端口）
 * GitHub第三方配置有点复杂，也弄了一两天，主要还是GitHub中国地区登录很慢
