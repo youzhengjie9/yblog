@@ -80,8 +80,8 @@ public class articleController {
         String ipAddr = ipUtils.getIpAddr(request);
         logger.debug(time + "   用户名：" + username + "进入后台发布页面：ip为" + ipAddr);
 
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
-        model.addAttribute("userDetail", userDetail);
+//        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+//        model.addAttribute("userDetail", userDetail);
         model.addAttribute("ps", "发布文章");
         model.addAttribute("url", "/article/publish");
         return "back/newback/article/article_edit";
@@ -134,8 +134,8 @@ public class articleController {
         logger.debug(time + "   用户名：" + username + "进入文章编辑页面");
         Article article = articleService.selectArticleByArticleIdNoComment(article_id);
         model.addAttribute("contents", article);
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
-        model.addAttribute("userDetail", userDetail);
+//        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+//        model.addAttribute("userDetail", userDetail);
         model.addAttribute("ps", "修改文章");
         model.addAttribute("url", "/modifyArticle");
         return "back/newback/article/article_edit";
@@ -211,8 +211,9 @@ public class articleController {
         PageInfo pageInfo = new PageInfo(articles);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("articles", articles);
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
-        model.addAttribute("userDetail", userDetail);
+
+//        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+//        model.addAttribute("userDetail", userDetail);
 
 
         return "back/newback/article/article_list";

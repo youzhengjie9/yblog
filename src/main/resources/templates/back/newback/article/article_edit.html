@@ -51,10 +51,10 @@
 					<div id="btns">
 
 						<div class="layui-btn-group layui-btn-primary" style="margin-top: 10px">
-							<a href="#" class="layui-btn layui-btn-radius" target="_blank">返回列表</a>
+							<button lay-submit lay-filter="submit03" class="layui-btn layui-btn-radius" target="_blank">返回列表</button>
 						</div>
-						<div class="layui-btn-group" style="margin-top: 10px">
-							<a href="#" class="layui-btn layui-btn-warm layui-btn-radius" target="_blank">放入草稿</a>
+						<div th:if="${ps} ne '修改文章'" class="layui-btn-group" style="margin-top: 10px">
+							<button lay-submit lay-filter="submit02" class="layui-btn layui-btn-warm layui-btn-radius" target="_blank">放入草稿</button>
 						</div>
 						<div class="layui-btn-group" style="margin-top: 10px">
 							<button  lay-submit lay-filter="submit01" class="layui-btn layui-btn-radius" target="_blank" th:text="${ps}"></button>
@@ -156,6 +156,11 @@
 						return false;
 					});
 
+					form.on('submit(submit03)', function (data) {
+						window.location.href='/pear/toArticleManager'
+					});
+
+
 				}else {
 					form.on('submit(submit01)', function (data) {
 						layer.confirm('您确定要修改吗?', {
@@ -194,9 +199,49 @@
 						return false;
 					});
 
-
+					form.on('submit(submit03)', function (data) {
+						window.history.go(-1);  //返回上一页
+					});
 
 				}
+
+				form.on('submit(submit02)', function (data) {
+					layer.confirm('您确定要放入草稿箱吗?', {
+						icon: 3,
+						title: '提示'
+					}, function (index) {
+						layer.close(index);
+						var data = $.param({
+							"content" : myedit.getContent()
+						}) + "&" +$('#global-form').serialize();
+
+						let loading = layer.load();
+						$.ajax({
+							url: "/pear/add/draft",
+							data: data,  //ajax提交表单
+							dataType: 'json',
+							type: 'POST',
+							headers: headers,
+							async:false,
+							success: function (result) {
+								layer.close(loading);
+								if (result.success) {
+									layer.msg(result.msg, {
+										icon: 1,
+										time: 1000
+									});
+									window.location.href='/pear/toDraft'
+								} else {
+									layer.msg(result.msg, {
+										icon: 2,
+										time: 1000
+									});
+								}
+							}
+						})
+					})
+					return false;
+				});
 
 
 			});

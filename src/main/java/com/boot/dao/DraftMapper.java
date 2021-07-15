@@ -18,8 +18,18 @@ public interface DraftMapper {
     List<Draft> selectAllDraft(@Param("username") String username);
 
 
+    int selectDraftCount(@Param("username") String username);
 
 
+    Draft selectDraftByID(@Param("id") int id);
+
+
+    void deleteDraftByID(@Param("id") int id);
+
+
+    void modifyDraft(Draft draft);
+
+    void addDraft(Draft draft);
 
 
 }

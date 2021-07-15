@@ -11,6 +11,34 @@
     </select>
 
 
+    <select id="selectDraftCount" resultType="int">
+        select count(*) from t_draft where username=#{username}
+    </select>
 
 
+    <select id="selectDraftByID" resultType="com.boot.pojo.Draft">
+        select * from t_draft where id=#{id}
+    </select>
+
+
+    <delete id="deleteDraftByID">
+        delete from t_draft where id=#{id}
+    </delete>
+
+    
+    <update id="modifyDraft" parameterType="com.boot.pojo.Draft">
+        update t_draft
+        set
+        title=#{title},
+        content=#{content},
+        modified=#{modified},
+        tags=#{tags}
+        where id=#{id}
+    </update>
+    
+    <insert id="addDraft" parameterType="com.boot.pojo.Draft">
+        insert into t_draft (username,title,content,created,tags)
+        values (#{username},#{title},#{content},#{created},#{tags})
+        
+    </insert>
 </mapper>

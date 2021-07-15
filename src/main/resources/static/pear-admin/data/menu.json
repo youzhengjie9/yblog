@@ -48,6 +48,14 @@
 				"href": "/pear/toArticleManager"
 			},
 			{
+				"id": 206,
+				"title": "我的草稿",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/toDraft"
+			},
+			{
 				"id": 207,
 				"title": "分类管理",
 				"icon": "layui-icon layui-icon-console",

@@ -45,14 +45,14 @@
 </script>
 
 <script type="text/html" id="user-bar">
-    <a href="/pear/toChangeArticle?article_id={{d.id}}" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
+    <a href="/pear/toChangeDraft?draftid={{d.id}}" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
 
 
 <script type="text/html" id="user-createTime">
     {{#  if(d.created !=null){ }}
-    <div>{{layui.util.toDateString(d.created, 'yyyy-MM-dd')}}</div>
+    <div>{{layui.util.toDateString(d.created, 'yyyy-MM-dd HH:mm:ss')}}</div>
     {{#  } else {}}
     <div>{{}}</div>
     {{#  } }}
@@ -60,7 +60,7 @@
 
 <script type="text/html" id="user-modifiedTime">
     {{#  if(d.modified !=null){ }}
-    <div>{{layui.util.toDateString(d.modified, 'yyyy-MM-dd')}}</div>
+    <div>{{layui.util.toDateString(d.modified, 'yyyy-MM-dd HH:mm:ss')}}</div>
     {{#  } else {}}
     <div>{{}}</div>
     {{#  } }}
@@ -125,7 +125,7 @@
 
         table.render({
             elem: '#user-table',
-            url: '/pear/articledata',
+            url: '/pear/draftData',
             page: true,
             cols: cols,
             skin: 'line',
