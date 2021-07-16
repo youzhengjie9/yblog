@@ -17,7 +17,8 @@
 
     <select id="selectArticleByarchiveTime" resultType="com.boot.pojo.Article">
     SELECT
-	*
+    id,
+	title
     FROM
 	t_article
     WHERE

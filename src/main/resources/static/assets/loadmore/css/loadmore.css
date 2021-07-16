@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+.js-load-more{
+	padding:0 15px;
+	width:120px;
+	height:30px;
+	background-color:#D31733;
+	color:#fff;
+	line-height:30px;
+	text-align:center;
+	border-radius:5px;
+	margin:20px auto;
+	border:0 none;
+	font-size:16px;
+	display:none;/*默认不显示，ajax调用成功后才决定显示与否*/
+}

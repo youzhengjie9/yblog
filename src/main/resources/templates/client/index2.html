@@ -10,6 +10,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <title>yblog</title>
+    <!-- 依 赖 样 式 -->
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
     <!--timeline-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
@@ -213,7 +215,8 @@
                     </li>
 
 
-                    <div th:each="index:${#numbers.sequence(pageInfo.pageNum, pageInfo.pageNum+7)}" th:if="${pageInfo.getPages()>=7}">
+                    <div th:each="index:${#numbers.sequence(pageInfo.pageNum, pageInfo.pageNum+7)}"
+                         th:if="${pageInfo.getPages()>=7}">
                         <li th:if="${pageInfo.pageNum==index} and ${index<=pageInfo.pages}" class="page-item active">
                             <a class="page-link" th:href="@{'/page/'+${index}}" th:text="${index}"></a>
                         </li>
@@ -258,24 +261,77 @@
 
             <!--        archive-->
 
-            <div class="container1" th:if="${isArchive} eq 'true'">
-                <ul th:each="map:${archiveMap}" style="padding: 1px 30px;">
-                 <span class="number"
-                       th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">
-                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>
-                    </span>
-                    <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">
-                        <!--                    <span></span>-->
-                        <div>
-                            <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}"
-                               th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>
-                            <div class="info" th:utext="${commons.intro(article,75)}"
-                                 th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>
-                            <!--                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>-->
-                        </div>
-                    </li>
+            <!--            <div class="container1" th:if="${isArchive} eq 'true'">-->
+            <!--                <ul th:each="map:${archiveMap}" style="padding: 1px 30px;">-->
+            <!--                 <span class="number"-->
+            <!--                       th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">-->
+            <!--                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>-->
+            <!--                    </span>-->
+            <!--                    <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">-->
+            <!--                        &lt;!&ndash;                    <span></span>&ndash;&gt;-->
+            <!--                        <div>-->
+            <!--                            <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}"-->
+            <!--                               th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>-->
+            <!--                            <div class="info" th:utext="${commons.intro(article,75)}"-->
+            <!--                                 th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>-->
+            <!--                            &lt;!&ndash;                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>&ndash;&gt;-->
+            <!--                        </div>-->
+            <!--                    </li>-->
+            <!--                    &lt;!&ndash;加载更多按钮&ndash;&gt;-->
+            <!--                    <div class="js-load-more">加载更多</div>-->
+            <!--                </ul>-->
+            <!--            </div>-->
 
-                </ul>
+
+
+            <div class="layui-row layui-col-space10" th:if="${isArchive} eq 'true'">
+                <div class="layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">归档日期</div>
+                        <div class="layui-card-body">
+                            <div class="layui-tab custom-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+
+                                <div class="layui-card">
+                                    <div class="layui-card-body">
+                                        <ul class="layui-timeline">
+                                            <li class="layui-timeline-item" th:each="archive:${archives}">
+                                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                                <div class="layui-timeline-content layui-text">
+                                                    <h3 class="layui-timeline-title">
+                                                        <a href="#" style="color: black;text-decoration: none;" th:onclick="archiveChange([[${archive.months}]])">
+                                                        [[${archive.months}]]
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md8">
+                    <div class="layui-card">
+                        <div class="layui-card-header">归档文章&nbsp;&nbsp;
+                            (<span id="date" style="color: #2D8CF0">[[${date}]]</span>)
+                        </div>
+                        <div class="layui-card-body">
+                            <ul class="list">
+                                <div id="archivelist">
+                                <li class="list-item layui-card" th:each="art:${oneArticle}">
+                                    <a th:href="${commons.permalink(art.id)}">
+                                    <span class="title">[[${art.title}]]</span>
+                                    </a>
+                                </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
 
@@ -358,6 +414,10 @@
 
 
         </div>
+
+
+
+
     </div>
 
 
@@ -369,8 +429,14 @@
         <p class="cl-copyright" th:if="${setting} ne null and ${setting.foot} ne null" th:text="${setting.foot}"></p>
     </div>
 </div>
+<script th:inline="javascript">
 
-<script>
+    //load more
+
+
+
+    //
+
     hljs.initHighlightingOnLoad();
 
     //js提交表单
@@ -491,8 +557,44 @@
 
 
     function toPage() {
-        window.location.href='/page/'+$('#t1').val();
+        window.location.href = '/page/' + $('#t1').val();
     }
+
+
+    //ajax局部刷新归档数据
+    function archiveChange(date) {
+        $.ajax({
+            url: "/archive/data",
+            data: {
+                "date": date
+            },
+            type: "GET",
+            success: function (data) {
+                var obj = JSON.parse(data); //将前端传的list集合的json转成list集合
+                console.log(obj)
+                console.log(obj.length)
+
+                document.getElementById('date').innerHTML=date; //修改日期
+                var html='';
+
+                for (let i = 0; i < obj.length; i++) {
+                    let hf= '/article/'+obj[i].id;
+                    html+='<li class="list-item layui-card">'+'<a href="'+hf+'">'
+                        +'<span class="title">'+obj[i].title+'</span>'+'</a>'+'</li>'
+                }
+
+                document.getElementById('archivelist').innerHTML=''
+
+                $('#archivelist').append(html);
+
+            }
+
+        });
+
+
+    }
+
+
 
 
     // /*背景雪花飘落特效*/

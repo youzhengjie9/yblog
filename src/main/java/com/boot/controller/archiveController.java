@@ -1,5 +1,7 @@
 package com.boot.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.boot.annotation.Visitor;
 import com.boot.constant.themeConstant;
 import com.boot.pojo.*;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,154 +32,128 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author 游政杰
- * 2021/6/4
- */
-
+/** @author 游政杰 2021/6/4 */
 @Api(value = "文章归档控制器")
 @Controller
 @RequestMapping(path = "/archive")
 public class archiveController {
 
-    @Autowired
-    private SpringSecurityUtil securityUtil;
+  @Autowired private SpringSecurityUtil securityUtil;
 
-    @Autowired
-    private userDetailService userDetailService;
+  @Autowired private userDetailService userDetailService;
 
-    @Autowired
-    private linkService linkService;
+  @Autowired private linkService linkService;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+  @Autowired private RedisTemplate redisTemplate;
 
-    @Autowired
-    private articleService articleService;
+  @Autowired private articleService articleService;
 
-    @Autowired
-    private archiveService archiveService;
+  @Autowired private archiveService archiveService;
 
-    @Autowired
-    private visitorService visitorService;
+  @Autowired private visitorService visitorService;
 
-    @Autowired
-    private cssUtil cssUtil;
+  @Autowired private cssUtil cssUtil;
 
-    private final int type = 1;
+  private final int type = 1;
 
-    @Autowired
-    private tagService tagService;
+  @Autowired private tagService tagService;
 
+  @Autowired private settingService settingService;
 
-    @Autowired
-    private settingService settingService;
+  // 前10排行
+  private static final List<Article> ArticleOrder_10(List<Article> articleList) {
+    List<Article> list = new ArrayList<>(10);
+    for (int i = 0; i < 10; i++) {
+      list.add(articleList.get(i));
+    }
+    return list;
+  }
 
-    //前10排行
-    private static final List<Article> ArticleOrder_10(List<Article> articleList) {
-        List<Article> list = new ArrayList<>(10);
-        for (int i = 0; i < 10; i++) {
-            list.add(articleList.get(i));
-        }
-        return list;
+  private void setting(HttpSession session, ModelAndView modelAndView) {
+    SecurityContextImpl securityContext =
+        (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+    if (securityContext != null) {
+      String name = securityUtil.currentUser(session);
+      setting setting = settingService.selectUserSetting(name);
+      modelAndView.addObject("setting", setting);
+    } else {
+      modelAndView.addObject("setting", null);
+    }
+  }
+
+  /** 优化 */
+  @Visitor(desc = "去归档页面")
+  @GetMapping(path = "/list")
+  @ApiOperation(value = "去归档页面")
+  public ModelAndView toArchive(HttpSession session, HttpServletRequest request) {
+    ModelAndView modelAndView = new ModelAndView();
+
+    this.setting(session, modelAndView);
+
+    // 跳转不同页面主题判断
+    if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { // calm主题
+      modelAndView.setViewName("client/index2"); // 跳转页面
+      modelAndView.addObject("archiveAc", "active");
+      List<tag> tags = tagService.selectTags_limit8();
+      modelAndView.addObject("tags", tags);
+
+    } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { // 默认主题
+      modelAndView.setViewName("client/index"); // 跳转页面
     }
 
-    private void setting(HttpSession session,ModelAndView modelAndView){
-        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        if (securityContext != null) {
-            String name = securityUtil.currentUser(session);
-            setting setting = settingService.selectUserSetting(name);
-            modelAndView.addObject("setting",setting);
-        }else {
-            modelAndView.addObject("setting",null);
-        }
+    // 前端进行判断，isArchive是不是等于空，如果不是就是归档页面，进行页面代码的复用，省去写一个新的页面
+    modelAndView.addObject("isArchive", "true");
 
+    List<archive> archives = archiveService.selectAllArchiveGroup(); // 获取归档分组信息
+    modelAndView.addObject("archives", archives);
+     String date=  archives.get(0).getMonths();
+     modelAndView.addObject("date",date);
+    List<Article> oneArticle = archiveService.selectArticleByarchiveTime(date); //默认查出第一个日期
+    modelAndView.addObject("oneArticle",oneArticle);
+    modelAndView.addObject("cssUtil", cssUtil);
+
+    List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
+    if (as == null) {
+      List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
+      redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
+      modelAndView.addObject("articleOrders", articleOrders);
+    } else {
+      modelAndView.addObject("articleOrders", as);
     }
 
-    /**
-     * ====需要进行优化，此处性能差
-     */
-    @Visitor(desc = "去归档页面")
-    @GetMapping(path = "/list")
-    @ApiOperation(value = "去归档页面")
-    public ModelAndView toArchiveList(HttpSession session, HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        this.setting(session,modelAndView);
-
-        //跳转不同页面主题判断
-        if (themeConstant.curTheme.equals(themeConstant.CALM_THEME)) { //calm主题
-            modelAndView.setViewName("client/index2"); //跳转页面
-            modelAndView.addObject("archiveAc","active");
-            List<tag> tags = tagService.selectTags_limit8();
-            modelAndView.addObject("tags", tags);
-
-        } else if (themeConstant.curTheme.equals(themeConstant.DEFAULT_THEME)) { //默认主题
-            modelAndView.setViewName("client/index"); //跳转页面
-
-        }
-
-
-        //前端进行判断，isArchive是不是等于空，如果不是就是归档页面，进行页面代码的复用，省去写一个新的页面
-        modelAndView.addObject("isArchive", "true");
-
-        List<archive> archives = archiveService.selectAllArchiveGroup(); //获取归档分组信息
-//        modelAndView.addObject("archives",archives);
-        modelAndView.addObject("cssUtil", cssUtil);
-
-
-
-        /**
-         * 可以通过hashMap来维护归档数据
-         * key=年月分组
-         * value=List集合，存储对应的分组出来的数据
-         */
-        Map<String, List<Article>> concurrentHashMap = new ConcurrentHashMap<>();
-        for (archive archive : archives) {
-            String months = archive.getMonths();
-            List<Article> articles = archiveService.selectArticleByarchiveTime(months);
-            concurrentHashMap.put(months, articles);
-        }
-        modelAndView.addObject("archiveMap", concurrentHashMap); //传入前端
-
-
-        List<Article> as = (List<Article>) redisTemplate.opsForValue().get("articleOrders10");
-        if (as == null) {
-            List<Article> articleOrders = ArticleOrder_10(articleService.selectAllArticleOrderByDesc());
-            redisTemplate.opsForValue().set("articleOrders10", articleOrders, 60 * 1, TimeUnit.SECONDS);
-            modelAndView.addObject("articleOrders", articleOrders);
-        } else {
-            modelAndView.addObject("articleOrders", as);
-        }
-
-        /**
-         * xxx个人博客标题
-         */
-        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        if (securityContext != null) {
-            String name = securityUtil.currentUser(session);
-            if (name != null && !name.equals("")) {
-                userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
-                modelAndView.addObject("userDetail", userDetail);
-            }
-        } else {
-            userDetail userDetail = null;
-            modelAndView.addObject("userDetail", userDetail);
-        }
-
-
-        //推荐文章
-        PageHelper.startPage(1,5);
-        List<Article> recommends = articleService.selectArticleByRecommend();
-        modelAndView.addObject("recommends",recommends);
-
-        //友链
-        List<link> links = linkService.selectAllLink();
-        modelAndView.addObject("links", links);
-        modelAndView.addObject("commons", Commons.getInstance());
-
-        return modelAndView;
+    /** xxx个人博客标题 */
+    SecurityContextImpl securityContext =
+        (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+    if (securityContext != null) {
+      String name = securityUtil.currentUser(session);
+      if (name != null && !name.equals("")) {
+        userDetail userDetail = userDetailService.selectUserDetailByUserName(name);
+        modelAndView.addObject("userDetail", userDetail);
+      }
+    } else {
+      userDetail userDetail = null;
+      modelAndView.addObject("userDetail", userDetail);
     }
 
+    // 推荐文章
+    PageHelper.startPage(1, 5);
+    List<Article> recommends = articleService.selectArticleByRecommend();
+    modelAndView.addObject("recommends", recommends);
 
+    // 友链
+    List<link> links = linkService.selectAllLink();
+    modelAndView.addObject("links", links);
+    modelAndView.addObject("commons", Commons.getInstance());
+
+    return modelAndView;
+  }
+
+  @ResponseBody
+  @GetMapping(path = "/data")
+  public String archiveData(String date) {
+
+    List<Article> articles = archiveService.selectArticleByarchiveTime(date);
+    String jsonData = JSON.toJSONString(articles);
+    return jsonData;
+  }
 }
