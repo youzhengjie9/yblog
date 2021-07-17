@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.Draft;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface DraftMapper {
 
     void addDraft(Draft draft);
 
-
-
+    @Select("select * from t_draft where title=#{title}")
+    List<Draft> selectDraftByTitle(String title);
 
 }

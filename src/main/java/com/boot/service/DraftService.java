@@ -22,4 +22,6 @@ public interface DraftService {
     void modifyDraft(Draft draft);
 
     void addDraft(Draft draft);
+
+    List<Draft> selectDraftByTitle(String title);
 }

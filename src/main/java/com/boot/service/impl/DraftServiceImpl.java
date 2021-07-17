@@ -109,5 +109,10 @@ public class DraftServiceImpl implements DraftService {
         draftMapper.addDraft(draft);
     }
 
+    @Override
+    public List<Draft> selectDraftByTitle(String title) {
+        return draftMapper.selectDraftByTitle(title);
+    }
+
 
 }

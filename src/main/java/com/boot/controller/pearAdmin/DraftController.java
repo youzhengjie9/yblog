@@ -16,6 +16,7 @@ import com.boot.utils.ipUtils;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,21 +62,34 @@ public class DraftController {
       @RequestParam(value = "limit", defaultValue = "6") int limit,
       @RequestParam(value = "title", defaultValue = "") String title) {
 
-    layuiData<Draft> data = new layuiData<Draft>();
+    if(!StringUtils.isBlank(title))
+    {
+      PageHelper.startPage(page,limit);
+      List<Draft> drafts = draftService.selectDraftByTitle(title);
+      layuiData<Draft> draftlayuiData = new layuiData<>();
+      draftlayuiData.setCode(0);
+      draftlayuiData.setMsg("");
+      draftlayuiData.setData(drafts);
+      draftlayuiData.setCount(1);
+      return JSON.toJSONString(draftlayuiData);
+    }else {
+      layuiData<Draft> data = new layuiData<Draft>();
 
-    String username = springSecurityUtil.currentUser(session);
+      String username = springSecurityUtil.currentUser(session);
 
-    PageHelper.startPage(page, limit);
-    List<Draft> drafts = draftService.selectAllDraft(username);
+      PageHelper.startPage(page, limit);
+      List<Draft> drafts = draftService.selectAllDraft(username);
 
-    int count = draftService.selectDraftCount(username);
+      int count = draftService.selectDraftCount(username);
 
-    data.setMsg("");
-    data.setCode(0);
-    data.setData(drafts);
-    data.setCount(count);
+      data.setMsg("");
+      data.setCode(0);
+      data.setData(drafts);
+      data.setCount(count);
 
-    return JSON.toJSONString(data);
+      return JSON.toJSONString(data);
+    }
+
   }
 
   @Operation("进入编辑草稿页面")
