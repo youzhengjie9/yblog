@@ -199,7 +199,7 @@
                 </div>
             </div>
 
-
+<!--            文章分页-->
             <nav aria-label="Page navigation example" th:if="${isArchive} eq null or ${isArchive} eq ''">
                 <ul class="pagination justify-content-center">
 
@@ -261,29 +261,6 @@
 
             <!--        archive-->
 
-            <!--            <div class="container1" th:if="${isArchive} eq 'true'">-->
-            <!--                <ul th:each="map:${archiveMap}" style="padding: 1px 30px;">-->
-            <!--                 <span class="number"-->
-            <!--                       th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">-->
-            <!--                        <span style="font-size: 18px;" th:text="${map.key}"></span> <span></span>-->
-            <!--                    </span>-->
-            <!--                    <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">-->
-            <!--                        &lt;!&ndash;                    <span></span>&ndash;&gt;-->
-            <!--                        <div>-->
-            <!--                            <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}"-->
-            <!--                               th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>-->
-            <!--                            <div class="info" th:utext="${commons.intro(article,75)}"-->
-            <!--                                 th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>-->
-            <!--                            &lt;!&ndash;                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>&ndash;&gt;-->
-            <!--                        </div>-->
-            <!--                    </li>-->
-            <!--                    &lt;!&ndash;加载更多按钮&ndash;&gt;-->
-            <!--                    <div class="js-load-more">加载更多</div>-->
-            <!--                </ul>-->
-            <!--            </div>-->
-
-
-
             <div class="layui-row layui-col-space10" th:if="${isArchive} eq 'true'">
                 <div class="layui-col-md4">
                     <div class="layui-card">
@@ -328,6 +305,7 @@
                                 </li>
                                 </div>
                             </ul>
+
                         </div>
                     </div>
 
@@ -431,11 +409,6 @@
 </div>
 <script th:inline="javascript">
 
-    //load more
-
-
-
-    //
 
     hljs.initHighlightingOnLoad();
 

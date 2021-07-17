@@ -39,6 +39,10 @@
     <insert id="addDraft" parameterType="com.boot.pojo.Draft">
         insert into t_draft (username,title,content,created,tags)
         values (#{username},#{title},#{content},#{created},#{tags})
-        
     </insert>
+
+
+
+
+
 </mapper>

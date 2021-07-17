@@ -23,6 +23,7 @@
 	t_article
     WHERE
 	strcmp( date_format( created, '%Y-%m' ), #{archiveTime} ) = 0
+	ORDER BY created desc
     </select>
 
 

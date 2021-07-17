@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -222,5 +223,46 @@ public class DraftController {
     return JSON.toJSONString(json);
   }
 
+
+  @ResponseBody
+  @RequestMapping(path = "/del/draft/{id}")
+  public String deleteDraft(@PathVariable("id") int id){
+
+    layuiJSON json=new layuiJSON();
+
+    try{
+      draftService.deleteDraftByID(id);
+      json.setSuccess(true);
+      json.setMsg("删除成功");
+    }catch (Exception e){
+      e.printStackTrace();
+      json.setSuccess(false);
+      json.setMsg("删除失败");
+    }
+    return JSON.toJSONString(json);
+
+  }
+
+  @ResponseBody
+  @RequestMapping(path = "/batchDel/draft/{ids}")
+  public String batchDeleteDraft(@PathVariable("ids") String ids){
+
+    layuiJSON json=new layuiJSON();
+
+    try{
+      String[] split = ids.split(",");
+      for (String s : split) {
+        draftService.deleteDraftByID(Integer.parseInt(s));
+      }
+      json.setSuccess(true);
+      json.setMsg("删除成功");
+    }catch (Exception e){
+      e.printStackTrace();
+      json.setSuccess(false);
+      json.setMsg("删除失败");
+    }
+    return JSON.toJSONString(json);
+
+  }
 
 }
