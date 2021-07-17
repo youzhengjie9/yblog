@@ -217,6 +217,11 @@ public class articleServiceImpl implements articleService {
         return articleMapper.queryArticleByTitleCount(title);
     }
 
+    @Override
+    public List<Article> queryArticleByCategoryName(String categoryName) {
+        return articleMapper.queryArticleByCategoryName(categoryName);
+    }
+
 
     @Override
     public List<Article> selectAllArticle() {

@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.Article;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,5 +78,9 @@ public interface articleMapper {
 
     //查询指定文章title有多少篇文章
     int queryArticleByTitleCount(@Param("title")String title);
+
+    @Select("select id,title from t_article where categories=#{categoryName}")
+    List<Article> queryArticleByCategoryName(String categoryName);
+
 
 }

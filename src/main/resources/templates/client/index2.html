@@ -126,6 +126,9 @@
                     <li th:if="${indexAc} eq null" class="nav-item">
                         <a class="nav-link" th:href="@{/page/1}">首页<span class="sr-only"></span></a>
                     </li>
+                    <li  class="nav-item ">
+                        <a class="nav-link" th:href="@{/category/list}">分类<span class="sr-only"></span></a>
+                    </li>
 
                     <li th:if="${archiveAc} ne null" class="nav-item active">
                         <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>

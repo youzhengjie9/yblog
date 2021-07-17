@@ -83,4 +83,6 @@ public interface articleService {
 
     //查询指定文章title有多少篇文章
     int queryArticleByTitleCount(String title);
+
+    List<Article> queryArticleByCategoryName(String categoryName);
 }

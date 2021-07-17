@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>文章详情</title>
 
-    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <title>分类展示</title>
+    <!-- 依 赖 样 式 -->
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+    <!--timeline-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
     <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
     <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
@@ -19,12 +26,50 @@
     <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
     <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
 
-    <script th:src="@{/assets/js/layer.js}"></script>
-    <!--    引入valine-->
-    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-
     <!--    引入alibaba iconfont-->
     <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
+
+    <style>
+        .container1 ul {
+            margin: 0;
+            margin-top: 25px;
+            list-style: none;
+            position: relative;
+            padding: 1px 100px;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .container1 ul:before {
+            content: "";
+            width: 1px;
+            height: 100%;
+            position: absolute;
+            border-left: 2px dashed #fff;
+        }
+
+        .container1 ul li {
+            position: relative;
+            margin-left: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 14px;
+            border-radius: 6px;
+            width: 250px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .cl-card-more {
+            width: 555px;
+            height: 25.8px;
+            float: left;
+        }
+
+        .like {
+            float: left;
+            width: 45.65px;
+            height: 24.8px;
+        }
+    </style>
 </head>
 <body>
 <div class="cl-header container-fluid">
@@ -42,20 +87,41 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+
+
+                    <li class="nav-item">
+                        <div id="searchbox" class="navbar-search" style="height: 40px;">
+                            <span class="icon-search" onclick="submitData()"></span>
+                            <form id="form" role="search" th:action="@{/search/1}">
+                           <span class="search-box">
+                                <input style="height: 40px;" type="text" name="searchText" id="search-inp" class="input"
+                                       placeholder="全站搜索..."
+                                       maxlength="30"
+                                       autocomplete="off"/>
+                          </span>
+                                <input style="height: 40px;" type="button" value="搜索" onclick="submitData()">
+                            </form>
+                        </div>
+                    </li>
+
+
+                    <li  class="nav-item">
                         <a class="nav-link" th:href="@{/page/1}">首页<span class="sr-only"></span></a>
                     </li>
-                    <li  class="nav-item ">
+
+                    <li  class="nav-item active">
                         <a class="nav-link" th:href="@{/category/list}">分类<span class="sr-only"></span></a>
                     </li>
-                    <li class="nav-item">
+
+                    <li  class="nav-item">
                         <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/}">后台管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/toSendEmailPage}">注册</a>
+                        <a class="nav-link" th:href="@{/toregister}">注册</a>
                     </li>
                     <form name="logoutform" th:action="@{/logout}" method="post"></form>
                     <li class="nav-item">
@@ -67,6 +133,8 @@
                             退出
                         </a>
                     </li>
+
+
                 </ul>
             </div>
         </nav>
@@ -77,66 +145,63 @@
 <div class="cl-cantainer container">
     <div class="row">
         <div class="col-md-9 cl-left">
-            <div class="cl-artical-content">
-                <h2 class="cl-artical-title" th:text="${article.title}"></h2>
-                <div class="cl-card-tag">
-                    <!--                    <div><span>124</span>人浏览 / <span>3</span>人评论</div>-->
-                    <time th:datetime="${commons.dateFormat(article.created)}" itemprop="datePublished"
-                          th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></time>
-                </div>
-                <!--                内容-->
-                <div id="post-content" class="cl-artical" th:utext="${commons.article(article.content)}">
-                </div>
-
-            </div>
-
-            <!--            暂不实现-->
-
-            <!--            <div class="recommend-panel">-->
-            <!--                <h4 class="right-card-title">相关文章</h4>-->
-            <!--                <div class="card-deck">-->
-            <!--                    <div class="card ll-panel">-->
-            <!--                        <a class="recommend-panel-link" href="articleDetails2.html">-->
-            <!--                            <div class="recommend-panel-top">-->
-            <!--                                <img src="temporary-img/list-image1.jpg" class="img-fluid" alt="">-->
-            <!--                            </div>-->
-            <!--                            <div class="recommend-panel-bottom">-->
-            <!--                                如何有效避免设计作品“空”？-->
-            <!--                            </div>-->
-            <!--                        </a>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
 
 
-            <div th:if="${article}!=null">
-                <div th:id="${article.id ?: 0}" class="comment-container">
-                    <div id="comments" class="clearfix">
-                        <div th:if="${article.allowComment}">
-                <span class="response">
-                    <form name="logoutform" th:action="@{/logout}" method="post"></form>
-                    <th:block sec:authorize="isAuthenticated()">
-                        Hello，<a data-no-instant="" sec:authentication="name"></a>
-                        如果你想 <a href="javascript:document.logoutform.submit();">注销</a> ?
-                        <span style="color: pink">评论或者回复时,请单击一下下面的昵称文本框！</span>
-                    </th:block>
-                    <th:block sec:authorize="isAnonymous()">
-                        用户想要评论或者查看评论，请先<a th:href="@{/loginPage}" title="登录" data-no-instant="">登录</a>!
-                    </th:block>
-                </span>
 
-                            <div id="vcomments" sec:authorize="isAuthenticated()">
+
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header">分类名称</div>
+                        <div class="layui-card-body">
+                            <div class="layui-tab custom-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+
+                                <div class="layui-card">
+                                    <div class="layui-card-body">
+                                        <ul class="layui-timeline">
+                                            <li class="layui-timeline-item" th:each="cat:${categoryName}">
+                                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                                <div class="layui-timeline-content layui-text">
+                                                    <h3 class="layui-timeline-title">
+                                                        <a href="#" style="color: black;text-decoration: none;" th:onclick="categoryChange([[${cat}]])">
+                                                            [[${cat}]]
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
+
+                <div class="layui-col-md8">
+                    <div class="layui-card">
+                        <div class="layui-card-header">分类文章&nbsp;&nbsp;
+                            (<span id="categoryName" style="color: #2D8CF0">[[${categoryName.get(0)}]]</span>)
+                        </div>
+                        <div class="layui-card-body">
+                            <ul class="list">
+                                <div id="categorylist">
+                                    <li class="list-item layui-card" th:each="categoryArticle:${categoryArticles}">
+                                        <a th:href="${commons.permalink(categoryArticle.id)}">
+                                            <span class="title">[[${categoryArticle.title}]]</span>
+                                        </a>
+                                    </li>
+                                </div>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-        </div>
 
+        </div>
         <div class="col-md-3 cl-right">
             <div class="right-card">
 
@@ -146,8 +211,9 @@
                     <div class="cl-code">
                         <img th:src="@{/user_img/user_default.jpg}" alt="about me" class="img-fluid"
                              th:if="${userDetail} eq null or ${userDetail.getIcon()} eq '' or ${userDetail.getIcon()} eq null  ">
-                        <img th:src="@{${userDetail.getIcon()}}" alt="about me" class="img-fluid"
+                        <img th:src="${userDetail.getIcon()}" alt="about me" class="img-fluid"
                              th:if="${userDetail} ne null and  ${userDetail.getIcon()} ne '' and  ${userDetail.getIcon()} ne null">
+
                     </div>
 
                 </div>
@@ -212,10 +278,16 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-</div>
 
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
 
 <div class="container-fluid cl-footer">
     <div class="container">
@@ -224,50 +296,15 @@
     </div>
 </div>
 <script th:inline="javascript">
+
+
     hljs.initHighlightingOnLoad();
 
-    <!-- 使用layer.js实现图片缩放功能 -->
-
-    $('.post-content img').on('click', function () {
-        var imgurl = $(this).attr('src');
-        var w = this.width * 2;
-        var h = this.height * 2 + 50;
-        layer.open({
-            type: 1,
-            title: false, //不显示标题栏
-            area: [w + "px", h + "px"],
-            shadeClose: true, //点击遮罩关闭
-            content: '\<\div style="padding:20px;">' +
-                '\<\img style="width:' + (w - 50) + 'px;" src=' + imgurl + '\>\<\/div>'
-        });
-    });
-
-
-    new Valine({
-        el: '#vcomments',
-        appId: 'xxx',
-        appKey: 'yyy',
-        placeholder: '请输入内容',
-        pageSize: 3,
-        recordIP: true,
-        avatar: '',
-        requiredFields: ['nick']
-    });
-    //隐藏div vheader
-    // document.getElementsByClassName('vheader')[0].style.display="none";
-    document.getElementsByClassName('vmail')[0].style.display = "none";
-    document.getElementsByClassName('vlink')[0].style.display = "none";
-    var name = [[${name}]];
-    if (name != null) {
-        //因为这个vnick文本框用了延迟加载，所以我们需要延迟更长的时间才能修改他
-        function after() {
-            document.getElementsByClassName('vnick')[0].value = name;
-            document.getElementsByClassName('vmail')[0].value = "";
-            document.getElementsByClassName('vnick')[0].readOnly = true;
-        }
-
-        setTimeout("after()", 100);
+    //js提交表单
+    function submitData() {
+        document.getElementById("form").submit();
     }
+
 
     /*单击出现爱心特效*/
     (function (window, document, undefined) {
@@ -343,8 +380,41 @@
         }
     })(window, document);
 
+
+
+
+    //ajax局部刷新分类数据
+    function categoryChange(categoryName) {
+        $.ajax({
+            url: "/category/data",
+            data: {
+                "categoryName": categoryName
+            },
+            type: "GET",
+            success: function (data) {
+                var obj = JSON.parse(data); //将前端传的list集合的json转成list集合
+
+                document.getElementById('categoryName').innerHTML=categoryName; //修改分类名称
+                var html='';
+
+                for (let i = 0; i < obj.length; i++) {
+                    let hf= '/article/'+obj[i].id;
+                    html+='<li class="list-item layui-card">'+'<a href="'+hf+'">'
+                        +'<span class="title">'+obj[i].title+'</span>'+'</a>'+'</li>'
+                }
+
+                document.getElementById('categorylist').innerHTML=''
+
+                $('#categorylist').append(html);
+
+            }
+
+        });
+
+
+    }
+
+
 </script>
-
-
 </body>
 </html>

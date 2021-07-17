@@ -1,6 +1,7 @@
 package com.boot.service;
 
 
+import com.boot.pojo.Article;
 import com.boot.pojo.category;
 import org.apache.ibatis.annotations.Param;
 
@@ -41,4 +42,6 @@ public interface categoryService {
     category selectCategoryByName(String categoryName);
 
     int selectCountByName(String categoryName);
+
+    List<String> selectCategoryName();
 }

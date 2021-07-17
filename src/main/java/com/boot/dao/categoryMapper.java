@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.category;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,5 +41,8 @@ public interface categoryMapper {
 
 
     int selectCountByName(@Param("categoryName") String categoryName);
+
+    @Select("select categoryName from t_categories")
+    List<String> selectCategoryName();
 
 }
