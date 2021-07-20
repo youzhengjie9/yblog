@@ -18,6 +18,13 @@
     </properties>
     <dependencies>
 
+<!--        springsession redis 解决分布式单点登录问题-->
+          <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+
         <!-- 引入okHttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
