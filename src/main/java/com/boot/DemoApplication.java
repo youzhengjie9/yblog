@@ -12,7 +12,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableSwagger2 //开启swagger2
 @EnableConfigurationProperties(value = {scanClassProperties.class,}) //开启自定义配置类
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60*60*3) //开启springSession+redis分布式session
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60*60*3) //开启springSession+redis解决分布式session问题
 public class DemoApplication {
 
     public static void main(String[] args) {
