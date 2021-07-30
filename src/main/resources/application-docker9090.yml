@@ -52,7 +52,7 @@ spring:
   application:
     name: docker9090
 mybatis:
-  mapper-locations: classpath:/mapper/*
+  mapper-locations: classpath:mapper/*.xml
 
 #自定义扫描包
 scan:

@@ -14,9 +14,14 @@
 &emsp;&emsp;yblog是基于SpringBoot架构开发的博客：**博文管理**、**统计图表**、**接口监控**、**访问记录**、**附件管理**、**用户管理**、**友链管理**、**监控管理**、**抓取博文**，以及**第三方登录**等功能，且一直会对本项目进行加强，请各位大佬多多指点，一起共同进步。
 文章无需自己写，可以使用作者自己编写的全自动爬虫工具即可，只需轻轻一点，万千文章到手。
 
-### 仓库地址
+### SpringBoot版yblog仓库地址
 GitHub: https://github.com/youzhengjie9/yblog <br/>
 Gitee: https://gitee.com/youzhengjie/springBootBlog
+
+
+### SpringCloud版仓库地址
+GitHub: https://github.com/youzhengjie9/cloud-yblog
+Gitee: https://gitee.com/youzhengjie/cloud-yblog
 
 ### 目标
 > **虽说博客系统已不是新鲜玩意，但是我觉得把一个普通的项目做的更完善、功能更多的话你就不普通，我也会秉承着这个理念一直把项目完善下去**<br/>

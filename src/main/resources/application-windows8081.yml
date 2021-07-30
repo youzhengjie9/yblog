@@ -51,7 +51,7 @@ spring:
   messages:
     basename: i18n.logo
 mybatis:
-  mapper-locations: classpath:/mapper/*
+  mapper-locations: classpath:mapper/*.xml
 #自定义扫描包
 scan:
   packageName: com.boot.controller
