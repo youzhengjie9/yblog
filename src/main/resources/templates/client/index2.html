@@ -13,7 +13,9 @@
     <!-- 依 赖 样 式 -->
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
     <!--timeline-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">-->
+
+
     <!--    <link rel="stylesheet" th:href="@{/plugins/vali/css/main.css}">-->
     <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
     <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">
@@ -138,7 +140,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/}">后台管理</a>
+                        <a class="nav-link" th:href="@{/admin/}" target="_blank">后台管理</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/toregister}">注册</a>
@@ -169,17 +171,17 @@
             <div class="cl-card" th:each="article: ${articles}" th:if="${isArchive} eq null or ${isArchive} eq ''">
                 <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-12 cl-card-image"><a
-                            th:href="${commons.permalink(article.id)}">
+                            th:href="${commons.permalink(article.id)}" target="_blank">
                         <img th:src="@{${commons.show_thumb(article)}}" class="img-fluid" alt=""></a>
                     </div>
                     <div class="col-lg-9 col-md-8 col-sm-12 cl-card-main">
                         <h3 class="cl-card-main-title">
-                            <a th:href="${commons.permalink(article.id)}" th:utext="${article.title}">
+                            <a th:href="${commons.permalink(article.id)}" th:utext="${article.title}" target="_blank">
                             </a>
                         </h3>
                         <p class="cl-card-main-info" th:utext="${commons.intro(article,75)}">
                         </p>
-                        <div class="cl-card-more"><a th:href="${commons.permalink(article.id)}">阅读更多...</a>
+                        <div class="cl-card-more"><a th:href="${commons.permalink(article.id)}" target="_blank">阅读更多...</a>
                             &nbsp;&nbsp;&nbsp;<span th:text="'发布于 '+ ${commons.dateFormat(article.created)}"></span>
                         </div>
                         <!--                        点赞-->
@@ -302,7 +304,7 @@
                             <ul class="list">
                                 <div id="archivelist">
                                 <li class="list-item layui-card" th:each="art:${oneArticle}">
-                                    <a th:href="${commons.permalink(art.id)}">
+                                    <a th:href="${commons.permalink(art.id)}" target="_blank">
                                     <span class="title">[[${art.title}]]</span>
                                     </a>
                                 </li>
@@ -342,7 +344,7 @@
                     <div class="right-card-title">推荐文章</div>
                     <ul class="right-recommended-list">
                         <li th:each="recommend:${recommends}">
-                            <a th:href="${commons.permalink(recommend.id)}">
+                            <a th:href="${commons.permalink(recommend.id)}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 <span th:text="${recommendStat.index+1}+'、'+${recommend.title}"></span>
                             </a>
@@ -359,7 +361,7 @@
                     <!--                    <div class="right-recommended"><a href="#"><img src="#" class="img-fluid" alt=""></a></div>-->
                     <ul class="right-recommended-list">
                         <li th:each="articleOrder :${articleOrders}">
-                            <a th:href="@{'/article/'+${articleOrder.id}}">
+                            <a th:href="@{'/article/'+${articleOrder.id}}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 <span th:text="${articleOrderStat.index+1}+'、'+${articleOrder.title}+'('+${articleOrder.statistic.hits}+')'"></span>
                             </a>
@@ -387,7 +389,7 @@
                     <div class="right-card-title">友情链接</div>
                     <ul class="label">
                         <li th:each="link:${links}">
-                            <a th:href="${link.getLink()}" th:text="${link.getTitle()}"></a>
+                            <a th:href="${link.getLink()}" th:text="${link.getTitle()}" target="_blank"></a>
                         </li>
                     </ul>
                 </div>

@@ -52,7 +52,7 @@
                         <a class="nav-link" th:href="@{/archive/list}">归档<span class="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/}">后台管理</a>
+                        <a class="nav-link" th:href="@{/admin/}" target="_blank">后台管理</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/toSendEmailPage}">注册</a>
@@ -161,7 +161,7 @@
                     <div class="right-card-title">推荐文章</div>
                     <ul class="right-recommended-list">
                         <li th:each="recommend:${recommends}">
-                            <a th:href="${commons.permalink(recommend.id)}">
+                            <a th:href="${commons.permalink(recommend.id)}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 <span th:text="${recommendStat.index+1}+'、'+${recommend.title}"></span>
                             </a>
@@ -178,7 +178,7 @@
                     <!--                    <div class="right-recommended"><a href="#"><img src="#" class="img-fluid" alt=""></a></div>-->
                     <ul class="right-recommended-list">
                         <li th:each="articleOrder :${articleOrders}">
-                            <a th:href="@{'/article/'+${articleOrder.id}}">
+                            <a th:href="@{'/article/'+${articleOrder.id}}" target="_blank">
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                                 <span th:text="${articleOrderStat.index+1}+'、'+${articleOrder.title}+'('+${articleOrder.statistic.hits}+')'"></span>
                             </a>
@@ -206,7 +206,7 @@
                     <div class="right-card-title">友情链接</div>
                     <ul class="label">
                         <li th:each="link:${links}">
-                            <a th:href="${link.getLink()}" th:text="${link.getTitle()}"></a>
+                            <a th:href="${link.getLink()}" th:text="${link.getTitle()}" target="_blank"></a>
                         </li>
                     </ul>
                 </div>

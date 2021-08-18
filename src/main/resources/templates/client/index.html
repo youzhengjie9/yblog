@@ -2,7 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!--timeline-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">-->
+
+
+
 <link rel="stylesheet" th:href="@{/assets/css/mystyle.css}">
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -41,7 +44,7 @@
                     <!-- 发布时间 -->
                     <span style="font-size: 15px;" th:text="'发布于 '+ ${commons.dateFormat(article.created)}"/>
                     <h2>
-                        <div><a style="color: #0f9ae0;font-size: 20px;" th:href="${commons.permalink(article.id)}"
+                        <div><a style="color: #0f9ae0;font-size: 20px;" th:href="${commons.permalink(article.id)}" target="_blank"
                                 th:utext="${article.title}"/>
                         </div>
                     </h2>
@@ -113,7 +116,7 @@
                 <li th:each="article:${map.value}" style="border-radius: 60px;width: 600px;">
 <!--                    <span></span>-->
                     <div>
-                        <a th:href="${commons.permalink(article.id)}" class="title" th:utext="${article.getTitle()}" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>
+                        <a th:href="${commons.permalink(article.id)}" target="_blank" class="title" th:utext="${article.getTitle()}" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></a>
                         <div class="info" th:utext="${commons.intro(article,75)}" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'"></div>
 <!--                        <div class="type" th:style="'color: '+${cssUtil.randomCssColor()} +';'+'font-size: '+ '20px;'+'font-weight:'+'bold;'">Prensetation</div>-->
                     </div>
@@ -161,12 +164,12 @@
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>联系我</span></h2>
             <p th:if="${userDetail} eq null">
-                <a th:href="@{https://github.com/}"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
-                <a th:href="@{https://weibo.com/}"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
+                <a th:href="@{https://github.com/}" target="_blank"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
+                <a th:href="@{https://weibo.com/}" target="_blank"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
             </p>
             <p th:if="${userDetail} ne null">
-                <a th:href="@{${userDetail.getGithub()}}"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
-                <a th:href="@{${userDetail.getWeibo()}}"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
+                <a th:href="@{${userDetail.getGithub()}}" target="_blank"><span class="am-icon-github am-icon-fw blog-icon"></span></a>
+                <a th:href="@{${userDetail.getWeibo()}}" target="_blank"><span class="am-icon-weibo am-icon-fw blog-icon"></span></a>
             </p>
         </div>
     </div>
@@ -178,7 +181,7 @@
             <h2 class="blog-text-center blog-title"><span>阅读排行榜</span></h2>
             <div style="text-align: left">
                 <th:block th:each="articleOrder :${articleOrders}">
-                    <a style="font-size: 15px;" th:href="@{'/article/'+${articleOrder.id}}"
+                    <a style="font-size: 15px;" th:href="@{'/article/'+${articleOrder.id}}" target="_blank"
                        th:text="${articleOrderStat.index+1}+'、'+${articleOrder.title}+'('+${articleOrder.statistic.hits}+')'">
                     </a>
                     <hr style="margin-top: 0.6rem;margin-bottom: 0.4rem"/>
@@ -198,7 +201,7 @@
                 </div>
                 <div class="modal-body">
 <!--                    内容-->
-                    <p th:each="link:${links}" th:utext="'<a href='+${link.getLink()}+'>'+${link.getTitle()}+'</a>'">
+                    <p th:each="link:${links}" th:utext="'<a href='+${link.getLink()}+' target='_blank' >'+${link.getTitle()}+'</a>'">
                     </p>
 
                 </div>
