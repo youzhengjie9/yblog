@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.List;
 import com.boot.service.categoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class DraftServiceImpl implements DraftService {
 
     @Autowired
