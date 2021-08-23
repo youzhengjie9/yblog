@@ -24,7 +24,7 @@ GitHub: https://github.com/youzhengjie9/yblog <br/>
 Gitee: https://gitee.com/youzhengjie/springBootBlog
 
 
-### SpringCloud版仓库地址（待完善）
+### SpringCloud微服务版cloud-yblog仓库地址
 GitHub: https://github.com/youzhengjie9/cloud-yblog <br/>
 Gitee: https://gitee.com/youzhengjie/cloud-yblog
 
