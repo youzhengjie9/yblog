@@ -1,5 +1,6 @@
 package com.boot;
 
+import com.boot.config.GenerateProperties;
 import com.boot.config.scanClassProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableSwagger2 //开启swagger2
-@EnableConfigurationProperties(value = {scanClassProperties.class}) //开启自定义配置类
+@EnableConfigurationProperties(value = {scanClassProperties.class, GenerateProperties.class}) //开启自定义配置类
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60*60*3) //开启springSession+redis解决分布式session问题
 public class DemoApplication {
 

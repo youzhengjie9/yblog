@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+	<meta th:name="_csrf" th:content="${_csrf.token}"/>
+	<!-- 默认的header name是X-CSRF-TOKEN -->
+	<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>代码生成器</title>
+	<script th:src="@{/assets/js/jquery.min.js}"></script>
+	<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">自动生成代码配置选项</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-card layui-form">
+					<div class="layui-card-header">基本配置</div>
+					<div class="layui-card-body layui-row layui-col-space10">
+
+						<form method="post" id="f1" th:action="@{/pear/generate}">
+
+						<div class="layui-col-md12">
+							<input th:if="${codeconfig.getGenerateModel()}" type="checkbox" name="generateModel" title="是否生成实体类" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getGenerateModel()}" type="checkbox" name="generateModel" title="是否生成实体类" lay-skin="primary">
+
+
+							<input th:if="${codeconfig.getModelSerialize()}" type="checkbox" name="modelSerialize" title="实体类是否序列化" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getModelSerialize()}" type="checkbox" name="modelSerialize" title="实体类是否序列化" lay-skin="primary">
+
+
+							<input th:if="${codeconfig.getModelGetterAndSetter()}" type="checkbox" name="modelGetterAndSetter" title="是否生成get/set方法" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getModelGetterAndSetter()}" type="checkbox" name="modelGetterAndSetter" title="是否生成get/set方法" lay-skin="primary">
+
+
+							<input th:if="${codeconfig.getModelConstructor()}" type="checkbox" name="modelConstructor" title="是否生成构造方法" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getModelConstructor()}" type="checkbox" name="modelConstructor" title="是否生成构造方法" lay-skin="primary">
+
+							<br/>
+							<input th:if="${codeconfig.getGenerateDatabase()}" type="checkbox" name="generateDatabase" title="是否生成数据库" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getGenerateDatabase()}" type="checkbox" name="generateDatabase" title="是否生成数据库" lay-skin="primary" >
+
+
+							<input th:if="${codeconfig.getGenerateTable()}" type="checkbox" name="generateTable" title="是否生成数据库表" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getGenerateTable()}" type="checkbox" name="generateTable" title="是否生成数据库表" lay-skin="primary">
+
+
+							<input th:if="${codeconfig.getGenerateMapper()}" type="checkbox" name="generateMapper" title="是否生成Mapper接口" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getGenerateMapper()}" type="checkbox" name="generateMapper" title="是否生成Mapper接口" lay-skin="primary">
+
+
+							<input th:if="${codeconfig.getGenerateServiceAndImpl()}" type="checkbox" name="generateServiceAndImpl" title="是否生成Service接口和Service的实现类" lay-skin="primary" checked>
+							<input th:if="${not codeconfig.getGenerateServiceAndImpl()}" type="checkbox" name="generateServiceAndImpl" title="是否生成Service接口和Service的实现类" lay-skin="primary">
+
+							<br />
+							<br />
+							<div>实体类配置</div>
+							 
+							<div class="layui-col-md3" th:if="${codeconfig.getGeneratePackage() ne null}">
+
+								<input type="text" name="generatePackage" placeholder="存放生成的实体类的包名"  class="layui-input" th:value="${codeconfig.getGeneratePackage()}"  required>
+							
+							</div>
+							<div class="layui-col-md3" th:if="${codeconfig.getGeneratePackage() eq null}">
+
+								<input type="text" name="generatePackage" placeholder="存放生成的实体类的包名"  class="layui-input" required>
+
+							</div>
+
+					 
+							<div class="layui-col-md4" th:if="${codeconfig.getGenerateModelPath() ne null}">
+							 
+							<input type="text" name="generateModelPath" placeholder="生成实体类的路径"  class="layui-input" th:value="${codeconfig.getGenerateModelPath()}" required>
+							
+							</div>
+
+							<div class="layui-col-md4" th:if="${codeconfig.getGenerateModelPath() eq null}">
+
+								<input type="text" name="generateModelPath" placeholder="生成实体类的路径"  class="layui-input" required>
+
+							</div>
+ 				 		
+ 				 			<br />
+							<br />
+							<div class="layui-col-md3">
+
+								<input type="text" name="className" placeholder="类名"  class="layui-input" required="required">
+
+							</div>
+
+
+							<br />
+							<br />
+
+
+							<div>数据库配置</div>
+ 				 			
+ 				 			<div class="layui-col-md3" th:if="${codeconfig.getDatabaseHost() ne null}">
+							 
+							<input type="text" name="databaseHost" placeholder="数据库主机"  class="layui-input" th:value="${codeconfig.getDatabaseHost()}" required>
+							
+							</div>
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabaseHost() eq null}">
+
+								<input type="text" name="databaseHost" placeholder="数据库主机"  class="layui-input" required>
+
+							</div>
+ 				 			
+ 				 		
+ 				 			<div class="layui-col-md3" th:if="${codeconfig.getDatabasePort() ne null}">
+							 
+								<input type="text" name="databasePort" placeholder="数据库端口号"  class="layui-input" th:value="${codeconfig.getDatabasePort()}" required>
+							
+							</div>
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabasePort() eq null}">
+
+								<input type="text" name="databasePort" placeholder="数据库端口号"  class="layui-input" required>
+
+							</div>
+
+
+
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabaseUser() ne null}">
+
+								<input type="text" name="databaseUser" placeholder="数据库用户名"  class="layui-input" th:value="${codeconfig.getDatabaseUser()}" required>
+
+							</div>
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabaseUser() eq null}">
+
+								<input type="text" name="databaseUser" placeholder="数据库用户名"  class="layui-input" required>
+
+							</div>
+
+ 				 		
+ 				 			<div class="layui-col-md3" th:if="${codeconfig.getDatabasePassword() ne null}">
+							 
+							<input type="text" name="databasePassword" placeholder="数据库密码" autocomplete="off" class="layui-input" th:value="${codeconfig.getDatabasePassword()}" required>
+							
+							</div>
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabasePassword() eq null}">
+
+								<input type="text" name="databasePassword" placeholder="数据库密码" autocomplete="off" class="layui-input" required>
+
+							</div>
+ 		 		
+ 				 			<div class="layui-col-md3" th:if="${codeconfig.getDatabaseDriver() ne null}">
+							 
+							<input type="text" name="databaseDriver" placeholder="数据库驱动"  class="layui-input" th:value="${codeconfig.getDatabaseDriver()}" required>
+							
+							</div>
+
+							<div class="layui-col-md3" th:if="${codeconfig.getDatabaseDriver() eq null}">
+
+								<input type="text" name="databaseDriver" placeholder="数据库驱动" autocomplete="off" class="layui-input"  required>
+
+							</div>
+
+							<div class="layui-col-md3">
+
+								<input type="text" name="databaseName" placeholder="数据库名"  class="layui-input"  required>
+
+							</div>
+
+							<div class="layui-col-md3">
+
+								<input type="text" name="primaryKey" placeholder="数据库主键(必须是实体类的第一个字段)"  class="layui-input" required>
+
+							</div>
+
+							<br/>
+							<br/>
+							<br/>
+
+							<div class="layui-col-md6">
+								<div>设置字段</div>
+								<input id="atnum" type="text" placeholder="你想生成的字段数">
+								<button class="layui-btn layui-btn-radius" id="atbtn" target="_blank">生成</button>
+							</div>
+							<br/>
+							<br/>
+							<br/>
+							<div id="attr" class="layui-col-md3">
+
+							</div>
+							<br/>
+							<br/>
+							<br/>
+							<button id="sub" class="layui-btn layui-btn-radius" target="_blank">立即生成并保存模板</button>
+
+						</div>
+						</form>
+					</div>
+
+				</div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script th:inline="javascript">
+	// 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	var headers = {"X-CSRF-TOKEN": token}
+
+	var attrdiv = document.getElementById('attr');
+	document.getElementById('atbtn').onclick=function(){
+
+		let num = document.getElementById('atnum').value;
+		//数字校验
+		if(num>0&&num<9)
+		{
+			attrdiv.innerHTML=''; //每次生成先清空原来的div
+
+			for (var i=0;i<num;i++)
+			{
+				var input = document.createElement('input');
+				input.setAttribute('name', 'attributes');
+				input.setAttribute('class', 'layui-input');
+				input.setAttribute('required', 'required');
+				input.setAttribute('placeholder','输入格式例如(数据类型,字段名):long,id');
+				input
+				attrdiv.appendChild(input);
+				var br = document.createElement("br");
+				attrdiv.appendChild(br);
+			}
+		}else{
+
+			alert('输入数字不合法,数值必须大于0和小于9')
+		}
+
+	}
+
+	$("#sub").submit(function(){
+		$.ajax({
+			url: "/pear/generate",
+			data: $('#f1').serialize(),  //ajax提交表单
+			dataType: 'json',
+			type: 'POST',
+			headers: headers,
+			async:false,
+			success: function (result) {
+				if (result.success) {
+					console.log('success');
+					alert(result.msg);
+				} else {
+					console.log("failed")
+					alert(result.msg);
+				}
+			}
+		})
+
+	});
+
+
+
+</script>
+
+
+
+</html>
