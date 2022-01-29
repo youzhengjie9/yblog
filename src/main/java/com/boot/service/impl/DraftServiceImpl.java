@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
-import com.boot.service.categoryService;
+import com.boot.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -22,19 +22,19 @@ public class DraftServiceImpl implements DraftService {
     private DraftMapper draftMapper;
 
     @Autowired
-    private categoryService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    private articleService articleService;
+    private ArticleService articleService;
 
     @Autowired
-    private statisticService statisticService;
+    private StatisticService statisticService;
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private tagService tagService;
+    private TagService tagService;
 
     @Override
     public List<Draft> selectAllDraft(String username) {

@@ -2,11 +2,11 @@ package com.boot.controller.oauth;
 
 import com.alibaba.fastjson.JSONObject;
 import com.boot.constant.GitHubConstant;
-import com.boot.pojo.user;
-import com.boot.service.authorityService;
-import com.boot.service.registerService;
-import com.boot.service.userAuthorityService;
-import com.boot.service.userService;
+import com.boot.pojo.User;
+import com.boot.service.AuthorityService;
+import com.boot.service.RegisterService;
+import com.boot.service.UserAuthorityService;
+import com.boot.service.UserService;
 import com.boot.utils.HttpClientUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,16 +43,16 @@ public class GithubController {
   private String redirectUri;
 
   @Autowired
-  private userService userService;
+  private UserService userService;
 
   @Autowired
-  private userAuthorityService userAuthorityService;
+  private UserAuthorityService userAuthorityService;
 
   @Autowired
-  private authorityService authorityService;
+  private AuthorityService authorityService;
 
   @Autowired
-  private registerService registerService;
+  private RegisterService registerService;
 
   @GetMapping("/callback")
   @ResponseBody
@@ -105,7 +104,7 @@ public class GithubController {
         HttpSession session = request.getSession();
         SecurityContextImpl securityContext = new SecurityContextImpl();
         String password = UUID.randomUUID().toString().replaceAll("-", ""); // 密码，防止用户直接进行登录，而不走第三方
-        User user = new User(myid, password, AuthorityUtils.createAuthorityList(authority));
+        org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(myid, password, AuthorityUtils.createAuthorityList(authority));
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
             new UsernamePasswordAuthenticationToken(
                 user, password, AuthorityUtils.createAuthorityList(authority));
@@ -116,7 +115,7 @@ public class GithubController {
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
       } else { // 如果是第一次的话，我们就给他注册一个帐号，这个帐号的名字是gitee的id，密码随机
-        user user = new user();
+        User user = new User();
         user.setUsername(myid);
         String password = UUID.randomUUID().toString().replaceAll("-", "");
         user.setPassword(password);
@@ -124,7 +123,7 @@ public class GithubController {
 
         HttpSession session = request.getSession();
         SecurityContextImpl securityContext = new SecurityContextImpl();
-        User u = new User(myid, password, AuthorityUtils.createAuthorityList("ROLE_common"));
+        org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(myid, password, AuthorityUtils.createAuthorityList("ROLE_common"));
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
             new UsernamePasswordAuthenticationToken(
                 u, password, AuthorityUtils.createAuthorityList("ROLE_common"));

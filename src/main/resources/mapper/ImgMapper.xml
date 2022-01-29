@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.boot.dao.ImgMapper">
+    
+    <insert id="addImgPath">
+        insert into t_img(big_img,small_img) values(#{big},#{small})
+    </insert>
+
+    <select id="selectAllImg" resultType="com.boot.pojo.Img">
+        select * from t_img
+    </select>
+
+    <select id="selectImgByid" resultType="com.boot.pojo.Img">
+        select * from t_img where id=#{id}
+    </select>
+
+    <select id="selectImgCount" resultType="int">
+        select count(*) from t_img
+    </select>
+
+    <delete id="deleteImgByid">
+        delete from t_img where id=#{id}
+    </delete>
+
+
+</mapper>

@@ -1,7 +1,7 @@
 package com.boot.service.impl;
 
 import com.boot.dao.OperationMapper;
-import com.boot.pojo.operationLog;
+import com.boot.pojo.OperationLog;
 import com.boot.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class OperationServiceImpl implements OperationService {
     private OperationMapper operationMapper;
 
     @Override
-    public void insertOperationLog(operationLog operationLog) {
+    public void insertOperationLog(OperationLog operationLog) {
         operationMapper.insertOperationLog(operationLog);
     }
 
     @Override
-    public List<operationLog> selectAllOperationLog() {
+    public List<OperationLog> selectAllOperationLog() {
         return operationMapper.selectAllOperationLog();
     }
 
@@ -33,7 +33,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<operationLog> selectOperationLogByLimit(int limit) {
+    public List<OperationLog> selectOperationLogByLimit(int limit) {
         return operationMapper.selectOperationLogByLimit(limit);
     }
 }

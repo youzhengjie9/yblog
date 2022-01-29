@@ -1,12 +1,12 @@
 package com.boot.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.boot.constant.loginType;
-import com.boot.pojo.loginLog;
+import com.boot.constant.LoginType;
+import com.boot.pojo.LoginLog;
+import com.boot.service.AuthorityService;
 import com.boot.service.LoginLogService;
-import com.boot.service.authorityService;
-import com.boot.service.userAuthorityService;
-import com.boot.service.userService;
+import com.boot.service.UserAuthorityService;
+import com.boot.service.UserService;
 import com.boot.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -40,13 +40,13 @@ public class RememberInterceptor implements HandlerInterceptor {
     private final String REMEMBER_KEY = "REMEMBER_"; //记住我的Redis key前缀
 
     @Autowired
-    private com.boot.service.userService userService;
+    private UserService userService;
 
     @Autowired
-    private com.boot.service.userAuthorityService userAuthorityService;
+    private UserAuthorityService userAuthorityService;
 
     @Autowired
-    private com.boot.service.authorityService authorityService;
+    private AuthorityService authorityService;
 
     @Autowired
     private LoginLogService loginLogService;
@@ -67,7 +67,7 @@ public class RememberInterceptor implements HandlerInterceptor {
             //异常了就是没有登录，没有登录就要检查redis中有没有该ip的记住我记录
 //            System.out.println("没有登录");
 
-            Object token = (String) redisTemplate.opsForValue().get(REMEMBER_KEY + ipUtils.getIpAddr(request));
+            Object token = (String) redisTemplate.opsForValue().get(REMEMBER_KEY + IpUtils.getIpAddr(request));
 
             //解析token
             if (token == null || token.equals("")) {//被删除了或者过期了
@@ -98,19 +98,19 @@ public class RememberInterceptor implements HandlerInterceptor {
                         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
                         //登录日志，走拦截器的登录类型都是记住我类型
-                        String ipAddr = ipUtils.getIpAddr(request);
-                        loginLog loginLog = new loginLog();
+                        String ipAddr = IpUtils.getIpAddr(request);
+                        LoginLog loginLog = new LoginLog();
                         loginLog.setIp(ipAddr);
                         loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
-                        loginLog.setBrowser(browserOS.getBrowserName(request));
-                        loginLog.setOs(browserOS.getOsName(request));
+                        loginLog.setBrowser(BrowserOS.getBrowserName(request));
+                        loginLog.setOs(BrowserOS.getOsName(request));
                         loginLog.setUsername(username);
                         Date d = new Date();
                         java.sql.Date date=new java.sql.Date(d.getTime());
                         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String t = fm.format(date);
                         loginLog.setTime(t);
-                        loginLog.setType(loginType.REMEMBER_LOGIN); //登录类型为2
+                        loginLog.setType(LoginType.REMEMBER_LOGIN); //登录类型为2
                         loginLogService.insertLoginLog(loginLog);
 
                     } else {

@@ -1,7 +1,5 @@
 package com.boot.filter;
 
-import com.alibaba.fastjson.JSON;
-import com.boot.data.ResponseData.layuiJSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;

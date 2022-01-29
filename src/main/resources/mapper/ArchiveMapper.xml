@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.ArchiveMapper">
+
+<!--    此处mybatis有bug，运行结果不一致，ORDER BY months desc不生效-->
+    <select id="selectAllArchiveGroup" resultType="com.boot.pojo.Archive">
+        SELECT
+	DATE_FORMAT( created, '%Y-%m' ) months,
+	count( id ) count
+        FROM
+	t_article
+    GROUP BY months
+    ORDER BY months desc
+    </select>
+
+    <select id="selectArticleByarchiveTime" resultType="com.boot.pojo.Article">
+    SELECT
+    id,
+	title
+    FROM
+	t_article
+    WHERE
+	strcmp( date_format( created, '%Y-%m' ), #{archiveTime} ) = 0
+	ORDER BY created desc
+    </select>
+
+
+</mapper>

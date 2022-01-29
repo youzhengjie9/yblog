@@ -2,17 +2,15 @@ package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Operation;
-import com.boot.data.ResponseData.layuiData;
-import com.boot.data.ResponseData.layuiJSON;
+import com.boot.data.ResponseData.LayuiData;
+import com.boot.data.ResponseData.LayuiJSON;
 import com.boot.pojo.Article;
 import com.boot.pojo.Draft;
-import com.boot.pojo.tag;
-import com.boot.pojo.userDetail;
 import com.boot.service.DraftService;
-import com.boot.service.articleService;
-import com.boot.service.userDetailService;
+import com.boot.service.ArticleService;
+import com.boot.service.UserDetailService;
 import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.ipUtils;
+import com.boot.utils.IpUtils;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,9 +41,9 @@ public class DraftController {
 
   @Autowired private HttpSession session;
 
-  @Autowired private articleService articleService;
+  @Autowired private ArticleService articleService;
 
-  @Autowired private userDetailService userDetailService;
+  @Autowired private UserDetailService userDetailService;
 
   private Logger logger = Logger.getLogger(DraftController.class);
 
@@ -66,14 +64,14 @@ public class DraftController {
     {
       PageHelper.startPage(page,limit);
       List<Draft> drafts = draftService.selectDraftByTitle(title);
-      layuiData<Draft> draftlayuiData = new layuiData<>();
+      LayuiData<Draft> draftlayuiData = new LayuiData<>();
       draftlayuiData.setCode(0);
       draftlayuiData.setMsg("");
       draftlayuiData.setData(drafts);
       draftlayuiData.setCount(1);
       return JSON.toJSONString(draftlayuiData);
     }else {
-      layuiData<Draft> data = new layuiData<Draft>();
+      LayuiData<Draft> data = new LayuiData<Draft>();
 
       String username = springSecurityUtil.currentUser(session);
 
@@ -114,7 +112,7 @@ public class DraftController {
       HttpSession session,
       HttpServletRequest request) {
 
-    layuiJSON json = new layuiJSON(); // 封装json数据传入前台
+    LayuiJSON json = new LayuiJSON(); // 封装json数据传入前台
 
     if (editArticleId == -1) { // 说明不能发布
 
@@ -132,7 +130,7 @@ public class DraftController {
         java.util.Date date2 = new java.util.Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = simpleDateFormat.format(date2);
-        String ipAddr = ipUtils.getIpAddr(request);
+        String ipAddr = IpUtils.getIpAddr(request);
         json.setSuccess(true);
         json.setMsg("发布成功");
         logger.debug(time + "   用户名：" + username + "发布成功,ip为：" + ipAddr);
@@ -161,7 +159,7 @@ public class DraftController {
       Draft draft,
       HttpSession session,
       HttpServletRequest request) {
-    layuiJSON json = new layuiJSON();
+    LayuiJSON json = new LayuiJSON();
 
     if (editArticleId == -99) { // =-99说明不能修改
       json.setSuccess(false);
@@ -205,7 +203,7 @@ public class DraftController {
   @RequestMapping(path = "/add/draft")
   public String addDraft(Draft draft){
 
-    layuiJSON json=new layuiJSON();
+    LayuiJSON json=new LayuiJSON();
 
     try{
       String username = springSecurityUtil.currentUser(session);
@@ -242,7 +240,7 @@ public class DraftController {
   @RequestMapping(path = "/del/draft/{id}")
   public String deleteDraft(@PathVariable("id") int id){
 
-    layuiJSON json=new layuiJSON();
+    LayuiJSON json=new LayuiJSON();
 
     try{
       draftService.deleteDraftByID(id);
@@ -261,7 +259,7 @@ public class DraftController {
   @RequestMapping(path = "/batchDel/draft/{ids}")
   public String batchDeleteDraft(@PathVariable("ids") String ids){
 
-    layuiJSON json=new layuiJSON();
+    LayuiJSON json=new LayuiJSON();
 
     try{
       String[] split = ids.split(",");

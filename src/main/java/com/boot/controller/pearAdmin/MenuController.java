@@ -2,12 +2,9 @@ package com.boot.controller.pearAdmin;
 
 
 import com.alibaba.fastjson.JSON;
-import com.boot.pojo.ChildrenMenu;
-import com.boot.pojo.Menu;
-import com.boot.pojo.MenuData;
 import com.boot.service.MenuService;
-import com.boot.service.userAuthorityService;
-import com.boot.service.userService;
+import com.boot.service.UserAuthorityService;
+import com.boot.service.UserService;
 import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 游政杰
@@ -38,10 +32,10 @@ public class MenuController {
     private HttpSession session;
 
     @Autowired
-    private userAuthorityService userAuthorityService;
+    private UserAuthorityService userAuthorityService;
 
     @Autowired
-    private userService userService;
+    private UserService userService;
 
     //生成菜单JSON串
     //这里一定要指定produces为application/json，因为默认转发json串是text/plain（不可以用这种）

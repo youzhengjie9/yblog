@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.SettingMapper">
+
+    <select id="selectUserSetting" resultType="com.boot.pojo.Setting">
+        select * from t_setting where name=#{name}
+    </select>
+
+    <insert id="addSettingByUser" parameterType="com.boot.pojo.Setting">
+        insert into t_setting (name,logo,foot,theme) values
+        (#{name},#{logo}
+        <if test="foot == null">
+            ,''
+        </if>
+        <if test="foot != null">
+            ,#{foot}
+        </if>
+        ,#{theme}
+        )
+    </insert>
+
+    <update id="changeSettingByUser" parameterType="com.boot.pojo.Setting">
+        update t_setting
+        <set>
+            <if test="logo == null">
+                logo='/user/img/bloglogo.jpg'
+            </if>
+            <if test="logo != null">
+                logo=#{logo}
+            </if>
+            <if test="foot == null">
+                ,foot=''
+            </if>
+            <if test="foot != null">
+                ,foot=#{foot}
+            </if>
+            ,theme=#{theme}
+        </set>
+
+        where name=#{name}
+
+    </update>
+
+
+    <delete id="deleteSettingByUser">
+        delete from t_setting where name=#{name}
+    </delete>
+
+
+</mapper>

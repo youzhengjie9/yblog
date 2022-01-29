@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.boot.dao.UserAuthorityMapper">
+
+    <update id="changeUserAuthority" parameterType="com.boot.pojo.UserAuthority">
+        update t_user_authority set authority_id = #{authority_id} where user_id=#{user_id}
+    </update>
+
+    <select id="selectAuthorityID" resultType="int">
+        select authority_id from t_user_authority where user_id=#{userid}
+    </select>
+
+</mapper>

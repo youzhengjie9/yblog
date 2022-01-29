@@ -1,18 +1,15 @@
 package com.boot.controller;
 
 import com.boot.annotation.Visitor;
-import com.boot.pojo.img;
-import com.boot.pojo.userDetail;
-import com.boot.pojo.visitor;
-import com.boot.service.imgService;
-import com.boot.service.userDetailService;
-import com.boot.service.visitorService;
+import com.boot.pojo.Img;
+import com.boot.pojo.UserDetail;
+import com.boot.service.ImgService;
+import com.boot.service.UserDetailService;
+import com.boot.service.VisitorService;
 import com.boot.utils.*;
 import io.swagger.annotations.Api;
 import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 游政杰
@@ -46,16 +41,16 @@ public class ImgController {
     private SpringSecurityUtil springSecurityUtil;
 
     @Autowired
-    private userDetailService userDetailService;
+    private UserDetailService userDetailService;
 
     @Autowired
-    private imgService imgService;
+    private ImgService imgService;
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private visitorService visitorService;
+    private VisitorService visitorService;
 
     private final int type=1;
 
@@ -67,13 +62,13 @@ public class ImgController {
 
 
 
-        List<img> imgs = imgService.selectAllImg();
+        List<Img> imgs = imgService.selectAllImg();
         System.out.println(imgs);
         model.addAttribute("imgs",imgs);
         String username = springSecurityUtil.currentUser(session);
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        UserDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail",userDetail);
-        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("bootstrap",new BootStrap());
         model.addAttribute("commons", Commons.getInstance());
         return "back/img_list";
     }
@@ -87,25 +82,25 @@ public class ImgController {
 
 
                 for (MultipartFile file : files) {
-                    String bigImgPath = fileUtil.getBigImgPath();
-                    String smallImgPath = fileUtil.getSmallImgPath();
+                    String bigImgPath = FileUtil.getBigImgPath();
+                    String smallImgPath = FileUtil.getSmallImgPath();
                     if(!file.isEmpty()){
                         //处理大图
                         InputStream inputStream = file.getInputStream();
                         byte bytes[]=new byte[inputStream.available()];
                         inputStream.read(bytes);
 
-                        String randomName = fileUtil.getRandomName();
-                        String fileSuffix = fileUtil.getFileSuffix(file.getOriginalFilename()); //后缀名
+                        String randomName = FileUtil.getRandomName();
+                        String fileSuffix = FileUtil.getFileSuffix(file.getOriginalFilename()); //后缀名
                         bigImgPath+=randomName+"."+fileSuffix;
-                        fileUtil.write(bigImgPath,bytes); //写入大图
+                        FileUtil.write(bigImgPath,bytes); //写入大图
 
 
                         //用google的图像处理工具处理缩略图
 
                         //缩略图文件名
-                        String randomName2 = fileUtil.getRandomName(); //缩略图随机名
-                        String fileSuffix2 = fileUtil.getFileSuffix(file.getOriginalFilename());
+                        String randomName2 = FileUtil.getRandomName(); //缩略图随机名
+                        String fileSuffix2 = FileUtil.getFileSuffix(file.getOriginalFilename());
                         smallImgPath+=randomName2+"."+fileSuffix2;
 
                         Thumbnails.of(bigImgPath)
@@ -131,12 +126,12 @@ public class ImgController {
 
 
 
-        List<img> imgs = imgService.selectAllImg();
+        List<Img> imgs = imgService.selectAllImg();
         model.addAttribute("imgs",imgs);
         String username = springSecurityUtil.currentUser(session);
-        userDetail userDetail = userDetailService.selectUserDetailByUserName(username);
+        UserDetail userDetail = userDetailService.selectUserDetailByUserName(username);
         model.addAttribute("userDetail",userDetail);
-        model.addAttribute("bootstrap",new bootstrap());
+        model.addAttribute("bootstrap",new BootStrap());
         model.addAttribute("commons", Commons.getInstance());
         return "back/img_list";
     }
@@ -148,8 +143,8 @@ public class ImgController {
     @RequestMapping(path = "/dowmloadImg")
     public ResponseEntity<byte[]> dowmloadImg(@RequestParam(value = "f") int f) throws IOException {
 
-        img img = imgService.selectImgByid(f);
-        String staticPath = fileUtil.getStaticPath();
+        Img img = imgService.selectImgByid(f);
+        String staticPath = FileUtil.getStaticPath();
         String big_img = img.getBig_img();
         staticPath+=big_img;
         File file = new File(staticPath);

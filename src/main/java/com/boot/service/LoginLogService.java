@@ -1,6 +1,6 @@
 package com.boot.service;
 
-import com.boot.pojo.loginLog;
+import com.boot.pojo.LoginLog;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import java.util.List;
 public interface LoginLogService {
 
 
-    void insertLoginLog(loginLog loginLog);
+    void insertLoginLog(LoginLog loginLog);
 
-    List<loginLog> selectLoginLogAll();
+    List<LoginLog> selectLoginLogAll();
 
     int loginLogCount();
 }

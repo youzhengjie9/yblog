@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.VisitorMapper">
+
+    <insert id="insertVisitor" parameterType="com.boot.pojo.Visitor">
+        insert into t_visitor(visit_ip,visit_address,browser,os,visit_time,visit_describe)
+        values(#{visit_ip},#{visit_address},#{browser},#{os},#{visit_time},#{visit_describe})
+    </insert>
+
+    <select id="selectVisitor" resultType="com.boot.pojo.Visitor">
+        select id,visit_ip,visit_address,browser,os,visit_time,visit_describe from t_visitor order by visit_time desc
+    </select>
+
+    <select id="selectDaysBy7" resultType="java.lang.String">
+        select DATE_SUB(curdate(),INTERVAL 6 DAY) day1 union
+        select DATE_SUB(curdate(),INTERVAL 5 DAY) day2 union
+        select DATE_SUB(curdate(),INTERVAL 4 DAY) day3 union
+        select DATE_SUB(curdate(),INTERVAL 3 DAY) day4 union
+        select DATE_SUB(curdate(),INTERVAL 2 DAY) day5 union
+        select DATE_SUB(curdate(),INTERVAL 1 DAY) day6 union
+        select DATE_SUB(curdate(),INTERVAL 0 DAY) day7;
+    </select>
+
+    <select id="selectOneDayVisitor" resultType="int">
+        SELECT
+	count(*)
+        FROM
+	t_visitor
+        WHERE
+	(
+		datediff ( visit_time,#{day} ) = 0
+	)
+    </select>
+
+</mapper>

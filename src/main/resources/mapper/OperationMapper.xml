@@ -6,7 +6,7 @@
 
 
 
-    <insert id="insertOperationLog" parameterType="com.boot.pojo.operationLog">
+    <insert id="insertOperationLog" parameterType="com.boot.pojo.OperationLog">
         insert into t_operationlog(op_username,op_ip,op_uri,op_address,op_browser,op_os,op_time,op_type)
         values(
             #{username},#{ip},#{uri},
@@ -34,7 +34,7 @@
 
 
 
-    <resultMap id="res1" type="com.boot.pojo.operationLog">
+    <resultMap id="res1" type="com.boot.pojo.OperationLog">
         <result property="id" column="id"/>
         <result property="username" column="op_username"/>
         <result property="ip" column="op_ip"/>
@@ -56,7 +56,7 @@
     </select>
 
 
-    <resultMap id="res2" type="com.boot.pojo.operationLog">
+    <resultMap id="res2" type="com.boot.pojo.OperationLog">
         <result property="username" column="op_username"/>
         <result property="time" column="op_time"/>
         <result property="type" column="op_type"/>

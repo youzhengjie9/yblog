@@ -2,20 +2,15 @@ package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.data.ResponseData.ResponseJSON;
-import com.boot.utils.ipUtils;
+import com.boot.utils.IpUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -52,7 +47,7 @@ public class CaptchaController {
             ResponseJSON responseJSON = new ResponseJSON();
             boolean bl = stddev != 0; //判断是否校验成功
             if (bl) { //如果是成功的，就把当前IP放入缓存，并设置一定时间过期，不过在登入成功后要删除缓存，实现”验证一次登入一次“
-                String ipAddr = ipUtils.getIpAddr(request);
+                String ipAddr = IpUtils.getIpAddr(request);
                 redisTemplate.opsForValue().set(ipAddr + "_lg", 1,30, TimeUnit.SECONDS);
             }
             responseJSON.setDt(bl);

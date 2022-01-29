@@ -1,12 +1,12 @@
 package com.boot.interceptor;
 
 import com.boot.annotation.Operation;
-import com.boot.pojo.operationLog;
+import com.boot.pojo.OperationLog;
 import com.boot.service.OperationService;
 import com.boot.utils.IpToAddressUtil;
 import com.boot.utils.SpringSecurityUtil;
-import com.boot.utils.browserOS;
-import com.boot.utils.ipUtils;
+import com.boot.utils.BrowserOS;
+import com.boot.utils.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 /**
  * @author 游政杰
@@ -57,13 +56,13 @@ public class OperationInterceptor implements HandlerInterceptor {
 //        String desc = method.getAnnotation(Operation.class).value(); //获取注解值
         Operation annotation = method.getAnnotation(Operation.class);
         if(annotation!=null){ //防止方法上没有注解而报空指针异常
-            String ipAddr = ipUtils.getIpAddr(request);
-            operationLog operationLog = new operationLog();
+            String ipAddr = IpUtils.getIpAddr(request);
+            OperationLog operationLog = new OperationLog();
             operationLog.setUsername(springSecurityUtil.currentUser(session));
             operationLog.setIp(ipAddr);
             operationLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
-            operationLog.setBrowser(browserOS.getBrowserName(request));
-            operationLog.setOs(browserOS.getOsName(request));
+            operationLog.setBrowser(BrowserOS.getBrowserName(request));
+            operationLog.setOs(BrowserOS.getOsName(request));
             operationLog.setUri(requestURI);
             operationLog.setType(annotation.value());
             java.util.Date d=new java.util.Date();

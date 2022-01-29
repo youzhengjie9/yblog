@@ -1,7 +1,6 @@
 package com.boot.service;
 
-import com.boot.pojo.operationLog;
-import org.apache.ibatis.annotations.Param;
+import com.boot.pojo.OperationLog;
 
 import java.util.List;
 
@@ -10,12 +9,12 @@ import java.util.List;
  */
 public interface OperationService {
 
-    void insertOperationLog(operationLog operationLog);
+    void insertOperationLog(OperationLog operationLog);
 
-    List<operationLog> selectAllOperationLog();
+    List<OperationLog> selectAllOperationLog();
 
     int selectOperationCount();
 
     //查询指定数量的操作日志
-    List<operationLog> selectOperationLogByLimit(int limit);
+    List<OperationLog> selectOperationLogByLimit(int limit);
 }

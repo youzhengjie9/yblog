@@ -3,8 +3,7 @@ package com.boot.controller.pearAdmin;
 // import com.boot.config.GenerateProperties;
 import com.alibaba.fastjson.JSON;
 import com.boot.config.GenerateProperties;
-import com.boot.constant.Constant;
-import com.boot.data.ResponseData.layuiJSON;
+import com.boot.data.ResponseData.LayuiJSON;
 import com.boot.pojo.Code;
 import com.boot.service.GenerateModelService;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +56,7 @@ public class GenerateController {
 
     System.out.println(code);
 
-    layuiJSON json = new layuiJSON();
+    LayuiJSON json = new LayuiJSON();
     boolean res = generateModelService.generate(code);
     if (res) // 此时执行成功
     {
