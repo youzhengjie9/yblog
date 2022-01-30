@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SpringBootTest
-public class Test {
+public class Test1 {
 
 
     @Autowired
