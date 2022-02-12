@@ -11,7 +11,7 @@
 
 <p align=center>
 <img src="https://img.shields.io/badge/JDK-1.8+-green.svg"/>
-<img src="https://img.shields.io/badge/springboot-2.4.5.RELEASE-green"/>
+<img src="https://img.shields.io/badge/springboot-2.5.9.RELEASE-green"/>
    <a href='https://gitee.com/youzhengjie/springBootBlog/stargazers'><img src='https://gitee.com/youzhengjie/springBootBlog/badge/star.svg?theme=dark' alt='star'/></a>
 </p>
 
